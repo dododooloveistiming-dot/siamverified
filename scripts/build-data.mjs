@@ -321,12 +321,25 @@ for (const src of SOURCES) {
     continue;
   }
   console.log(`[${src.niche}] loaded ${rows.length} rows`);
-  const places = rows
+  const NICHE_CAPS = { "muay-thai": 500, "yoga-pilates": 500, "wellness": 300, "cooking": 500, "diving": 300, "spa": 800, "coworking": 200 };
+  const cap = NICHE_CAPS[src.niche] ?? 500;
+
+  let candidates = rows
     .filter((r) => r.name && r.place_id && relevant(r, src.relCols))
     .map((r) => normalize(r, src.niche))
-    .filter((p) => p.id)
-    .sort((a, b) => b.trust_score - a.trust_score);
-  console.log(`[${src.niche}] kept ${places.length} relevant places`);
+    .filter((p) => p.id);
+
+  // Quality gate: must have at least one scraped signal OR a real rating with 5+ reviews.
+  candidates = candidates.filter((p) => {
+    const hasScrape = (p.reviews_scraped_count > 0) || (p.photos_count > 0) || (p.videos_count > 0);
+    const hasReputation = (p.rating ?? 0) >= 4 && (p.review_count ?? 0) >= 5;
+    return hasScrape || hasReputation;
+  });
+
+  const places = candidates
+    .sort((a, b) => b.trust_score - a.trust_score)
+    .slice(0, cap);
+  console.log(`[${src.niche}] kept ${places.length} relevant places (filtered+capped at ${cap})`);
   // Mark top 3 per niche as partners (demo)
   places.slice(0, 3).forEach((p) => (p.is_partner = true));
 
