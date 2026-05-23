@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 247 248 250;
+  --bg-elev: 255 255 255;
+  --fg: 10 11 14;
+  --muted: 125 132 147;
+  --border: 214 217 224;
+  --accent: 14 165 233;
+}
+html.dark {
+  --bg: 5 6 8;
+  --bg-elev: 23 26 34;
+  --fg: 247 248 250;
+  --muted: 174 179 191;
+  --border: 39 44 56;
+  --accent: 56 189 248;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  @apply antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+.glass {
+  background: rgb(var(--bg-elev) / 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(var(--border) / 0.6);
+}
+.card {
+  background: rgb(var(--bg-elev));
+  border: 1px solid rgb(var(--border));
+  border-radius: 1rem;
+}
+.muted { color: rgb(var(--muted)); }
+
+/* Trust score chip color ramp */
+.trust-chip {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold tabular-nums;
+}
+.trust-chip[data-tier="high"] { @apply bg-trust-high/10 text-trust-high; }
+.trust-chip[data-tier="mid"]  { @apply bg-trust-mid/10 text-trust-mid; }
+.trust-chip[data-tier="low"]  { @apply bg-trust-low/10 text-trust-low; }
+
+/* Prominent source badge — bigger, branded */
+.src-badge {
+  @apply inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold;
+  background: rgb(var(--bg-elev));
+  border: 1px solid rgb(var(--border));
+}
+.src-badge[data-source="reddit"]   { @apply text-orange-600 dark:text-orange-400; border-color: rgb(251 146 60 / .25); }
+.src-badge[data-source="naver"]    { @apply text-emerald-600 dark:text-emerald-400; border-color: rgb(16 185 129 / .25); }
+.src-badge[data-source="maps"]     { @apply text-blue-600 dark:text-blue-400; border-color: rgb(59 130 246 / .25); }
+.src-badge[data-source="photos"]   { @apply text-violet-600 dark:text-violet-400; border-color: rgb(139 92 246 / .25); }
+.src-badge[data-source="videos"]   { @apply text-red-600 dark:text-red-400; border-color: rgb(239 68 68 / .25); }
+.src-badge[data-source="bookimed"] { @apply text-clinic; border-color: rgb(14 165 233 / .35); }
+.src-badge[data-source="website"]  { @apply text-ink-700 dark:text-ink-300; }
+
+/* Hero blobs */
+.blob {
+  position: absolute; border-radius: 9999px; filter: blur(64px);
+  opacity: 0.4; pointer-events: none;
+  animation: blob 14s ease-in-out infinite;
+}
+
+/* Grid bg utility */
+.bg-grid {
+  background-image: linear-gradient(to right, rgb(var(--border) / .35) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgb(var(--border) / .35) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 0%, #000 60%, transparent 100%);
+}
+
+/* Shimmer skeleton */
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgb(var(--border)/.4), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 2.5s linear infinite;
+}

@@ -1,0 +1,40 @@
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <select defaultValue="en" onChange={function onChange} className=... children=...>
+                                     ^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "237231649"
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <select defaultValue="en" onChange={function onChange} className=... children=...>
+                                     ^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "237231649"
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <select defaultValue="en" onChange={function onChange} className=... children=...>
+                                     ^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "237231649"
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <select defaultValue="en" onChange={function onChange} className=... children=...>
+                                     ^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "237231649"
+ ⨯ Error: Page "/[lang]/page" is missing param "/favicon.ico" in "generateStaticParams()", which is required with "output: export" config.
+    at DevServer.renderToResponseWithComponentsImpl (C:\Users\yunmin\Desktop\thaifacialclinic\node_modules\next\dist\server\base-server.js:1064:27) {
+  page: '/favicon.ico'
+}
+ ⨯ Error: Page "/[lang]/page" is missing param "/favicon.ico" in "generateStaticParams()", which is required with "output: export" config.
+    at DevServer.renderToResponseWithComponentsImpl (C:\Users\yunmin\Desktop\thaifacialclinic\node_modules\next\dist\server\base-server.js:1064:27) {
+  page: '/favicon.ico'
+}

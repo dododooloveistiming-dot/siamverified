@@ -1,0 +1,258 @@
+// scripts/build-data.mjs
+// Reads 7 master CSVs (4 currently exist, 3 will appear as background pipeline finishes)
+// Emits: public/data/places.json + public/data/by-niche/<niche>.json
+//
+// Idempotent: if a master CSV doesn't exist yet, that niche is silently skipped.
+// Re-run `npm run data` after new pipelines finish to refresh.
+
+import fs from "node:fs";
+import path from "node:path";
+import { parse } from "csv-parse/sync";
+
+const SOURCES = [
+  { niche: "muay-thai",    csv: "C:\\dbd-scraper\\muaythai\\thaimuaythai_master.csv",       relCols: ["is_muay_relevant", "muay_relevant", "muaythai_relevant"] },
+  { niche: "yoga-pilates", csv: "C:\\dbd-scraper\\pilates\\thaipilatesyoga_master.csv",    relCols: ["is_pilates_relevant", "pilates_relevant"] },
+  { niche: "wellness",     csv: "C:\\dbd-scraper\\wellness\\thaiwellness_master.csv",      relCols: ["is_wellness_relevant", "wellness_relevant"] },
+  { niche: "cooking",      csv: "C:\\dbd-scraper\\cooking\\thaicooking_master.csv",        relCols: ["is_cooking_relevant", "cooking_relevant"] },
+  { niche: "diving",       csv: "C:\\dbd-scraper\\diving\\thaidiving_master.csv",          relCols: ["diving_relevant", "is_diving_relevant"] },
+  { niche: "spa",          csv: "C:\\dbd-scraper\\spa\\thaispa_master.csv",                relCols: ["spa_relevant", "is_spa_relevant"] },
+  { niche: "coworking",    csv: "C:\\dbd-scraper\\coworking\\thaicoworking_master.csv",    relCols: ["coworking_relevant", "is_coworking_relevant"] },
+];
+
+const OUT_DIR = path.join(process.cwd(), "public", "data");
+const OUT_BY_NICHE_DIR = path.join(OUT_DIR, "by-niche");
+const OUT_FILE = path.join(OUT_DIR, "places.json");
+
+fs.mkdirSync(OUT_DIR, { recursive: true });
+fs.mkdirSync(OUT_BY_NICHE_DIR, { recursive: true });
+
+function safeJson(v, fallback) {
+  if (typeof v !== "string" || !v.trim().startsWith("[")) return fallback;
+  try { return JSON.parse(v); } catch { return fallback; }
+}
+
+function num(v, fallback = 0) {
+  if (v === null || v === undefined || v === "") return fallback;
+  const n = parseFloat(String(v).replace(/,/g, ""));
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function bool(v) {
+  if (v === true || v === "True" || v === "true" || v === 1 || v === "1") return true;
+  return false;
+}
+
+function slugify(s) {
+  return String(s || "")
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9฀-๿가-힯]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+function priceBand(v) {
+  const s = String(v || "").toLowerCase();
+  if (["budget", "mid", "premium", "luxury"].includes(s)) return s;
+  return "unknown";
+}
+
+// Multi-source Trust Score (0-100). Weighted for "real users vs viral marketing".
+// Heavily favors SOURCE DIVERSITY (Google + Reddit + Naver + Pantip + YouTube + Website + Bookimed).
+function trustScore(r) {
+  const reviews = num(r.reviews_scraped_count);
+  const photos = num(r.photos_count);
+  const videos = num(r.videos_count);
+  const rating = num(r.rating);
+  const reviewCount = num(r.review_count);
+  const hasWebsite = bool(r.website_data_present) || String(r.website_text_preview || "").length > 100;
+  const hasBookimed = !!r.bookimed_slug;
+  const dataSources = String(r.data_sources || "").split(",").map((s) => s.trim()).filter(Boolean);
+  // Diversity bonus (≤25 pts)
+  const sourceCount = Math.min(
+    [reviews > 0, photos > 0, videos > 0, hasWebsite, hasBookimed, dataSources.includes("naver"), dataSources.includes("pantip"), dataSources.includes("reddit")].filter(Boolean).length,
+    8,
+  );
+  const diversity = (sourceCount / 8) * 25;
+  // Volume + quality (≤45 pts)
+  const ratingScore = rating > 0 ? Math.min(rating / 5, 1) * 15 : 0;
+  const reviewVolume = Math.min(Math.log10(reviewCount + 1) / Math.log10(500), 1) * 15;
+  const photoVolume = Math.min(photos / 8, 1) * 10;
+  const videoVolume = Math.min(videos / 5, 1) * 5;
+  // Beginner-friendly bonus (≤5 pts) — useful for travelers
+  const beginnerBonus = bool(r.is_beginner_friendly) ? 5 : 0;
+  // Booking-affiliate availability bonus (≤5 pts)
+  const affiliateBonus = (r.klook_search_url ? 2 : 0) + (r.agoda_search_url ? 2 : 0) + (r.bookimed_slug ? 1 : 0);
+  return Math.round(diversity + ratingScore + reviewVolume + photoVolume + videoVolume + beginnerBonus + affiliateBonus);
+}
+
+function isSuspectedViral(r) {
+  const rating = num(r.rating);
+  const reviewCount = num(r.review_count);
+  const sources = [
+    num(r.reviews_scraped_count) > 0,
+    num(r.photos_count) > 0,
+    num(r.videos_count) > 0,
+    !!r.website_text_preview,
+  ].filter(Boolean).length;
+  return rating >= 4.9 && reviewCount < 8 && sources <= 1;
+}
+
+function relevant(r, relCols) {
+  for (const c of relCols) {
+    if (r[c] !== undefined) return bool(r[c]);
+  }
+  return true; // if no relevance column, assume relevant (new niches default)
+}
+
+function normalize(r, niche) {
+  const reviews = safeJson(r.reviews_json, []);
+  const photos = safeJson(r.photo_urls_json, []);
+  const videos = safeJson(r.videos_json, []);
+  return {
+    id: r.place_id,
+    slug: slugify(`${niche}-${r.name}-${String(r.place_id || "").slice(-6)}`),
+    niche,
+    name: r.name || "",
+    address: r.address || "",
+    city: r.city || "",
+    rating: num(r.rating) || null,
+    review_count: num(r.review_count) || null,
+    phone: r.phone || "",
+    website: r.website || "",
+    category: r.category || "",
+    google_maps_url: r.google_maps_url || "",
+    reviews_scraped_count: num(r.reviews_scraped_count),
+    avg_scraped_rating: num(r.avg_scraped_rating) || null,
+    top_review_text: (r.top_review_text || "").slice(0, 600),
+    reviews_sample: (reviews || []).slice(0, 5).map((rv) => ({
+      source: rv.source || "google",
+      reviewer: (rv.reviewer || "").slice(0, 60),
+      rating: rv.rating ?? null,
+      date: (rv.date || "").slice(0, 20),
+      text: (rv.text || "").slice(0, 400),
+    })),
+    photos_count: num(r.photos_count) || photos.length,
+    top_photo_url: r.top_photo_url || photos[0] || "",
+    photos_sample: photos.slice(0, 8),
+    videos_count: num(r.videos_count) || videos.length,
+    top_video_id: r.top_video_id || (videos[0] && videos[0].video_id) || "",
+    videos_sample: videos.slice(0, 3).map((v) => ({
+      video_id: v.video_id || "",
+      title: (v.title || "").slice(0, 200),
+      channel: v.channel || "",
+    })),
+    price_min_thb: num(r.price_min_thb),
+    price_max_thb: num(r.price_max_thb),
+    price_unit: r.price_unit || "unknown",
+    price_band: priceBand(r.price_band),
+    opening_hours_json: r.opening_hours_json || "",
+    is_open_24h: bool(r.is_open_24h),
+    is_beginner_friendly: bool(r.is_beginner_friendly),
+    is_advanced_oriented: bool(r.is_advanced_oriented),
+    beginner_score: num(r.beginner_score),
+    languages: {
+      en: bool(r.is_english_friendly),
+      ko: bool(r.is_korean_friendly),
+      th: true,
+      zh: bool(r.is_chinese_friendly),
+      ja: bool(r.is_japanese_friendly),
+      ar: bool(r.is_arabic_friendly),
+    },
+    source_badges: {
+      google_reviews: num(r.reviews_scraped_count),
+      photos: num(r.photos_count),
+      videos: num(r.videos_count),
+      reddit: String(r.data_sources || "").includes("reddit") ? 1 : 0,
+      naver: String(r.data_sources || "").includes("naver") ? 1 : 0,
+      pantip: String(r.data_sources || "").includes("pantip") ? 1 : 0,
+      website: r.website_text_preview ? 1 : 0,
+      booking: 0,
+      bookimed: r.bookimed_slug ? 1 : 0,
+    },
+    trust_score: trustScore(r),
+    is_suspected_viral: isSuspectedViral(r),
+    affiliate: {
+      klook: r.klook_search_url || "",
+      viator: r.viator_search_url || "",
+      getyourguide: r.getyourguide_search_url || "",
+      agoda: r.agoda_search_url || "",
+      tripcom: r.tripcom_search_url || "",
+      bookimed: r.bookimed_url || "",
+    },
+    is_partner: false,
+  };
+}
+
+const allPlaces = [];
+const byNiche = {};
+
+for (const src of SOURCES) {
+  if (!fs.existsSync(src.csv)) {
+    console.log(`[skip] ${src.niche}: master CSV not yet created — pipeline still running?`);
+    byNiche[src.niche] = 0;
+    continue;
+  }
+  let raw;
+  try {
+    raw = fs.readFileSync(src.csv, "utf-8").replace(/^﻿/, "");
+  } catch (e) {
+    console.warn(`[warn] ${src.niche}: read failed: ${e.message}`);
+    byNiche[src.niche] = 0;
+    continue;
+  }
+  let rows;
+  try {
+    rows = parse(raw, { columns: true, skip_empty_lines: true, relax_quotes: true, relax_column_count: true });
+  } catch (e) {
+    console.warn(`[warn] ${src.niche}: parse failed: ${e.message}`);
+    byNiche[src.niche] = 0;
+    continue;
+  }
+  console.log(`[${src.niche}] loaded ${rows.length} rows`);
+  const places = rows
+    .filter((r) => r.name && r.place_id && relevant(r, src.relCols))
+    .map((r) => normalize(r, src.niche))
+    .filter((p) => p.id)
+    .sort((a, b) => b.trust_score - a.trust_score);
+  console.log(`[${src.niche}] kept ${places.length} relevant places`);
+  // Mark top 3 per niche as partners (demo)
+  places.slice(0, 3).forEach((p) => (p.is_partner = true));
+  allPlaces.push(...places);
+  byNiche[src.niche] = places.length;
+  // Per-niche slice file
+  const sliceFile = path.join(OUT_BY_NICHE_DIR, `${src.niche}.json`);
+  fs.writeFileSync(
+    sliceFile,
+    JSON.stringify({ generated_at: new Date().toISOString(), niche: src.niche, total: places.length, places }, null, 0),
+    "utf-8",
+  );
+}
+
+const avgTrust =
+  allPlaces.length > 0
+    ? Math.round(allPlaces.reduce((s, p) => s + p.trust_score, 0) / allPlaces.length)
+    : 0;
+
+fs.writeFileSync(
+  OUT_FILE,
+  JSON.stringify(
+    {
+      generated_at: new Date().toISOString(),
+      total: allPlaces.length,
+      by_niche: byNiche,
+      avg_trust: avgTrust,
+      places: allPlaces,
+    },
+    null,
+    0,
+  ),
+  "utf-8",
+);
+
+console.log("");
+console.log(`[build-data] TOTAL: ${allPlaces.length} places`);
+console.log(`[build-data] by_niche:`, byNiche);
+console.log(`[build-data] avg_trust: ${avgTrust}`);
+console.log(`[build-data] → ${OUT_FILE}`);

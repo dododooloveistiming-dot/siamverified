@@ -1,0 +1,26 @@
+
+> thaifacialclinic@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.13
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.4s
+ ○ Compiling /[lang] ...
+ ✓ Compiled /[lang] in 4.4s (532 modules)
+ GET /en/ 500 in 5332ms
+ ○ Compiling /[lang]/c/[procedure] ...
+ ✓ Compiled /[lang]/c/[procedure] in 3.1s (541 modules)
+ GET /en/c/fue/ 500 in 3734ms
+ ✓ Compiled /b2b/dashboard in 229ms (532 modules)
+ GET /b2b/dashboard/ 200 in 362ms
+ ✓ Compiled in 464ms (547 modules)
+ GET /en/ 200 in 280ms
+ GET /en/c/fue/ 200 in 130ms
+ GET /b2b/dashboard/ 200 in 55ms
+ GET /ko/ 200 in 222ms
+ GET /en/ 200 in 428ms
+ GET /favicon.ico 500 in 27ms
+ GET /ko/ 200 in 298ms
+ GET /favicon.ico 500 in 23ms
