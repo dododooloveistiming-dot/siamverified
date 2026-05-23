@@ -185,6 +185,15 @@ function normalize(r, niche) {
   };
 }
 
+// Safety: if NO source CSVs exist (e.g., running on Vercel which doesn't have
+// local Windows paths), abort and leave the existing places.json intact.
+const anySourceExists = SOURCES.some((s) => fs.existsSync(s.csv));
+if (!anySourceExists) {
+  console.log("[build-data] No source CSVs found (running on a machine without C:\\dbd-scraper\\).");
+  console.log("[build-data] Keeping existing places.json untouched. Exit 0.");
+  process.exit(0);
+}
+
 const allPlaces = [];
 const byNiche = {};
 
