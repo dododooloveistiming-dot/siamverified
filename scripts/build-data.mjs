@@ -21,10 +21,111 @@ const SOURCES = [
 
 const OUT_DIR = path.join(process.cwd(), "public", "data");
 const OUT_BY_NICHE_DIR = path.join(OUT_DIR, "by-niche");
+const OUT_COMMUNITY_DIR = path.join(OUT_DIR, "community");
 const OUT_FILE = path.join(OUT_DIR, "places.json");
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.mkdirSync(OUT_BY_NICHE_DIR, { recursive: true });
+fs.mkdirSync(OUT_COMMUNITY_DIR, { recursive: true });
+
+// Read broad scraper CSV (Naver / Pantip / Reddit) for a niche folder.
+function loadBroadCsv(folder, kind) {
+  const fname = kind === "naver"  ? `${folder}_naver_blogs_broad.csv`
+              : kind === "pantip" ? `${folder}_pantip_threads.csv`
+              : kind === "reddit" ? `${folder}_reddit_threads.csv`
+              : null;
+  if (!fname) return [];
+  const p = path.join(`C:\\dbd-scraper\\${folder}`, fname);
+  if (!fs.existsSync(p)) return [];
+  try {
+    const raw = fs.readFileSync(p, "utf-8").replace(/^﻿/, "");
+    return parse(raw, { columns: true, skip_empty_lines: true, relax_quotes: true, relax_column_count: true });
+  } catch (e) {
+    console.warn(`  broad CSV read fail (${kind}): ${e.message}`);
+    return [];
+  }
+}
+
+// Normalize a broad-scraper row into common Thread shape
+function normalizeThread(t, kind) {
+  if (kind === "reddit") {
+    return {
+      kind: "reddit",
+      title: String(t.title || "").slice(0, 220),
+      url: String(t.url || t.permalink || ""),
+      snippet: String(t.selftext || "").slice(0, 350),
+      score: parseInt(t.score) || 0,
+      comments: parseInt(t.num_comments) || 0,
+      author: String(t.author || "").slice(0, 40),
+      subreddit: String(t.subreddit || ""),
+      date: String(t.created_utc || "").slice(0, 10),
+    };
+  }
+  if (kind === "pantip") {
+    return {
+      kind: "pantip",
+      title: String(t.title || "").slice(0, 220),
+      url: String(t.topic_url || ""),
+      snippet: String(t.summary || "").slice(0, 350),
+      score: parseInt(t.like_count) || 0,
+      comments: parseInt(t.comments_count) || 0,
+      author: String(t.author || "").slice(0, 40),
+      subreddit: "",
+      date: String(t.posted_date || "").slice(0, 10),
+    };
+  }
+  // naver
+  return {
+    kind: "naver",
+    title: String(t.blog_title || "").slice(0, 220),
+    url: String(t.blog_url || ""),
+    snippet: String(t.blog_snippet || "").slice(0, 350),
+    score: 0,
+    comments: 0,
+    author: String(t.blogger_name || "").slice(0, 40),
+    subreddit: "",
+    date: String(t.blog_date || "").slice(0, 10),
+  };
+}
+
+// Top N threads sorted by engagement (reddit score > comments > recency)
+function topThreads(threads, n) {
+  return [...threads]
+    .sort((a, b) => (b.score + b.comments / 5) - (a.score + a.comments / 5))
+    .slice(0, n);
+}
+
+// Fuzzy-match place name against thread titles/snippets.
+// Returns top 3 threads with >=1 distinctive token match.
+const STOPWORDS = new Set([
+  "thai", "thailand", "bangkok", "phuket", "chiang", "mai", "samui", "koh",
+  "diving", "yoga", "pilates", "muay", "spa", "massage", "cooking", "studio",
+  "school", "center", "centre", "club", "academy", "gym", "studio", "the", "and",
+  "training", "class", "course", "tour", "thai-style", "thaistyle",
+]);
+
+function fuzzyMatchThreads(placeName, threads) {
+  const lower = String(placeName || "").toLowerCase();
+  const tokens = lower
+    .split(/[^a-z0-9가-힯ก-๏]+/)
+    .filter((t) => t.length >= 4 && !STOPWORDS.has(t));
+  if (tokens.length === 0) return [];
+  // First 2 distinctive tokens (most likely brand name)
+  const distinctive = tokens.slice(0, 2);
+  const matches = [];
+  for (const t of threads) {
+    const haystack = ((t.title || "") + " " + (t.snippet || "")).toLowerCase();
+    let hits = 0;
+    for (const tok of distinctive) {
+      if (haystack.includes(tok)) hits++;
+    }
+    if (hits >= distinctive.length) {  // require ALL distinctive tokens
+      matches.push({ ...t, _hits: hits });
+    }
+  }
+  matches.sort((a, b) => (b._hits - a._hits) || (b.score + b.comments / 5) - (a.score + a.comments / 5));
+  return matches.slice(0, 3).map(({ _hits, ...rest }) => rest);
+}
 
 function safeJson(v, fallback) {
   if (typeof v !== "string" || !v.trim().startsWith("[")) return fallback;
@@ -66,7 +167,7 @@ function trustScore(r) {
   const videos = num(r.videos_count);
   const rating = num(r.rating);
   const reviewCount = num(r.review_count);
-  const hasWebsite = bool(r.website_data_present) || String(r.website_text_preview || "").length > 100;
+  const hasWebsite = bool(r.website_data_present) || String(r.website_main_content || "").length > 100;
   const hasBookimed = !!r.bookimed_slug;
   const dataSources = String(r.data_sources || "").split(",").map((s) => s.trim()).filter(Boolean);
   // Diversity bonus (≤25 pts)
@@ -94,7 +195,7 @@ function isSuspectedViral(r) {
     num(r.reviews_scraped_count) > 0,
     num(r.photos_count) > 0,
     num(r.videos_count) > 0,
-    !!r.website_text_preview,
+    !!r.website_main_content,
   ].filter(Boolean).length;
   return rating >= 4.9 && reviewCount < 8 && sources <= 1;
 }
@@ -167,7 +268,7 @@ function normalize(r, niche) {
       reddit: String(r.data_sources || "").includes("reddit") ? 1 : 0,
       naver: String(r.data_sources || "").includes("naver") ? 1 : 0,
       pantip: String(r.data_sources || "").includes("pantip") ? 1 : 0,
-      website: r.website_text_preview ? 1 : 0,
+      website: r.website_main_content ? 1 : 0,
       booking: 0,
       bookimed: r.bookimed_slug ? 1 : 0,
     },
