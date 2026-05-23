@@ -368,6 +368,12 @@ for (const src of SOURCES) {
     if (matches.length > 0) {
       place.community_mentions = matches;
       fuzzyHits++;
+      // Update source_badges so landing-page counts reflect actual coverage.
+      for (const m of matches) {
+        if (m.kind === "reddit") place.source_badges.reddit = (place.source_badges.reddit || 0) + 1;
+        if (m.kind === "naver") place.source_badges.naver = (place.source_badges.naver || 0) + 1;
+        if (m.kind === "pantip") place.source_badges.pantip = (place.source_badges.pantip || 0) + 1;
+      }
     }
   }
   console.log(`[${src.niche}] places with community mentions: ${fuzzyHits}/${places.length}`);

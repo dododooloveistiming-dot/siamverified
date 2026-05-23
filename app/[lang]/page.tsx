@@ -140,8 +140,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           <p className="mt-2 text-sm muted">
             Every Trust Score combines independent signals. No place can buy a higher rank — the formula is public.
           </p>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
+          {(() => {
+            const cards = [
               { name: "Google", count: bundle.places.filter((p) => p.source_badges.google_reviews > 0).length, badge: "★" },
               { name: "Reddit", count: bundle.places.filter((p) => p.source_badges.reddit > 0).length, badge: "💬" },
               { name: "YouTube", count: bundle.places.filter((p) => p.source_badges.videos > 0).length, badge: "▶" },
@@ -150,14 +150,19 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
               { name: "Bookimed", count: bundle.places.filter((p) => p.source_badges.bookimed > 0).length, badge: "🏥" },
               { name: "Photos", count: bundle.places.filter((p) => p.source_badges.photos > 0).length, badge: "📸" },
               { name: "Official sites", count: bundle.places.filter((p) => p.source_badges.website > 0).length, badge: "🔗" },
-            ].map((s) => (
-              <div key={s.name} className="rounded-xl bg-emerald-50/60 p-3 text-sm dark:bg-emerald-950/30">
-                <div className="text-xl">{s.badge}</div>
-                <div className="mt-1 font-bold">{s.name}</div>
-                <div className="text-xs muted">{s.count.toLocaleString()} places</div>
+            ].filter((s) => s.count > 0);
+            return (
+              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                {cards.map((s) => (
+                  <div key={s.name} className="rounded-xl bg-emerald-50/60 p-3 text-sm dark:bg-emerald-950/30">
+                    <div className="text-xl">{s.badge}</div>
+                    <div className="mt-1 font-bold">{s.name}</div>
+                    <div className="text-xs muted">{s.count.toLocaleString()} places</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </section>
 
         <footer className="mt-16 border-t border-ink-100 pt-6 text-xs muted dark:border-ink-800">
