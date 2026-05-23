@@ -10,13 +10,13 @@ import path from "node:path";
 import { parse } from "csv-parse/sync";
 
 const SOURCES = [
-  { niche: "muay-thai",    csv: "C:\\dbd-scraper\\muaythai\\thaimuaythai_master.csv",       relCols: ["is_muay_relevant", "muay_relevant", "muaythai_relevant"] },
-  { niche: "yoga-pilates", csv: "C:\\dbd-scraper\\pilates\\thaipilatesyoga_master.csv",    relCols: ["is_pilates_relevant", "pilates_relevant"] },
-  { niche: "wellness",     csv: "C:\\dbd-scraper\\wellness\\thaiwellness_master.csv",      relCols: ["is_wellness_relevant", "wellness_relevant"] },
-  { niche: "cooking",      csv: "C:\\dbd-scraper\\cooking\\thaicooking_master.csv",        relCols: ["is_cooking_relevant", "cooking_relevant"] },
-  { niche: "diving",       csv: "C:\\dbd-scraper\\diving\\thaidiving_master.csv",          relCols: ["diving_relevant", "is_diving_relevant"] },
-  { niche: "spa",          csv: "C:\\dbd-scraper\\spa\\thaispa_master.csv",                relCols: ["spa_relevant", "is_spa_relevant"] },
-  { niche: "coworking",    csv: "C:\\dbd-scraper\\coworking\\thaicoworking_master.csv",    relCols: ["coworking_relevant", "is_coworking_relevant"] },
+  { niche: "muay-thai",    folder: "muaythai",  csv: "C:\\dbd-scraper\\muaythai\\thaimuaythai_master.csv",       relCols: ["is_muay_relevant", "muay_relevant", "muaythai_relevant"] },
+  { niche: "yoga-pilates", folder: "pilates",   csv: "C:\\dbd-scraper\\pilates\\thaipilatesyoga_master.csv",    relCols: ["is_pilates_relevant", "pilates_relevant"] },
+  { niche: "wellness",     folder: "wellness",  csv: "C:\\dbd-scraper\\wellness\\thaiwellness_master.csv",      relCols: ["is_wellness_relevant", "wellness_relevant"] },
+  { niche: "cooking",      folder: "cooking",   csv: "C:\\dbd-scraper\\cooking\\thaicooking_master.csv",        relCols: ["is_cooking_relevant", "cooking_relevant"] },
+  { niche: "diving",       folder: "diving",    csv: "C:\\dbd-scraper\\diving\\thaidiving_master.csv",          relCols: ["diving_relevant", "is_diving_relevant"] },
+  { niche: "spa",          folder: "spa",       csv: "C:\\dbd-scraper\\spa\\thaispa_master.csv",                relCols: ["spa_relevant", "is_spa_relevant"] },
+  { niche: "coworking",    folder: "coworking", csv: "C:\\dbd-scraper\\coworking\\thaicoworking_master.csv",    relCols: ["coworking_relevant", "is_coworking_relevant"] },
 ];
 
 const OUT_DIR = path.join(process.cwd(), "public", "data");
@@ -329,6 +329,36 @@ for (const src of SOURCES) {
   console.log(`[${src.niche}] kept ${places.length} relevant places`);
   // Mark top 3 per niche as partners (demo)
   places.slice(0, 3).forEach((p) => (p.is_partner = true));
+
+  // ── Community: load broad scraper CSVs, build niche-level community.json ──
+  const redditRaw = loadBroadCsv(src.folder, "reddit").map((t) => normalizeThread(t, "reddit"));
+  const pantipRaw = loadBroadCsv(src.folder, "pantip").map((t) => normalizeThread(t, "pantip"));
+  const naverRaw  = loadBroadCsv(src.folder, "naver").map((t) => normalizeThread(t, "naver"));
+  const allThreads = [...redditRaw, ...pantipRaw, ...naverRaw];
+  console.log(`[${src.niche}] community threads: reddit=${redditRaw.length}, pantip=${pantipRaw.length}, naver=${naverRaw.length}`);
+
+  const community = {
+    generated_at: new Date().toISOString(),
+    niche: src.niche,
+    counts: { reddit: redditRaw.length, pantip: pantipRaw.length, naver: naverRaw.length },
+    top_reddit: topThreads(redditRaw, 12),
+    top_pantip: topThreads(pantipRaw, 8),
+    top_naver: naverRaw.slice(0, 8), // naver: most recent first
+  };
+  const communityFile = path.join(OUT_COMMUNITY_DIR, `${src.niche}.json`);
+  fs.writeFileSync(communityFile, JSON.stringify(community, null, 0), "utf-8");
+
+  // ── Place-level fuzzy matches (Option C) ──
+  let fuzzyHits = 0;
+  for (const place of places) {
+    const matches = fuzzyMatchThreads(place.name, allThreads);
+    if (matches.length > 0) {
+      place.community_mentions = matches;
+      fuzzyHits++;
+    }
+  }
+  console.log(`[${src.niche}] places with community mentions: ${fuzzyHits}/${places.length}`);
+
   allPlaces.push(...places);
   byNiche[src.niche] = places.length;
   // Per-niche slice file

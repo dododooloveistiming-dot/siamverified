@@ -92,6 +92,29 @@ export interface Place {
   affiliate: AffiliateLinks;
   // partnership
   is_partner: boolean;
+  // community mentions (Reddit/Pantip/Naver fuzzy matches by name)
+  community_mentions?: CommunityThread[];
+}
+
+export interface CommunityThread {
+  kind: "reddit" | "pantip" | "naver";
+  title: string;
+  url: string;
+  snippet: string;
+  score: number;
+  comments: number;
+  author: string;
+  subreddit: string;
+  date: string;
+}
+
+export interface CommunityBundle {
+  generated_at: string;
+  niche: Niche;
+  counts: { reddit: number; pantip: number; naver: number };
+  top_reddit: CommunityThread[];
+  top_pantip: CommunityThread[];
+  top_naver: CommunityThread[];
 }
 
 export interface PlacesBundle {

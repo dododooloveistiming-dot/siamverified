@@ -295,6 +295,42 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
           </section>
         )}
 
+        {/* COMMUNITY MENTIONS — fuzzy-matched by place name */}
+        {place.community_mentions && place.community_mentions.length > 0 && (
+          <section className="mt-10">
+            <h2 className="mb-3 text-lg font-bold">Mentions in community discussions</h2>
+            <p className="mb-4 text-xs muted">
+              Threads where this place's name appears. Independent voices, not curated reviews.
+            </p>
+            <ul className="space-y-3">
+              {place.community_mentions.map((m, i) => {
+                const sourceLabel = m.kind === "reddit" ? `r/${m.subreddit || "all"}`
+                                  : m.kind === "pantip" ? "Pantip"
+                                  : "Naver Blog";
+                const accent = m.kind === "reddit" ? "border-orange-300 dark:border-orange-700"
+                             : m.kind === "pantip" ? "border-fuchsia-300 dark:border-fuchsia-700"
+                             : "border-emerald-300 dark:border-emerald-700";
+                const icon = m.kind === "reddit" ? "💬" : m.kind === "pantip" ? "🇹🇭" : "🇰🇷";
+                return (
+                  <li key={i}>
+                    <a href={m.url} target="_blank" rel="nofollow noopener" className={`block rounded-xl border-l-4 ${accent} bg-white p-3 transition hover:shadow dark:bg-ink-900`}>
+                      <div className="flex items-center gap-2 text-xs muted">
+                        <span>{icon}</span>
+                        <span className="font-semibold">{sourceLabel}</span>
+                        {m.score ? <span>· {m.score}↑</span> : null}
+                        {m.comments ? <span>· {m.comments} comments</span> : null}
+                        {m.date ? <span>· {m.date}</span> : null}
+                      </div>
+                      <div className="mt-1 text-sm font-medium leading-snug">{m.title}</div>
+                      {m.snippet && <div className="mt-1 line-clamp-2 text-xs muted">{m.snippet}</div>}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
+
         {/* CONTACT */}
         <section className="mt-10 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
           <h2 className="mb-3 text-lg font-bold">Contact & links</h2>
