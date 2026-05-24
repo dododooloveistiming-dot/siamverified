@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import Resend from "next-auth/providers/resend";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "./db";
-import { users, accounts, sessions, verificationTokens } from "@/drizzle/schema";
 
 // NextAuth v5 (Auth.js). Magic-link via Resend.
 // Required env:
@@ -13,12 +12,7 @@ import { users, accounts, sessions, verificationTokens } from "@/drizzle/schema"
 //   NEXTAUTH_URL           (production URL; auto-detected on Vercel)
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }),
+  adapter: DrizzleAdapter(db),
   providers: [
     Resend({
       apiKey: process.env.AUTH_RESEND_KEY,
