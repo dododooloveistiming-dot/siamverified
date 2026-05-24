@@ -6,3 +6,5 @@ out/
 public/data/clinics.json
 *.tsbuildinfo
 .DS_Store
+dev_stdout.log
+dev_stderr.log

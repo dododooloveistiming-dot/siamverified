@@ -1,12 +1,11 @@
 {
-"generated_at": "2026-05-23T18:07:13.659Z",
+"generated_at": "2026-05-24T02:03:24.497Z",
 "niche": "muay-thai",
 "counts": {
 "reddit": 909,
 "pantip": 122,
 "naver": 118,
 "reddit_filtered": 10,
-"reddit_original": 12,
 "pantip_filtered": 4,
 "naver_filtered": 7
 },
@@ -247,5 +246,5 @@
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:31:46.175513+00:00"
+"filtered_at": "2026-05-24T09:44:07.071636+00:00"
 }

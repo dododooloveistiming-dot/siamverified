@@ -1,12 +1,11 @@
 {
-"generated_at": "2026-05-23T18:07:31.015Z",
+"generated_at": "2026-05-24T02:03:28.938Z",
 "niche": "spa",
 "counts": {
 "reddit": 367,
 "pantip": 92,
 "naver": 95,
 "reddit_filtered": 0,
-"reddit_original": 12,
 "pantip_filtered": 5,
 "naver_filtered": 8
 },
@@ -158,5 +157,5 @@
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:31:46.191129+00:00"
+"filtered_at": "2026-05-24T09:44:07.102761+00:00"
 }

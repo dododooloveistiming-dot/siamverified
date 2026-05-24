@@ -1,12 +1,11 @@
 {
-"generated_at": "2026-05-23T18:07:20.424Z",
+"generated_at": "2026-05-24T02:03:25.702Z",
 "niche": "yoga-pilates",
 "counts": {
 "reddit": 412,
 "pantip": 83,
 "naver": 159,
 "reddit_filtered": 0,
-"reddit_original": 12,
 "pantip_filtered": 5,
 "naver_filtered": 4
 },
@@ -114,5 +113,5 @@
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:31:46.219406+00:00"
+"filtered_at": "2026-05-24T09:44:07.174096+00:00"
 }

@@ -1,12 +1,11 @@
 {
-"generated_at": "2026-05-23T18:07:22.376Z",
+"generated_at": "2026-05-24T02:03:26.417Z",
 "niche": "cooking",
 "counts": {
 "reddit": 273,
 "pantip": 57,
 "naver": 60,
 "reddit_filtered": 1,
-"reddit_original": 1,
 "pantip_filtered": 4,
 "naver_filtered": 8
 },
@@ -159,5 +158,5 @@
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:31:46.101418+00:00"
+"filtered_at": "2026-05-24T09:44:06.995207+00:00"
 }

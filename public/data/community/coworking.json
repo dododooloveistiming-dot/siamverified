@@ -1,12 +1,11 @@
 {
-"generated_at": "2026-05-23T18:07:31.785Z",
+"generated_at": "2026-05-24T02:03:30.323Z",
 "niche": "coworking",
 "counts": {
 "reddit": 371,
 "pantip": 15,
 "naver": 94,
 "reddit_filtered": 3,
-"reddit_original": 12,
 "pantip_filtered": 6,
 "naver_filtered": 3
 },
@@ -148,5 +147,5 @@
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:31:46.118583+00:00"
+"filtered_at": "2026-05-24T09:44:07.012542+00:00"
 }

@@ -1,12 +1,11 @@
 {
-"generated_at": "2026-05-23T18:07:23.078Z",
+"generated_at": "2026-05-24T02:03:26.669Z",
 "niche": "diving",
 "counts": {
 "reddit": 331,
 "pantip": 57,
 "naver": 72,
 "reddit_filtered": 1,
-"reddit_original": 12,
 "pantip_filtered": 5,
 "naver_filtered": 6
 },
@@ -148,5 +147,5 @@
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:31:46.145273+00:00"
+"filtered_at": "2026-05-24T09:44:07.042767+00:00"
 }
