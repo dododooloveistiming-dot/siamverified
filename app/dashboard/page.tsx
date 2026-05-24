@@ -27,11 +27,19 @@ export default async function DashboardPage() {
             Signed in as {session?.user?.email}
           </p>
         </div>
-        <form action={async () => { "use server"; await signOut({ redirectTo: "/" }); }}>
-          <button className="rounded-lg border border-ink-200 px-3 py-1.5 text-xs font-medium hover:bg-ink-50 dark:border-ink-700 dark:hover:bg-ink-800">
-            Sign out
-          </button>
-        </form>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/dashboard/inquiries"
+            className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700"
+          >
+            📩 Inquiries
+          </Link>
+          <form action={async () => { "use server"; await signOut({ redirectTo: "/" }); }}>
+            <button className="rounded-lg border border-ink-200 px-3 py-1.5 text-xs font-medium hover:bg-ink-50 dark:border-ink-700 dark:hover:bg-ink-800">
+              Sign out
+            </button>
+          </form>
+        </div>
       </div>
 
       <section className="mt-8">

@@ -6,6 +6,7 @@ import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
+import InquiryForm from "@/components/InquiryForm";
 
 export const dynamic = "force-static";
 
@@ -228,6 +229,14 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
               )}
             </div>
           </aside>
+        </section>
+
+        {/* INQUIRY FORM — direct contact via Verified Thai */}
+        <section className="mt-8">
+          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
+            Contact {place.name}
+          </h2>
+          <InquiryForm placeId={place.slug} placeName={place.name} lang={lang} />
         </section>
 
         {/* AFFILIATE CTAs */}

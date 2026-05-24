@@ -84,6 +84,40 @@ export const listingClaims = pgTable("listing_claims", {
   reviewerId: text("reviewer_id").references(() => users.id, { onDelete: "set null" }),
 });
 
+// Customer inquiries sent through verifiedthai.com. Routed to whichever
+// approved claim owns the listing; "unclaimed" inquiries still get stored
+// (the business can see them after they claim).
+export const inquiries = pgTable("inquiries", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  placeId: text("place_id").notNull(),
+  customerName: text("customer_name").notNull(),
+  customerEmail: text("customer_email").notNull(),
+  customerPhone: text("customer_phone"),
+  preferredDate: text("preferred_date"),       // free-text date / "anytime"
+  partySize: text("party_size"),               // "1 person", "couple", "4 people"
+  language: text("language").default("en"),
+  message: text("message").notNull(),
+  // Lifecycle
+  status: text("status").notNull().default("new"), // new | responded | closed
+  respondedAt: timestamp("responded_at"),
+  // For freemium gating
+  countedAt: timestamp("counted_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Per-business subscription state. Monthly free tier = 10 inquiries.
+// Paid tier ($29/mo) lifts the cap. Tracked separately from listing_claims
+// so a business with multiple listings shares the cap.
+export const subscriptions = pgTable("subscriptions", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  tier: text("tier").notNull().default("free"), // free | pro
+  activeUntil: timestamp("active_until"),       // pro plan expiry
+  monthlyInquiryCount: jsonb("monthly_inquiry_count").default({}).notNull(), // {"2026-05": 7}
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Edits submitted by claimed owners. Until applied, the static JSON
 // reflects the public/original value.
 export const listingEdits = pgTable("listing_edits", {
@@ -102,3 +136,5 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type ListingClaim = typeof listingClaims.$inferSelect;
 export type ListingEdit = typeof listingEdits.$inferSelect;
+export type Inquiry = typeof inquiries.$inferSelect;
+export type Subscription = typeof subscriptions.$inferSelect;
