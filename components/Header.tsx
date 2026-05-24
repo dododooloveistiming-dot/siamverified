@@ -6,9 +6,10 @@ import { NICHE_META, nicheName } from "@/lib/types";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import DarkModeToggle from "./DarkModeToggle";
 
-const NAV_NICHES: Niche[] = [
-  "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
-];
+// Top 4 in desktop nav — rest live in the "More" dropdown to declutter.
+const NAV_NICHES_PRIMARY: Niche[] = ["spa", "yoga-pilates", "muay-thai", "diving"];
+const NAV_NICHES_SECONDARY: Niche[] = ["wellness", "cooking", "coworking"];
+const NAV_NICHES: Niche[] = [...NAV_NICHES_PRIMARY, ...NAV_NICHES_SECONDARY];
 
 const LANG_LABEL: Record<Lang, string> = {
   en: "English", ko: "한국어", th: "ไทย", zh: "中文", ja: "日本語", ar: "العربية",
@@ -45,8 +46,8 @@ export default function Header({ lang }: { lang: Lang }) {
           <span className="text-sm sm:text-base">{SITE.name}</span>
         </Link>
 
-        <nav className="hidden flex-1 items-center gap-3 overflow-x-auto text-xs font-medium md:flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {NAV_NICHES.map((n) => (
+        <nav className="hidden flex-1 items-center gap-4 text-xs font-medium md:flex">
+          {NAV_NICHES_PRIMARY.map((n) => (
             <Link
               key={n}
               href={`/${lang}/c/${n}/`}
@@ -55,6 +56,32 @@ export default function Header({ lang }: { lang: Lang }) {
               {NICHE_META[n].emoji} {nicheName(n, lang)}
             </Link>
           ))}
+          <div className="group relative">
+            <button
+              type="button"
+              className="muted inline-flex items-center gap-1 whitespace-nowrap transition hover:text-emerald-600"
+              aria-haspopup="true"
+            >
+              More <span className="text-[8px]">▼</span>
+            </button>
+            <div className="absolute left-0 top-full hidden min-w-[180px] rounded-xl border border-ink-100 bg-white p-2 shadow-lg group-hover:block dark:border-ink-800 dark:bg-ink-900">
+              {NAV_NICHES_SECONDARY.map((n) => (
+                <Link
+                  key={n}
+                  href={`/${lang}/c/${n}/`}
+                  className="block rounded-md px-3 py-2 text-xs hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  {NICHE_META[n].emoji} {nicheName(n, lang)}
+                </Link>
+              ))}
+              <Link
+                href={`/${lang}/faq/`}
+                className="block border-t border-ink-100 px-3 py-2 text-xs hover:bg-emerald-50 hover:text-emerald-700 dark:border-ink-800 dark:hover:bg-emerald-950/40"
+              >
+                ❓ FAQ
+              </Link>
+            </div>
+          </div>
         </nav>
 
         <div className="flex items-center gap-2">

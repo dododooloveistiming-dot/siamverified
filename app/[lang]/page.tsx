@@ -45,25 +45,25 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
   const bundle = loadPlaces();
   const topPerNiche = getTopPlacesPerNiche(4);
 
-  // Hero photo: prefer aspirational/lifestyle niches (wellness > spa > yoga > diving)
-  // over more visceral ones (muay-thai). Falls through if first choice has no photo.
+  // Hero photo: walk a curated niche preference (aspirational first), grabbing
+  // the highest-trust place that has a photo. spa/diving/coworking have ZERO
+  // photos in current data (see by_niche photo counts), so they fall through.
   const HERO_NICHE_PREFERENCE: Niche[] = [
     "wellness",
-    "spa",
     "yoga-pilates",
-    "diving",
     "cooking",
-    "coworking",
+    "spa",
+    "diving",
     "muay-thai",
+    "coworking",
   ];
-  const heroPlace =
-    HERO_NICHE_PREFERENCE.flatMap((n) =>
-      getPlacesByNiche(n)
-        .filter((p) => p.top_photo_url && p.trust_score >= 60)
-        .sort((a, b) => b.trust_score - a.trust_score)
-        .slice(0, 8),
-    ).find((p) => p.top_photo_url) ??
-    getTopPlaces(50).find((p) => p.top_photo_url);
+  let heroPlace: Place | undefined;
+  for (const n of HERO_NICHE_PREFERENCE) {
+    const candidate = getPlacesByNiche(n)
+      .filter((p) => p.top_photo_url)
+      .sort((a, b) => b.trust_score - a.trust_score)[0];
+    if (candidate) { heroPlace = candidate; break; }
+  }
 
   // Editor's picks: top trust-score places overall (with photos)
   const editorsPicks = getTopPlaces(200)
