@@ -5,7 +5,7 @@ import { db, users } from "@/lib/db";
 import { getOwnerUserId } from "@/lib/quota";
 
 const RESEND_KEY = process.env.AUTH_RESEND_KEY;
-const EMAIL_FROM = process.env.AUTH_EMAIL_FROM ?? "Verified Thai <no-reply@verifiedthai.com>";
+const EMAIL_FROM = process.env.AUTH_EMAIL_FROM || "Verified Thai <no-reply@verifiedthai.com>";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://verifiedthai.com";
 
 async function sendEmail(to: string, subject: string, html: string): Promise<void> {
