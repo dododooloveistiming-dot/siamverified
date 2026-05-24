@@ -35,6 +35,48 @@ export function getPlaceBySlug(slug: string): Place | undefined {
   return loadPlaces().places.find((p) => p.slug === slug);
 }
 
+/**
+ * Place lookup + DB overlay of the latest approved listing_edits.
+ * Use on dynamic/server-rendered pages so owner-controlled fields
+ * (website, phone, description, hours) reflect approved overrides.
+ */
+export async function getPlaceWithEdits(slug: string): Promise<Place | undefined> {
+  const base = getPlaceBySlug(slug);
+  if (!base) return base;
+
+  // Lazy import to keep static-build paths free of DB deps.
+  try {
+    const { db, listingEdits } = await import("./db");
+    const { eq, and, desc } = await import("drizzle-orm");
+    const rows = await db
+      .select()
+      .from(listingEdits)
+      .where(
+        and(eq(listingEdits.placeId, base.id), eq(listingEdits.status, "approved")),
+      )
+      .orderBy(desc(listingEdits.appliedAt))
+      .limit(1);
+    if (rows.length === 0) return base;
+    const edits = (rows[0].edits ?? {}) as Record<string, string>;
+    const overlay: Partial<Place> = {};
+    if (edits.website) overlay.website = edits.website;
+    if (edits.phone) overlay.phone = edits.phone;
+    // hours / description / korean_staff don't have native Place fields —
+    // they surface via place_edits map below.
+    return {
+      ...base,
+      ...overlay,
+      // Stash all approved edits on the object for the place page to render
+      // without needing another DB call.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...(({ owner_edits: edits } as any)),
+    };
+  } catch (e) {
+    console.warn("[data] getPlaceWithEdits overlay failed:", e);
+    return base;
+  }
+}
+
 export function getTopPlaces(limit = 12): Place[] {
   return loadPlaces().places.slice(0, limit);
 }

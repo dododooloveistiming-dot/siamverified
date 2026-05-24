@@ -5,6 +5,7 @@ import { auth, signOut } from "@/lib/auth";
 import { db, listingClaims, inquiries, subscriptions } from "@/lib/db";
 import { getPlaceBySlug } from "@/lib/data";
 import { FREE_MONTHLY_INQUIRY_LIMIT } from "@/lib/quota";
+import { isAdminSession } from "@/lib/admin";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,8 @@ export default async function DashboardPage() {
   const tier: "free" | "pro" =
     sub?.tier === "pro" && sub.activeUntil && new Date(sub.activeUntil) > new Date() ? "pro" : "free";
 
+  const isAdmin = await isAdminSession();
+
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <div className="flex items-center justify-between">
@@ -57,6 +60,14 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="rounded-lg border border-violet-500 bg-violet-50 px-3 py-1.5 text-xs font-bold text-violet-700 hover:bg-violet-100 dark:bg-violet-950/40 dark:text-violet-300"
+            >
+              🛡️ Admin
+            </Link>
+          )}
           <Link
             href="/dashboard/inquiries"
             className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700"
