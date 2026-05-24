@@ -33,7 +33,6 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
 
   const niches: Niche[] = [
     "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
-    "halal-food", "muslim-hotel", "halal-tour", "mosque", "halal-clinic", "halal-beauty",
   ];
 
   return (
@@ -53,6 +52,9 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             <p className="mt-4 max-w-2xl text-lg muted">
               {t("hero_subtitle", lang)}
             </p>
+            <p className="mt-2 text-sm font-medium text-ink-700 dark:text-ink-300">
+              {t("for_audience", lang)}
+            </p>
             <p className="mt-3 text-xs muted">
               {t("sources_pitch", lang)}
             </p>
@@ -70,6 +72,32 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* POPULAR PICKS — quick deep-link strip */}
+        <section className="mt-8">
+          <div className="text-xs uppercase tracking-wide font-bold muted mb-3">
+            {t("popular_picks", lang)}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: "Bangkok spa", href: `/${lang}/c/spa/?city=bangkok` },
+              { label: "Phuket diving", href: `/${lang}/c/diving/?city=phuket` },
+              { label: "Chiang Mai yoga", href: `/${lang}/c/yoga-pilates/?city=chiang-mai` },
+              { label: "Phuket muay thai", href: `/${lang}/c/muay-thai/?city=phuket` },
+              { label: "Bangkok cooking class", href: `/${lang}/c/cooking/?city=bangkok` },
+              { label: "Chiang Mai coworking", href: `/${lang}/c/coworking/?city=chiang-mai` },
+              { label: "Wellness retreat", href: `/${lang}/c/wellness/` },
+            ].map((p) => (
+              <Link
+                key={p.label}
+                href={p.href}
+                className="rounded-full bg-ink-100 px-3 py-1.5 text-xs font-medium text-ink-700 transition hover:bg-emerald-100 hover:text-emerald-800 dark:bg-ink-800 dark:text-ink-300 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-300"
+              >
+                {p.label} →
+              </Link>
+            ))}
           </div>
         </section>
 
@@ -154,13 +182,6 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           })()}
         </section>
 
-      <footer className="mt-16 border-t border-ink-100 pt-6 text-xs muted dark:border-ink-800">
-        <p className="max-w-3xl">{t("footer_blurb", lang)}</p>
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <div>© {new Date().getFullYear()} {SITE.name}</div>
-          <div>Sources: Google · Reddit · Naver · Pantip · YouTube · Bookimed · Official sites</div>
-        </div>
-      </footer>
     </main>
   );
 }

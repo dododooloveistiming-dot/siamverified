@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects.
+# Root → /en/ (default lang) since static export has no server redirect.
+/  /en/  302

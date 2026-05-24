@@ -17,12 +17,6 @@ const SOURCES = [
   { niche: "diving",       folder: "diving",    csv: "C:\\dbd-scraper\\diving\\thaidiving_master.csv",          relCols: ["diving_relevant", "is_diving_relevant"] },
   { niche: "spa",          folder: "spa",       csv: "C:\\dbd-scraper\\spa\\thaispa_master.csv",                relCols: ["spa_relevant", "is_spa_relevant"] },
   { niche: "coworking",    folder: "coworking", csv: "C:\\dbd-scraper\\coworking\\thaicoworking_master.csv",    relCols: ["coworking_relevant", "is_coworking_relevant"] },
-  { niche: "halal-food",    folder: "halalfood",    csv: "C:\\dbd-scraper\\halalfood\\thaihalalfood_master.csv",       relCols: ["halalfood_relevant", "is_halalfood_relevant"] },
-  { niche: "muslim-hotel",  folder: "muslimhotel",  csv: "C:\\dbd-scraper\\muslimhotel\\thaimuslimhotel_master.csv",   relCols: ["muslimhotel_relevant", "is_muslimhotel_relevant"] },
-  { niche: "halal-tour",    folder: "halaltour",    csv: "C:\\dbd-scraper\\halaltour\\thaihalaltour_master.csv",       relCols: ["halaltour_relevant", "is_halaltour_relevant"] },
-  { niche: "mosque",        folder: "mosque",       csv: "C:\\dbd-scraper\\mosque\\thaimosque_master.csv",             relCols: ["mosque_relevant", "is_mosque_relevant"] },
-  { niche: "halal-clinic",  folder: "halalclinic",  csv: "C:\\dbd-scraper\\halalclinic\\thaihalalclinic_master.csv",   relCols: ["halalclinic_relevant", "is_halalclinic_relevant"] },
-  { niche: "halal-beauty",  folder: "halalbeauty",  csv: "C:\\dbd-scraper\\halalbeauty\\thaihalalbeauty_master.csv",   relCols: ["halalbeauty_relevant", "is_halalbeauty_relevant"] },
 ];
 
 const OUT_DIR = path.join(process.cwd(), "public", "data");
@@ -35,14 +29,23 @@ fs.mkdirSync(OUT_BY_NICHE_DIR, { recursive: true });
 fs.mkdirSync(OUT_COMMUNITY_DIR, { recursive: true });
 
 // Read broad scraper CSV (Naver / Pantip / Reddit) for a niche folder.
+// Source order (first hit wins):
+//   1. local ./external_data/{folder}/...  (from tools/community_scrapers/siamverified_harvest)
+//   2. legacy C:\dbd-scraper\{folder}\...  (kept for the old computer's pipeline)
+const LOCAL_EXTERNAL_DATA = path.join(process.cwd(), "external_data");
+
 function loadBroadCsv(folder, kind) {
   const fname = kind === "naver"  ? `${folder}_naver_blogs_broad.csv`
               : kind === "pantip" ? `${folder}_pantip_threads.csv`
               : kind === "reddit" ? `${folder}_reddit_threads.csv`
               : null;
   if (!fname) return [];
-  const p = path.join(`C:\\dbd-scraper\\${folder}`, fname);
-  if (!fs.existsSync(p)) return [];
+  const candidates = [
+    path.join(LOCAL_EXTERNAL_DATA, folder, fname),
+    path.join(`C:\\dbd-scraper\\${folder}`, fname),
+  ];
+  const p = candidates.find((c) => fs.existsSync(c));
+  if (!p) return [];
   try {
     const raw = fs.readFileSync(p, "utf-8").replace(/^﻿/, "");
     return parse(raw, { columns: true, skip_empty_lines: true, relax_quotes: true, relax_column_count: true });
@@ -292,13 +295,17 @@ function normalize(r, niche) {
   };
 }
 
-// Safety: if NO source CSVs exist (e.g., running on Vercel which doesn't have
-// local Windows paths), abort and leave the existing places.json intact.
-const anySourceExists = SOURCES.some((s) => fs.existsSync(s.csv));
-if (!anySourceExists) {
-  console.log("[build-data] No source CSVs found (running on a machine without C:\\dbd-scraper\\).");
-  console.log("[build-data] Keeping existing places.json untouched. Exit 0.");
+// Safety: if no master CSVs AND no local external_data exists, abort and
+// leave the existing places.json intact (e.g., on Vercel).
+const anyMasterExists = SOURCES.some((s) => fs.existsSync(s.csv));
+const anyExternalExists = fs.existsSync(LOCAL_EXTERNAL_DATA);
+if (!anyMasterExists && !anyExternalExists) {
+  console.log("[build-data] No source CSVs and no external_data/ found.");
+  console.log("[build-data] Keeping existing places.json + community/ untouched. Exit 0.");
   process.exit(0);
+}
+if (!anyMasterExists) {
+  console.log("[build-data] No master CSVs — will rebuild only community/*.json from external_data/.");
 }
 
 const allPlaces = [];
@@ -306,7 +313,26 @@ const byNiche = {};
 
 for (const src of SOURCES) {
   if (!fs.existsSync(src.csv)) {
-    console.log(`[skip] ${src.niche}: master CSV not yet created — pipeline still running?`);
+    // Master CSV missing — still try to build community/*.json from external_data/
+    const redditRaw = loadBroadCsv(src.folder, "reddit").map((t) => normalizeThread(t, "reddit"));
+    const pantipRaw = loadBroadCsv(src.folder, "pantip").map((t) => normalizeThread(t, "pantip"));
+    const naverRaw  = loadBroadCsv(src.folder, "naver").map((t) => normalizeThread(t, "naver"));
+    if (redditRaw.length || pantipRaw.length || naverRaw.length) {
+      console.log(`[${src.niche}] no master CSV, but external community data found: `
+                  + `reddit=${redditRaw.length}, pantip=${pantipRaw.length}, naver=${naverRaw.length}`);
+      const community = {
+        generated_at: new Date().toISOString(),
+        niche: src.niche,
+        counts: { reddit: redditRaw.length, pantip: pantipRaw.length, naver: naverRaw.length },
+        top_reddit: topThreads(redditRaw, 30),
+        top_pantip: topThreads(pantipRaw, 40),
+        top_naver: naverRaw.slice(0, 40),
+      };
+      const communityFile = path.join(OUT_COMMUNITY_DIR, `${src.niche}.json`);
+      fs.writeFileSync(communityFile, JSON.stringify(community, null, 0), "utf-8");
+    } else {
+      console.log(`[skip] ${src.niche}: master CSV not yet created — pipeline still running?`);
+    }
     byNiche[src.niche] = 0;
     continue;
   }
@@ -360,9 +386,9 @@ for (const src of SOURCES) {
     generated_at: new Date().toISOString(),
     niche: src.niche,
     counts: { reddit: redditRaw.length, pantip: pantipRaw.length, naver: naverRaw.length },
-    top_reddit: topThreads(redditRaw, 12),
-    top_pantip: topThreads(pantipRaw, 8),
-    top_naver: naverRaw.slice(0, 8), // naver: most recent first
+    top_reddit: topThreads(redditRaw, 30),
+    top_pantip: topThreads(pantipRaw, 40),
+    top_naver: naverRaw.slice(0, 40), // naver: most recent first
   };
   const communityFile = path.join(OUT_COMMUNITY_DIR, `${src.niche}.json`);
   fs.writeFileSync(communityFile, JSON.stringify(community, null, 0), "utf-8");
@@ -400,21 +426,25 @@ const avgTrust =
     ? Math.round(allPlaces.reduce((s, p) => s + p.trust_score, 0) / allPlaces.length)
     : 0;
 
-fs.writeFileSync(
-  OUT_FILE,
-  JSON.stringify(
-    {
-      generated_at: new Date().toISOString(),
-      total: allPlaces.length,
-      by_niche: byNiche,
-      avg_trust: avgTrust,
-      places: allPlaces,
-    },
-    null,
-    0,
-  ),
-  "utf-8",
-);
+if (allPlaces.length > 0) {
+  fs.writeFileSync(
+    OUT_FILE,
+    JSON.stringify(
+      {
+        generated_at: new Date().toISOString(),
+        total: allPlaces.length,
+        by_niche: byNiche,
+        avg_trust: avgTrust,
+        places: allPlaces,
+      },
+      null,
+      0,
+    ),
+    "utf-8",
+  );
+} else {
+  console.log("[build-data] No places assembled (masters missing) — places.json untouched.");
+}
 
 console.log("");
 console.log(`[build-data] TOTAL: ${allPlaces.length} places`);

@@ -4,15 +4,15 @@ export const SUPPORTED_LANGS: Lang[] = ["en", "ko", "th", "zh", "ja", "ar"];
 export const DEFAULT_LANG: Lang = "en";
 
 export const SITE = {
-  origin: "https://siamverified.com",
-  name: "Siam Verified",
+  origin: "https://verifiedthai.com",
+  name: "Verified Thai",
   tagline: {
-    en: "Thailand's independent activity directory. Verified by 6 sources. No paid promotion.",
-    ko: "광고 거품 없는 태국 활동 디렉토리. 6개 소스에서 교차 검증.",
-    th: "ไดเรกทอรีกิจกรรมในไทย ตรวจสอบจาก 6 แหล่ง ไม่มีโปรโมชันที่จ่ายเงิน",
-    zh: "泰国独立活动指南 — 来自6个独立来源的验证，不含付费推广。",
-    ja: "タイのアクティビティ独立ガイド — 6つの独立情報源で検証、有料宣伝なし。",
-    ar: "الدليل المستقل لأنشطة تايلاند — تم التحقق من 6 مصادر، بدون ترويج مدفوع.",
+    en: "Thailand's independent business directory. Verified by 6 sources. No paid promotion.",
+    ko: "광고 거품 없는 태국 비즈니스 디렉토리. 6개 소스에서 교차 검증.",
+    th: "ไดเรกทอรีธุรกิจในไทย ตรวจสอบจาก 6 แหล่ง ไม่มีโปรโมชันที่จ่ายเงิน",
+    zh: "泰国独立商家指南 — 来自6个独立来源的验证，不含付费推广。",
+    ja: "タイのビジネス独立ガイド — 6つの独立情報源で検証、有料宣伝なし。",
+    ar: "الدليل المستقل لأعمال تايلاند — تم التحقق من 6 مصادر، بدون ترويج مدفوع.",
   },
 } as const;
 
@@ -37,6 +37,25 @@ export const T = {
     zh: "训练营、工作室、度假村、烹饪学校、潜水店、水疗中心和共享空间 — 来自6个独立来源的评分。",
     ja: "キャンプ、スタジオ、リトリート、料理学校、ダイビングショップ、スパ、コワーキング — 6つの情報源で独自スコア化。",
     ar: "معسكرات. استوديوهات. منتجعات. مدارس طبخ. مراكز غوص. سبا. مساحات عمل. مقيّمة من 6 مصادر مستقلة.",
+  },
+
+  // audience clarifier — appears below hero subtitle
+  for_audience: {
+    en: "🧳 Tourists  ·  🏠 Expats  ·  🇹🇭 Residents",
+    ko: "🧳 여행자  ·  🏠 거주 외국인  ·  🇹🇭 현지인",
+    th: "🧳 นักท่องเที่ยว  ·  🏠 ชาวต่างชาติพำนัก  ·  🇹🇭 คนไทย",
+    zh: "🧳 游客  ·  🏠 外籍居民  ·  🇹🇭 本地居民",
+    ja: "🧳 観光客  ·  🏠 在住外国人  ·  🇹🇭 タイ在住者",
+    ar: "🧳 سياح  ·  🏠 مقيمون أجانب  ·  🇹🇭 المقيمون المحليون",
+  },
+
+  popular_picks: {
+    en: "Popular picks",
+    ko: "인기 검색",
+    th: "ค้นหายอดนิยม",
+    zh: "热门精选",
+    ja: "人気の選択",
+    ar: "الأكثر شعبية",
   },
 
   // multi-source pitch
@@ -226,12 +245,12 @@ export const T = {
 
   // footer
   footer_blurb: {
-    en: "Siam Verified is an independent directory. Affiliate commissions from booking partners support the site but never influence Trust Scores.",
-    ko: "Siam Verified는 독립 디렉토리입니다. 예약 파트너로부터 수수료를 받지만 신뢰 점수에 영향을 주지 않습니다.",
-    th: "Siam Verified เป็นไดเรกทอรีอิสระ ค่าคอมมิชชั่นจากพาร์ทเนอร์ไม่ส่งผลต่อคะแนน",
-    zh: "Siam Verified 是独立目录。来自预订合作伙伴的佣金支持网站运营，但不影响信任分数。",
-    ja: "Siam Verifiedは独立したディレクトリです。提携先からの手数料はサイト運営を支えますが、信頼スコアには影響しません。",
-    ar: "Siam Verified دليل مستقل. عمولات الشركاء تدعم الموقع لكنها لا تؤثر على درجات الثقة.",
+    en: "Verified Thai is an independent directory. Affiliate commissions from booking partners support the site but never influence Trust Scores.",
+    ko: "Verified Thai는 독립 디렉토리입니다. 예약 파트너로부터 수수료를 받지만 신뢰 점수에 영향을 주지 않습니다.",
+    th: "Verified Thai เป็นไดเรกทอรีอิสระ ค่าคอมมิชชั่นจากพาร์ทเนอร์ไม่ส่งผลต่อคะแนน",
+    zh: "Verified Thai 是独立目录。来自预订合作伙伴的佣金支持网站运营，但不影响信任分数。",
+    ja: "Verified Thaiは独立したディレクトリです。提携先からの手数料はサイト運営を支えますが、信頼スコアには影響しません。",
+    ar: "Verified Thai دليل مستقل. عمولات الشركاء تدعم الموقع لكنها لا تؤثر على درجات الثقة.",
   },
 } as const;
 

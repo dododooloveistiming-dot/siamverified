@@ -237,6 +237,26 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
           <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
         </section>
 
+        {/* OWN THIS LISTING? */}
+        <section className="mt-8 rounded-xl border border-dashed border-emerald-300 bg-emerald-50/40 p-4 text-sm dark:border-emerald-700 dark:bg-emerald-950/20">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="font-bold text-emerald-900 dark:text-emerald-200">
+                Own {place.name}?
+              </div>
+              <p className="mt-1 text-xs text-emerald-800 dark:text-emerald-300">
+                Claim this listing to manage hours, descriptions, photos, and reach Korean / English / Thai customers.
+              </p>
+            </div>
+            <a
+              href={`/auth/signin?callbackUrl=/dashboard/claim/${place.slug}`}
+              className="shrink-0 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-700"
+            >
+              Claim this listing →
+            </a>
+          </div>
+        </section>
+
         {/* TOP REVIEW */}
         {place.top_review_text && (
           <section className="mt-10">

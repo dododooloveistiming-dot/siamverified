@@ -7,13 +7,7 @@ export type Niche =
   | "cooking"
   | "diving"
   | "spa"
-  | "coworking"
-  | "halal-food"
-  | "muslim-hotel"
-  | "halal-tour"
-  | "mosque"
-  | "halal-clinic"
-  | "halal-beauty";
+  | "coworking";
 
 export interface PlaceReview {
   source: string;
@@ -269,120 +263,6 @@ export const NICHE_META: Record<Niche, NicheMeta> = {
       zh: "遍布泰国的数字游民中心",
       ja: "タイ全土のデジタルノマド拠点",
       ar: "مراكز الرحالة الرقميين في جميع أنحاء تايلاند",
-    },
-  },
-  "halal-food": {
-    emoji: "🥘",
-    name: {
-      en: "Halal Restaurants",
-      ko: "할랄 식당",
-      th: "ร้านอาหารฮาลาล",
-      zh: "清真餐厅",
-      ja: "ハラール レストラン",
-      ar: "مطاعم حلال",
-    },
-    tagline: {
-      en: "Verified halal-certified dining across Thailand",
-      ko: "태국 전역의 검증된 할랄 인증 식당",
-      th: "ร้านอาหารที่ได้รับการรับรองฮาลาลทั่วประเทศไทย",
-      zh: "泰国各地经过验证的清真餐厅",
-      ja: "タイ全土で検証済みのハラール認証ダイニング",
-      ar: "مطاعم معتمدة حلال موثوقة في جميع أنحاء تايلاند",
-    },
-  },
-  "muslim-hotel": {
-    emoji: "🏨",
-    name: {
-      en: "Muslim-Friendly Hotels",
-      ko: "무슬림 친화 호텔",
-      th: "โรงแรมสำหรับมุสลิม",
-      zh: "穆斯林友好酒店",
-      ja: "ムスリム フレンドリー ホテル",
-      ar: "فنادق صديقة للمسلمين",
-    },
-    tagline: {
-      en: "Prayer room, qibla, halal kitchen — verified",
-      ko: "기도방, 키블라, 할랄 키친 — 검증됨",
-      th: "ห้องละหมาด กิบลัต ครัวฮาลาล — ตรวจสอบแล้ว",
-      zh: "礼拜室、朝向指南、清真厨房 — 已验证",
-      ja: "礼拝室、キブラ、ハラールキッチン — 検証済み",
-      ar: "غرفة صلاة، قبلة، مطبخ حلال — موثق",
-    },
-  },
-  "halal-tour": {
-    emoji: "✈️",
-    name: {
-      en: "Halal Tours & Activities",
-      ko: "할랄 투어 & 액티비티",
-      th: "ทัวร์มุสลิมและกิจกรรม",
-      zh: "清真旅游与活动",
-      ja: "ハラール ツアー＆アクティビティ",
-      ar: "جولات وأنشطة حلال",
-    },
-    tagline: {
-      en: "Family muslim-friendly tours & day trips",
-      ko: "가족 무슬림 친화 투어 & 데이트립",
-      th: "ทัวร์ครอบครัวมุสลิมและทริปวันเดียว",
-      zh: "家庭穆斯林友好旅游和一日游",
-      ja: "家族向けムスリム フレンドリー ツアー",
-      ar: "جولات عائلية صديقة للمسلمين ورحلات يومية",
-    },
-  },
-  "mosque": {
-    emoji: "🕌",
-    name: {
-      en: "Mosques",
-      ko: "모스크",
-      th: "มัสยิด",
-      zh: "清真寺",
-      ja: "モスク",
-      ar: "المساجد",
-    },
-    tagline: {
-      en: "Find Friday prayer + daily masjid locations",
-      ko: "금요예배 + 일일 마스지드 위치 찾기",
-      th: "ค้นหาสถานที่ละหมาดวันศุกร์และมัสยิดประจำวัน",
-      zh: "查找周五礼拜和日常清真寺位置",
-      ja: "金曜礼拝と日々のマスジド情報",
-      ar: "ابحث عن صلاة الجمعة ومواقع المساجد",
-    },
-  },
-  "halal-clinic": {
-    emoji: "🏥",
-    name: {
-      en: "Muslim-Friendly Hospitals",
-      ko: "무슬림 친화 병원",
-      th: "โรงพยาบาลสำหรับมุสลิม",
-      zh: "穆斯林友好医院",
-      ja: "ムスリム フレンドリー 病院",
-      ar: "مستشفيات صديقة للمسلمين",
-    },
-    tagline: {
-      en: "Female doctors, halal food, prayer rooms",
-      ko: "여의사, 할랄 식사, 기도방",
-      th: "หมอผู้หญิง อาหารฮาลาล ห้องละหมาด",
-      zh: "女医生、清真餐食、礼拜室",
-      ja: "女医、ハラール食、礼拝室",
-      ar: "طبيبات، طعام حلال، غرف صلاة",
-    },
-  },
-  "halal-beauty": {
-    emoji: "💄",
-    name: {
-      en: "Halal Beauty & Salons",
-      ko: "할랄 뷰티 & 살롱",
-      th: "บิวตี้และซาลอนฮาลาล",
-      zh: "清真美容与沙龙",
-      ja: "ハラール ビューティー＆サロン",
-      ar: "تجميل وصالونات حلال",
-    },
-    tagline: {
-      en: "Halal cosmetics + women-only salons",
-      ko: "할랄 화장품 + 여성전용 살롱",
-      th: "เครื่องสำอางฮาลาลและซาลอนผู้หญิงล้วน",
-      zh: "清真化妆品 + 仅限女性沙龙",
-      ja: "ハラール化粧品＋女性専用サロン",
-      ar: "مستحضرات تجميل حلال + صالونات نسائية فقط",
     },
   },
 };

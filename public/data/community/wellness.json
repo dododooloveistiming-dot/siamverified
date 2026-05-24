@@ -1,45 +1,56 @@
 {
-"generated_at": "2026-05-24T02:03:26.015Z",
+"generated_at": "2026-05-24T11:03:52.491Z",
 "niche": "wellness",
 "counts": {
-"reddit": 460,
-"pantip": 72,
-"naver": 119,
-"reddit_filtered": 1,
-"pantip_filtered": 0,
-"naver_filtered": 5
+"reddit": 0,
+"pantip": 118,
+"naver": 4,
+"reddit_filtered": 0,
+"pantip_filtered": 2,
+"naver_filtered": 4
 },
-"top_reddit": [
+"top_reddit": [],
+"top_pantip": [
 {
-"kind": "reddit",
-"title": "Lost my best friend over her trying to charge me insane rent",
-"url": "https://www.reddit.com/r/TrueOffMyChest/comments/180lymp/lost_my_best_friend_over_her_trying_to_charge_me/",
-"snippet": "I (32f) had a best friend (32f) for seven years. We met teaching English in Thailand and were roommates. I was even the Maid of Honor at her wedding.\n\nMy friend, lets call her Sarah, is starting an airbnb llama farm/yoga retreat and before I met my partner two years ago, had always said she would love for me to work with her.\nMy partner and I had p",
-"score": 1974,
-"comments": 161,
-"author": "Few-Ad5700",
-"subreddit": "TrueOffMyChest",
-"date": "1700586684"
+"kind": "pantip",
+"title": "นั่งสมาธิแล้วเห็นแสง",
+"url": "https://pantip.com/topic/43649646",
+"snippet": "",
+"score": 0,
+"comments": 25,
+"author": "",
+"subreddit": "",
+"date": "1753654202"
+},
+{
+"kind": "pantip",
+"title": "มีวิธีนั่งสมาธิให้ได้นานๆมั้ยคะ",
+"url": "https://pantip.com/topic/43746558",
+"snippet": "",
+"score": 0,
+"comments": 24,
+"author": "",
+"subreddit": "",
+"date": "1758366386"
 }
 ],
-"top_pantip": [],
 "top_naver": [
 {
 "kind": "naver",
-"title": "경제 변동성 속, 태국 치앙마이가 제시한 '프리미엄 여행의 답'은 골프와 웰니스인가?",
-"url": "https://blog.naver.com/golftour2080/224285843046",
-"snippet": "",
+"title": "태국마사지 대개혁, ‘복불복’  사라지나?",
+"url": "https://blog.naver.com/leekiza/224204464617",
+"snippet": "태국 마사지 대개혁, ‘복불복’  사라지나? co/ # 태국 여행 # 태국 마사지 #타이마사지 # 태국 뉴스 # 태국 관광 # 태국웰니스 # 태국 스파 # 태국 경제 # 태국 정책 # 태국 보건정책 #DTAM # 태국 전통마사지 #타이 웰니스 # 웰니스 산업 #헬스투어리즘 # 태국 헬스투어 #마사지산업 # 태국 소프트파워 # 태국 문화 # 태국 트렌드 # 태국 라이프 # 방콕 여행 #푸켓여행 # 태국 관광산업 # 태국 서비스업 #마사지가격 # 태국 여행정보...",
 "score": 0,
 "comments": 0,
-"author": "golftour2080",
+"author": "leekiza",
 "subreddit": "",
 "date": ""
 },
 {
 "kind": "naver",
-"title": "[태국여행] 방콕 5박 7일 부모님과 함께 가족여행 숙소, 뫼벤픽 BDMS 웰니스 리조트 방콕 디럭스 스....",
+"title": "[태국여행]방콕5박 7일 부모님과 함께 가족여행 숙소, 뫼벤픽 BDMS웰니스리조트방콕디럭스 스....",
 "url": "https://blog.naver.com/wtd0308/224273651163",
-"snippet": "",
+"snippet": "[ 태국 여행] 방콕 5박 7일 부모님과 함께 가족여행 숙소, 뫼벤픽 BDMS 웰니스 리조트 방콕 디럭스 스.... 방콕 5박 7일 부모님과 함께 가족여행 숙소 뫼벤픽 BDMS 웰니스 리조트 방콕 디럭스 스위트 킹 4인가족 후기 안녕하세요 슈니입니다! 연말에 가족여행으로 방콕 을 다녀왔는데요, 저희 가족은 꽤나 호텔 구하는데 까다로웠습니다. 생각보다 방콕 에 4인이 한번에 묵을만한 호텔이 없더라구요. 두명 두명 나눠서 예약하기엔 너무 비싸고...해서 심사숙고 하다가 모벤픽 BDMS...",
 "score": 0,
 "comments": 0,
 "author": "wtd0308",
@@ -48,37 +59,26 @@
 },
 {
 "kind": "naver",
-"title": "[태국 힐링 여행 추천]JW 메리어트 카오락 웰니스 리조트 후기 (수영장·JW가든·스파)",
-"url": "https://blog.naver.com/ljyun0521/224195344278",
-"snippet": "",
+"title": "최애태국브랜드 탄 THANN 1+1 프로모션 중!",
+"url": "https://blog.naver.com/mina860527/224285210647",
+"snippet": "최애 태국 브랜드 탄 THANN 1+1 프로모션 중! 태국 여행하면서 알게 되어 지금까지도 꾸준하게 사용하고 있는 웰니스 브랜드 탄 THANN. 오늘은 반가운 프로모션 소식 가져왔어요 :*) 브랜드 명인 탄(THANN)은 태국 어로 쌀겨를... 최애 태국 브랜드예요. 핸드워시, 핸드크림, 바디로션, 배스 & 마사지 오일, 디퓨저까지 집안 곳곳에 탄 제품이 가득! 방콕 센트럴 월드의 탄 매장 THANN 핸드크림 작년 1+1때 구매했던...",
 "score": 0,
 "comments": 0,
-"author": "ljyun0521",
+"author": "mina860527",
 "subreddit": "",
 "date": ""
 },
 {
 "kind": "naver",
-"title": "임산부 마사지부터 웰니스 프로그램까지, 태국 카오락 태교여행 리조트",
-"url": "https://blog.naver.com/jamejung_/224278623696",
-"snippet": "",
+"title": "태국골프 그린월드 현지소식지",
+"url": "https://blog.naver.com/pms1180/224287066889",
+"snippet": "태국 골프 그린월드 현지소식지 및 태국 여행 관련뉴스, ◈ ️ 그린월드 지역 날씨 정보 오늘 그린월드 날씨 예보는 다음과 같습니다. ( 방콕 시내 28도~ 36도)  그린월드 출입국 안내  오늘은 출발 손님이 없고... 정부에 따르면, 2023년 태국 웰니스 시장은 약 1.4조 바트 규모에 달하며, 온천 사업의 국제화를 통해 향후 5년간 관련 수입을 15~20% 끌어올릴 전망이라고 합니다.  정해진 일정이...",
 "score": 0,
 "comments": 0,
-"author": "jamejung_",
-"subreddit": "",
-"date": ""
-},
-{
-"kind": "naver",
-"title": "[태국구매대행] 콜게이트 허브디톡스 치약 Colgate Panjaved Herbal Detox Toothpaste",
-"url": "https://blog.naver.com/daisy_seller/224290379996",
-"snippet": "",
-"score": 0,
-"comments": 0,
-"author": "daisy_seller",
+"author": "pms1180",
 "subreddit": "",
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:44:07.133445+00:00"
+"filtered_at": "2026-05-24T11:03:52.722298+00:00"
 }

@@ -8,7 +8,6 @@ import DarkModeToggle from "./DarkModeToggle";
 
 const NAV_NICHES: Niche[] = [
   "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
-  "halal-food", "muslim-hotel", "halal-tour", "mosque", "halal-clinic", "halal-beauty",
 ];
 
 const LANG_LABEL: Record<Lang, string> = {

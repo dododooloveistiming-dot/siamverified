@@ -1,90 +1,155 @@
 {
-"generated_at": "2026-05-24T02:03:26.669Z",
+"generated_at": "2026-05-24T11:03:52.501Z",
 "niche": "diving",
 "counts": {
-"reddit": 331,
-"pantip": 57,
-"naver": 72,
-"reddit_filtered": 1,
-"pantip_filtered": 5,
-"naver_filtered": 6
+"reddit": 0,
+"pantip": 136,
+"naver": 5,
+"reddit_filtered": 0,
+"pantip_filtered": 11,
+"naver_filtered": 5
 },
-"top_reddit": [
-{
-"kind": "reddit",
-"title": "🔥 A neat and tidy little fish lives in the barrel of a WWII gunboat - Koh Tao, Thailand",
-"url": "https://v.redd.it/ml7457ehrr0f1",
-"snippet": "Scuba diving instructor Oskar Dusik (@oskidives)",
-"score": 5698,
-"comments": 134,
-"author": "SinjiOnO",
-"subreddit": "NatureIsFuckingLit",
-"date": "1747237950"
-}
-],
+"top_reddit": [],
 "top_pantip": [
 {
 "kind": "pantip",
-"title": "เที่ยวเกาะเต่า 5วัน 4คืน day tour เกาะนางยวน ดำน้ำSnorkeling , Scuba Diving ,",
-"url": "https://pantip.com/topic/41777098",
+"title": "สิปาดัน – ตันซาการัน – ตาเวา: ทริปดำน้ำซาบาห์ ชมฝูงปลา เต่าทะเล และปะการังสุดตระการตา",
+"url": "https://pantip.com/topic/43923896",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 64,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1767164653"
 },
 {
 "kind": "pantip",
-"title": "พากันไป l ดำน้ำ Scuba Diving , Koh Tao",
-"url": "https://pantip.com/topic/37946731",
+"title": "อยากสร้างสระว่ายน้ำความลึก30เมตรไว้ฝึกดำน้ำในบ้านสามารถทำได้มั้ย",
+"url": "https://pantip.com/topic/42700363",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 63,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1715315708"
 },
 {
 "kind": "pantip",
-"title": "เกาะเต่า scuba diving",
-"url": "https://pantip.com/topic/37470243",
+"title": "ลอดช่องข้าวเหนียวดำน้ำกะทิ",
+"url": "https://pantip.com/topic/43912970",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 50,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1766395546"
 },
 {
 "kind": "pantip",
-"title": "เมื่อชีวิตมันน่าเบื่อและมีแต่ความเศร้า ออกเดินทางไปตามหาฝันวัยเด็กเลยแล้วกัน กับ Scuba Diving at Koh {{",
-"url": "https://pantip.com/topic/36636274",
+"title": "[รีวิวย้อนหลัง] การดำน้ำตื้นที่ราชา อัมพัต (Raja Ampat) โลกใต้น้ำที่สวยงามอันดับ 1 ของโลก",
+"url": "https://pantip.com/topic/43499760",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 48,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1748000515"
 },
 {
 "kind": "pantip",
-"title": "Koh Tao, Thailand: เรียนดำน้ำเกาะเต่า.. 4 วันที่ไปคนเดียว",
-"url": "https://pantip.com/topic/36413336",
+"title": "นักดำน้ำเจอ “ปลาทะเลลึกหายาก” ในน้ำตื้นแค่ 15 ฟุต!",
+"url": "https://pantip.com/topic/43973969",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 42,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1770503111"
+},
+{
+"kind": "pantip",
+"title": "เผยสาเหตุที่ทำให้นักดำน้ำชาวอิตาลี 5 คนเสียชีวิตในการดำน้ำเข้าไปในถ้ำใต้ทะเลที่มัลดีฟส์",
+"url": "https://pantip.com/topic/44099612",
+"snippet": "",
+"score": 0,
+"comments": 38,
+"author": "",
+"subreddit": "",
+"date": "1779486204"
+},
+{
+"kind": "pantip",
+"title": "กิจกรรมดำน้ำตื้น หมู่เกาะสุรินทร์ one day trip จากภูเก็ต",
+"url": "https://pantip.com/topic/43388151",
+"snippet": "",
+"score": 0,
+"comments": 27,
+"author": "",
+"subreddit": "",
+"date": "1744532475"
+},
+{
+"kind": "pantip",
+"title": "ว่าด้วยเรื่องขนน้ำมันออกจากช่องแคบฮอร์มุช ถ้าช่องแคบถูกปิด การขนน้ำมันผ่านเรือดำน้ำเป็นไปได้มั้ยครับ",
+"url": "https://pantip.com/topic/44019599",
+"snippet": "",
+"score": 0,
+"comments": 25,
+"author": "",
+"subreddit": "",
+"date": "1773754099"
+},
+{
+"kind": "pantip",
+"title": "ใส่ฟินสั้น ดำน้ำตื้น อ่าวสุเพเหนือ อ่าวสุเทพใต้ อช.หมู่เกาะสุรินทร์",
+"url": "https://pantip.com/topic/43952703",
+"snippet": "",
+"score": 0,
+"comments": 24,
+"author": "",
+"subreddit": "",
+"date": "1769076669"
+},
+{
+"kind": "pantip",
+"title": "Scuba ที่ไม่ใช่ร้านสอนดำน้ำ แต่ยก live tank มาไว้ใจกลางเอกมัย",
+"url": "https://pantip.com/topic/43750863",
+"snippet": "",
+"score": 0,
+"comments": 22,
+"author": "",
+"subreddit": "",
+"date": "1758608516"
+},
+{
+"kind": "pantip",
+"title": "Review : อุทยานแห่งชาติหมู่เกาะสุรินทร์ (Mu Ko Surin) ทริปดำน้ำ พักเต็นท์ติดแอร์ ค้างคืน 4 วัน 3 คืน (26 - 29 พ.ย. 2023)",
+"url": "https://pantip.com/topic/42404424",
+"snippet": "",
+"score": 0,
+"comments": 19,
+"author": "",
+"subreddit": "",
+"date": "1702631050"
 }
 ],
 "top_naver": [
 {
 "kind": "naver",
-"title": "세계 10대 다이빙 포인트! 푸켓 시밀란 섬 요트 투어 카타마란 리얼 후기",
+"title": "태국푸켓 호핑투어 가성비 자유여행 코스",
+"url": "https://blog.naver.com/fabrunch/224274868386",
+"snippet": "태국 푸켓 호핑투어 가성비 자유여행 코스 스쿠버 다이빙 자격증이 없어도 전문가와 함께하니 무섭지 않았답니다. 물놀이를 즐기는 과정에서 느낀 이 에너지는 정말 말모말모! 4️⃣ 꿀맛 같은 점심 식사 라차 아일랜드 리조트 비치에서 즐긴 점심은 환상이었어요. 가이드맨 전용 예약 좌석이 마련되어 있어 단체 손님들 사이에서도 프라이빗하게 식사할 수 있었죠. 팟타이, 스프링롤 같은 태국 로컬 음식과 미리...",
+"score": 0,
+"comments": 0,
+"author": "fabrunch",
+"subreddit": "",
+"date": ""
+},
+{
+"kind": "naver",
+"title": "세계 10대다이빙포인트! 푸켓 시밀란 섬 요트 투어 카타마란 리얼 후기",
 "url": "https://blog.naver.com/sodosiwa/224287862610",
-"snippet": "",
+"snippet": "세계 10대 다이빙 포인트! 푸켓 시밀란 섬 요트 투어 카타마란 리얼 후기 푸켓 여행 중 가장 기억에 남는 순간을 만들고 싶다면, 투명한 에메랄드빛 바다가 기다리는 시밀란 섬으로 지금 바로 떠나보세요! #시밀란섬 #시밀란투어 #시밀란섬투어 #푸켓여행 # 태국 여행 #시밀란스노클링 #씨스타투어 #시밀란카타마란 #세계10대 다이빙 포인트 #푸켓자유여행 # 태국다이빙 #인생바다 #시밀란요트투어 #푸켓가볼만한곳",
 "score": 0,
 "comments": 0,
 "author": "sodosiwa",
@@ -93,9 +158,9 @@
 },
 {
 "kind": "naver",
-"title": "태국 피피섬)화려함이 가득했던 마지막 다이빙",
+"title": "태국피피섬)화려함이 가득했던 마지막다이빙",
 "url": "https://blog.naver.com/nerri/224195534836",
-"snippet": "",
+"snippet": "태국 피피섬)화려함이 가득했던 마지막 다이빙 마지막 다이빙 투어를 하기위해 선착장으로 향했다. 마지막날 아침의 하늘은 더욱더 아름다웠다. 입장료(200바트)를 내고 입장했다. 아름다운 경치를 보며 출발이다. 100번째 다이빙 을 하면 이쁜 축하현수막을 선물로 받을수 있다. 부럽다... 피피섬에서의 6번의 다이빙 투어가 모두 끝났다. 힘들었지만 즐거웠다. 상어와 거북이를 만나지 못해 많이 아쉬웠지만 다음...",
 "score": 0,
 "comments": 0,
 "author": "nerri",
@@ -104,48 +169,26 @@
 },
 {
 "kind": "naver",
-"title": "태국 방콕,파타야 근교 스릴넘치는 스카이 다이빙",
-"url": "https://blog.naver.com/hero791004/224257694436",
-"snippet": "",
+"title": "태국신혼여행 4박 6일 후기 2탄 | 카훙비치 스쿠버다이빙& 아마타라 풀빌라",
+"url": "https://blog.naver.com/sosemi_/224267361820",
+"snippet": "태국 신혼여행 4박 6일 후기 2탄 | 카훙비치 스쿠버 다이빙 & 아마타라 풀빌라 그리고 드디어 만난 니모 니모는 생각보다 작고 귀여웠다 니모 만나서 그런가 우리 애기도 생기고 오빠랑 지금까지 잘 사는 중ㅋㅋ 다이빙 후 섬 안에 있는 식당에서 점심을 먹었다. 태국 의 대표 음식인 똠얌꿍이 나왔다. 세계 3대 수프라고 불리는 음식이라 기대했는데 근데... 사진을 안 찍었다 지금까지도 가장 아쉬운 부분... 매콤 + 새콤 조합이라 나는 극호 오빠는...",
 "score": 0,
 "comments": 0,
-"author": "hero791004",
+"author": "sosemi_",
 "subreddit": "",
 "date": ""
 },
 {
 "kind": "naver",
-"title": "태국 꼬따오 다이빙 자격증 가이드 | 낭만적인 일몰을 경험하세요",
-"url": "https://blog.naver.com/haeyuram/224291999302",
-"snippet": "",
+"title": "꼬란타다이빙비용 후기 실제 다녀온 펀다이빙정리",
+"url": "https://blog.naver.com/ataw2012/224267136098",
+"snippet": "꼬란타 다이빙 비용 후기 실제 다녀온 펀 다이빙 정리 제대로 가이딩 해주는 로컬 다이빙 샵에서 말아준 태국 상위권 다이빙 포인트들. 믿고 맡기는 다이빙 샵 Blue Planet Divers 블루 플래닛 다이버스 위치 살라단 타운(Saladan Town) 영업시간 09:00~21:00 평점 4.9점 / 5점 만점 구글에서 \"꼬란타 다이빙 샵\" 검색한 뒤 좋은 리뷰 순으로 연락해 보았다. 하루 3회 다이빙 을 위해 이른 아침부터 하루를 시작. 리조트...",
 "score": 0,
 "comments": 0,
-"author": "haeyuram",
-"subreddit": "",
-"date": ""
-},
-{
-"kind": "naver",
-"title": "[태국 자유여행 D+4] 꼬따오 /프리다이빙 Aida2 2일차",
-"url": "https://blog.naver.com/sgboh636/224146966381",
-"snippet": "",
-"score": 0,
-"comments": 0,
-"author": "sgboh636",
-"subreddit": "",
-"date": ""
-},
-{
-"kind": "naver",
-"title": "[태국 자유여행 D+2] 꼬따오 / 프리다이빙 Aida2 워크숍",
-"url": "https://blog.naver.com/sgboh636/224146908515",
-"snippet": "",
-"score": 0,
-"comments": 0,
-"author": "sgboh636",
+"author": "ataw2012",
 "subreddit": "",
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:44:07.042767+00:00"
+"filtered_at": "2026-05-24T11:03:52.656518+00:00"
 }

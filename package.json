@@ -6,12 +6,23 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "data": "node scripts/build-data.mjs"
+    "data": "node scripts/build-data.mjs && python scripts/filter_community.py",
+    "data:build": "node scripts/build-data.mjs",
+    "data:filter": "python scripts/filter_community.py",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.7.4",
+    "@neondatabase/serverless": "^0.10.4",
+    "drizzle-orm": "^0.36.4",
     "next": "^14.2.32",
+    "next-auth": "5.0.0-beta.25",
+    "nodemailer": "^6.9.16",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "resend": "^4.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -19,6 +30,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
     "csv-parse": "^5.5.6",
+    "drizzle-kit": "^0.28.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2"

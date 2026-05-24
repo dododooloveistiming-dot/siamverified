@@ -1,9 +1,10 @@
-# Siam Verified — MVP
+# Verified Thai (verifiedthai.com)
 
-Independent Thailand activity directory. **Verified by 6 sources. No paid promotion.**
+Independent Thailand business directory. **Verified by 6 sources. No paid promotion.**
 
-100% static Next.js 14 (App Router) + SSG to Vercel free tier.
-Zero runtime compute. All `(places × 6 languages)` pages built at deploy time.
+Hybrid Next.js 14 (App Router):
+- Directory pages — pre-rendered (SSG) per language for `(places × 6 langs)`
+- /dashboard + /api — Vercel serverless for business claim, edits, magic-link auth (Resend), Neon Postgres
 
 ## Stack
 

@@ -1,151 +1,227 @@
 {
-"generated_at": "2026-05-24T02:03:30.323Z",
+"generated_at": "2026-05-24T11:03:52.509Z",
 "niche": "coworking",
 "counts": {
-"reddit": 371,
-"pantip": 15,
-"naver": 94,
-"reddit_filtered": 3,
-"pantip_filtered": 6,
-"naver_filtered": 3
+"reddit": 0,
+"pantip": 87,
+"naver": 8,
+"reddit_filtered": 0,
+"pantip_filtered": 11,
+"naver_filtered": 8
 },
-"top_reddit": [
-{
-"kind": "reddit",
-"title": "Koh phi phi Thailand. It's empty, just me and my girl on an empty beach.",
-"url": "https://i.redd.it/gl5huvxqq1m51.jpg",
-"snippet": "",
-"score": 1314,
-"comments": 129,
-"author": "HandleZ05",
-"subreddit": "digitalnomad",
-"date": "1599624286"
-},
-{
-"kind": "reddit",
-"title": "Is the \"\"digital nomad\"\" dream just a fancy way of being broke abroad?",
-"url": "https://www.reddit.com/r/digitalnomad/comments/1n0gc18/is_the_digital_nomad_dream_just_a_fancy_way_of/",
-"snippet": "I've been following this sub for a while and watching a lot of YouTube channels about digital nomads in places like Bali, Chiang Mai, and Medellín. On the surface, it all looks amazing — laptops on the beach, smoothies for breakfast, cheap rent, flexible schedules.\n\nBut the more I dig into it, the more it seems like a lot of people are just scrapin",
-"score": 1157,
-"comments": 553,
-"author": "No_Lavishness2922",
-"subreddit": "digitalnomad",
-"date": "1756197190"
-},
-{
-"kind": "reddit",
-"title": "I cut my cost of living by 70% by moving to Vietnam. Here's exactly where the money goes.",
-"url": "https://www.reddit.com/r/digitalnomad/comments/1s5aavs/i_cut_my_cost_of_living_by_70_by_moving_to/",
-"snippet": "34M, Australian, been working remotely from Southeast Asia for the past 2 years. 18 months in Thailand then 6 months in Vietnam. Currently still in Vietnam and honestly not sure I want to go back.\nI used to spend around $3,500 USD a month back in Australia just existing. Rent, food, transport, health stuff, going out occasionally. Nothing crazy. No",
-"score": 1154,
-"comments": 547,
-"author": "pegasus7x77",
-"subreddit": "digitalnomad",
-"date": "1774631548"
-}
-],
+"top_reddit": [],
 "top_pantip": [
 {
 "kind": "pantip",
-"title": "พนักงานร้าน Hollys coffee มีสิทธิ์ไล่ลูกค้า? ไปนั่งติวไม่ได้ แต่เข้าไปนั่งทำงานได้เหรอ?",
-"url": "https://pantip.com/topic/36374735",
+"title": "ตั้งแต่เปลี่ยนที่นั่งทำงานเพราะฮวงจุ้ย รู้สึกอึดอัดมาก แก้ยังไงได้บ้างครับ",
+"url": "https://pantip.com/topic/43805519",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 47,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1761413498"
 },
 {
 "kind": "pantip",
-"title": "Coworking Space ที่ทำงานสำหรับคนรุ่นใหม่",
-"url": "https://pantip.com/topic/33964914",
+"title": "เบื่องาน ไม่อยากไปทำงาน แต่เศรษฐกิจแบบนี้ใครกล้าลาออกบ้าง",
+"url": "https://pantip.com/topic/39701155",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 28,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1583769592"
 },
 {
 "kind": "pantip",
-"title": "อยากทราบว่ามีใครที่ชอบนั่งทำงานนอกออฟฟิสบ้างรึปล่าวคะ อยากได้ไอเดียที่นั่งทำงานนอกสถานที่",
-"url": "https://pantip.com/topic/30563225",
+"title": "แนะนำ 11 ห้องสมุดในกรุงเทพมหานครสำหรับนั่งอ่านหนังสือ นั่งทำงาน เพื่อนักเรียน นักศึกษา และบุคคลทัวไป",
+"url": "https://pantip.com/topic/37975128",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 26,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1534698312"
 },
 {
 "kind": "pantip",
-"title": "จากการลงทุนในเอเชีย ส่วนของไทยคือสวรรค์ของกลุ่ม Digital Nomad",
-"url": "https://pantip.com/topic/41718736",
+"title": "เวลาที่เราอยู่ในพื้นที่เดียวกันกับแฟน เราทำงาน เค้าเล่นเกม เราหงุดหงิดจนทนเห็นหน้าไม่ได้ ทำยังไงดี",
+"url": "https://pantip.com/topic/43798400",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 21,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1761043671"
 },
 {
 "kind": "pantip",
-"title": "Top 10 Digital Nomad Havens in Asia for 2024",
-"url": "https://pantip.com/topic/42633574",
+"title": "คนที่นั่งที่นั่งทำงานที่ร้านกาเเฟเขาทำอะไรหรอครับ",
+"url": "https://pantip.com/topic/44009639",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 21,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1773041963"
 },
 {
 "kind": "pantip",
-"title": "ทำงานที่บ้าน+ เลี้ยงดูคนแก่ไปด้วย จะปรับบาลานซ์สภาพจิตใจยังไงดี",
-"url": "https://pantip.com/topic/43686651",
+"title": "เคยไหมครับนั่งทำงานอยู่เฉยๆแล้วอยากล่าออก",
+"url": "https://pantip.com/topic/43922905",
 "snippet": "",
 "score": 0,
-"comments": 0,
+"comments": 19,
 "author": "",
 "subreddit": "",
-"date": ""
+"date": "1767082607"
+},
+{
+"kind": "pantip",
+"title": "ทำงานในห้างดีกว่าออฟฟิศในใช่ไหม(ไม่ใช่ออฟฟิศห้าง) ในด้านจิตใจ",
+"url": "https://pantip.com/topic/43748782",
+"snippet": "",
+"score": 0,
+"comments": 18,
+"author": "",
+"subreddit": "",
+"date": "1758506324"
+},
+{
+"kind": "pantip",
+"title": "ทำงานไม่ตรงสาย เพียงเพราะไม่อยากว่างงานและอยากมีเงิน",
+"url": "https://pantip.com/topic/43279464",
+"snippet": "",
+"score": 0,
+"comments": 16,
+"author": "",
+"subreddit": "",
+"date": "1740398849"
+},
+{
+"kind": "pantip",
+"title": "บางครั้ง ออฟฟิศก็ไม่ได้มีแค่การทำงาน แต่มันคือที่ที่เราพบ ‘คนสำคัญ’",
+"url": "https://pantip.com/topic/43696857",
+"snippet": "",
+"score": 0,
+"comments": 14,
+"author": "",
+"subreddit": "",
+"date": "1755765051"
+},
+{
+"kind": "pantip",
+"title": "ใครเป็นบ้าง? ออฟฟิศซินโดรม ภัยเงียบคนทำงานยุคใหม่! แชร์ท่าบริหารง่ายๆ ทำได้ที่โต๊ะ พร้อมอุปกรณ์ช่วยชีวิต!",
+"url": "https://pantip.com/topic/43560968",
+"snippet": "",
+"score": 0,
+"comments": 10,
+"author": "",
+"subreddit": "",
+"date": "1749866442"
+},
+{
+"kind": "pantip",
+"title": "ประสบการณ์ทำงานกับคนท้อง",
+"url": "https://pantip.com/topic/43956137",
+"snippet": "",
+"score": 0,
+"comments": 9,
+"author": "",
+"subreddit": "",
+"date": "1769316346"
 }
 ],
 "top_naver": [
 {
 "kind": "naver",
-"title": "킨넌 디럭스 호스텔 후기 실속 있는 방콕 중심 코워킹 가능한 모던 감성 호스텔",
-"url": "https://blog.naver.com/snaghduc/223895402689",
-"snippet": "",
+"title": "디지털 노마드태국치앙마이 한 달 살기 — 최신 물가 현황,코워킹스페이스 추천 및 비자 6종 비....",
+"url": "https://blog.naver.com/deokhodong/224254072230",
+"snippet": "디지털 노마드 태국 치앙마이 한 달 살기 — 최신 물가 현황, 코워킹 스페이스 추천 및 비자 6종 비.... 여기에 코워킹 스페이스 멤버십(월 약 15~20만 원)과 커피값 등을 더해도 총 150~180만 원이면 '부족함 없는 호화로운 노마드 생활'이 가능합니다. 최근 태국 내의 인플레이션으로 인해 특정 공산품이나 인프라 비용이 소폭 상승했으나, 다른 도시들에 비하면 여전히 압도적인 가성비를 자랑합니다. 특히 2026년에는 GLN 결제(QR 코드 결제)가 시장 노점까지 완벽하게...",
 "score": 0,
 "comments": 0,
-"author": "snaghduc",
+"author": "deokhodong",
 "subreddit": "",
 "date": ""
 },
 {
 "kind": "naver",
-"title": "방콕 분위기 좋은 카페 더 쿼터 포시텔&amp;코워킹 후기 (The Quarter Bangkok Poshtel &amp; Coworking)",
-"url": "https://blog.naver.com/muk_dori30/224261347885",
-"snippet": "",
+"title": "[태국치앙마이 여행 ] 님만해민 카페, FOHHIDE",
+"url": "https://blog.naver.com/symoon903/224272576324",
+"snippet": "[ 태국 치앙마이 여행 ] 님만해민 카페, FOHHIDE 코워킹 스페이스 옐로우 아침부터 햇빛이 쨍쨍 저흰 5층에 위치한 FOHHIDE를 찾았어요. 엘베 타고 올라가면 되는데 투명이라 살짝 쫄깃쫄깃 합니다. 카페가 크진 않지만 입구 쪽부터 탁 트인 감성을 느낄 수 있는 거지요 치앙마이는 높은 건물이 거의 없어 이렇게 5층만 되어도 시원한 경관을 만날 수 있답니다. 저기 뒤에 있는 산이 도이수텝인가 보네요. 커피도 꽤...",
 "score": 0,
 "comments": 0,
-"author": "muk_dori30",
+"author": "symoon903",
 "subreddit": "",
 "date": ""
 },
 {
 "kind": "naver",
-"title": "[치앙마이 코워킹 스페이스 추천] 펀스페이스 Punspace",
-"url": "https://blog.naver.com/studio_badadang/224241128629",
-"snippet": "",
+"title": "[태국치앙마이] 블루 커피 치앙마이대학교 농대점 : 통창 너머로 펼쳐지는 논밭 뷰의 커피 한 잔",
+"url": "https://blog.naver.com/mano_voyger/224265614593",
+"snippet": "[ 태국 치앙마이] 블루 커피 치앙마이대학교 농대점 : 통창 너머로 펼쳐지는 논밭 뷰의 커피 한 잔 치앙마이대학교 블루 커피 치앙마이대학교 농대점 Blue coffee at Agriculture CMU 자연 속에서 조용히 사색하거나 업무를 보기 좋은 힐링 코워킹 스페이스로 유명하지요 통창... FOHHIDE Jarid Thai Food # 태국 여행 #치앙마이여행 #치앙마이카페 #치앙마이맛집 #치앙마이핫플 #마노_ 태국 #마노의맛나는인생 #마노의맛나는인생_ 태국 #여행에미치다 #트래블홀릭 #travelholic",
 "score": 0,
 "comments": 0,
-"author": "studio_badadang",
+"author": "mano_voyger",
+"subreddit": "",
+"date": ""
+},
+{
+"kind": "naver",
+"title": "태국치앙마이 한달살기 숙소 위치별 렌트비 총정리",
+"url": "https://blog.naver.com/yeosonam_/224276297639",
+"snippet": "태국 치앙마이 한달살기 숙소 위치별 렌트비 총정리 좋은 코워킹 스페이스가 많아 원격 근무를 하거나 작업하기 좋은 환경이죠. 치안도 훌륭한 편입니다. 단점: 공항과 가까워 비행기 소음이 다소 발생할 수 있습니다. 다른 지역에 비해 물가와 숙소 비용이 가장 높게 형성되어 있어요. 렌트비: 수영장과 헬스장을 갖춘 깔끔한 콘도미니엄 기준, 월 15,000바트에서 20,000바트 내외로 예산을 잡으시는 것이 좋습니다. [ 태국 의...",
+"score": 0,
+"comments": 0,
+"author": "yeosonam_",
+"subreddit": "",
+"date": ""
+},
+{
+"kind": "naver",
+"title": "태국디지털 노마드, 현실 가이드 (2026년 최신)",
+"url": "https://blog.naver.com/hwangkyusung/224275581797",
+"snippet": "태국 디지털 노마드, 현실 가이드 (2026년 최신) 태국 의 업무 환경 태국 은 생각보다 업무 환경이 좋습니다. - 카페 Wi Fi → 대부분 사용 가능하고 빠름 - 코워킹 스페이스 → 매우 잘 되어 있음 - 콘도 인터넷 → 안정적임 방콕은 BTS, MRT도 있어 이동하면서 일하기도 편합니다. 5. 생활 편의성 이 부분은 장점인 점이 많습니다. 다만 국적이 어디냐에 따라서 다르긴 하지만 한국을 기준으로 설명드리도록 하겠습니다....",
+"score": 0,
+"comments": 0,
+"author": "hwangkyusung",
+"subreddit": "",
+"date": ""
+},
+{
+"kind": "naver",
+"title": "태국여행 정보 한달살기 추천 도시 치앙마이 VS 방콕",
+"url": "https://blog.naver.com/eunjihello/224289269725",
+"snippet": "태국 여행 정보 한달살기 추천 도시 치앙마이 VS 방콕 치앙마이 한달살기 치앙마이는 태국 한달살기의 성지라고 불릴 정도로 장기 체류 인기가 높은 도시에요. 방콕보다 훨씬 조용하고 여유로운 분위기라 힐링형 여행 스타일을 좋아하시는 분들에게 잘 맞아요. 예쁜 카페와 코워킹 스페이스가 많아서 디지털 노마드들이 정말 많이 머무는 도시이기도 하고요. 숙소 비용이나 식비, 마사지 비용도 방콕보다 저렴한 편이라 장기...",
+"score": 0,
+"comments": 0,
+"author": "eunjihello",
+"subreddit": "",
+"date": ""
+},
+{
+"kind": "naver",
+"title": "해외에서 일하면 수익이 2배? 당신만 모르는코워킹스페이스 해외 이용 꿀팁과 성지 TOP 3",
+"url": "https://blog.naver.com/jangbogocorn/224275262908",
+"snippet": "해외에서 일하면 수익이 2배? 당신만 모르는 코워킹 스페이스 해외 이용 꿀팁과 성지 TOP 3 해외에서 만나는 새로운 업무의 가치 많은 분이 코워킹 스페이스 해외 이용 환경을 고려할 때 가장 먼저 걱정하는 부분은 역시 안정성입니다. 단순히 인터넷 속도뿐만 아니라 업무에... 또한 태국 코팡안의 비치ub(Beachub)은 모래사장을 바라보며 업무를 볼 수 있는 독보적인 환경을 제공합니다. 파도 소리를 백색 소음 삼아 일하는 경험은 일의 능률을 극대화해 줄 뿐만...",
+"score": 0,
+"comments": 0,
+"author": "jangbogocorn",
+"subreddit": "",
+"date": ""
+},
+{
+"kind": "naver",
+"title": "다낭 맛집 탐방2. 찐카페, 홍끄엉, 외할머니 주방(벱 꾸아 응오아이), 솔리스 카페, 미케비치.",
+"url": "https://blog.naver.com/comaism/224275772399",
+"snippet": "태국 방콕의 어느 골목 느낌도 있구요.. 치앙마이 어딘가 비스무리.. 아무래도 외국 여행자가 많아서 그런 거 같기도 하네요~ 한강 기준으로 서쪽 한시장 인근은 완전 한국이구요... 여기 에어컨 룸이고요 코워킹 분위기도 나네요~ 브런치 하시는 분도 많았는데., 맛있어 보이더라구요~ 그라고 드디어 마주하게 된 미케 비치! 외우~ 나트랑하고 분위기 다르군요!...",
+"score": 0,
+"comments": 0,
+"author": "comaism",
 "subreddit": "",
 "date": ""
 }
 ],
-"filtered_at": "2026-05-24T09:44:07.012542+00:00"
+"filtered_at": "2026-05-24T11:03:52.638710+00:00"
 }

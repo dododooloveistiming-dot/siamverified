@@ -1,6 +1,7 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 import { t } from "@/lib/i18n";
@@ -51,6 +52,34 @@ export default function CategoryClient({
       .slice(0, 12)
       .map(([c]) => c);
   }, [places]);
+
+  // Initialize from URL params (?city=bangkok&price=mid&ko=1...)
+  // Static export friendly — we use useSearchParams (works on the client after hydration).
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (!searchParams) return;
+    const urlCity = searchParams.get("city");
+    if (urlCity) {
+      // Match case-insensitively / slug-ish against the actual city list.
+      const norm = (s: string) => s.toLowerCase().replace(/[\s_-]+/g, "");
+      const match = cities.find((c) => norm(c) === norm(urlCity));
+      if (match) setCity(match);
+    }
+    const urlPrice = searchParams.get("price");
+    if (urlPrice && ["budget", "mid", "premium", "luxury"].includes(urlPrice)) {
+      setPriceBand(urlPrice as PriceBand);
+    }
+    if (searchParams.get("ko") === "1") setKoOnly(true);
+    if (searchParams.get("beginner") === "1") setBeginnerOnly(true);
+    if (searchParams.get("open24") === "1") setOpen24Only(true);
+    const urlSort = searchParams.get("sort");
+    if (urlSort && ["trust", "reviews", "rating"].includes(urlSort)) {
+      setSort(urlSort as Sort);
+    }
+    const urlQ = searchParams.get("q");
+    if (urlQ) setQuery(urlQ);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cities]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

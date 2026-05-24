@@ -8,3 +8,12 @@ public/data/clinics.json
 .DS_Store
 dev_stdout.log
 dev_stderr.log
+.vercel
+.env*.local
+
+# Raw scraped CSVs (rebuilt by tools/community_scrapers/siamverified_harvest)
+external_data/
+
+# Python build artifacts
+scripts/__pycache__/
+**/__pycache__/

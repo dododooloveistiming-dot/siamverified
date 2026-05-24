@@ -2,6 +2,7 @@ import type { Lang } from "@/lib/types";
 import { SUPPORTED_LANGS } from "@/lib/i18n";
 import Header from "@/components/Header";
 import SetHtmlLang from "@/components/SetHtmlLang";
+import SiteFooter from "@/components/SiteFooter";
 
 export function generateStaticParams() {
   return SUPPORTED_LANGS.map((lang) => ({ lang }));
@@ -24,6 +25,7 @@ export default function LangLayout({
       <SetHtmlLang lang={lang} />
       <Header lang={lang} />
       {children}
+      <SiteFooter lang={lang} />
     </>
   );
 }
