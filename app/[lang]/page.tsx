@@ -31,7 +31,10 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
   const bundle = loadPlaces();
   const topPerNiche = getTopPlacesPerNiche(3);
 
-  const niches: Niche[] = ["muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking"];
+  const niches: Niche[] = [
+    "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
+    "halal-food", "muslim-hotel", "halal-tour", "mosque", "halal-clinic", "halal-beauty",
+  ];
 
   return (
     <main className="mx-auto max-w-6xl px-4 pb-20">

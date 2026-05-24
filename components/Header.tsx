@@ -6,7 +6,10 @@ import { NICHE_META, nicheName } from "@/lib/types";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import DarkModeToggle from "./DarkModeToggle";
 
-const NAV_NICHES: Niche[] = ["muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking"];
+const NAV_NICHES: Niche[] = [
+  "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
+  "halal-food", "muslim-hotel", "halal-tour", "mosque", "halal-clinic", "halal-beauty",
+];
 
 const LANG_LABEL: Record<Lang, string> = {
   en: "English", ko: "한국어", th: "ไทย", zh: "中文", ja: "日本語", ar: "العربية",
@@ -43,7 +46,7 @@ export default function Header({ lang }: { lang: Lang }) {
           <span className="text-sm sm:text-base">{SITE.name}</span>
         </Link>
 
-        <nav className="hidden items-center gap-4 text-xs font-medium md:flex">
+        <nav className="hidden flex-1 items-center gap-3 overflow-x-auto text-xs font-medium md:flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {NAV_NICHES.map((n) => (
             <Link
               key={n}

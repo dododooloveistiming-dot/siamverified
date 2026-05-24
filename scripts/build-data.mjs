@@ -17,6 +17,12 @@ const SOURCES = [
   { niche: "diving",       folder: "diving",    csv: "C:\\dbd-scraper\\diving\\thaidiving_master.csv",          relCols: ["diving_relevant", "is_diving_relevant"] },
   { niche: "spa",          folder: "spa",       csv: "C:\\dbd-scraper\\spa\\thaispa_master.csv",                relCols: ["spa_relevant", "is_spa_relevant"] },
   { niche: "coworking",    folder: "coworking", csv: "C:\\dbd-scraper\\coworking\\thaicoworking_master.csv",    relCols: ["coworking_relevant", "is_coworking_relevant"] },
+  { niche: "halal-food",    folder: "halalfood",    csv: "C:\\dbd-scraper\\halalfood\\thaihalalfood_master.csv",       relCols: ["halalfood_relevant", "is_halalfood_relevant"] },
+  { niche: "muslim-hotel",  folder: "muslimhotel",  csv: "C:\\dbd-scraper\\muslimhotel\\thaimuslimhotel_master.csv",   relCols: ["muslimhotel_relevant", "is_muslimhotel_relevant"] },
+  { niche: "halal-tour",    folder: "halaltour",    csv: "C:\\dbd-scraper\\halaltour\\thaihalaltour_master.csv",       relCols: ["halaltour_relevant", "is_halaltour_relevant"] },
+  { niche: "mosque",        folder: "mosque",       csv: "C:\\dbd-scraper\\mosque\\thaimosque_master.csv",             relCols: ["mosque_relevant", "is_mosque_relevant"] },
+  { niche: "halal-clinic",  folder: "halalclinic",  csv: "C:\\dbd-scraper\\halalclinic\\thaihalalclinic_master.csv",   relCols: ["halalclinic_relevant", "is_halalclinic_relevant"] },
+  { niche: "halal-beauty",  folder: "halalbeauty",  csv: "C:\\dbd-scraper\\halalbeauty\\thaihalalbeauty_master.csv",   relCols: ["halalbeauty_relevant", "is_halalbeauty_relevant"] },
 ];
 
 const OUT_DIR = path.join(process.cwd(), "public", "data");
