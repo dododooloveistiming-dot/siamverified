@@ -113,40 +113,63 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
               const count = (bundle.by_niche as any)[n] ?? 0;
               const isReady = count > 0;
               const topThree = topPerNiche[n] ?? [];
+              const heroPhoto = topThree.find((p) => p.top_photo_url)?.top_photo_url;
               return (
                 <Link
                   key={n}
                   href={`/${lang}/c/${n}/`}
-                  className={`group relative flex flex-col gap-3 rounded-2xl border bg-white p-5 transition dark:bg-ink-900 ${
+                  className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-white transition dark:bg-ink-900 ${
                     isReady
                       ? "border-ink-100 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800"
                       : "border-dashed border-ink-200 opacity-70 dark:border-ink-700"
                   }`}
                 >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="text-3xl">{meta.emoji}</div>
-                      <h3 className="mt-2 text-lg font-bold">{nicheName(n, lang)}</h3>
-                      <p className="mt-1 text-sm muted">{nicheTagline(n, lang)}</p>
+                  {/* Hero photo backdrop with niche emoji overlay */}
+                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-emerald-50 to-amber-50 dark:from-emerald-950/30 dark:to-amber-950/20">
+                    {heroPhoto ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={heroPhoto}
+                        alt={nicheName(n, lang)}
+                        className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="grid h-full w-full place-items-center text-6xl">{meta.emoji}</div>
+                    )}
+                    {/* Gradient overlay for legibility */}
+                    {heroPhoto && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                    )}
+                    <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-xl shadow-md dark:bg-ink-900/90">
+                      {meta.emoji}
                     </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-black tabular-nums">{count.toLocaleString()}</div>
-                      <div className="text-[10px] muted uppercase">{isReady ? t("places_count", lang) : t("coming_soon", lang)}</div>
+                    <div className="absolute right-3 top-3 rounded-md bg-white/95 px-2 py-0.5 text-xs font-black tabular-nums shadow-md dark:bg-ink-900/90">
+                      {count.toLocaleString()}
                     </div>
                   </div>
-                  {topThree.length > 0 && (
-                    <div className="mt-2 space-y-1 border-t border-ink-100 pt-2 text-xs dark:border-ink-800">
-                      <div className="muted">{t("top_picks", lang)}:</div>
-                      {topThree.map((p) => (
-                        <div key={p.id} className="flex items-center justify-between">
-                          <span className="truncate">{p.name}</span>
-                          <span className="ml-2 shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-                            {p.trust_score}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <div className="flex flex-1 flex-col gap-2 p-4">
+                    <h3 className="text-lg font-bold leading-tight">{nicheName(n, lang)}</h3>
+                    <p className="text-sm muted line-clamp-2">{nicheTagline(n, lang)}</p>
+                    {topThree.length > 0 && (
+                      <div className="mt-auto space-y-1 border-t border-ink-100 pt-2 text-xs dark:border-ink-800">
+                        <div className="muted text-[10px] uppercase tracking-wide">{t("top_picks", lang)}</div>
+                        {topThree.slice(0, 3).map((p) => (
+                          <div key={p.id} className="flex items-center justify-between">
+                            <span className="truncate">{p.name}</span>
+                            <span className="ml-2 shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                              {p.trust_score}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {!isReady && (
+                      <div className="mt-auto text-[10px] muted uppercase tracking-wide">
+                        {t("coming_soon", lang)}
+                      </div>
+                    )}
+                  </div>
                 </Link>
               );
             })}

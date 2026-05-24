@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlaceBySlug } from "@/lib/data";
+import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
 import InquiryForm from "@/components/InquiryForm";
+import PhotoGallery from "@/components/PhotoGallery";
 
 export const dynamic = "force-static";
 
@@ -75,6 +76,8 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
   const place = getPlaceBySlug(slug);
   if (!place) notFound();
   const meta = NICHE_META[place.niche];
+  const similar = getSimilarPlaces(place, 4);
+  const mentions = getPlaceMentions(place.id);
 
   // Source badges
   const sources = [
@@ -292,14 +295,7 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
         {place.photos_sample.length > 0 && (
           <section className="mt-10">
             <h2 className="mb-3 text-lg font-bold">{t("photos_label", lang)} ({place.photos_count})</h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {place.photos_sample.map((url, i) => (
-                <div key={i} className="aspect-square overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={url} alt="" className="h-full w-full object-cover" loading="lazy" />
-                </div>
-              ))}
-            </div>
+            <PhotoGallery photos={place.photos_sample} alt={place.name} />
           </section>
         )}
 
@@ -315,6 +311,109 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
                 </div>
               ))}
             </dl>
+          </section>
+        )}
+
+        {/* PER-PLACE NAVER (Korean blogs about this specific business) */}
+        {mentions.naver.length > 0 && (
+          <section className="mt-10">
+            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+              <span>🇰🇷</span> Korean blog reviews
+              <span className="text-xs font-normal muted">({mentions.naver.length})</span>
+            </h2>
+            <ul className="space-y-2">
+              {mentions.naver.map((b, i) => (
+                <li key={i}>
+                  <a
+                    href={b.blog_url}
+                    target="_blank"
+                    rel="nofollow noopener"
+                    className="block rounded-xl border border-ink-100 bg-white p-3 transition hover:border-emerald-400 dark:border-ink-800 dark:bg-ink-900"
+                  >
+                    <div className="text-xs muted">
+                      {b.blogger_name ? `blog.naver.com/${b.blogger_name}` : "Naver Blog"}
+                      {b.blog_date ? ` · ${b.blog_date}` : ""}
+                    </div>
+                    <div className="mt-1 text-sm font-medium">{b.blog_title}</div>
+                    {b.blog_snippet && (
+                      <p className="mt-1 line-clamp-2 text-xs muted">{b.blog_snippet}</p>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* PER-PLACE YOUTUBE */}
+        {mentions.youtube.length > 0 && (
+          <section className="mt-10">
+            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+              <span>▶</span> Videos about {place.name}
+              <span className="text-xs font-normal muted">({mentions.youtube.length})</span>
+            </h2>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {mentions.youtube.map((v, i) => (
+                <a
+                  key={i}
+                  href={v.video_url}
+                  target="_blank"
+                  rel="nofollow noopener"
+                  className="group block overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:border-emerald-400 dark:border-ink-800 dark:bg-ink-900"
+                >
+                  <div className="relative aspect-video bg-ink-100 dark:bg-ink-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`https://i.ytimg.com/vi/${v.video_id}/hqdefault.jpg`}
+                      alt={v.title}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 grid place-items-center bg-black/20 transition group-hover:bg-black/30">
+                      <div className="grid h-12 w-12 place-items-center rounded-full bg-red-600 text-white shadow-lg">
+                        ▶
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-3">
+                    <div className="line-clamp-2 text-xs font-semibold leading-snug">{v.title}</div>
+                    <div className="mt-1 text-[10px] muted">{v.channel_title}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* PER-PLACE PANTIP (Thai forum threads) */}
+        {mentions.pantip.length > 0 && (
+          <section className="mt-10">
+            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+              <span>🇹🇭</span> Local Thai discussions
+              <span className="text-xs font-normal muted">({mentions.pantip.length})</span>
+            </h2>
+            <ul className="space-y-2">
+              {mentions.pantip.map((p, i) => (
+                <li key={i}>
+                  <a
+                    href={p.topic_url}
+                    target="_blank"
+                    rel="nofollow noopener"
+                    className="block rounded-xl border border-ink-100 bg-white p-3 transition hover:border-emerald-400 dark:border-ink-800 dark:bg-ink-900"
+                  >
+                    <div className="text-xs muted">
+                      Pantip
+                      {p.reply_count ? ` · ${p.reply_count} replies` : ""}
+                      {p.posted_date ? ` · ${p.posted_date}` : ""}
+                    </div>
+                    <div className="mt-1 text-sm font-medium">{p.title}</div>
+                    {p.summary && (
+                      <p className="mt-1 line-clamp-2 text-xs muted">{p.summary}</p>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 
@@ -371,13 +470,81 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
           </dl>
         </section>
 
-        <footer className="mt-16 border-t border-ink-100 pt-6 text-xs muted dark:border-ink-800">
-          <p className="max-w-3xl">{t("footer_blurb", lang)}</p>
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-            <div>© {new Date().getFullYear()} {SITE.name}</div>
-            <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">← {nicheName(place.niche, lang)}</Link>
-          </div>
-        </footer>
+        {/* SIMILAR PLACES — same niche, prefer same city */}
+        {similar.length > 0 && (
+          <section className="mt-12">
+            <h2 className="mb-4 text-lg font-bold">
+              More {nicheName(place.niche, lang)} {place.city ? `in ${place.city}` : "in Thailand"}
+            </h2>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {similar.map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/${lang}/place/${p.slug}/`}
+                  className="group block overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+                >
+                  <div className="relative aspect-square bg-ink-50 dark:bg-ink-800">
+                    {p.top_photo_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={p.top_photo_url} alt={p.name} className="h-full w-full object-cover transition group-hover:scale-[1.04]" loading="lazy" />
+                    ) : (
+                      <div className="grid h-full w-full place-items-center text-3xl">{meta.emoji}</div>
+                    )}
+                    <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white">
+                      {p.trust_score}
+                    </div>
+                  </div>
+                  <div className="p-2.5">
+                    <div className="line-clamp-2 text-xs font-bold leading-tight">{p.name}</div>
+                    <div className="mt-1 text-[10px] muted">{p.city}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div className="mt-10 text-xs muted">
+          <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">
+            ← Back to {nicheName(place.niche, lang)}
+          </Link>
+        </div>
+
+        {/* Schema.org LocalBusiness — boosts SEO + AEO (LLM citing) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "@id": `${SITE.origin}/${lang}/place/${place.slug}/`,
+              name: place.name,
+              address: place.address
+                ? {
+                    "@type": "PostalAddress",
+                    streetAddress: place.address,
+                    addressLocality: place.city,
+                    addressCountry: "TH",
+                  }
+                : undefined,
+              telephone: place.phone || undefined,
+              url: place.website || undefined,
+              image: place.top_photo_url || undefined,
+              priceRange:
+                place.price_min_thb > 0
+                  ? `฿${place.price_min_thb}${place.price_max_thb > place.price_min_thb ? `–฿${place.price_max_thb}` : ""}`
+                  : undefined,
+              aggregateRating:
+                place.rating && place.review_count
+                  ? {
+                      "@type": "AggregateRating",
+                      ratingValue: place.rating,
+                      reviewCount: place.review_count,
+                    }
+                  : undefined,
+            }),
+          }}
+        />
       </main>
       <StickyBookBar place={place} lang={lang} />
     </>

@@ -272,6 +272,12 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
           )}
         </div>
 
+        {p.top_review_text && (
+          <p className="line-clamp-2 text-[11px] leading-snug muted italic">
+            &ldquo;{p.top_review_text}&rdquo;
+          </p>
+        )}
+
         <div className="mt-auto flex flex-wrap items-center gap-1.5 text-[10px]">
           {p.is_beginner_friendly && (
             <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
