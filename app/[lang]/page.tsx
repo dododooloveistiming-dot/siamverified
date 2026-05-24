@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { loadPlaces, getTopPlacesPerNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
-import type { Lang, Niche } from "@/lib/types";
+import { loadPlaces, getTopPlacesPerNiche, getTopPlaces } from "@/lib/data";
+import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
+import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 
 export const dynamic = "force-static";
@@ -26,185 +26,357 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
   };
 }
 
+const NICHES: Niche[] = [
+  "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
+];
+
+const FEATURED_CITIES: Array<{ slug: string; label: string; emoji: string }> = [
+  { slug: "bangkok", label: "Bangkok", emoji: "🏙️" },
+  { slug: "chiang-mai", label: "Chiang Mai", emoji: "🏔️" },
+  { slug: "phuket", label: "Phuket", emoji: "🏝️" },
+  { slug: "pattaya", label: "Pattaya", emoji: "🏖️" },
+  { slug: "hua-hin", label: "Hua Hin", emoji: "🌅" },
+  { slug: "koh-samui", label: "Koh Samui", emoji: "🌴" },
+];
+
 export default function LandingPage({ params }: { params: { lang: Lang } }) {
   const { lang } = params;
   const bundle = loadPlaces();
-  const topPerNiche = getTopPlacesPerNiche(3);
+  const topPerNiche = getTopPlacesPerNiche(4);
 
-  const niches: Niche[] = [
-    "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
-  ];
+  // Hero photo: highest-trust place's photo, fallback through niches
+  const heroPlace =
+    getTopPlaces(50).find((p) => p.top_photo_url) ??
+    NICHES.flatMap((n) => topPerNiche[n] ?? []).find((p) => p.top_photo_url);
+
+  // Editor's picks: top trust-score places overall (with photos)
+  const editorsPicks = getTopPlaces(200)
+    .filter((p) => p.top_photo_url && p.review_count && p.review_count >= 20)
+    .sort((a, b) => b.trust_score - a.trust_score)
+    .slice(0, 8);
+
+  // Trending in Bangkok: top places in Bangkok across all niches
+  const bangkokPicks = getTopPlaces(2147)
+    .filter((p) => p.city?.toLowerCase() === "bangkok" && p.top_photo_url)
+    .sort((a, b) => b.trust_score - a.trust_score)
+    .slice(0, 6);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 pb-20">
-      {/* HERO */}
-        <section className="relative mt-6 overflow-hidden rounded-3xl border border-ink-100 bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-6 py-16 dark:border-ink-800 dark:from-emerald-950/40 dark:via-ink-900 dark:to-amber-950/30 sm:px-12">
-          <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-700/20" />
-          <div className="absolute -bottom-12 -left-12 h-56 w-56 rounded-full bg-amber-200/40 blur-3xl dark:bg-amber-700/20" />
-          <div className="relative">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-100/80 px-3 py-1 text-xs font-medium text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              {bundle.total.toLocaleString()} verified places · avg Trust Score {bundle.avg_trust}
-            </div>
-            <h1 className="text-4xl font-black tracking-tight sm:text-5xl">
-              {t("hero_title", lang)}
-            </h1>
-            <p className="mt-4 max-w-2xl text-lg muted">
-              {t("hero_subtitle", lang)}
-            </p>
-            <p className="mt-2 text-sm font-medium text-ink-700 dark:text-ink-300">
-              {t("for_audience", lang)}
-            </p>
-            <p className="mt-3 text-xs muted">
-              {t("sources_pitch", lang)}
-            </p>
+    <main className="pb-20">
+      {/* HERO — full-bleed photo with overlay */}
+      <section className="relative isolate overflow-hidden">
+        <div className="absolute inset-0">
+          {heroPlace?.top_photo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={heroPlace.top_photo_url}
+              alt="Thailand"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="h-full w-full bg-gradient-to-br from-emerald-200 to-amber-200" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/55 to-black/85" />
+        </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              {niches.map((n) => (
-                <Link
-                  key={n}
-                  href={`/${lang}/c/${n}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white/80 px-4 py-2 text-sm font-medium backdrop-blur transition hover:border-emerald-400 hover:bg-emerald-50 dark:border-ink-700 dark:bg-ink-900/80 dark:hover:bg-emerald-900/30"
-                >
-                  <span>{NICHE_META[n].emoji}</span>
-                  <span>{nicheName(n, lang)}</span>
-                  <span className="text-xs muted">({(bundle.by_niche as any)[n] ?? 0})</span>
-                </Link>
-              ))}
-            </div>
+        <div className="relative mx-auto max-w-5xl px-4 py-20 sm:py-28">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm ring-1 ring-white/30">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+            {bundle.total.toLocaleString()} verified places · 6 sources · No paid promotion
           </div>
-        </section>
+          <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight text-white sm:text-6xl md:text-7xl">
+            {t("hero_title", lang)}
+          </h1>
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/90 sm:text-xl">
+            {t("hero_subtitle", lang)}
+          </p>
+          <p className="mt-3 text-sm font-medium text-white/85">
+            {t("for_audience", lang)}
+          </p>
 
-        {/* POPULAR PICKS — quick deep-link strip */}
-        <section className="mt-8">
-          <div className="text-xs uppercase tracking-wide font-bold muted mb-3">
-            {t("popular_picks", lang)}
-          </div>
-          <div className="flex flex-wrap gap-2">
+          {/* Quick paths */}
+          <div className="mt-8 flex flex-wrap gap-2">
             {[
               { label: "Bangkok spa", href: `/${lang}/c/spa/?city=bangkok` },
               { label: "Phuket diving", href: `/${lang}/c/diving/?city=phuket` },
               { label: "Chiang Mai yoga", href: `/${lang}/c/yoga-pilates/?city=chiang-mai` },
-              { label: "Phuket muay thai", href: `/${lang}/c/muay-thai/?city=phuket` },
-              { label: "Bangkok cooking class", href: `/${lang}/c/cooking/?city=bangkok` },
-              { label: "Chiang Mai coworking", href: `/${lang}/c/coworking/?city=chiang-mai` },
-              { label: "Wellness retreat", href: `/${lang}/c/wellness/` },
+              { label: "Muay thai camps", href: `/${lang}/c/muay-thai/` },
+              { label: "Cooking class", href: `/${lang}/c/cooking/?city=bangkok` },
+              { label: "Wellness retreats", href: `/${lang}/c/wellness/` },
             ].map((p) => (
               <Link
                 key={p.label}
                 href={p.href}
-                className="rounded-full bg-ink-100 px-3 py-1.5 text-xs font-medium text-ink-700 transition hover:bg-emerald-100 hover:text-emerald-800 dark:bg-ink-800 dark:text-ink-300 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-300"
+                className="rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm ring-1 ring-white/40 transition hover:bg-white/25"
               >
                 {p.label} →
               </Link>
             ))}
           </div>
-        </section>
+        </div>
 
-        {/* CATEGORY GRID */}
-        <section className="mt-16">
-          <div className="mb-6 flex items-end justify-between">
-            <h2 className="text-2xl font-bold tracking-tight">{t("browse_categories", lang)}</h2>
-            <span className="text-xs muted">{bundle.total.toLocaleString()} {t("places_count", lang)}</span>
+        {/* Hero photo credit — bottom right */}
+        {heroPlace && (
+          <div className="absolute bottom-3 right-3 rounded-md bg-black/40 px-2 py-1 text-[10px] text-white/80 backdrop-blur-sm">
+            📷 {heroPlace.name} · {heroPlace.city}
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {niches.map((n) => {
-              const meta = NICHE_META[n];
-              const count = (bundle.by_niche as any)[n] ?? 0;
-              const isReady = count > 0;
-              const topThree = topPerNiche[n] ?? [];
-              const heroPhoto = topThree.find((p) => p.top_photo_url)?.top_photo_url;
-              return (
-                <Link
-                  key={n}
-                  href={`/${lang}/c/${n}/`}
-                  className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-white transition dark:bg-ink-900 ${
-                    isReady
-                      ? "border-ink-100 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800"
-                      : "border-dashed border-ink-200 opacity-70 dark:border-ink-700"
-                  }`}
-                >
-                  {/* Hero photo backdrop with niche emoji overlay */}
-                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-emerald-50 to-amber-50 dark:from-emerald-950/30 dark:to-amber-950/20">
-                    {heroPhoto ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={heroPhoto}
-                        alt={nicheName(n, lang)}
-                        className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="grid h-full w-full place-items-center text-6xl">{meta.emoji}</div>
-                    )}
-                    {/* Gradient overlay for legibility */}
-                    {heroPhoto && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                    )}
-                    <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-xl shadow-md dark:bg-ink-900/90">
-                      {meta.emoji}
-                    </div>
-                    <div className="absolute right-3 top-3 rounded-md bg-white/95 px-2 py-0.5 text-xs font-black tabular-nums shadow-md dark:bg-ink-900/90">
-                      {count.toLocaleString()}
-                    </div>
-                  </div>
-                  <div className="flex flex-1 flex-col gap-2 p-4">
-                    <h3 className="text-lg font-bold leading-tight">{nicheName(n, lang)}</h3>
-                    <p className="text-sm muted line-clamp-2">{nicheTagline(n, lang)}</p>
-                    {topThree.length > 0 && (
-                      <div className="mt-auto space-y-1 border-t border-ink-100 pt-2 text-xs dark:border-ink-800">
-                        <div className="muted text-[10px] uppercase tracking-wide">{t("top_picks", lang)}</div>
-                        {topThree.slice(0, 3).map((p) => (
-                          <div key={p.id} className="flex items-center justify-between">
-                            <span className="truncate">{p.name}</span>
-                            <span className="ml-2 shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-                              {p.trust_score}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {!isReady && (
-                      <div className="mt-auto text-[10px] muted uppercase tracking-wide">
-                        {t("coming_soon", lang)}
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+        )}
+      </section>
 
-        {/* MULTI-SOURCE PITCH */}
-        <section className="mt-16 rounded-2xl border border-ink-100 bg-white p-8 dark:border-ink-800 dark:bg-ink-900">
-          <h2 className="text-xl font-bold">{t("score_pitch_title", lang)}</h2>
-          <p className="mt-2 text-sm muted">{t("score_pitch_blurb", lang)}</p>
-          {(() => {
-            const cards = [
-              { name: "Google", count: bundle.places.filter((p) => p.source_badges.google_reviews > 0).length, badge: "★" },
-              { name: "Reddit", count: bundle.places.filter((p) => p.source_badges.reddit > 0).length, badge: "💬" },
-              { name: "YouTube", count: bundle.places.filter((p) => p.source_badges.videos > 0).length, badge: "▶" },
-              { name: "Naver", count: bundle.places.filter((p) => p.source_badges.naver > 0).length, badge: "🇰🇷" },
-              { name: "Pantip", count: bundle.places.filter((p) => p.source_badges.pantip > 0).length, badge: "🇹🇭" },
-              { name: "Bookimed", count: bundle.places.filter((p) => p.source_badges.bookimed > 0).length, badge: "🏥" },
-              { name: "Photos", count: bundle.places.filter((p) => p.source_badges.photos > 0).length, badge: "📸" },
-              { name: "Official sites", count: bundle.places.filter((p) => p.source_badges.website > 0).length, badge: "🔗" },
-            ].filter((s) => s.count > 0);
+      {/* STATS BANNER */}
+      <section className="bg-white py-6 dark:bg-ink-950">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-4 text-center sm:grid-cols-4">
+          <BannerStat value={bundle.total.toLocaleString()} label="Verified places" />
+          <BannerStat value="6" label="Languages" />
+          <BannerStat value="6" label="Trust sources" />
+          <BannerStat value="$0" label="Listing fee" />
+        </div>
+      </section>
+
+      {/* NICHE TILES — full-photo, distinctive */}
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <div className="mb-6 flex items-end justify-between">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              {t("browse_categories", lang)}
+            </h2>
+            <p className="mt-1 text-sm muted">7 niches · curated, multilingual, verified</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {NICHES.map((n) => {
+            const meta = NICHE_META[n];
+            const count = (bundle.by_niche as Record<string, number>)[n] ?? 0;
+            const isReady = count > 0;
+            const topThree = topPerNiche[n] ?? [];
+            const heroPhoto = topThree.find((p) => p.top_photo_url)?.top_photo_url;
             return (
-              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {cards.map((s) => (
-                  <div key={s.name} className="rounded-xl bg-emerald-50/60 p-3 text-sm dark:bg-emerald-950/30">
-                    <div className="text-xl">{s.badge}</div>
-                    <div className="mt-1 font-bold">{s.name}</div>
-                    <div className="text-xs muted">{s.count.toLocaleString()} places</div>
+              <Link
+                key={n}
+                href={`/${lang}/c/${n}/`}
+                className={`group relative block aspect-[5/4] overflow-hidden rounded-2xl transition ${
+                  isReady ? "hover:-translate-y-0.5 hover:shadow-2xl" : "opacity-70"
+                }`}
+              >
+                {heroPhoto ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={heroPhoto}
+                    alt={nicheName(n, lang)}
+                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-emerald-50 to-amber-50 text-7xl dark:from-emerald-950/30 dark:to-amber-950/20">
+                    {meta.emoji}
                   </div>
-                ))}
-              </div>
-            );
-          })()}
-        </section>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
+                {/* Count chip */}
+                <div className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-black tabular-nums shadow-md dark:bg-ink-900/95">
+                  {count.toLocaleString()}
+                </div>
+
+                {/* Content overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                  <div className="text-2xl">{meta.emoji}</div>
+                  <h3 className="mt-1 text-2xl font-black tracking-tight">{nicheName(n, lang)}</h3>
+                  <p className="mt-1 line-clamp-2 text-sm text-white/85">{nicheTagline(n, lang)}</p>
+                  {topThree.length > 0 && (
+                    <div className="mt-3 flex items-center gap-1 text-[11px] text-white/75">
+                      <span>★</span>
+                      <span className="truncate">{topThree[0].name}</span>
+                      {topThree[1] && <span className="ml-1">+ {topThree.length - 1} more</span>}
+                    </div>
+                  )}
+                  {!isReady && (
+                    <div className="mt-2 text-[10px] uppercase tracking-wide text-white/70">
+                      {t("coming_soon", lang)}
+                    </div>
+                  )}
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* EDITOR'S PICKS — top-trust places overall */}
+      {editorsPicks.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-12">
+          <div className="mb-6 flex items-end justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">⭐ Editor&apos;s picks</h2>
+              <p className="mt-1 text-sm muted">Highest cross-source trust scores</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {editorsPicks.map((p) => (
+              <PlaceCardMini key={p.id} place={p} lang={lang} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* TRENDING IN BANGKOK */}
+      {bangkokPicks.length > 0 && (
+        <section className="bg-emerald-50/40 py-12 dark:bg-emerald-950/20">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-6 flex items-end justify-between">
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">🏙️ Trending in Bangkok</h2>
+                <p className="mt-1 text-sm muted">Top-rated across all categories</p>
+              </div>
+              <Link
+                href={`/${lang}/`}
+                className="text-xs font-semibold text-emerald-700 hover:underline dark:text-emerald-300"
+              >
+                Browse all cities →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              {bangkokPicks.map((p) => (
+                <PlaceCardMini key={p.id} place={p} lang={lang} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CITY QUICK PICKS */}
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Browse by city</h2>
+          <p className="mt-1 text-sm muted">Tap a city to see all verified places</p>
+        </div>
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+          {FEATURED_CITIES.map((c) => (
+            <Link
+              key={c.slug}
+              href={`/${lang}/c/spa/?city=${c.slug}`}
+              className="group rounded-xl border border-ink-100 bg-white p-4 text-center transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+            >
+              <div className="text-3xl">{c.emoji}</div>
+              <div className="mt-1 text-sm font-bold">{c.label}</div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* HOW WE VERIFY — trust trust trust */}
+      <section className="bg-ink-50 py-14 dark:bg-ink-900/40">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">How we verify</h2>
+            <p className="mt-2 text-sm muted">Every place is cross-checked across 6 independent sources</p>
+          </div>
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <TrustCard
+              icon="🔍"
+              title="6 sources cross-checked"
+              body="Google reviews, YouTube, Naver (KR), Pantip (TH), Bookimed, official websites."
+            />
+            <TrustCard
+              icon="🚫"
+              title="No paid placement"
+              body="Trust scores reflect actual sentiment, not who paid. We never accept money to rank a business."
+            />
+            <TrustCard
+              icon="🌍"
+              title="6 languages"
+              body="English, 한국어, ภาษาไทย, 中文, 日本語, العربية. Real Korean & Thai posts surface for tourists."
+            />
+          </div>
+          <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs muted">
+            {["Google", "YouTube", "Reddit", "Naver", "Pantip", "Bookimed"].map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-ink-200 bg-white px-3 py-1 font-medium dark:border-ink-700 dark:bg-ink-900"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FOR BUSINESS CTA */}
+      <section className="mx-auto max-w-5xl px-4 py-14">
+        <div className="rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-amber-50 p-8 sm:p-12 dark:border-emerald-800 dark:from-emerald-950/40 dark:to-amber-950/30">
+          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Own a business in Thailand?</h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed muted">
+                Claim your listing, manage hours and photos, and reach Korean / Chinese / Japanese / English tourists with multilingual SEO pages — free for the first 10 inquiries each month.
+              </p>
+            </div>
+            <Link
+              href="/dashboard"
+              className="shrink-0 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-xl"
+            >
+              Claim your listing →
+            </Link>
+          </div>
+        </div>
+      </section>
     </main>
+  );
+}
+
+function BannerStat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <div className="text-2xl font-black tabular-nums sm:text-3xl">{value}</div>
+      <div className="text-[11px] uppercase tracking-wide muted">{label}</div>
+    </div>
+  );
+}
+
+function TrustCard({ icon, title, body }: { icon: string; title: string; body: string }) {
+  return (
+    <div className="rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+      <div className="text-3xl">{icon}</div>
+      <h3 className="mt-3 font-bold">{title}</h3>
+      <p className="mt-1 text-sm leading-relaxed muted">{body}</p>
+    </div>
+  );
+}
+
+function PlaceCardMini({ place, lang }: { place: Place; lang: Lang }) {
+  const meta = NICHE_META[place.niche];
+  return (
+    <Link
+      href={`/${lang}/place/${place.slug}/`}
+      className="group block overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900"
+    >
+      <div className="relative aspect-square overflow-hidden bg-ink-50 dark:bg-ink-800">
+        {place.top_photo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={place.top_photo_url}
+            alt={place.name}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.05]"
+            loading="lazy"
+          />
+        ) : (
+          <div className="grid h-full w-full place-items-center text-4xl">{meta.emoji}</div>
+        )}
+        <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
+          {place.trust_score}
+        </div>
+      </div>
+      <div className="p-2.5">
+        <div className="line-clamp-2 text-xs font-bold leading-tight">{place.name}</div>
+        <div className="mt-1 flex items-center justify-between text-[10px] muted">
+          <span className="truncate">{place.city}</span>
+          {place.rating != null && (
+            <span className="shrink-0 font-semibold text-amber-600 dark:text-amber-400">
+              ★ {place.rating.toFixed(1)}
+            </span>
+          )}
+        </div>
+      </div>
+    </Link>
   );
 }
