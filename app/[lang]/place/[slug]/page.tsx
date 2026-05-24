@@ -117,56 +117,90 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className="mx-auto max-w-5xl px-4 pb-28 md:pb-20">
-        <nav className="mt-6 text-xs muted">
-          <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
-          <span className="mx-2">/</span>
-          <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">{nicheName(place.niche, lang)}</Link>
-          <span className="mx-2">/</span>
-          <span className="truncate">{place.name}</span>
-        </nav>
-
-        {/* HEADER */}
-        <section className="mt-3 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+      <main className="pb-28 md:pb-20">
+        {/* HERO — full-bleed photo with title overlay */}
+        <section className="relative isolate overflow-hidden">
+          <div className="absolute inset-0">
             {place.top_photo_url ? (
-              <div className="aspect-[16/9] overflow-hidden rounded-2xl bg-ink-50 dark:bg-ink-800">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={place.top_photo_url} alt={place.name} className="h-full w-full object-cover" />
-              </div>
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={place.top_photo_url} alt={place.name} className="h-full w-full object-cover" />
             ) : (
-              <div className="flex aspect-[16/9] items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-amber-50 text-7xl dark:from-emerald-950/40 dark:to-amber-950/30">
+              <div className="grid h-full w-full place-items-center bg-gradient-to-br from-emerald-200 to-amber-200 text-9xl dark:from-emerald-900 dark:to-amber-900">
                 {meta.emoji}
               </div>
             )}
-            <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">{place.name}</h1>
-            <p className="mt-1 text-sm muted">
-              {place.city ? `${place.city} · ` : ""}{nicheName(place.niche, lang)}
-              {place.category ? ` · ${place.category}` : ""}
-            </p>
-            {place.is_suspected_viral && (
-              <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-1.5 text-xs font-medium text-orange-800 dark:bg-orange-900/40 dark:text-orange-300">
-                ⚠ {t("low_signal_warn", lang)}
-              </div>
-            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
           </div>
 
-          {/* TRUST SUMMARY */}
-          <aside className="rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
-            <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-black tabular-nums text-emerald-700 dark:text-emerald-400">
-                {place.trust_score}
-              </span>
-              <span className="text-xs muted">/ 100</span>
-            </div>
-            <div className="text-sm font-bold">{t("trust_score", lang)}</div>
-            <p className="mt-1 text-xs muted">Cross-checked across {sources.length} sources</p>
+          <div className="relative mx-auto max-w-5xl px-4 pt-12 pb-10 sm:pt-20 sm:pb-14">
+            <nav className="text-xs text-white/80">
+              <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
+              <span className="mx-2">/</span>
+              <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">{nicheName(place.niche, lang)}</Link>
+              <span className="mx-2">/</span>
+              <span className="truncate">{place.name}</span>
+            </nav>
 
-            <div className="mt-4 flex flex-wrap gap-1.5">
+            <div className="mt-32 sm:mt-40">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-white/85">
+                <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 font-bold text-white">
+                  Trust {place.trust_score}/100
+                </span>
+                {place.rating != null && (
+                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
+                    ★ {place.rating.toFixed(1)}
+                    {place.review_count ? ` (${place.review_count.toLocaleString()})` : ""}
+                  </span>
+                )}
+                {place.price_band !== "unknown" && place.price_min_thb > 0 && (
+                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
+                    ฿{place.price_min_thb.toLocaleString()}
+                    {place.price_max_thb > place.price_min_thb ? `–${place.price_max_thb.toLocaleString()}` : ""}
+                    <span className="ml-1 opacity-75">/ {place.price_unit}</span>
+                  </span>
+                )}
+                {place.languages.ko && (
+                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
+                    🇰🇷 KO
+                  </span>
+                )}
+                {place.languages.ja && (
+                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
+                    🇯🇵 JA
+                  </span>
+                )}
+                {place.is_open_24h && (
+                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
+                    🌙 24h
+                  </span>
+                )}
+              </div>
+              <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">
+                {place.name}
+              </h1>
+              <p className="mt-2 text-sm text-white/90 sm:text-base">
+                {meta.emoji} {nicheName(place.niche, lang)}
+                {place.city ? ` · ${place.city}` : ""}
+                {place.address ? ` · ${place.address}` : ""}
+              </p>
+              {place.is_suspected_viral && (
+                <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-orange-500/90 px-3 py-1.5 text-xs font-medium text-white">
+                  ⚠ {t("low_signal_warn", lang)}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* TRUST STRIP — sources cross-checked */}
+        <section className="border-y border-ink-100 bg-white py-4 dark:border-ink-800 dark:bg-ink-950">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 text-xs">
+            <span className="muted">Cross-checked across:</span>
+            <div className="flex flex-wrap gap-1.5">
               {sources.map((s) => (
                 <span
                   key={s.name}
-                  className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+                  className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 font-medium text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
                   title={`${s.name}: ${s.value}`}
                 >
                   <span>{s.icon}</span>
@@ -174,65 +208,13 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
                 </span>
               ))}
             </div>
-
-            <dl className="mt-5 grid grid-cols-2 gap-3 border-t border-ink-100 pt-4 text-xs dark:border-ink-800">
-              <div>
-                <dt className="muted">Google rating</dt>
-                <dd className="font-bold">{place.rating ? `★ ${place.rating.toFixed(1)}` : "—"}</dd>
-              </div>
-              <div>
-                <dt className="muted">Reviews</dt>
-                <dd className="font-bold tabular-nums">{(place.review_count ?? 0).toLocaleString()}</dd>
-              </div>
-              <div>
-                <dt className="muted">Photos collected</dt>
-                <dd className="font-bold tabular-nums">{place.photos_count}</dd>
-              </div>
-              <div>
-                <dt className="muted">Videos found</dt>
-                <dd className="font-bold tabular-nums">{place.videos_count}</dd>
-              </div>
-              {place.price_band !== "unknown" && (
-                <div className="col-span-2">
-                  <dt className="muted">{t("price_range", lang)}</dt>
-                  <dd className="font-bold">
-                    {place.price_min_thb > 0 ? `฿${place.price_min_thb.toLocaleString()}` : "—"}
-                    {place.price_max_thb > place.price_min_thb ? ` – ฿${place.price_max_thb.toLocaleString()}` : ""}
-                    <span className="ml-1 text-[10px] muted">/ {place.price_unit}</span>
-                  </dd>
-                </div>
-              )}
-            </dl>
-
-            <div className="mt-5 flex flex-wrap gap-1.5">
-              {place.is_beginner_friendly && (
-                <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
-                  ✓ {t("filter_beginner", lang)}
-                </span>
-              )}
-              {place.languages.ko && (
-                <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">
-                  🇰🇷 Korean-friendly
-                </span>
-              )}
-              {place.languages.zh && (
-                <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-medium text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300">
-                  🇨🇳 Chinese
-                </span>
-              )}
-              {place.languages.ja && (
-                <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] font-medium text-pink-700 dark:bg-pink-900/40 dark:text-pink-300">
-                  🇯🇵 Japanese
-                </span>
-              )}
-              {place.is_open_24h && (
-                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
-                  24h
-                </span>
-              )}
-            </div>
-          </aside>
+            <span className="muted hidden sm:inline">
+              {place.photos_count} photos · {place.videos_count} videos
+            </span>
+          </div>
         </section>
+
+        <div className="mx-auto max-w-5xl px-4">
 
         {/* INQUIRY FORM — direct contact via Verified Thai */}
         <section className="mt-8">
@@ -545,6 +527,7 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
             }),
           }}
         />
+        </div>
       </main>
       <StickyBookBar place={place} lang={lang} />
     </>

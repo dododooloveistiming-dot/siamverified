@@ -52,24 +52,50 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
   const community = loadCommunity(niche);
   const meta = NICHE_META[niche];
 
-  return (
-    <main className="mx-auto max-w-6xl px-4 pb-20">
-      <nav className="mt-6 text-xs muted">
-        <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
-        <span className="mx-2">/</span>
-        <span>{nicheName(niche, lang)}</span>
-      </nav>
+  const heroPlace = places.find((p) => p.top_photo_url) ?? places[0];
 
-      <header className="mt-2 border-b border-ink-100 pb-6 dark:border-ink-800">
-        <div className="flex items-baseline gap-3">
-          <span className="text-4xl">{meta.emoji}</span>
-          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">{nicheName(niche, lang)}</h1>
+  return (
+    <main className="pb-20">
+      {/* HERO — niche page hero with photo */}
+      <section className="relative isolate overflow-hidden">
+        <div className="absolute inset-0">
+          {heroPlace?.top_photo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={heroPlace.top_photo_url} alt={nicheName(niche, lang)} className="h-full w-full object-cover" />
+          ) : (
+            <div className="grid h-full w-full place-items-center bg-gradient-to-br from-emerald-200 to-amber-200 text-9xl">
+              {meta.emoji}
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/15" />
         </div>
-        <p className="mt-2 text-sm muted">{nicheTagline(niche, lang)}</p>
-        <div className="mt-3 text-xs muted">
-          {places.length.toLocaleString()} {t("places_count", lang)} · {t("sources_pitch", lang)}
+
+        <div className="relative mx-auto max-w-6xl px-4 pt-12 pb-10 sm:pt-16 sm:pb-12">
+          <nav className="text-xs text-white/80">
+            <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
+            <span className="mx-2">/</span>
+            <span>{nicheName(niche, lang)}</span>
+          </nav>
+          <div className="mt-16 sm:mt-20">
+            <div className="text-5xl sm:text-6xl">{meta.emoji}</div>
+            <h1 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl md:text-6xl">
+              {nicheName(niche, lang)}
+            </h1>
+            <p className="mt-3 max-w-2xl text-base text-white/90 sm:text-lg">
+              {nicheTagline(niche, lang)}
+            </p>
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm ring-1 ring-white/30">
+              <span>{places.length.toLocaleString()} verified places</span>
+              <span>·</span>
+              <span>6 sources</span>
+              <span>·</span>
+              <span>No paid promotion</span>
+            </div>
+          </div>
         </div>
-      </header>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4">
 
       {places.length === 0 ? (
         <div className="mt-12 rounded-2xl border border-dashed border-ink-200 bg-white p-8 text-center dark:border-ink-700 dark:bg-ink-900">
@@ -156,13 +182,10 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
           </section>
         )}
 
-      <footer className="mt-16 border-t border-ink-100 pt-6 text-xs muted dark:border-ink-800">
-        <p className="max-w-3xl">{t("footer_blurb", lang)}</p>
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <div>© {new Date().getFullYear()} {SITE.name}</div>
-          <Link href={`/${lang}/`} className="hover:underline">← {t("back_to_all", lang)}</Link>
-        </div>
-      </footer>
+      <div className="mt-10 text-xs muted">
+        <Link href={`/${lang}/`} className="hover:underline">← {t("back_to_all", lang)}</Link>
+      </div>
+      </div>
     </main>
   );
 }
