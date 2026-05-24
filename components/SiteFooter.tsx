@@ -46,6 +46,43 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
           </div>
         </div>
 
+        {/* Wiki / guides navigation */}
+        <div className="mb-6 grid grid-cols-2 gap-4 text-xs sm:grid-cols-4">
+          <div>
+            <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Guides</div>
+            <ul className="space-y-1">
+              <li><a href={`/${lang}/guide/bangkok-yoga-pilates/`} className="hover:underline">Bangkok yoga</a></li>
+              <li><a href={`/${lang}/guide/phuket-diving/`} className="hover:underline">Phuket diving</a></li>
+              <li><a href={`/${lang}/guide/chiang-mai-coworking/`} className="hover:underline">Chiang Mai coworking</a></li>
+              <li><a href={`/${lang}/guide/bangkok-spa/`} className="hover:underline">Bangkok spa</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Compare</div>
+            <ul className="space-y-1">
+              <li><a href={`/${lang}/compare/bangkok-vs-chiang-mai/`} className="hover:underline">Bangkok vs Chiang Mai</a></li>
+              <li><a href={`/${lang}/compare/phuket-vs-koh-tao/`} className="hover:underline">Phuket vs Koh Tao</a></li>
+              <li><a href={`/${lang}/compare/bangkok-vs-phuket/`} className="hover:underline">Bangkok vs Phuket</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">FAQ</div>
+            <ul className="space-y-1">
+              <li><a href={`/${lang}/faq/`} className="hover:underline">All FAQs</a></li>
+              <li><a href={`/${lang}/faq/padi-cost-thailand/`} className="hover:underline">PADI cost?</a></li>
+              <li><a href={`/${lang}/faq/thai-massage-price/`} className="hover:underline">Thai massage price?</a></li>
+              <li><a href={`/${lang}/faq/yoga-retreat-thailand-cost/`} className="hover:underline">Yoga retreat cost?</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Business</div>
+            <ul className="space-y-1">
+              <li><a href="/dashboard" className="hover:underline">Claim your listing</a></li>
+              <li><a href="/auth/signin" className="hover:underline">Sign in</a></li>
+            </ul>
+          </div>
+        </div>
+
         {/* About / legal */}
         <div className="border-t border-ink-100 pt-6 dark:border-ink-800">
           <p className="max-w-3xl text-xs leading-relaxed">
