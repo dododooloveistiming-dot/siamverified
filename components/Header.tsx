@@ -58,6 +58,13 @@ export default function Header({ lang }: { lang: Lang }) {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/dashboard"
+            className="hidden rounded-md border border-emerald-500 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 sm:inline-flex"
+            title="For business owners"
+          >
+            For Business →
+          </Link>
           <select
             value={lang}
             onChange={(e) => { window.location.href = `/${e.target.value}/`; }}
@@ -113,6 +120,14 @@ export default function Header({ lang }: { lang: Lang }) {
               ))}
             </ul>
             <div className="border-t border-ink-100 px-4 py-3 dark:border-ink-800">
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="mb-4 flex items-center justify-between rounded-xl border border-emerald-500 bg-emerald-50 px-3 py-3 text-sm font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+              >
+                <span>🏢 For Business — Claim your listing</span>
+                <span>→</span>
+              </Link>
               <div className="muted mb-2 text-xs">Language</div>
               <div className="flex flex-wrap gap-1.5">
                 {SUPPORTED_LANGS.map((l) => (
