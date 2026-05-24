@@ -1,97 +1,79 @@
-# thaifacialclinic.com — MVP
+# Siam Verified — MVP
 
-100% static Next.js 14 (App Router) directory + AEO-optimized clinic detail pages + B2B premium dashboard.
-Hosted free on Vercel free-tier. **Zero runtime compute** — all 230 clinic × 5 languages = ~1,150 HTML pages built at deploy time.
+Independent Thailand activity directory. **Verified by 6 sources. No paid promotion.**
 
-## Architecture (cost-optimized)
+100% static Next.js 14 (App Router) + SSG to Vercel free tier.
+Zero runtime compute. All `(places × 6 languages)` pages built at deploy time.
+
+## Stack
 
 ```
-CSV master data → scripts/build-data.mjs → public/data/clinics.json
+CSV master data ─┐
+                 ├→ scripts/build-data.mjs ─→ public/data/places.json + by-niche/*.json + community/*.json
+JSON sidecars ───┘                                ↓
+                                          next build (output: export)
                                                 ↓
-                                      next build (SSG only)
+                                          static HTML × 6 langs × N places
                                                 ↓
-                                      static HTML × N langs × N clinics
-                                                ↓
-                                      Vercel free tier (no server compute)
+                                          GitHub push → Vercel auto-deploy
 ```
 
-All filtering / sorting / search happens in the browser against the single pre-fetched JSON.
+All filter / sort / search happens in the browser against pre-fetched JSON.
 
-## Install
+## Run locally
 
 ```bash
-cd thaifacialclinic
 npm install
-npm run data   # CSV → public/data/clinics.json (reads C:\dbd-scraper\hair\thaihairguide_master.csv)
-npm run dev    # http://localhost:3000
+npm run data    # CSV → public/data/places.json
+npm run dev     # http://localhost:3000
+npm run build   # static export to ./out/
 ```
 
-## Build & Deploy
-
-```bash
-npm run build  # runs prebuild (data) + next build
-# Output: ./out/  (static HTML files)
-# Deploy to Vercel: `vercel --prod` or git push to connected repo.
-```
-
-`next.config.mjs` sets `output: "export"`. Vercel auto-detects and serves `out/`.
-
-## Route map
+## Routes
 
 ```
-/                                  → redirects to /en/
-/[lang]/                           → directory (5 lang variants — en, ko, th, zh, ar)
-/[lang]/clinic/[slug]/             → clinic detail (230 × 5 = 1,150 pages)
-/b2b/dashboard/                    → premium dashboard demo
+/                          → redirects to /en/
+/[lang]/                   → landing (6 langs: en/ko/th/zh/ja/ar)
+/[lang]/c/[niche]/         → category landing — search/filter/sort
+/[lang]/place/[slug]/      → place detail + sticky CTA + JSON-LD
+/b2b/dashboard/            → B2B demo (noindex)
 ```
 
-## AEO (PART 1)
+## Niches (7)
 
-`components/AeoSchema.tsx` injects 3 JSON-LD blocks on every clinic page:
-- `MedicalBusiness` with `aggregateRating`, `review[]`, `priceRange`, `knowsAbout`, `availableService[]`
-- `FAQPage` with auto-generated Q&A from real Reddit/Naver review excerpts
-- `BreadcrumbList`
+`muay-thai` · `yoga-pilates` · `wellness` · `cooking` · `diving` · `spa` · `coworking`
 
-Plus a plain-HTML FAQ section beneath so LLM crawlers (Perplexity, Gemini, ChatGPT, etc.) can read Q&A in the DOM.
+Defined in `lib/types.ts` (`NICHE_META`) with 6-language names + taglines.
 
-`@id` for every clinic schema: `https://thaifacialclinic.com/[lang]/clinic/[slug]/#medicalbusiness`
+## Multi-source Trust Score
 
-## B2C directory (PART 2)
+Every place is cross-checked against:
 
-`components/DirectoryClient.tsx` — client-side filter / sort / search.
-- "Filter out suspected ad/viral clinics" toggle (default ON)
-- "Verified Partnership Clinics" sticky strip — top 3 by trust score are marked `is_partner` in `build-data.mjs` (flip to your paying customers)
-- Each clinic card: Trust Score badge · LINE CTA · Bookimed affiliate CTA · source badges
+```
+Google · Reddit · Naver · Pantip · YouTube · Bookimed · Photos · Official websites
+```
 
-## B2B dashboard (PART 3)
+Formula lives in `scripts/build-data.mjs` (`trustScore()`). Public, auditable.
+Higher source diversity = higher score. Paid promotion cannot move the score.
 
-`app/b2b/dashboard/page.tsx` — static demo dashboard.
-- "Market Share & Competitor Intelligence" table: clinic's stats + 3 anonymized competitors
-- "Lead Traffic Analytics" with "Missed Leads" upsell CTA
-- Marked `noindex,nofollow` — internal-facing
+## i18n
 
-For production: add Supabase Auth + per-clinic snapshot generation in `build-data.mjs`.
+`lib/i18n.ts` — translations + `t(key, lang)` lookup.
+`lib/types.ts` — `nicheName(niche, lang)` + `nicheTagline(niche, lang)`.
+Arabic auto-applies `dir="rtl"` via `components/SetHtmlLang.tsx`.
 
-## Bookimed affiliate
+## Customize
 
-`build-data.mjs` carries `bookimed_url` from the master CSV. To activate affiliate revenue:
-1. Sign up at https://bookimed.com/partners/
-2. Append your `?aff=YOUR_ID` to all `bookimed_url` values in `clinics.json` (or do it client-side at link render in `ClinicCard.tsx`)
+- `lib/i18n.ts` → site name, tagline, translations
+- `lib/types.ts` → `NICHE_META` (niche labels + taglines)
+- `scripts/build-data.mjs` → `trustScore()` formula, partner selection
+- `tailwind.config.ts` → brand colors (ink + emerald default)
 
-## What to customize
+## Affiliate
 
-- `lib/i18n.ts` — translations + tagline. Set per-language messaging.
-- `scripts/build-data.mjs` — `trustScore()` formula, `isSuspectedViral()` heuristic, partner selection logic.
-- `tailwind.config.ts` — brand colors. Default is fintech-blue/clinical-green.
-
-## Domain
-
-Hardcoded `SITE.origin = "https://thaifacialclinic.com"` in `lib/i18n.ts`.
-All canonical URLs, OG tags, and JSON-LD `@id` reference this.
+`build-data.mjs` carries `klook_url`, `viator_url`, `getyourguide_url`, `agoda_url`, `bookimed_url` from the master CSV.
+Append `?aff=YOUR_ID` to activate revenue. Sticky mobile CTA picks the strongest available link per place.
 
 ## Costs
 
-- Vercel free tier: 100 GB bandwidth / mo (plenty for early launch)
-- Static export = no compute billing
-- No Supabase calls at runtime (dashboard is static mock)
-- **$0/month** until you outgrow Vercel free tier (~50K-100K monthly visitors)
+Vercel free tier (100 GB bandwidth/mo). No server compute. **$0/month** until ~50K–100K monthly visitors.

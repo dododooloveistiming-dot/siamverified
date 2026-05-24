@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
-import { NICHE_META } from "@/lib/types";
-import Header from "@/components/Header";
+import { NICHE_META, nicheName } from "@/lib/types";
+import StickyBookBar from "@/components/StickyBookBar";
 
 export const dynamic = "force-static";
 
@@ -24,17 +24,17 @@ export async function generateMetadata({ params }: { params: { lang: Lang; slug:
   const place = getPlaceBySlug(params.slug);
   if (!place) return {};
   const url = `${SITE.origin}/${params.lang}/place/${place.slug}/`;
-  const meta = NICHE_META[place.niche];
+  const cat = nicheName(place.niche, params.lang);
   return {
-    title: `${place.name} — ${meta.en} | ${SITE.name}`,
-    description: `Trust Score ${place.trust_score}. ${place.review_count ?? 0} reviews on Google. Verified across 6 independent sources.`,
+    title: `${place.name} — ${cat} | ${SITE.name}`,
+    description: `Trust Score ${place.trust_score}. ${place.review_count ?? 0} reviews on Google. ${t("sources_pitch", params.lang)}.`,
     alternates: {
       canonical: url,
       languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/place/${place.slug}/`])),
     },
     openGraph: {
       title: place.name,
-      description: `${meta.en} · Trust Score ${place.trust_score}`,
+      description: `${cat} · Trust Score ${place.trust_score}`,
       url,
       images: place.top_photo_url ? [{ url: place.top_photo_url, width: 1200, height: 630 }] : [],
     },
@@ -74,7 +74,6 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
   const place = getPlaceBySlug(slug);
   if (!place) notFound();
   const meta = NICHE_META[place.niche];
-  const noFouc = `(function(){try{var s=localStorage.getItem('theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
 
   // Source badges
   const sources = [
@@ -113,15 +112,12 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
 
   return (
     <>
-      <script dangerouslySetInnerHTML={{ __html: noFouc }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="mx-auto max-w-5xl px-4 pb-20">
-        <Header lang={lang} />
-
+      <main className="mx-auto max-w-5xl px-4 pb-28 md:pb-20">
         <nav className="mt-6 text-xs muted">
           <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
           <span className="mx-2">/</span>
-          <Link href={`/${lang}/c/${place.niche}`} className="hover:underline">{meta.en}</Link>
+          <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">{nicheName(place.niche, lang)}</Link>
           <span className="mx-2">/</span>
           <span className="truncate">{place.name}</span>
         </nav>
@@ -141,12 +137,12 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
             )}
             <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">{place.name}</h1>
             <p className="mt-1 text-sm muted">
-              {place.city ? `${place.city} · ` : ""}{meta.en}
+              {place.city ? `${place.city} · ` : ""}{nicheName(place.niche, lang)}
               {place.category ? ` · ${place.category}` : ""}
             </p>
             {place.is_suspected_viral && (
               <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-1.5 text-xs font-medium text-orange-800 dark:bg-orange-900/40 dark:text-orange-300">
-                ⚠ Low signal: high rating but few reviews — could be paid promotion. Treat with caution.
+                ⚠ {t("low_signal_warn", lang)}
               </div>
             )}
           </div>
@@ -236,11 +232,9 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
 
         {/* AFFILIATE CTAs */}
         <section className="mt-8">
-          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">Book / Inquire</h2>
+          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">{t("book_or_inquire", lang)}</h2>
           <AffiliateCTA place={place} lang={lang} />
-          <p className="mt-2 text-[10px] muted">
-            Affiliate links — we may earn a commission. Trust Score is computed before any commercial relationship.
-          </p>
+          <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
         </section>
 
         {/* TOP REVIEW */}
@@ -268,7 +262,7 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
         {/* PHOTOS */}
         {place.photos_sample.length > 0 && (
           <section className="mt-10">
-            <h2 className="mb-3 text-lg font-bold">Photos ({place.photos_count})</h2>
+            <h2 className="mb-3 text-lg font-bold">{t("photos_label", lang)} ({place.photos_count})</h2>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {place.photos_sample.map((url, i) => (
                 <div key={i} className="aspect-square overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
@@ -298,10 +292,8 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
         {/* COMMUNITY MENTIONS — fuzzy-matched by place name */}
         {place.community_mentions && place.community_mentions.length > 0 && (
           <section className="mt-10">
-            <h2 className="mb-3 text-lg font-bold">Mentions in community discussions</h2>
-            <p className="mb-4 text-xs muted">
-              Threads where this place's name appears. Independent voices, not curated reviews.
-            </p>
+            <h2 className="mb-3 text-lg font-bold">{t("mentions_in_community", lang)}</h2>
+            <p className="mb-4 text-xs muted">{t("mentions_blurb", lang)}</p>
             <ul className="space-y-3">
               {place.community_mentions.map((m, i) => {
                 const sourceLabel = m.kind === "reddit" ? `r/${m.subreddit || "all"}`
@@ -333,16 +325,16 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
 
         {/* CONTACT */}
         <section className="mt-10 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
-          <h2 className="mb-3 text-lg font-bold">Contact & links</h2>
+          <h2 className="mb-3 text-lg font-bold">{t("contact_links", lang)}</h2>
           <dl className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
             {place.address && (
-              <div><dt className="muted">Address</dt><dd>{place.address}</dd></div>
+              <div><dt className="muted">{t("address_label", lang)}</dt><dd>{place.address}</dd></div>
             )}
             {place.phone && (
-              <div><dt className="muted">Phone</dt><dd><a href={`tel:${place.phone}`} className="text-emerald-700 hover:underline dark:text-emerald-400">{place.phone}</a></dd></div>
+              <div><dt className="muted">{t("phone_label", lang)}</dt><dd><a href={`tel:${place.phone}`} className="text-emerald-700 hover:underline dark:text-emerald-400">{place.phone}</a></dd></div>
             )}
             {place.website && (
-              <div><dt className="muted">Website</dt><dd><a href={place.website} target="_blank" rel="noopener" className="text-emerald-700 hover:underline dark:text-emerald-400">{place.website}</a></dd></div>
+              <div><dt className="muted">{t("website_label", lang)}</dt><dd><a href={place.website} target="_blank" rel="noopener" className="text-emerald-700 hover:underline dark:text-emerald-400">{place.website}</a></dd></div>
             )}
             {place.google_maps_url && (
               <div><dt className="muted">Google Maps</dt><dd><a href={place.google_maps_url} target="_blank" rel="noopener" className="text-emerald-700 hover:underline dark:text-emerald-400">{t("cta_view_map", lang)} ↗</a></dd></div>
@@ -354,10 +346,11 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
           <p className="max-w-3xl">{t("footer_blurb", lang)}</p>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
             <div>© {new Date().getFullYear()} {SITE.name}</div>
-            <Link href={`/${lang}/c/${place.niche}`} className="hover:underline">← Back to {meta.en}</Link>
+            <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">← {nicheName(place.niche, lang)}</Link>
           </div>
         </footer>
-      </div>
+      </main>
+      <StickyBookBar place={place} lang={lang} />
     </>
   );
 }

@@ -3,13 +3,9 @@ import Link from "next/link";
 import { loadPlaces, getTopPlacesPerNiche } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Niche } from "@/lib/types";
-import { NICHE_META } from "@/lib/types";
-import Header from "@/components/Header";
+import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 
 export const dynamic = "force-static";
-export function generateStaticParams() {
-  return SUPPORTED_LANGS.map((lang) => ({ lang }));
-}
 
 export async function generateMetadata({ params }: { params: { lang: Lang } }): Promise<Metadata> {
   const { lang } = params;
@@ -35,17 +31,11 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
   const bundle = loadPlaces();
   const topPerNiche = getTopPlacesPerNiche(3);
 
-  const noFouc = `(function(){try{var s=localStorage.getItem('theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
-
   const niches: Niche[] = ["muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking"];
 
   return (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: noFouc }} />
-      <div className="mx-auto max-w-6xl px-4 pb-20">
-        <Header lang={lang} />
-
-        {/* HERO */}
+    <main className="mx-auto max-w-6xl px-4 pb-20">
+      {/* HERO */}
         <section className="relative mt-6 overflow-hidden rounded-3xl border border-ink-100 bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-6 py-16 dark:border-ink-800 dark:from-emerald-950/40 dark:via-ink-900 dark:to-amber-950/30 sm:px-12">
           <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-700/20" />
           <div className="absolute -bottom-12 -left-12 h-56 w-56 rounded-full bg-amber-200/40 blur-3xl dark:bg-amber-700/20" />
@@ -72,7 +62,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                   className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white/80 px-4 py-2 text-sm font-medium backdrop-blur transition hover:border-emerald-400 hover:bg-emerald-50 dark:border-ink-700 dark:bg-ink-900/80 dark:hover:bg-emerald-900/30"
                 >
                   <span>{NICHE_META[n].emoji}</span>
-                  <span>{NICHE_META[n][lang === "ko" ? "ko" : lang === "th" ? "th" : "en"] ?? NICHE_META[n].en}</span>
+                  <span>{nicheName(n, lang)}</span>
                   <span className="text-xs muted">({(bundle.by_niche as any)[n] ?? 0})</span>
                 </Link>
               ))}
@@ -95,7 +85,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
               return (
                 <Link
                   key={n}
-                  href={isReady ? `/${lang}/c/${n}` : `/${lang}/c/${n}`}
+                  href={`/${lang}/c/${n}/`}
                   className={`group relative flex flex-col gap-3 rounded-2xl border bg-white p-5 transition dark:bg-ink-900 ${
                     isReady
                       ? "border-ink-100 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800"
@@ -105,19 +95,17 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="text-3xl">{meta.emoji}</div>
-                      <h3 className="mt-2 text-lg font-bold">
-                        {meta[lang === "ko" ? "ko" : lang === "th" ? "th" : "en"] ?? meta.en}
-                      </h3>
-                      <p className="mt-1 text-sm muted">{meta.tagline_en}</p>
+                      <h3 className="mt-2 text-lg font-bold">{nicheName(n, lang)}</h3>
+                      <p className="mt-1 text-sm muted">{nicheTagline(n, lang)}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-2xl font-black tabular-nums">{count.toLocaleString()}</div>
-                      <div className="text-[10px] muted uppercase">{isReady ? t("places_count", lang) : "coming soon"}</div>
+                      <div className="text-[10px] muted uppercase">{isReady ? t("places_count", lang) : t("coming_soon", lang)}</div>
                     </div>
                   </div>
                   {topThree.length > 0 && (
                     <div className="mt-2 space-y-1 border-t border-ink-100 pt-2 text-xs dark:border-ink-800">
-                      <div className="muted">Top picks:</div>
+                      <div className="muted">{t("top_picks", lang)}:</div>
                       {topThree.map((p) => (
                         <div key={p.id} className="flex items-center justify-between">
                           <span className="truncate">{p.name}</span>
@@ -136,10 +124,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
 
         {/* MULTI-SOURCE PITCH */}
         <section className="mt-16 rounded-2xl border border-ink-100 bg-white p-8 dark:border-ink-800 dark:bg-ink-900">
-          <h2 className="text-xl font-bold">How we score every place</h2>
-          <p className="mt-2 text-sm muted">
-            Every Trust Score combines independent signals. No place can buy a higher rank — the formula is public.
-          </p>
+          <h2 className="text-xl font-bold">{t("score_pitch_title", lang)}</h2>
+          <p className="mt-2 text-sm muted">{t("score_pitch_blurb", lang)}</p>
           {(() => {
             const cards = [
               { name: "Google", count: bundle.places.filter((p) => p.source_badges.google_reviews > 0).length, badge: "★" },
@@ -165,14 +151,13 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           })()}
         </section>
 
-        <footer className="mt-16 border-t border-ink-100 pt-6 text-xs muted dark:border-ink-800">
-          <p className="max-w-3xl">{t("footer_blurb", lang)}</p>
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-            <div>© {new Date().getFullYear()} {SITE.name}</div>
-            <div>Sources: Google · Reddit · Naver · Pantip · YouTube · Bookimed · Official sites</div>
-          </div>
-        </footer>
-      </div>
-    </>
+      <footer className="mt-16 border-t border-ink-100 pt-6 text-xs muted dark:border-ink-800">
+        <p className="max-w-3xl">{t("footer_blurb", lang)}</p>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <div>© {new Date().getFullYear()} {SITE.name}</div>
+          <div>Sources: Google · Reddit · Naver · Pantip · YouTube · Bookimed · Official sites</div>
+        </div>
+      </footer>
+    </main>
   );
 }
