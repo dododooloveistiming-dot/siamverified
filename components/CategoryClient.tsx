@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 import { t } from "@/lib/i18n";
+import PlacePlaceholder from "@/components/PlacePlaceholder";
 
 // nicheName is imported from lib/types when needed
 
@@ -244,9 +245,7 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
           // eslint-disable-next-line @next/next/no-img-element
           <img src={p.top_photo_url} alt={p.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" loading="lazy" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-50 to-amber-50 text-5xl dark:from-emerald-950/40 dark:to-amber-950/30">
-            {fallbackEmoji}
-          </div>
+          <PlacePlaceholder niche={p.niche} size="lg" />
         )}
         <div className={`absolute right-2 top-2 inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-black tabular-nums shadow-sm ${tierClass}`}>
           {p.trust_score}

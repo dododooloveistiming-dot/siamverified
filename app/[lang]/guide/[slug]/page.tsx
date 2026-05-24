@@ -5,6 +5,7 @@ import { getPlacesByNiche } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
+import PlacePlaceholder from "@/components/PlacePlaceholder";
 
 export const dynamic = "force-static";
 
@@ -164,9 +165,7 @@ export default function GuidePage({
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="grid h-full w-full place-items-center bg-gradient-to-br from-emerald-200 to-amber-200 text-9xl">
-              {meta.emoji}
-            </div>
+            <PlacePlaceholder niche={niche} size="xl" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
         </div>
@@ -255,7 +254,7 @@ export default function GuidePage({
                         loading="lazy"
                       />
                     ) : (
-                      <div className="grid h-full w-full place-items-center text-2xl">{meta.emoji}</div>
+                      <PlacePlaceholder niche={p.niche} size="sm" />
                     )}
                   </div>
                   <div>

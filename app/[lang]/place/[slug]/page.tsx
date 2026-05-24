@@ -8,6 +8,7 @@ import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
 import InquiryForm from "@/components/InquiryForm";
 import PhotoGallery from "@/components/PhotoGallery";
+import PlacePlaceholder from "@/components/PlacePlaceholder";
 
 export const dynamic = "force-static";
 
@@ -125,9 +126,7 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
               // eslint-disable-next-line @next/next/no-img-element
               <img src={place.top_photo_url} alt={place.name} className="h-full w-full object-cover" />
             ) : (
-              <div className="grid h-full w-full place-items-center bg-gradient-to-br from-emerald-200 to-amber-200 text-9xl dark:from-emerald-900 dark:to-amber-900">
-                {meta.emoji}
-              </div>
+              <PlacePlaceholder niche={place.niche} size="xl" />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
           </div>
@@ -470,7 +469,7 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={p.top_photo_url} alt={p.name} className="h-full w-full object-cover transition group-hover:scale-[1.04]" loading="lazy" />
                     ) : (
-                      <div className="grid h-full w-full place-items-center text-3xl">{meta.emoji}</div>
+                      <PlacePlaceholder niche={p.niche} size="md" />
                     )}
                     <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white">
                       {p.trust_score}

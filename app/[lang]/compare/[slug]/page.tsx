@@ -5,6 +5,7 @@ import { loadPlaces } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
+import PlacePlaceholder from "@/components/PlacePlaceholder";
 
 export const dynamic = "force-static";
 
@@ -356,7 +357,7 @@ function PlaceMiniRow({ place, lang }: { place: Place; lang: Lang }) {
             // eslint-disable-next-line @next/next/no-img-element
             <img src={place.top_photo_url} alt={place.name} className="h-full w-full object-cover" loading="lazy" />
           ) : (
-            <div className="grid h-full w-full place-items-center text-xl">{NICHE_META[place.niche].emoji}</div>
+            <PlacePlaceholder niche={place.niche} size="sm" />
           )}
         </div>
         <div className="min-w-0 flex-1">

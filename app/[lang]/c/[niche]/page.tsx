@@ -6,6 +6,7 @@ import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
+import PlacePlaceholder from "@/components/PlacePlaceholder";
 
 const NICHES: Niche[] = [
   "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
@@ -63,9 +64,7 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
             // eslint-disable-next-line @next/next/no-img-element
             <img src={heroPlace.top_photo_url} alt={nicheName(niche, lang)} className="h-full w-full object-cover" />
           ) : (
-            <div className="grid h-full w-full place-items-center bg-gradient-to-br from-emerald-200 to-amber-200 text-9xl">
-              {meta.emoji}
-            </div>
+            <PlacePlaceholder niche={niche} size="xl" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/15" />
         </div>

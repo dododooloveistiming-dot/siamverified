@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { loadPlaces, getTopPlacesPerNiche, getTopPlaces } from "@/lib/data";
+import { loadPlaces, getTopPlacesPerNiche, getTopPlaces, getPlacesByNiche } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
+import PlacePlaceholder from "@/components/PlacePlaceholder";
 
 export const dynamic = "force-static";
 
@@ -44,10 +45,25 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
   const bundle = loadPlaces();
   const topPerNiche = getTopPlacesPerNiche(4);
 
-  // Hero photo: highest-trust place's photo, fallback through niches
+  // Hero photo: prefer aspirational/lifestyle niches (wellness > spa > yoga > diving)
+  // over more visceral ones (muay-thai). Falls through if first choice has no photo.
+  const HERO_NICHE_PREFERENCE: Niche[] = [
+    "wellness",
+    "spa",
+    "yoga-pilates",
+    "diving",
+    "cooking",
+    "coworking",
+    "muay-thai",
+  ];
   const heroPlace =
-    getTopPlaces(50).find((p) => p.top_photo_url) ??
-    NICHES.flatMap((n) => topPerNiche[n] ?? []).find((p) => p.top_photo_url);
+    HERO_NICHE_PREFERENCE.flatMap((n) =>
+      getPlacesByNiche(n)
+        .filter((p) => p.top_photo_url && p.trust_score >= 60)
+        .sort((a, b) => b.trust_score - a.trust_score)
+        .slice(0, 8),
+    ).find((p) => p.top_photo_url) ??
+    getTopPlaces(50).find((p) => p.top_photo_url);
 
   // Editor's picks: top trust-score places overall (with photos)
   const editorsPicks = getTopPlaces(200)
@@ -167,8 +183,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                     loading="lazy"
                   />
                 ) : (
-                  <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-emerald-50 to-amber-50 text-7xl dark:from-emerald-950/30 dark:to-amber-950/20">
-                    {meta.emoji}
+                  <div className="absolute inset-0">
+                    <PlacePlaceholder niche={n} size="lg" />
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
@@ -360,7 +376,7 @@ function PlaceCardMini({ place, lang }: { place: Place; lang: Lang }) {
             loading="lazy"
           />
         ) : (
-          <div className="grid h-full w-full place-items-center text-4xl">{meta.emoji}</div>
+          <PlacePlaceholder niche={place.niche} size="md" />
         )}
         <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
           {place.trust_score}

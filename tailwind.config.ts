@@ -3,6 +3,28 @@ import type { Config } from "tailwindcss";
 const config: Config = {
   darkMode: "class",
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+  // PlacePlaceholder generates gradient class names from a per-niche theme
+  // object (e.g. `from-rose-100`, `via-pink-50`, `to-amber-100`). Tailwind's
+  // JIT scanner can't follow the lookup, so we safelist the full set.
+  safelist: [
+    // Light gradient stops
+    "from-rose-100", "from-violet-100", "from-emerald-100", "from-amber-100",
+    "from-sky-100", "from-pink-100", "from-slate-100",
+    "via-orange-50", "via-pink-50", "via-teal-50", "via-yellow-50",
+    "via-cyan-50", "via-rose-50", "via-zinc-50",
+    "to-amber-100", "to-fuchsia-100", "to-cyan-100", "to-orange-100",
+    "to-blue-100", "to-purple-100", "to-stone-100",
+    // Dark gradient stops
+    "dark:from-rose-950/40", "dark:from-violet-950/40", "dark:from-emerald-950/40",
+    "dark:from-amber-950/40", "dark:from-sky-950/40", "dark:from-pink-950/40",
+    "dark:from-slate-800",
+    "dark:via-orange-950/30", "dark:via-pink-950/30", "dark:via-teal-950/30",
+    "dark:via-yellow-950/30", "dark:via-cyan-950/30", "dark:via-rose-950/30",
+    "dark:via-zinc-800",
+    "dark:to-amber-950/30", "dark:to-fuchsia-950/30", "dark:to-cyan-950/30",
+    "dark:to-orange-950/30", "dark:to-blue-950/30", "dark:to-purple-950/30",
+    "dark:to-stone-800",
+  ],
   theme: {
     extend: {
       colors: {
