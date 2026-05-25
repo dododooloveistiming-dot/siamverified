@@ -220,17 +220,25 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
 
         <div className="mx-auto max-w-5xl px-4">
 
-        {/* INQUIRY FORM — direct contact via Verified Thai */}
-        <section className="mt-8">
-          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
-            Contact {place.name}
-          </h2>
+        {/* INQUIRY FORM — direct contact, 0% markup. Lead CTA. */}
+        <section className="mt-8 rounded-2xl border-2 border-emerald-300 bg-emerald-50/30 p-4 dark:border-emerald-700 dark:bg-emerald-950/20">
+          <div className="mb-3 flex items-baseline justify-between">
+            <h2 className="text-base font-black">📩 Send inquiry directly</h2>
+            <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white">
+              0% commission
+            </span>
+          </div>
+          <p className="mb-3 text-xs muted">
+            Goes straight to {place.name}. No booking platform markup.
+          </p>
           <InquiryForm placeId={place.slug} placeName={place.name} lang={lang} />
         </section>
 
-        {/* AFFILIATE CTAs */}
-        <section className="mt-8">
-          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">{t("book_or_inquire", lang)}</h2>
+        {/* AFFILIATE CTAs — secondary fallback */}
+        <section className="mt-6">
+          <h2 className="mb-2 text-xs font-bold uppercase tracking-wide muted">
+            Or book through a partner platform
+          </h2>
           <AffiliateCTA place={place} lang={lang} />
           <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
         </section>
@@ -528,6 +536,21 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
                       reviewCount: place.review_count,
                     }
                   : undefined,
+              // Embed sample reviews for Google rich snippets
+              review: (place.reviews_sample || []).slice(0, 3).map((rv) => ({
+                "@type": "Review",
+                reviewBody: (rv.text || "").slice(0, 200),
+                author: { "@type": "Person", name: rv.reviewer || "Verified visitor" },
+                ...(rv.rating
+                  ? {
+                      reviewRating: {
+                        "@type": "Rating",
+                        ratingValue: rv.rating,
+                        bestRating: 5,
+                      },
+                    }
+                  : {}),
+              })),
             }),
           }}
         />

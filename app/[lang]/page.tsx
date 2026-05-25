@@ -280,6 +280,64 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
         </div>
       </section>
 
+      {/* WHY US vs KLOOK / TRIPADVISOR — clear differentiation */}
+      <section className="mx-auto max-w-5xl px-4 py-14">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Why book through Verified Thai?</h2>
+          <p className="mt-2 text-sm muted">Direct contact with the business. No 15% Klook markup. Honest scoring.</p>
+        </div>
+        <div className="mt-8 overflow-x-auto">
+          <table className="mx-auto min-w-[640px] text-sm">
+            <thead>
+              <tr className="border-b-2 border-ink-200 dark:border-ink-700">
+                <th className="px-4 py-3 text-left font-semibold"></th>
+                <th className="px-4 py-3 text-left font-black text-emerald-700 dark:text-emerald-400">
+                  ✅ Verified Thai
+                </th>
+                <th className="px-4 py-3 text-left font-medium muted">Klook / Viator</th>
+                <th className="px-4 py-3 text-left font-medium muted">Google Maps</th>
+              </tr>
+            </thead>
+            <tbody>
+              <CompareRow
+                label="Direct contact"
+                us="Inquiry → business directly"
+                others={["Through platform", "Phone only"]}
+              />
+              <CompareRow
+                label="Booking commission"
+                us="0% — no markup"
+                others={["10–15% added", "0%"]}
+              />
+              <CompareRow
+                label="Ranking algorithm"
+                us="Trust Score from 6 sources"
+                others={["Paid placements", "Maps algorithm"]}
+              />
+              <CompareRow
+                label="Korean / Thai reviews"
+                us="Surfaced per place"
+                others={["English only", "Google reviews only"]}
+              />
+              <CompareRow
+                label="Multilingual SEO"
+                us="6 languages, native pages"
+                others={["English primary", "Auto-translate"]}
+              />
+              <CompareRow
+                label="Verification independence"
+                us="No paid promotion"
+                others={["Pay-to-rank", "Owner-controlled"]}
+              />
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-6 text-center text-xs muted">
+          We aggregate the same Klook/Viator URLs so you can compare —{" "}
+          <span className="font-semibold">but the customer-business connection is yours, not the platform&apos;s.</span>
+        </p>
+      </section>
+
       {/* HOW WE VERIFY — trust trust trust */}
       <section className="bg-ink-50 py-14 dark:bg-ink-900/40">
         <div className="mx-auto max-w-5xl px-4">
@@ -337,6 +395,27 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
         </div>
       </section>
     </main>
+  );
+}
+
+function CompareRow({
+  label,
+  us,
+  others,
+}: {
+  label: string;
+  us: string;
+  others: [string, string];
+}) {
+  return (
+    <tr className="border-b border-ink-100 dark:border-ink-800">
+      <td className="px-4 py-3 font-semibold">{label}</td>
+      <td className="px-4 py-3 text-emerald-800 dark:text-emerald-300">
+        <span className="font-bold">{us}</span>
+      </td>
+      <td className="px-4 py-3 muted">{others[0]}</td>
+      <td className="px-4 py-3 muted">{others[1]}</td>
+    </tr>
   );
 }
 
