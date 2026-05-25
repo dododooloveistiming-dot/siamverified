@@ -35,45 +35,53 @@ export function getPlaceBySlug(slug: string): Place | undefined {
   return loadPlaces().places.find((p) => p.slug === slug);
 }
 
-/**
- * Place lookup + DB overlay of the latest approved listing_edits.
- * Use on dynamic/server-rendered pages so owner-controlled fields
- * (website, phone, description, hours) reflect approved overrides.
- */
-export async function getPlaceWithEdits(slug: string): Promise<Place | undefined> {
-  const base = getPlaceBySlug(slug);
-  if (!base) return base;
+export type OwnerProfile = {
+  ownerPhotos: string[];
+  services: Array<{
+    name: string;
+    price_thb?: number;
+    duration_min?: number;
+    description?: string;
+  }>;
+  description?: string | null;
+  hours?: string | null;
+  whatsapp?: string | null;
+  lineId?: string | null;
+  contactEmail?: string | null;
+  koreanStaffNote?: string | null;
+  updatedAt?: Date;
+};
 
-  // Lazy import to keep static-build paths free of DB deps.
+/**
+ * Fetch the live owner-controlled profile from listing_profiles.
+ * Called from server-rendered place pages. Returns null if no claimed
+ * owner has filled in custom content yet.
+ */
+export async function getOwnerProfile(placeId: string): Promise<OwnerProfile | null> {
   try {
-    const { db, listingEdits } = await import("./db");
-    const { eq, and, desc } = await import("drizzle-orm");
+    const { db, listingProfiles } = await import("./db");
+    const { eq } = await import("drizzle-orm");
     const rows = await db
       .select()
-      .from(listingEdits)
-      .where(
-        and(eq(listingEdits.placeId, base.id), eq(listingEdits.status, "approved")),
-      )
-      .orderBy(desc(listingEdits.appliedAt))
+      .from(listingProfiles)
+      .where(eq(listingProfiles.placeId, placeId))
       .limit(1);
-    if (rows.length === 0) return base;
-    const edits = (rows[0].edits ?? {}) as Record<string, string>;
-    const overlay: Partial<Place> = {};
-    if (edits.website) overlay.website = edits.website;
-    if (edits.phone) overlay.phone = edits.phone;
-    // hours / description / korean_staff don't have native Place fields —
-    // they surface via place_edits map below.
+    if (rows.length === 0) return null;
+    const r = rows[0];
     return {
-      ...base,
-      ...overlay,
-      // Stash all approved edits on the object for the place page to render
-      // without needing another DB call.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ...(({ owner_edits: edits } as any)),
+      ownerPhotos: (r.ownerPhotos as string[]) ?? [],
+      services: (r.services as OwnerProfile["services"]) ?? [],
+      description: r.description,
+      hours: r.hours,
+      whatsapp: r.whatsapp,
+      lineId: r.lineId,
+      contactEmail: r.contactEmail,
+      koreanStaffNote: r.koreanStaffNote,
+      updatedAt: r.updatedAt,
     };
   } catch (e) {
-    console.warn("[data] getPlaceWithEdits overlay failed:", e);
-    return base;
+    console.warn("[data] getOwnerProfile failed:", e);
+    return null;
   }
 }
 

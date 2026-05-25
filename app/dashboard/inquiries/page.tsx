@@ -94,35 +94,42 @@ export default async function InquiriesPage() {
             return (
               <li
                 key={q.id}
-                className="rounded-xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900"
+                className="rounded-xl border border-ink-100 bg-white transition hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="text-xs text-ink-500">
-                      {place?.name ?? q.placeId} · {q.createdAt.toLocaleDateString()}
-                    </div>
-                    <div className="mt-1 text-sm font-bold">{q.customerName}</div>
-                    <div className="mt-0.5 text-xs">
-                      <a
-                        href={`mailto:${q.customerEmail}?subject=${encodeURIComponent("Re: Verified Thai inquiry")}`}
-                        className="text-emerald-700 hover:underline dark:text-emerald-300"
-                      >
-                        {q.customerEmail}
-                      </a>
-                      {q.customerPhone && <span className="ml-2 text-ink-500">· {q.customerPhone}</span>}
-                    </div>
-                    {(q.preferredDate || q.partySize) && (
-                      <div className="mt-1 text-[11px] text-ink-500">
-                        {q.preferredDate && <span>📅 {q.preferredDate} </span>}
-                        {q.partySize && <span>👥 {q.partySize}</span>}
+                <Link href={`/dashboard/inquiries/${q.id}`} className="block p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="text-xs text-ink-500">
+                        {place?.name ?? q.placeId} · {q.createdAt.toLocaleDateString()}
                       </div>
-                    )}
+                      <div className="mt-1 text-sm font-bold">{q.customerName}</div>
+                      <div className="mt-0.5 text-xs">
+                        <span className="text-emerald-700 dark:text-emerald-300">
+                          {q.customerEmail}
+                        </span>
+                        {q.customerPhone && <span className="ml-2 text-ink-500">· {q.customerPhone}</span>}
+                      </div>
+                      {(q.preferredDate || q.partySize) && (
+                        <div className="mt-1 text-[11px] text-ink-500">
+                          {q.preferredDate && <span>📅 {q.preferredDate} </span>}
+                          {q.partySize && <span>👥 {q.partySize}</span>}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <StatusBadge status={q.status} />
+                      <span className="text-xs muted">→</span>
+                    </div>
                   </div>
-                  <StatusBadge status={q.status} />
-                </div>
-                <p className="mt-3 whitespace-pre-wrap rounded-lg bg-ink-50 p-3 text-sm dark:bg-ink-800">
-                  {q.message}
-                </p>
+                  <p className="mt-3 whitespace-pre-wrap rounded-lg bg-ink-50 p-3 text-sm dark:bg-ink-800 line-clamp-2">
+                    {q.message}
+                  </p>
+                  {q.replyMessage && (
+                    <p className="mt-2 rounded-lg border-l-4 border-emerald-500 bg-emerald-50/60 p-3 text-xs dark:bg-emerald-950/30 line-clamp-2">
+                      <span className="font-semibold">You replied:</span> {q.replyMessage}
+                    </p>
+                  )}
+                </Link>
               </li>
             );
           })}

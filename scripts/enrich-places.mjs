@@ -56,8 +56,9 @@ for (const place of placesBundle.places) {
     const before = (place.photos_sample || []).length;
     const gPhotos = (g.photos || []).map(localizePhoto);
     const existing = (place.photos_sample || []).map(localizePhoto);
-    // Cap at 10 photos per place to keep places.json reasonable in size
-    const merged = [...new Set([...gPhotos, ...existing])].slice(0, 10);
+    // Cap at 6 photos per place — kept lean for fast page loads. Place
+    // detail page also reads per_place_google.json for the full gallery.
+    const merged = [...new Set([...gPhotos, ...existing])].slice(0, 6);
     if (merged.length > 0) {
       place.photos_sample = merged;
       place.top_photo_url = merged[0];

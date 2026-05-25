@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { eq, desc, and, inArray, sql } from "drizzle-orm";
+import { eq, desc, and, inArray, sql, gte } from "drizzle-orm";
 import { auth, signOut } from "@/lib/auth";
-import { db, listingClaims, inquiries, subscriptions } from "@/lib/db";
+import { db, listingClaims, inquiries, subscriptions, placeViews } from "@/lib/db";
 import { getPlaceBySlug } from "@/lib/data";
 import { FREE_MONTHLY_INQUIRY_LIMIT } from "@/lib/quota";
 import { isAdminSession } from "@/lib/admin";
@@ -34,6 +34,34 @@ export default async function DashboardPage() {
     : [];
   const inquiryCountMap = new Map(inquiryByPlace.map((r) => [r.placeId, r.count]));
   const totalInquiries = Array.from(inquiryCountMap.values()).reduce((s, n) => s + n, 0);
+
+  // Last-14-day page-view chart across all approved listings
+  const viewSinceDay = new Date();
+  viewSinceDay.setUTCDate(viewSinceDay.getUTCDate() - 13);
+  const sinceISODay = viewSinceDay.toISOString().slice(0, 10);
+  const viewRows = approvedPlaceIds.length > 0
+    ? await db
+        .select({ day: placeViews.day, count: sql<number>`sum(${placeViews.count})::int` })
+        .from(placeViews)
+        .where(
+          and(
+            inArray(placeViews.placeId, approvedPlaceIds),
+            gte(placeViews.day, sinceISODay),
+          ),
+        )
+        .groupBy(placeViews.day)
+    : [];
+  // Fill in zero-days so the bar chart has constant width
+  const viewByDay = new Map(viewRows.map((r) => [r.day, r.count]));
+  const chartDays: Array<{ day: string; count: number }> = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date();
+    d.setUTCDate(d.getUTCDate() - i);
+    const dayKey = d.toISOString().slice(0, 10);
+    chartDays.push({ day: dayKey, count: viewByDay.get(dayKey) ?? 0 });
+  }
+  const totalViews14d = chartDays.reduce((s, d) => s + d.count, 0);
+  const maxView = Math.max(1, ...chartDays.map((d) => d.count));
 
   const subRows = await db
     .select()
@@ -85,15 +113,52 @@ export default async function DashboardPage() {
       {/* STAT CARDS */}
       <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Listings claimed" value={claims.length} sub={`${approvedPlaceIds.length} approved`} />
+        <Stat label="Views (14 days)" value={totalViews14d.toLocaleString()} />
         <Stat label="Inquiries (all-time)" value={totalInquiries} />
         <Stat
-          label="This month"
-          value={usedThisMonth}
-          sub={tier === "pro" ? "Pro · unlimited" : `${FREE_MONTHLY_INQUIRY_LIMIT - usedThisMonth} free left`}
+          label="Plan"
+          value={tier === "pro" ? "Pro" : "Free"}
+          sub={tier === "pro"
+            ? "Unlimited inquiries"
+            : `${usedThisMonth}/${FREE_MONTHLY_INQUIRY_LIMIT} this month`}
           tone={tier === "free" && usedThisMonth >= FREE_MONTHLY_INQUIRY_LIMIT ? "warn" : "default"}
         />
-        <Stat label="Plan" value={tier === "pro" ? "Pro" : "Free"} sub={tier === "free" ? "Upgrade for unlimited" : ""} />
       </section>
+
+      {/* VIEWS CHART — last 14 days */}
+      {approvedPlaceIds.length > 0 && (
+        <section className="mt-6 rounded-2xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900">
+          <div className="mb-3 flex items-baseline justify-between">
+            <h2 className="text-sm font-bold">Listing views — last 14 days</h2>
+            <span className="text-xs muted">{totalViews14d.toLocaleString()} total</span>
+          </div>
+          <div className="flex h-24 items-end gap-1">
+            {chartDays.map((d) => {
+              const h = Math.max(2, Math.round((d.count / maxView) * 90));
+              const isToday = d.day === new Date().toISOString().slice(0, 10);
+              return (
+                <div
+                  key={d.day}
+                  className="group relative flex-1"
+                  title={`${d.day}: ${d.count} view${d.count === 1 ? "" : "s"}`}
+                >
+                  <div
+                    className={`rounded-t ${isToday ? "bg-emerald-500" : "bg-emerald-300 dark:bg-emerald-700"}`}
+                    style={{ height: `${h}%` }}
+                  />
+                  <span className="invisible absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-ink-900 px-1.5 py-0.5 text-[10px] font-semibold text-white group-hover:visible dark:bg-ink-700">
+                    {d.count}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-2 flex justify-between text-[10px] muted">
+            <span>{chartDays[0].day.slice(5)}</span>
+            <span>{chartDays[chartDays.length - 1].day.slice(5)} (today)</span>
+          </div>
+        </section>
+      )}
 
       <section className="mt-8">
         <h2 className="text-lg font-bold">Your listing claims</h2>

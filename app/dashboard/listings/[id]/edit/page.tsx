@@ -2,8 +2,10 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { and, eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
-import { db, listingClaims, listingEdits } from "@/lib/db";
+import { db, listingClaims, listingProfiles } from "@/lib/db";
 import { getPlaceBySlug } from "@/lib/data";
+import PhotoUploader from "@/components/PhotoUploader";
+import ProfileEditor from "@/components/ProfileEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +21,6 @@ export default async function EditListingPage({
   const place = getPlaceBySlug(params.id);
   if (!place) notFound();
 
-  // Must hold approved claim
   const claim = await db
     .select()
     .from(listingClaims)
@@ -49,102 +50,62 @@ export default async function EditListingPage({
     );
   }
 
-  async function submitEdits(formData: FormData) {
-    "use server";
-    const session = await auth();
-    const uid = (session?.user as { id?: string } | undefined)?.id;
-    if (!uid) return;
-    const edits: Record<string, string> = {};
-    for (const k of [
-      "description",
-      "website",
-      "phone",
-      "hours",
-      "korean_caddy",
-      "korean_staff",
-    ]) {
-      const v = String(formData.get(k) ?? "").trim();
-      if (v) edits[k] = v;
-    }
-    if (Object.keys(edits).length === 0) return;
-    await db.insert(listingEdits).values({
-      placeId: params.id,
-      userId: uid,
-      edits,
-    });
-    redirect("/dashboard?edits=submitted");
-  }
+  // Load existing profile (or null)
+  const profileRows = await db
+    .select()
+    .from(listingProfiles)
+    .where(eq(listingProfiles.placeId, params.id))
+    .limit(1);
+  const profile = profileRows[0];
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-10">
+    <main className="mx-auto max-w-3xl px-4 py-10">
       <nav className="text-xs text-ink-500">
         <Link href="/dashboard" className="hover:underline">Dashboard</Link> ›{" "}
         <span>Edit listing</span>
       </nav>
-      <h1 className="mt-2 text-2xl font-black tracking-tight">{place.name}</h1>
-      <p className="text-sm text-ink-600 dark:text-ink-400">
-        Edits go to admin review before they go live.
-      </p>
-
-      <form action={submitEdits} className="mt-8 space-y-4">
-        <Field name="description" label="Description (1-3 sentences)" textarea
-          defaultValue="" placeholder="Brief 1-3 sentence summary for visitors" />
-        <Field name="website" label="Website" type="url"
-          defaultValue={place.website ?? ""} placeholder="https://" />
-        <Field name="phone" label="Phone" defaultValue={place.phone ?? ""} />
-        <Field name="hours" label="Hours" defaultValue=""
-          placeholder="Mon-Sat 09:00-19:00" />
-        <Field name="korean_staff" label="Korean-speaking staff (notes)"
-          defaultValue="" placeholder="e.g. 2 Korean instructors on weekends" />
-
-        <button
-          type="submit"
-          className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-700"
+      <div className="mt-2 flex items-baseline justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black tracking-tight">{place.name}</h1>
+          <p className="text-sm text-ink-600 dark:text-ink-400">
+            Edits go live immediately. Visitors see them next page load.
+          </p>
+        </div>
+        <Link
+          href={`/en/place/${place.slug}/`}
+          target="_blank"
+          className="shrink-0 rounded-lg border border-ink-200 px-3 py-1.5 text-xs hover:bg-ink-50 dark:border-ink-700 dark:hover:bg-ink-800"
         >
-          Submit edits for review →
-        </button>
-      </form>
-    </main>
-  );
-}
+          View public page ↗
+        </Link>
+      </div>
 
-function Field({
-  name,
-  label,
-  defaultValue,
-  placeholder,
-  type = "text",
-  textarea = false,
-}: {
-  name: string;
-  label: string;
-  defaultValue?: string;
-  placeholder?: string;
-  type?: string;
-  textarea?: boolean;
-}) {
-  return (
-    <label className="block">
-      <span className="text-xs font-semibold uppercase tracking-wide text-ink-700 dark:text-ink-300">
-        {label}
-      </span>
-      {textarea ? (
-        <textarea
-          name={name}
-          defaultValue={defaultValue}
-          placeholder={placeholder}
-          rows={3}
-          className="mt-1 w-full rounded-xl border border-ink-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-ink-700 dark:bg-ink-900"
+      <section className="mt-8 rounded-2xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900">
+        <PhotoUploader
+          placeId={params.id}
+          initialPhotos={(profile?.ownerPhotos as string[]) ?? []}
         />
-      ) : (
-        <input
-          name={name}
-          type={type}
-          defaultValue={defaultValue}
-          placeholder={placeholder}
-          className="mt-1 w-full rounded-xl border border-ink-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-ink-700 dark:bg-ink-900"
+      </section>
+
+      <div className="mt-6">
+        <ProfileEditor
+          placeId={params.id}
+          initial={{
+            description: profile?.description,
+            hours: profile?.hours,
+            whatsapp: profile?.whatsapp,
+            line_id: profile?.lineId,
+            contact_email: profile?.contactEmail,
+            korean_staff_note: profile?.koreanStaffNote,
+            services: (profile?.services as Array<{
+              name: string;
+              price_thb?: number;
+              duration_min?: number;
+              description?: string;
+            }>) ?? [],
+          }}
         />
-      )}
-    </label>
+      </div>
+    </main>
   );
 }

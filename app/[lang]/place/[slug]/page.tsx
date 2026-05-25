@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions } from "@/lib/data";
+import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
@@ -9,8 +9,10 @@ import StickyBookBar from "@/components/StickyBookBar";
 import InquiryForm from "@/components/InquiryForm";
 import PhotoGallery from "@/components/PhotoGallery";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
+import ViewPing from "@/components/ViewPing";
 
-export const dynamic = "force-static";
+// ISR — initially built static, refreshed from DB (owner profile) every 60s.
+export const revalidate = 60;
 
 export function generateStaticParams() {
   const bundle = loadPlaces();
@@ -72,13 +74,26 @@ function AffiliateCTA({ place, lang }: { place: Place; lang: Lang }) {
   );
 }
 
-export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug: string } }) {
+export default async function PlaceDetailPage({ params }: { params: { lang: Lang; slug: string } }) {
   const { lang, slug } = params;
   const place = getPlaceBySlug(slug);
   if (!place) notFound();
   const meta = NICHE_META[place.niche];
   const similar = getSimilarPlaces(place, 4);
   const mentions = getPlaceMentions(place.id);
+  const ownerProfile = await getOwnerProfile(place.id);
+
+  // Owner-controlled overlays (live DB) take precedence over scraped values
+  const displayHours = ownerProfile?.hours || null;
+  const displayDescription = ownerProfile?.description || null;
+  const displayPhotos =
+    ownerProfile && ownerProfile.ownerPhotos.length > 0
+      ? ownerProfile.ownerPhotos
+      : place.photos_sample;
+  const displayHeroPhoto = displayPhotos[0] || place.top_photo_url;
+  const services = ownerProfile?.services || [];
+  const whatsapp = ownerProfile?.whatsapp || null;
+  const lineId = ownerProfile?.lineId || null;
 
   // Source badges
   const sources = [
@@ -122,9 +137,9 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
         {/* HERO — full-bleed photo with title overlay */}
         <section className="relative isolate overflow-hidden">
           <div className="absolute inset-0">
-            {place.top_photo_url ? (
+            {displayHeroPhoto ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={place.top_photo_url} alt={place.name} className="h-full w-full object-cover" />
+              <img src={displayHeroPhoto} alt={place.name} className="h-full w-full object-cover" />
             ) : (
               <PlacePlaceholder niche={place.niche} size="xl" />
             )}
@@ -220,6 +235,82 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
 
         <div className="mx-auto max-w-5xl px-4">
 
+        {/* OWNER-WRITTEN DESCRIPTION */}
+        {displayDescription && (
+          <section className="mt-8 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">About</h2>
+            <p className="whitespace-pre-wrap text-base leading-relaxed">{displayDescription}</p>
+            {ownerProfile?.koreanStaffNote && (
+              <p className="mt-3 inline-flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-800 dark:bg-rose-950/40 dark:text-rose-300">
+                🇰🇷 {ownerProfile.koreanStaffNote}
+              </p>
+            )}
+          </section>
+        )}
+
+        {/* SERVICES & PRICING */}
+        {services.length > 0 && (
+          <section className="mt-8 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">Services & pricing</h2>
+            <ul className="space-y-2">
+              {services.map((s, i) => (
+                <li
+                  key={i}
+                  className="flex items-baseline justify-between gap-3 border-b border-ink-100 py-2 last:border-0 dark:border-ink-800"
+                >
+                  <div className="min-w-0">
+                    <div className="text-sm font-bold">{s.name}</div>
+                    {s.description && (
+                      <p className="mt-0.5 text-xs muted">{s.description}</p>
+                    )}
+                    {s.duration_min && (
+                      <span className="mt-0.5 inline-block text-[10px] muted">{s.duration_min} min</span>
+                    )}
+                  </div>
+                  {s.price_thb !== undefined && (
+                    <div className="shrink-0 text-base font-black tabular-nums text-emerald-700 dark:text-emerald-400">
+                      ฿{s.price_thb.toLocaleString()}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* DIRECT CONTACT — WhatsApp / LINE buttons (one-tap) */}
+        {(whatsapp || lineId) && (
+          <section className="mt-8">
+            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
+              💬 Message {place.name} directly
+            </h2>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {whatsapp && (
+                <a
+                  href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
+                  target="_blank"
+                  rel="noopener nofollow"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-green-600 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-green-700"
+                >
+                  <span>📱</span>
+                  <span>WhatsApp</span>
+                </a>
+              )}
+              {lineId && (
+                <a
+                  href={`https://line.me/ti/p/~${encodeURIComponent(lineId)}`}
+                  target="_blank"
+                  rel="noopener nofollow"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[#06C755] px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#05a847]"
+                >
+                  <span>💚</span>
+                  <span>LINE</span>
+                </a>
+              )}
+            </div>
+          </section>
+        )}
+
         {/* INQUIRY FORM — direct contact, 0% markup. Lead CTA. */}
         <section className="mt-8 rounded-2xl border-2 border-emerald-300 bg-emerald-50/30 p-4 dark:border-emerald-700 dark:bg-emerald-950/20">
           <div className="mb-3 flex items-baseline justify-between">
@@ -285,16 +376,30 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
           </section>
         )}
 
-        {/* PHOTOS */}
-        {place.photos_sample.length > 0 && (
+        {/* PHOTOS — owner-uploaded preferred, fall back to scraped */}
+        {displayPhotos.length > 0 && (
           <section className="mt-10">
-            <h2 className="mb-3 text-lg font-bold">{t("photos_label", lang)} ({place.photos_count})</h2>
-            <PhotoGallery photos={place.photos_sample} alt={place.name} />
+            <h2 className="mb-3 text-lg font-bold">
+              {t("photos_label", lang)} ({displayPhotos.length})
+              {ownerProfile && ownerProfile.ownerPhotos.length > 0 && (
+                <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                  By owner
+                </span>
+              )}
+            </h2>
+            <PhotoGallery photos={displayPhotos} alt={place.name} />
           </section>
         )}
 
-        {/* HOURS */}
-        {hours && (
+        {/* HOURS — prefer owner-entered free-form text, fall back to scraped dict */}
+        {displayHours ? (
+          <section className="mt-10">
+            <h2 className="mb-3 text-lg font-bold">{t("hours", lang)}</h2>
+            <p className="whitespace-pre-wrap rounded-lg bg-white px-4 py-3 text-sm dark:bg-ink-900">
+              {displayHours}
+            </p>
+          </section>
+        ) : hours ? (
           <section className="mt-10">
             <h2 className="mb-3 text-lg font-bold">{t("hours", lang)}</h2>
             <dl className="grid grid-cols-1 gap-1 text-sm sm:grid-cols-2">
@@ -306,7 +411,7 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
               ))}
             </dl>
           </section>
-        )}
+        ) : null}
 
         {/* PER-PLACE NAVER (Korean blogs about this specific business) */}
         {mentions.naver.length > 0 && (
@@ -557,6 +662,7 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
         </div>
       </main>
       <StickyBookBar place={place} lang={lang} />
+      <ViewPing placeId={place.id} />
     </>
   );
 }

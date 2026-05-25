@@ -109,10 +109,54 @@ export const inquiries = pgTable("inquiries", {
   language: text("language").default("en"),
   message: text("message").notNull(),
   status: text("status").notNull().default("new"),
+  // In-app reply from the business owner
+  replyMessage: text("reply_message"),
+  repliedAt: timestamp("replied_at"),
   respondedAt: timestamp("responded_at"),
   countedAt: timestamp("counted_at").defaultNow().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// Live business profile maintained by the claimed owner. Overlays the
+// static places.json data on the public place page.
+// Owner edits go straight here (claim already verifies the owner). Admin
+// retains spot-check authority by being able to delete/edit the row.
+export const listingProfiles = pgTable("listing_profiles", {
+  placeId: text("place_id").primaryKey(),
+  ownerUserId: text("owner_user_id")
+    .references(() => users.id, { onDelete: "set null" }),
+  // Photos uploaded by the owner (Vercel Blob URLs). Replace scraped photos.
+  ownerPhotos: jsonb("owner_photos").$type<string[]>().default([]).notNull(),
+  // Services menu — [{name, price_thb, duration_min, description}]
+  services: jsonb("services").$type<Array<{
+    name: string;
+    price_thb?: number;
+    duration_min?: number;
+    description?: string;
+  }>>().default([]).notNull(),
+  // Owner-controlled basic info (overlays scraped data)
+  description: text("description"),
+  hours: text("hours"),
+  whatsapp: text("whatsapp"),
+  lineId: text("line_id"),
+  contactEmail: text("contact_email"),
+  koreanStaffNote: text("korean_staff_note"),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Simple page view counter per (place_id, day) so owners can see traffic.
+// Lazily incremented from the place page via a fire-and-forget API call.
+export const placeViews = pgTable(
+  "place_views",
+  {
+    placeId: text("place_id").notNull(),
+    day: text("day").notNull(), // YYYY-MM-DD UTC
+    count: integer("count").notNull().default(0),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.placeId, t.day] }),
+  }),
+);
 
 // Per-business subscription state. Monthly free tier = 10 inquiries.
 export const subscriptions = pgTable("subscriptions", {
@@ -131,3 +175,5 @@ export type ListingClaim = typeof listingClaims.$inferSelect;
 export type ListingEdit = typeof listingEdits.$inferSelect;
 export type Inquiry = typeof inquiries.$inferSelect;
 export type Subscription = typeof subscriptions.$inferSelect;
+export type ListingProfile = typeof listingProfiles.$inferSelect;
+export type PlaceView = typeof placeViews.$inferSelect;
