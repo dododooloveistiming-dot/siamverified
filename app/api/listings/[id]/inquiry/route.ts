@@ -16,10 +16,39 @@ type Body = {
 
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 
+// In-memory IP rate limit — 3 inquiries per 5 minutes per IP. Resets when
+// the function instance recycles (fine for our scale; abusers get
+// inconsistent throttling which is actually a feature).
+const RL_WINDOW_MS = 5 * 60 * 1000;
+const RL_MAX = 3;
+const rlMap = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const bucket = (rlMap.get(ip) ?? []).filter((t) => now - t < RL_WINDOW_MS);
+  if (bucket.length >= RL_MAX) {
+    rlMap.set(ip, bucket);
+    return true;
+  }
+  bucket.push(now);
+  rlMap.set(ip, bucket);
+  return false;
+}
+
 export async function POST(
   req: Request,
   { params }: { params: { id: string } },
 ) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    ?? req.headers.get("x-real-ip")
+    ?? "unknown";
+  if (rateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Too many inquiries — please wait a few minutes." },
+      { status: 429 },
+    );
+  }
+
   const body = (await req.json().catch(() => ({}))) as Body;
   const customerName = (body.customer_name ?? "").trim().slice(0, 120);
   const customerEmail = (body.customer_email ?? "").trim().slice(0, 200);

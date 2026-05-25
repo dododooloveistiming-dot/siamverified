@@ -39,6 +39,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* Preconnect Google's photo CDN so the first hero photo paints
+            ~150ms faster. Most place pages serve from this origin. */}
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+        {/* Same for streetview / maps photo URLs that occasionally appear */}
+        <link rel="dns-prefetch" href="https://maps.googleapis.com" />
+      </head>
       <body>{children}</body>
     </html>
   );

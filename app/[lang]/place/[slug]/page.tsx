@@ -11,8 +11,10 @@ import PhotoGallery from "@/components/PhotoGallery";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
 
-// ISR — initially built static, refreshed from DB (owner profile) every 60s.
-export const revalidate = 60;
+// ISR — initially built static, refreshed from DB (owner profile) every
+// 10 minutes. Owner edits go live within ~10 min; trade-off for 90% fewer
+// function invocations vs 60s revalidation.
+export const revalidate = 600;
 
 export function generateStaticParams() {
   const bundle = loadPlaces();
