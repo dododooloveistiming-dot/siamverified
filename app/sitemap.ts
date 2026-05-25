@@ -91,10 +91,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // to avoid 12K+ entries × 6 langs swamping Google's crawl budget; engines
   // pick up other langs via hreflang on the en page.
   const bundle = loadPlaces();
+  const enrichedAt = (bundle as unknown as { enriched_at?: string }).enriched_at;
+  const lastMod = enrichedAt ? new Date(enrichedAt) : now;
   for (const p of bundle.places) {
     out.push({
       url: `${origin}/en/place/${p.slug}/`,
-      lastModified: bundle.enriched_at ? new Date(bundle.enriched_at as string) : now,
+      lastModified: lastMod,
       priority: 0.6,
       changeFrequency: "monthly",
     });
