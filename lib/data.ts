@@ -114,14 +114,11 @@ export function getTopPlacesPerNiche(perNiche = 3): Record<Niche, Place[]> {
 
 // ─── Per-place mentions (Naver / YouTube / Pantip about a specific business)
 
-type PerPlaceCache = {
-  naver?: Record<string, unknown[]>;
-  youtube?: Record<string, unknown[]>;
-  pantip?: Record<string, unknown[]>;
-};
+type PerPlaceKind = "naver" | "youtube" | "pantip" | "naver_cafe";
+type PerPlaceCache = Partial<Record<PerPlaceKind, Record<string, unknown[]>>>;
 const perPlaceCache: PerPlaceCache = {};
 
-function loadPerPlace(kind: "naver" | "youtube" | "pantip"): Record<string, unknown[]> {
+function loadPerPlace(kind: PerPlaceKind): Record<string, unknown[]> {
   if (perPlaceCache[kind]) return perPlaceCache[kind]!;
   const p = path.join(process.cwd(), "public", "data", `per_place_${kind}.json`);
   if (!fs.existsSync(p)) {
@@ -158,17 +155,58 @@ export type PerPlacePantipHit = {
   reply_count?: string;
   posted_date?: string;
 };
+export type PerPlaceCafeHit = {
+  cafe_url: string;
+  cafe_name: string;
+  post_title: string;
+  post_snippet?: string;
+  post_date?: string;
+};
+export type KlookProduct = {
+  title: string;
+  price_thb: number | null;
+  currency: string;
+  photo_url: string;
+  rating: number | null;
+  review_count: number | null;
+  product_url: string;
+  position: number;
+};
+export type KlookPlace = {
+  search_url: string;
+  products: KlookProduct[];
+  scraped_at: string;
+};
 
 export function getPlaceMentions(placeId: string): {
   naver: PerPlaceNaverHit[];
   youtube: PerPlaceYoutubeHit[];
   pantip: PerPlacePantipHit[];
+  cafe: PerPlaceCafeHit[];
 } {
   return {
     naver: (loadPerPlace("naver")[placeId] as PerPlaceNaverHit[]) ?? [],
     youtube: (loadPerPlace("youtube")[placeId] as PerPlaceYoutubeHit[]) ?? [],
     pantip: (loadPerPlace("pantip")[placeId] as PerPlacePantipHit[]) ?? [],
+    cafe: (loadPerPlace("naver_cafe")[placeId] as PerPlaceCafeHit[]) ?? [],
   };
+}
+
+let klookCache: Record<string, KlookPlace> | null = null;
+export function getPlaceKlook(placeId: string): KlookPlace | null {
+  if (klookCache === null) {
+    const p = path.join(process.cwd(), "public", "data", "per_place_klook.json");
+    if (!fs.existsSync(p)) {
+      klookCache = {};
+    } else {
+      try {
+        klookCache = JSON.parse(fs.readFileSync(p, "utf-8"));
+      } catch {
+        klookCache = {};
+      }
+    }
+  }
+  return klookCache![placeId] ?? null;
 }
 
 const communityCache = new Map<Niche, CommunityBundle | null>();

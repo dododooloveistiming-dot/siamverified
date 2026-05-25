@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile } from "@/lib/data";
+import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
@@ -85,6 +85,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const meta = NICHE_META[place.niche];
   const similar = getSimilarPlaces(place, 4);
   const mentions = getPlaceMentions(place.id);
+  const klookData = getPlaceKlook(place.id);
   const ownerProfile = await getOwnerProfile(place.id);
 
   // Owner-controlled overlays (live DB) take precedence over scraped values
@@ -394,14 +395,74 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           <InquiryForm placeId={place.slug} placeName={place.name} lang={lang} />
         </section>
 
-        {/* AFFILIATE CTAs — secondary fallback */}
-        <section className="mt-6">
-          <h2 className="mb-2 text-xs font-bold uppercase tracking-wide muted">
-            Or book through a partner platform
-          </h2>
-          <AffiliateCTA place={place} lang={lang} />
-          <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
-        </section>
+        {/* KLOOK PRODUCT CARDS — real products w/ rating + price + photo (highest conversion) */}
+        {klookData && klookData.products.length > 0 && (
+          <section className="mt-8">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-sm font-bold uppercase tracking-wide muted">
+                ⚡ Instant book on Klook
+              </h2>
+              <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">
+                Free cancellation
+              </span>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {klookData.products.slice(0, 3).map((prod, i) => (
+                <a
+                  key={i}
+                  href={prod.product_url}
+                  target="_blank"
+                  rel="nofollow sponsored noopener"
+                  className="group block overflow-hidden rounded-2xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-md dark:border-ink-800 dark:bg-ink-900"
+                >
+                  {prod.photo_url ? (
+                    <div className="relative aspect-video bg-ink-100 dark:bg-ink-800">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={prod.photo_url}
+                        alt={prod.title}
+                        className="h-full w-full object-cover transition group-hover:scale-[1.03]"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div className="grid aspect-video place-items-center bg-gradient-to-br from-rose-50 to-orange-50 text-2xl dark:from-rose-950/30 dark:to-orange-950/30">
+                      ⚡
+                    </div>
+                  )}
+                  <div className="p-3">
+                    <div className="line-clamp-2 text-sm font-bold leading-snug">{prod.title}</div>
+                    <div className="mt-2 flex items-center justify-between text-xs">
+                      {prod.rating != null && (
+                        <span className="font-semibold">
+                          ★ {prod.rating}
+                          {prod.review_count ? <span className="muted"> ({prod.review_count.toLocaleString()})</span> : null}
+                        </span>
+                      )}
+                      {prod.price_thb != null && (
+                        <span className="font-black text-rose-700 dark:text-rose-400">
+                          ฿{prod.price_thb.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+            <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
+          </section>
+        )}
+
+        {/* AFFILIATE CTAs — secondary fallback for non-Klook platforms */}
+        {!(klookData && klookData.products.length > 0) && (
+          <section className="mt-6">
+            <h2 className="mb-2 text-xs font-bold uppercase tracking-wide muted">
+              Or book through a partner platform
+            </h2>
+            <AffiliateCTA place={place} lang={lang} />
+            <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
+          </section>
+        )}
 
         {/* OWN THIS LISTING? */}
         <section className="mt-8 rounded-xl border border-dashed border-emerald-300 bg-emerald-50/40 p-4 text-sm dark:border-emerald-700 dark:bg-emerald-950/20">
@@ -469,16 +530,18 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </section>
         ) : null}
 
-        {/* PER-PLACE NAVER (Korean blogs about this specific business) */}
-        {mentions.naver.length > 0 && (
+        {/* PER-PLACE NAVER (Korean blogs + cafe posts about this specific business) */}
+        {(mentions.naver.length > 0 || mentions.cafe.length > 0) && (
           <section className="mt-10">
             <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
-              <span>🇰🇷</span> Korean blog reviews
-              <span className="text-xs font-normal muted">({mentions.naver.length})</span>
+              <span>🇰🇷</span> Korean reviews
+              <span className="text-xs font-normal muted">
+                ({mentions.naver.length + mentions.cafe.length})
+              </span>
             </h2>
             <ul className="space-y-2">
               {mentions.naver.map((b, i) => (
-                <li key={i}>
+                <li key={`b${i}`}>
                   <a
                     href={b.blog_url}
                     target="_blank"
@@ -486,12 +549,31 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                     className="block rounded-xl border border-ink-100 bg-white p-3 transition hover:border-emerald-400 dark:border-ink-800 dark:bg-ink-900"
                   >
                     <div className="text-xs muted">
-                      {b.blogger_name ? `blog.naver.com/${b.blogger_name}` : "Naver Blog"}
+                      Naver Blog{b.blogger_name ? ` · ${b.blogger_name}` : ""}
                       {b.blog_date ? ` · ${b.blog_date}` : ""}
                     </div>
                     <div className="mt-1 text-sm font-medium">{b.blog_title}</div>
                     {b.blog_snippet && (
                       <p className="mt-1 line-clamp-2 text-xs muted">{b.blog_snippet}</p>
+                    )}
+                  </a>
+                </li>
+              ))}
+              {mentions.cafe.map((c, i) => (
+                <li key={`c${i}`}>
+                  <a
+                    href={c.cafe_url}
+                    target="_blank"
+                    rel="nofollow noopener"
+                    className="block rounded-xl border border-ink-100 bg-white p-3 transition hover:border-emerald-400 dark:border-ink-800 dark:bg-ink-900"
+                  >
+                    <div className="text-xs muted">
+                      Naver Cafe{c.cafe_name ? ` · ${c.cafe_name}` : ""}
+                      {c.post_date ? ` · ${c.post_date}` : ""}
+                    </div>
+                    <div className="mt-1 text-sm font-medium">{c.post_title}</div>
+                    {c.post_snippet && (
+                      <p className="mt-1 line-clamp-2 text-xs muted">{c.post_snippet}</p>
                     )}
                   </a>
                 </li>
