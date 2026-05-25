@@ -77,6 +77,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
           <div>
             <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Business</div>
             <ul className="space-y-1">
+              <li><a href={`/${lang}/about/`} className="hover:underline">About &amp; Contact</a></li>
               <li><a href="/dashboard" className="hover:underline">Claim your listing</a></li>
               <li><a href="/auth/signin" className="hover:underline">Sign in</a></li>
             </ul>
