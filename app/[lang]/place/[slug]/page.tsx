@@ -145,6 +145,11 @@ export default function PlaceDetailPage({ params }: { params: { lang: Lang; slug
                 <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 font-bold text-white">
                   Trust {place.trust_score}/100
                 </span>
+                {place.bookable?.klook && (
+                  <span className="rounded-full bg-rose-600 px-2.5 py-0.5 font-bold text-white">
+                    ⚡ Bookable on Klook
+                  </span>
+                )}
                 {place.rating != null && (
                   <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
                     ★ {place.rating.toFixed(1)}

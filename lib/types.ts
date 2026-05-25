@@ -94,6 +94,10 @@ export interface Place {
   is_partner: boolean;
   // community mentions (Reddit/Pantip/Naver fuzzy matches by name)
   community_mentions?: CommunityThread[];
+  // Klook/Viator search returned actual products
+  bookable?: { klook: boolean; viator: boolean };
+  // Was deep-scraped from Google Maps overnight
+  has_google_scrape?: boolean;
 }
 
 export interface CommunityThread {

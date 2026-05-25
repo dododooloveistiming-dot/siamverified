@@ -303,7 +303,12 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
               {pbLabel.icon}
             </span>
           )}
-          {hasAffiliate && (
+          {p.bookable?.klook && (
+            <span className="rounded-full bg-rose-100 px-2 py-0.5 font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">
+              ⚡ Klook
+            </span>
+          )}
+          {hasAffiliate && !p.bookable?.klook && (
             <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
               ⚡ {t("bookable_label", lang)}
             </span>

@@ -28,6 +28,69 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.mkdirSync(OUT_BY_NICHE_DIR, { recursive: true });
 fs.mkdirSync(OUT_COMMUNITY_DIR, { recursive: true });
 
+// ─── Per-place enrichment from overnight scrape ────────────────────────
+// Loaded once and consulted per place: deep Google scrape (photos / reviews /
+// hours / phone / website), Bookable verification (does Klook/Viator have
+// real products?), and the image-cache map (Google CDN URL → local file).
+function loadJsonSafe(p, fallback = {}) {
+  try { return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf-8")) : fallback; }
+  catch { return fallback; }
+}
+const PER_GOOGLE = loadJsonSafe(path.join(OUT_DIR, "per_place_google.json"));
+const PER_BOOKABLE = loadJsonSafe(path.join(OUT_DIR, "per_place_bookable.json"));
+const PER_PHOTO_MAP = loadJsonSafe(path.join(OUT_DIR, "per_place_photos.json"));
+console.log(`[enrich] google=${Object.keys(PER_GOOGLE).length}, ` +
+            `bookable=${Object.keys(PER_BOOKABLE).length}, ` +
+            `photo_cache=${Object.keys(PER_PHOTO_MAP).length}`);
+
+function localizePhoto(url) {
+  // If we cached the photo locally, prefer that path (faster + immortal).
+  return PER_PHOTO_MAP[url] || url;
+}
+
+function enrichPlace(place) {
+  const g = PER_GOOGLE[place.id];
+  if (g) {
+    // Merge Google photos in front of any existing sample, dedup, cap at 15
+    const gPhotos = (g.photos || []).map(localizePhoto);
+    const existing = (place.photos_sample || []).map(localizePhoto);
+    const merged = [...new Set([...gPhotos, ...existing])].slice(0, 15);
+    if (merged.length > 0) {
+      place.photos_sample = merged;
+      place.top_photo_url = merged[0];
+      place.photos_count = Math.max(place.photos_count || 0, merged.length);
+    }
+    // Bring in Google reviews if we have none scraped yet
+    if (g.reviews && g.reviews.length > 0 && (!place.reviews_sample || place.reviews_sample.length < 3)) {
+      const ggReviews = g.reviews.map((text) => ({
+        source: "google",
+        reviewer: "",
+        rating: null,
+        date: "",
+        text: String(text).slice(0, 800),
+      }));
+      place.reviews_sample = [...(place.reviews_sample || []), ...ggReviews].slice(0, 10);
+      if (!place.top_review_text && ggReviews[0]) {
+        place.top_review_text = ggReviews[0].text;
+      }
+    }
+    // Address / phone / website refresh if missing
+    if (!place.address && g.address) place.address = g.address;
+    if (!place.phone && g.phone) place.phone = g.phone;
+    if (!place.website && g.website) place.website = g.website;
+    place.has_google_scrape = true;
+  }
+  // Bookable flag (Klook/Viator search returned actual products)
+  const b = PER_BOOKABLE[place.id];
+  if (b) {
+    place.bookable = {
+      klook: !!b?.klook?.has_products,
+      viator: !!b?.viator?.has_products,
+    };
+  }
+  return place;
+}
+
 // Read broad scraper CSV (Naver / Pantip / Reddit) for a niche folder.
 // Source order (first hit wins):
 //   1. local ./external_data/{folder}/...  (from tools/community_scrapers/siamverified_harvest)

@@ -17,3 +17,7 @@ external_data/
 # Python build artifacts
 scripts/__pycache__/
 **/__pycache__/
+
+# Locally cached Google photos (385MB+). Production uses Google CDN URLs
+# directly. Keep for backup / future Vercel Blob migration.
+public/place-photos/
