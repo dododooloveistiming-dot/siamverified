@@ -192,6 +192,42 @@ export function getPlaceMentions(placeId: string): {
   };
 }
 
+export type BlogPost = {
+  slug: string;
+  lang: string;
+  title: string;
+  city: string;
+  city_ko: string;
+  niche: string;
+  niche_ko: string;
+  audience: string;
+  place_ids: string[];
+  place_slugs: string[];
+  body_md: string;
+  generated_at: string;
+};
+
+let postsCache: BlogPost[] | null = null;
+export function loadBlogPosts(): BlogPost[] {
+  if (postsCache !== null) return postsCache;
+  const p = path.join(process.cwd(), "public", "data", "posts_ko.json");
+  if (!fs.existsSync(p)) {
+    postsCache = [];
+    return postsCache;
+  }
+  try {
+    const data = JSON.parse(fs.readFileSync(p, "utf-8")) as { posts?: BlogPost[] };
+    postsCache = data.posts ?? [];
+  } catch {
+    postsCache = [];
+  }
+  return postsCache;
+}
+
+export function getBlogPostBySlug(slug: string): BlogPost | undefined {
+  return loadBlogPosts().find((p) => p.slug === slug);
+}
+
 let klookCache: Record<string, KlookPlace> | null = null;
 export function getPlaceKlook(placeId: string): KlookPlace | null {
   if (klookCache === null) {

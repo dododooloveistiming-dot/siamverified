@@ -75,8 +75,14 @@ export default function Header({ lang }: { lang: Lang }) {
                 </Link>
               ))}
               <Link
+                href={`/${lang}/blog/`}
+                className="block border-t border-ink-100 px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50 dark:border-ink-800 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
+              >
+                📖 Korean Blog
+              </Link>
+              <Link
                 href={`/${lang}/faq/`}
-                className="block border-t border-ink-100 px-3 py-2 text-xs hover:bg-emerald-50 hover:text-emerald-700 dark:border-ink-800 dark:hover:bg-emerald-950/40"
+                className="block px-3 py-2 text-xs hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
               >
                 ❓ FAQ
               </Link>

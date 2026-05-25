@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { loadPlaces } from "@/lib/data";
+import { loadPlaces, loadBlogPosts } from "@/lib/data";
 import { listFaqs } from "@/lib/faqs";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import type { Niche } from "@/lib/types";
@@ -83,6 +83,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: now,
         priority: 0.7,
         changeFrequency: "monthly",
+      });
+    }
+
+    // Korean blog index + each post (Korean-targeted long-tail SEO)
+    out.push({ url: `${origin}/${lang}/blog/`, lastModified: now, priority: 0.75, changeFrequency: "weekly" });
+    for (const post of loadBlogPosts()) {
+      out.push({
+        url: `${origin}/${lang}/blog/${post.slug}/`,
+        lastModified: new Date(post.generated_at),
+        priority: 0.75,
+        changeFrequency: "monthly",
+        alternates: {
+          languages: Object.fromEntries(
+            SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/blog/${post.slug}/`]),
+          ),
+        },
       });
     }
   }
