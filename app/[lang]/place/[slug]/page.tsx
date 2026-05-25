@@ -484,13 +484,62 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </div>
         </section>
 
-        {/* TOP REVIEW */}
-        {place.top_review_text && (
+        {/* REVIEWS — Booking.com-style rating summary widget + sample quotes */}
+        {(place.top_review_text || place.rating) && (
           <section className="mt-10">
-            <h2 className="mb-3 text-lg font-bold">{t("patient_voices", lang)}</h2>
-            <blockquote className="rounded-2xl border-l-4 border-emerald-400 bg-emerald-50/50 p-4 text-sm leading-relaxed dark:bg-emerald-950/20">
-              "{place.top_review_text}"
-            </blockquote>
+            <h2 className="mb-4 text-lg font-bold">{t("patient_voices", lang)}</h2>
+
+            {place.rating && (
+              <div className="mb-4 grid gap-4 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 sm:grid-cols-[auto_1fr] sm:items-center">
+                <div className="flex items-center gap-3 sm:flex-col sm:items-start">
+                  <div className="rounded-xl bg-emerald-600 px-3 py-2 text-2xl font-black text-white tabular-nums sm:text-3xl">
+                    {place.rating.toFixed(1)}
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold leading-tight">
+                      {place.rating >= 4.7 ? "Exceptional" : place.rating >= 4.3 ? "Excellent" : place.rating >= 3.8 ? "Very good" : "Good"}
+                    </div>
+                    <div className="text-xs muted">
+                      {(place.review_count ?? 0).toLocaleString()} reviews
+                    </div>
+                  </div>
+                </div>
+                {place.reviews_sample && place.reviews_sample.length > 0 && (() => {
+                  const dist = [5, 4, 3, 2, 1].map((stars) => {
+                    const n = place.reviews_sample.filter(
+                      (r) => Math.round(r.rating || 0) === stars,
+                    ).length;
+                    return { stars, n };
+                  });
+                  const total = dist.reduce((s, d) => s + d.n, 0) || 1;
+                  return (
+                    <ul className="space-y-1 text-xs">
+                      {dist.map((d) => {
+                        const pct = Math.round((d.n / total) * 100);
+                        return (
+                          <li key={d.stars} className="flex items-center gap-2">
+                            <span className="w-7 shrink-0 text-right tabular-nums muted">{d.stars}★</span>
+                            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
+                              <div
+                                className="h-full rounded-full bg-emerald-500"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                            <span className="w-9 shrink-0 text-right tabular-nums muted">{pct}%</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  );
+                })()}
+              </div>
+            )}
+
+            {place.top_review_text && (
+              <blockquote className="rounded-2xl border-l-4 border-emerald-400 bg-emerald-50/50 p-4 text-sm leading-relaxed dark:bg-emerald-950/20">
+                "{place.top_review_text}"
+              </blockquote>
+            )}
             {place.reviews_sample.length > 1 && (
               <ul className="mt-4 space-y-3">
                 {place.reviews_sample.slice(1, 5).map((rv, i) => (
