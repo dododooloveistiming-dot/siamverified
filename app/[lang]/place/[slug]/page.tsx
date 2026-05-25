@@ -7,7 +7,9 @@ import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
 import InquiryForm from "@/components/InquiryForm";
-import PhotoGallery from "@/components/PhotoGallery";
+import HeroMosaic from "@/components/HeroMosaic";
+import PlaceFAQ from "@/components/PlaceFAQ";
+import type { FAQItem } from "@/components/PlaceFAQ";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
 
@@ -132,85 +134,150 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
       : undefined,
   };
 
+  // Build FAQ items from data — drives both visible accordion + FAQPage JSON-LD
+  const faqs: FAQItem[] = [];
+  faqs.push({
+    q: `Where is ${place.name} located?`,
+    a: `${place.address || place.city || "Thailand"}.${
+      place.google_maps_url ? ` Open in Google Maps: ${place.google_maps_url}` : ""
+    }`,
+  });
+  faqs.push({
+    q: `How do I book or contact ${place.name}?`,
+    a: `Use the inquiry form on this page — it goes directly to ${place.name} with 0% commission. ${
+      place.bookable?.klook ? "You can also book through Klook for instant confirmation." : ""
+    }${place.phone ? ` Or call ${place.phone}.` : ""}`,
+  });
+  const langsSpoken = Object.entries(place.languages)
+    .filter(([, v]) => v)
+    .map(([k]) => ({ en: "English", ko: "Korean", th: "Thai", zh: "Chinese", ja: "Japanese", ar: "Arabic" }[k] || k));
+  if (langsSpoken.length > 0) {
+    faqs.push({
+      q: `What languages do they speak?`,
+      a: `Based on our research, ${place.name} serves customers in ${langsSpoken.join(", ")}.`,
+    });
+  }
+  if (place.price_min_thb > 0) {
+    faqs.push({
+      q: `How much does it cost?`,
+      a: `Typical price is ฿${place.price_min_thb.toLocaleString()}${
+        place.price_max_thb > place.price_min_thb
+          ? `–฿${place.price_max_thb.toLocaleString()}`
+          : ""
+      } per ${place.price_unit}. Prices may vary by season and service — confirm with the venue.`,
+    });
+  }
+  if (place.review_count && place.rating) {
+    faqs.push({
+      q: `Is ${place.name} popular / well-reviewed?`,
+      a: `${place.name} has ${place.review_count.toLocaleString()} Google reviews with an average rating of ★ ${place.rating.toFixed(
+        1,
+      )}/5.${place.is_partner ? " It's a verified partner on our platform." : ""}`,
+    });
+  }
+  if (place.is_beginner_friendly) {
+    faqs.push({
+      q: `Is ${place.name} good for beginners?`,
+      a: `Yes — ${place.name} is rated beginner-friendly. Expect welcoming staff, intro sessions, and equipment provided for first-time visitors.`,
+    });
+  }
+  if (place.is_open_24h) {
+    faqs.push({
+      q: `Is ${place.name} open 24 hours?`,
+      a: `Yes, ${place.name} operates 24 hours. Confirm specific service hours by inquiry.`,
+    });
+  }
+
+  // Photos for the mosaic — owner uploads first, otherwise scraped
+  const mosaicPhotos = displayPhotos.slice(0, 30);
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className="pb-28 md:pb-20">
-        {/* HERO — full-bleed photo with title overlay */}
-        <section className="relative isolate overflow-hidden">
-          <div className="absolute inset-0">
-            {displayHeroPhoto ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={displayHeroPhoto} alt={place.name} className="h-full w-full object-cover" />
-            ) : (
-              <PlacePlaceholder niche={place.niche} size="xl" />
+        {/* HERO — clean text header + Airbnb-style photo mosaic */}
+        <section className="mx-auto max-w-5xl px-4 pt-6 sm:pt-8">
+          <nav className="text-xs muted">
+            <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
+            <span className="mx-2">/</span>
+            <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">{nicheName(place.niche, lang)}</Link>
+            <span className="mx-2">/</span>
+            <span className="truncate">{place.name}</span>
+          </nav>
+
+          <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl md:text-5xl">
+            {place.name}
+          </h1>
+
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm muted">
+            {place.rating != null && (
+              <span className="font-semibold text-ink-900 dark:text-ink-100">
+                ★ {place.rating.toFixed(1)}
+                {place.review_count ? <span className="ml-1 underline-offset-2 hover:underline">({place.review_count.toLocaleString()} reviews)</span> : null}
+              </span>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+            {place.rating != null && <span className="opacity-40">·</span>}
+            <span>{meta.emoji} {nicheName(place.niche, lang)}</span>
+            {place.city && <><span className="opacity-40">·</span><span>{place.city}</span></>}
+            {place.is_partner && (
+              <>
+                <span className="opacity-40">·</span>
+                <span className="font-semibold text-emerald-700 dark:text-emerald-400">✓ Verified Partner</span>
+              </>
+            )}
           </div>
 
-          <div className="relative mx-auto max-w-5xl px-4 pt-12 pb-10 sm:pt-20 sm:pb-14">
-            <nav className="text-xs text-white/80">
-              <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
-              <span className="mx-2">/</span>
-              <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">{nicheName(place.niche, lang)}</Link>
-              <span className="mx-2">/</span>
-              <span className="truncate">{place.name}</span>
-            </nav>
-
-            <div className="mt-32 sm:mt-40">
-              <div className="flex flex-wrap items-center gap-2 text-xs text-white/85">
-                <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 font-bold text-white">
-                  Trust {place.trust_score}/100
-                </span>
-                {place.bookable?.klook && (
-                  <span className="rounded-full bg-rose-600 px-2.5 py-0.5 font-bold text-white">
-                    ⚡ Bookable on Klook
-                  </span>
-                )}
-                {place.rating != null && (
-                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
-                    ★ {place.rating.toFixed(1)}
-                    {place.review_count ? ` (${place.review_count.toLocaleString()})` : ""}
-                  </span>
-                )}
-                {place.price_band !== "unknown" && place.price_min_thb > 0 && (
-                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
-                    ฿{place.price_min_thb.toLocaleString()}
-                    {place.price_max_thb > place.price_min_thb ? `–${place.price_max_thb.toLocaleString()}` : ""}
-                    <span className="ml-1 opacity-75">/ {place.price_unit}</span>
-                  </span>
-                )}
-                {place.languages.ko && (
-                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
-                    🇰🇷 KO
-                  </span>
-                )}
-                {place.languages.ja && (
-                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
-                    🇯🇵 JA
-                  </span>
-                )}
-                {place.is_open_24h && (
-                  <span className="rounded-full bg-white/15 px-2.5 py-0.5 font-semibold backdrop-blur-sm ring-1 ring-white/30">
-                    🌙 24h
-                  </span>
-                )}
-              </div>
-              <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">
-                {place.name}
-              </h1>
-              <p className="mt-2 text-sm text-white/90 sm:text-base">
-                {meta.emoji} {nicheName(place.niche, lang)}
-                {place.city ? ` · ${place.city}` : ""}
-                {place.address ? ` · ${place.address}` : ""}
-              </p>
-              {place.is_suspected_viral && (
-                <div className="mt-3 inline-flex items-center gap-2 rounded-lg bg-orange-500/90 px-3 py-1.5 text-xs font-medium text-white">
-                  ⚠ {t("low_signal_warn", lang)}
-                </div>
-              )}
-            </div>
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
+            <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 font-bold text-white">
+              Trust {place.trust_score}/100
+            </span>
+            {place.bookable?.klook && (
+              <span className="rounded-full bg-rose-600 px-2.5 py-0.5 font-bold text-white">
+                ⚡ Instant book on Klook
+              </span>
+            )}
+            {place.price_band !== "unknown" && place.price_min_thb > 0 && (
+              <span className="rounded-full bg-ink-100 px-2.5 py-0.5 font-semibold text-ink-900 dark:bg-ink-800 dark:text-ink-100">
+                ฿{place.price_min_thb.toLocaleString()}
+                {place.price_max_thb > place.price_min_thb ? `–${place.price_max_thb.toLocaleString()}` : ""}
+                <span className="ml-1 opacity-75">/ {place.price_unit}</span>
+              </span>
+            )}
+            {place.is_beginner_friendly && (
+              <span className="rounded-full bg-sky-100 px-2.5 py-0.5 font-semibold text-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
+                🟢 Beginner-friendly
+              </span>
+            )}
+            {place.languages.ko && (
+              <span className="rounded-full bg-ink-100 px-2.5 py-0.5 font-semibold dark:bg-ink-800">
+                🇰🇷 Korean OK
+              </span>
+            )}
+            {place.languages.ja && (
+              <span className="rounded-full bg-ink-100 px-2.5 py-0.5 font-semibold dark:bg-ink-800">
+                🇯🇵 Japanese OK
+              </span>
+            )}
+            {place.is_open_24h && (
+              <span className="rounded-full bg-ink-100 px-2.5 py-0.5 font-semibold dark:bg-ink-800">
+                🌙 24h
+              </span>
+            )}
+            {place.is_suspected_viral && (
+              <span className="rounded-full bg-amber-100 px-2.5 py-0.5 font-semibold text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+                ⚠ {t("low_signal_warn", lang)}
+              </span>
+            )}
           </div>
+        </section>
+
+        {/* PHOTO MOSAIC — Airbnb-style 1+4 grid with fullscreen lightbox */}
+        <section className="mx-auto mt-5 max-w-5xl px-4">
+          <HeroMosaic
+            photos={mosaicPhotos}
+            alt={place.name}
+            placeholder={<PlacePlaceholder niche={place.niche} size="xl" />}
+          />
         </section>
 
         {/* TRUST STRIP — sources cross-checked */}
@@ -378,20 +445,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </section>
         )}
 
-        {/* PHOTOS — owner-uploaded preferred, fall back to scraped */}
-        {displayPhotos.length > 0 && (
-          <section className="mt-10">
-            <h2 className="mb-3 text-lg font-bold">
-              {t("photos_label", lang)} ({displayPhotos.length})
-              {ownerProfile && ownerProfile.ownerPhotos.length > 0 && (
-                <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
-                  By owner
-                </span>
-              )}
-            </h2>
-            <PhotoGallery photos={displayPhotos} alt={place.name} />
-          </section>
-        )}
+        {/* (Photos moved to top-of-page mosaic) */}
 
         {/* HOURS — prefer owner-entered free-form text, fall back to scraped dict */}
         {displayHours ? (
@@ -571,6 +625,14 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </dl>
         </section>
 
+        {/* FAQ — accordion + FAQPage JSON-LD for SEO/AEO */}
+        {faqs.length > 0 && (
+          <section className="mt-12">
+            <h2 className="mb-4 text-lg font-bold">Frequently asked questions</h2>
+            <PlaceFAQ items={faqs} />
+          </section>
+        )}
+
         {/* SIMILAR PLACES — same niche, prefer same city */}
         {similar.length > 0 && (
           <section className="mt-12">
@@ -661,6 +723,27 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             }),
           }}
         />
+
+        {/* FAQPage schema — surfaces Q&A in Google "People also ask" + AEO */}
+        {faqs.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                mainEntity: faqs.map((f) => ({
+                  "@type": "Question",
+                  name: f.q,
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: f.a,
+                  },
+                })),
+              }),
+            }}
+          />
+        )}
         </div>
       </main>
       <StickyBookBar place={place} lang={lang} />

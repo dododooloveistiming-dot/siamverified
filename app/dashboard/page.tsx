@@ -2,10 +2,22 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { eq, desc, and, inArray, sql, gte } from "drizzle-orm";
 import { auth, signOut } from "@/lib/auth";
-import { db, listingClaims, inquiries, subscriptions, placeViews } from "@/lib/db";
+import { db, listingClaims, inquiries, subscriptions, placeViews, listingProfiles } from "@/lib/db";
 import { getPlaceBySlug } from "@/lib/data";
 import { FREE_MONTHLY_INQUIRY_LIMIT } from "@/lib/quota";
 import { isAdminSession } from "@/lib/admin";
+
+type SetupTask = { key: string; label: string; done: boolean };
+
+function setupTasksFor(profile: typeof listingProfiles.$inferSelect | undefined): SetupTask[] {
+  return [
+    { key: "photos", label: "Upload at least 3 photos", done: (profile?.ownerPhotos?.length ?? 0) >= 3 },
+    { key: "description", label: "Write a description", done: !!(profile?.description && profile.description.length > 30) },
+    { key: "services", label: "Add services & pricing", done: (profile?.services?.length ?? 0) >= 1 },
+    { key: "hours", label: "Set opening hours", done: !!profile?.hours },
+    { key: "contact", label: "Add WhatsApp or LINE", done: !!(profile?.whatsapp || profile?.lineId) },
+  ];
+}
 
 export const dynamic = "force-dynamic";
 
@@ -63,6 +75,15 @@ export default async function DashboardPage() {
   const totalViews14d = chartDays.reduce((s, d) => s + d.count, 0);
   const maxView = Math.max(1, ...chartDays.map((d) => d.count));
 
+  // Per-listing profile rows (for the setup-completion checklist)
+  const profileRows = approvedPlaceIds.length > 0
+    ? await db
+        .select()
+        .from(listingProfiles)
+        .where(inArray(listingProfiles.placeId, approvedPlaceIds))
+    : [];
+  const profileByPlace = new Map(profileRows.map((p) => [p.placeId, p]));
+
   const subRows = await db
     .select()
     .from(subscriptions)
@@ -110,11 +131,70 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* STAT CARDS */}
+      {/* UPGRADE BANNER — shown when free tier is at or near monthly limit */}
+      {tier === "free" && approvedPlaceIds.length > 0 && (() => {
+        const pct = Math.min(100, Math.round((usedThisMonth / FREE_MONTHLY_INQUIRY_LIMIT) * 100));
+        const atLimit = usedThisMonth >= FREE_MONTHLY_INQUIRY_LIMIT;
+        const nearLimit = usedThisMonth >= FREE_MONTHLY_INQUIRY_LIMIT - 2;
+        if (!nearLimit) return null;
+        return (
+          <section
+            className={`mt-6 overflow-hidden rounded-2xl border ${
+              atLimit
+                ? "border-rose-300 bg-gradient-to-r from-rose-50 to-amber-50 dark:border-rose-700 dark:from-rose-950/40 dark:to-amber-950/30"
+                : "border-amber-300 bg-amber-50 dark:border-amber-700 dark:bg-amber-950/30"
+            }`}
+          >
+            <div className="grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{atLimit ? "🛑" : "⚡"}</span>
+                  <h2 className="text-base font-black">
+                    {atLimit
+                      ? "You've hit your monthly inquiry limit"
+                      : `Only ${FREE_MONTHLY_INQUIRY_LIMIT - usedThisMonth} inquiries left this month`}
+                  </h2>
+                </div>
+                <p className="mt-1 text-xs text-ink-700 dark:text-ink-300">
+                  {atLimit
+                    ? "Customers who try to inquire this month will be blocked until your quota resets. Upgrade to Pro for unlimited inquiries — paid back by 1 booking."
+                    : "Upgrade to Pro before you hit the cap — unlimited inquiries, priority listing rank, no missed customers."}
+                </p>
+                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-ink-200/60 dark:bg-ink-800">
+                  <div
+                    className={`h-full rounded-full ${atLimit ? "bg-rose-500" : "bg-amber-500"}`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+                <div className="mt-1.5 text-[10px] muted">
+                  {usedThisMonth} / {FREE_MONTHLY_INQUIRY_LIMIT} this month · resets on the 1st
+                </div>
+              </div>
+              <Link
+                href="/dashboard/upgrade"
+                className="self-stretch rounded-xl bg-emerald-600 px-5 py-3 text-center text-sm font-black text-white shadow-sm transition hover:bg-emerald-700 sm:self-center"
+              >
+                Upgrade to Pro →
+              </Link>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* HERO METRICS — inquiries is the money number, give it the spotlight */}
       <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <BigStat
+          label="Inquiries"
+          value={totalInquiries}
+          sub="all-time leads"
+          accent="emerald"
+        />
+        <BigStat
+          label="Views"
+          value={totalViews14d.toLocaleString()}
+          sub="last 14 days"
+        />
         <Stat label="Listings claimed" value={claims.length} sub={`${approvedPlaceIds.length} approved`} />
-        <Stat label="Views (14 days)" value={totalViews14d.toLocaleString()} />
-        <Stat label="Inquiries (all-time)" value={totalInquiries} />
         <Stat
           label="Plan"
           value={tier === "pro" ? "Pro" : "Free"}
@@ -179,36 +259,89 @@ export default async function DashboardPage() {
           <ul className="mt-4 grid gap-3">
             {claims.map((c) => {
               const place = getPlaceBySlug(c.placeId);
+              const profile = profileByPlace.get(c.placeId);
+              const tasks = c.status === "approved" ? setupTasksFor(profile) : [];
+              const doneCount = tasks.filter((t) => t.done).length;
+              const totalTasks = tasks.length;
+              const pct = totalTasks > 0 ? Math.round((doneCount / totalTasks) * 100) : 0;
+              const complete = doneCount === totalTasks && totalTasks > 0;
               return (
                 <li
                   key={c.id}
-                  className="flex items-center justify-between rounded-xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900"
+                  className="rounded-xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900"
                 >
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-bold">
-                      {place?.name ?? c.placeId}
-                    </div>
-                    <div className="text-xs text-ink-500">
-                      Claimed {c.claimedAt.toLocaleDateString()}
-                      {c.reviewedAt ? ` · Reviewed ${c.reviewedAt.toLocaleDateString()}` : ""}
-                    </div>
-                    {c.status === "approved" && (
-                      <div className="mt-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
-                        📩 {inquiryCountMap.get(c.placeId) ?? 0} inquiries total
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-sm font-bold">
+                        {place?.name ?? c.placeId}
                       </div>
-                    )}
+                      <div className="text-xs text-ink-500">
+                        Claimed {c.claimedAt.toLocaleDateString()}
+                        {c.reviewedAt ? ` · Reviewed ${c.reviewedAt.toLocaleDateString()}` : ""}
+                      </div>
+                      {c.status === "approved" && (
+                        <div className="mt-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
+                          📩 {inquiryCountMap.get(c.placeId) ?? 0} inquiries total
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <StatusBadge status={c.status} />
+                      {c.status === "approved" && (
+                        <Link
+                          href={`/dashboard/listings/${c.placeId}/edit`}
+                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700"
+                        >
+                          Edit →
+                        </Link>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <StatusBadge status={c.status} />
-                    {c.status === "approved" && (
-                      <Link
-                        href={`/dashboard/listings/${c.placeId}/edit`}
-                        className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700"
-                      >
-                        Edit →
-                      </Link>
-                    )}
-                  </div>
+
+                  {/* SETUP CHECKLIST — only for approved listings, drives owner to complete profile */}
+                  {c.status === "approved" && totalTasks > 0 && (
+                    <div className="mt-3 border-t border-ink-100 pt-3 dark:border-ink-800">
+                      <div className="flex items-baseline justify-between">
+                        <div className="text-[11px] font-bold uppercase tracking-wide muted">
+                          {complete ? "✓ Profile complete" : "Complete your profile"}
+                        </div>
+                        <div className="text-[11px] font-semibold tabular-nums">
+                          {doneCount}/{totalTasks}
+                        </div>
+                      </div>
+                      <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
+                        <div
+                          className={`h-full rounded-full transition-all ${
+                            complete ? "bg-emerald-500" : "bg-amber-500"
+                          }`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      {!complete && (
+                        <ul className="mt-2.5 grid grid-cols-1 gap-1 sm:grid-cols-2">
+                          {tasks.map((t) => (
+                            <li
+                              key={t.key}
+                              className={`flex items-center gap-2 text-[11px] ${
+                                t.done ? "text-ink-400 line-through dark:text-ink-600" : "text-ink-700 dark:text-ink-300"
+                              }`}
+                            >
+                              <span
+                                className={`grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full text-[8px] font-black ${
+                                  t.done
+                                    ? "bg-emerald-500 text-white"
+                                    : "border-2 border-ink-300 dark:border-ink-600"
+                                }`}
+                              >
+                                {t.done ? "✓" : ""}
+                              </span>
+                              {t.label}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  )}
                 </li>
               );
             })}
@@ -216,6 +349,28 @@ export default async function DashboardPage() {
         )}
       </section>
     </main>
+  );
+}
+
+function BigStat({
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  label: string;
+  value: number | string;
+  sub?: string;
+  accent?: "emerald";
+}) {
+  const ring = accent === "emerald" ? "ring-emerald-300 dark:ring-emerald-700" : "ring-ink-200 dark:ring-ink-700";
+  const valueClass = accent === "emerald" ? "text-emerald-700 dark:text-emerald-400" : "text-ink-900 dark:text-ink-50";
+  return (
+    <div className={`rounded-xl bg-white p-4 ring-2 ${ring} dark:bg-ink-900`}>
+      <div className="text-[10px] font-semibold uppercase tracking-wide muted">{label}</div>
+      <div className={`mt-1 text-3xl font-black tabular-nums sm:text-4xl ${valueClass}`}>{value}</div>
+      {sub && <div className="mt-0.5 text-xs muted">{sub}</div>}
+    </div>
   );
 }
 
