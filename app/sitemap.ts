@@ -29,6 +29,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Root
   out.push({ url: `${origin}/`, lastModified: now, priority: 1.0, changeFrequency: "weekly" });
 
+  // For-business landing (owner acquisition funnel)
+  out.push({ url: `${origin}/for-business/`, lastModified: now, priority: 0.85, changeFrequency: "monthly" });
+
   for (const lang of SUPPORTED_LANGS) {
     // Lang landing
     out.push({

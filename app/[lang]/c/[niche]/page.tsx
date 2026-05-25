@@ -6,6 +6,7 @@ import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
+import CategoryDiscovery from "@/components/CategoryDiscovery";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 
 const NICHES: Niche[] = [
@@ -102,7 +103,28 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
           <p className="mt-2 text-sm muted">{t("coming_soon_msg", lang)}</p>
         </div>
       ) : (
-        <CategoryClient places={places} lang={lang} niche={niche} />
+        <>
+          {/* DISCOVERY — visual entry points (featured, by city, top rated, ko-friendly, bookable) */}
+          <CategoryDiscovery places={places} lang={lang} niche={niche} />
+
+          {/* BROWSE ALL — filterable grid */}
+          <section className="mt-16 border-t border-ink-100 pt-10 dark:border-ink-800">
+            <div className="text-[10px] font-black uppercase tracking-[0.15em] text-emerald-700 dark:text-emerald-400">
+              BROWSE ALL
+            </div>
+            <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
+              {lang === "ko"
+                ? `${nicheName(niche, lang)} 전체 ${places.length.toLocaleString()}곳`
+                : `All ${places.length.toLocaleString()} ${nicheName(niche, lang)} places`}
+            </h2>
+            <p className="mt-1 text-sm muted">
+              {lang === "ko"
+                ? "필터로 원하는 조건 좁히기"
+                : "Filter and sort to find your perfect match"}
+            </p>
+            <CategoryClient places={places} lang={lang} niche={niche} />
+          </section>
+        </>
       )}
 
         {/* COMMUNITY DISCUSSIONS — niche-level Reddit + Pantip + Naver */}
