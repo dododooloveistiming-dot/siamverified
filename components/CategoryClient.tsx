@@ -176,11 +176,20 @@ export default function CategoryClient({
         </div>
       ) : (
         <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p) => (
-            <li key={p.id}>
-              <PlaceCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
-            </li>
-          ))}
+          {filtered.map((p, i) => {
+            // Every 7th card spans 2 columns and uses the horizontal "Featured"
+            // layout (photo left + info right) — breaks up the uniform grid.
+            const featured = i > 0 && i % 7 === 0;
+            return (
+              <li key={p.id} className={featured ? "sm:col-span-2" : ""}>
+                {featured ? (
+                  <FeaturedListCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
+                ) : (
+                  <PlaceCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </>
@@ -219,6 +228,69 @@ function Pill({ on, onClick, children, tone = "default" }: { on: boolean; onClic
     >
       {children}
     </button>
+  );
+}
+
+function FeaturedListCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackEmoji: string }) {
+  const tier = trustTier(p.trust_score);
+  const tierClass =
+    tier === "high"
+      ? "bg-emerald-500 text-white"
+      : tier === "mid"
+      ? "bg-amber-500 text-white"
+      : "bg-rose-500 text-white";
+  return (
+    <Link
+      href={`/${lang}/place/${p.slug}/`}
+      className="group relative grid h-full gap-0 overflow-hidden rounded-2xl border-2 border-amber-300 bg-white transition hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-lg dark:border-amber-700 dark:bg-ink-900 sm:grid-cols-[1.2fr_1fr]"
+    >
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink-50 dark:bg-ink-800 sm:aspect-auto">
+        {p.top_photo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={p.top_photo_url} alt={p.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+        ) : (
+          <PlacePlaceholder niche={p.niche} size="lg" />
+        )}
+        <span className="absolute left-3 top-3 rounded-md bg-amber-400 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-amber-950 shadow">
+          ★ Editor&apos;s pick
+        </span>
+        <span className={`absolute right-3 top-3 inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-black tabular-nums shadow ${tierClass}`}>
+          {p.trust_score}
+          <span className="text-[9px] opacity-90">/100</span>
+        </span>
+      </div>
+      <div className="flex flex-col gap-2 p-5">
+        <h3 className="line-clamp-2 text-lg font-black leading-tight">{p.name}</h3>
+        <div className="flex flex-wrap items-center gap-2 text-xs muted">
+          {p.city && <span className="truncate">📍 {p.city}</span>}
+          {p.rating != null && (
+            <span className="shrink-0 font-bold text-amber-600 dark:text-amber-400">
+              ★ {p.rating.toFixed(1)}
+              {p.review_count ? <span className="ml-1 font-normal muted">({p.review_count.toLocaleString()})</span> : null}
+            </span>
+          )}
+        </div>
+        {p.top_review_text && (
+          <p className="line-clamp-3 text-xs italic leading-relaxed text-ink-600 dark:text-ink-400">
+            &ldquo;{p.top_review_text}&rdquo;
+          </p>
+        )}
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 text-[10px]">
+          {p.is_beginner_friendly && (
+            <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">🐣 Beginner</span>
+          )}
+          {p.languages.ko && (
+            <span className="rounded-full bg-rose-100 px-2 py-0.5 font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">🇰🇷 KO</span>
+          )}
+          {p.bookable?.klook && (
+            <span className="rounded-full bg-rose-500 px-2 py-0.5 font-bold text-white">⚡ Klook</span>
+          )}
+          <span className="ml-auto inline-flex items-center gap-1 font-bold text-emerald-700 dark:text-emerald-400">
+            View details →
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 }
 

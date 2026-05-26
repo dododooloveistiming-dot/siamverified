@@ -11,6 +11,7 @@ import HeroMosaic from "@/components/HeroMosaic";
 import KlookOffer from "@/components/KlookOffer";
 import YouTubeFacade from "@/components/YouTubeFacade";
 import PlaceFAQ from "@/components/PlaceFAQ";
+import BookingForm from "@/components/BookingForm";
 import type { FAQItem } from "@/components/PlaceFAQ";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
@@ -307,9 +308,38 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         <div className="mx-auto max-w-5xl px-4">
 
-        {/* KLOOK OFFER — above-the-fold booking card (highest conversion) */}
+        {/* DIRECT BOOKING — 0% commission CTA card, above-the-fold (primary intent) */}
+        <section className="mt-6">
+          <div className="rounded-2xl border-2 border-emerald-300 bg-gradient-to-br from-emerald-50 to-white p-4 dark:border-emerald-700 dark:from-emerald-950/30 dark:to-ink-900">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-base">💎</span>
+                  <h2 className="text-base font-black">Book directly with {place.name}</h2>
+                </div>
+                <p className="mt-0.5 text-[11px] muted">
+                  No commission · No booking platform markup · Pay at the venue
+                </p>
+              </div>
+              <span className="rounded-full bg-emerald-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow">
+                0% fee
+              </span>
+            </div>
+            <BookingForm
+              placeId={place.slug}
+              placeName={place.name}
+              lang={lang}
+              services={services}
+            />
+          </div>
+        </section>
+
+        {/* KLOOK OFFER — third-party booking option (alternative, with commission) */}
         {klookData && klookData.products.length > 0 && (
           <section className="mt-6">
+            <div className="mb-2 text-[10px] font-black uppercase tracking-wider muted">
+              Or book via Klook
+            </div>
             <KlookOffer data={klookData} placeName={place.name} />
             <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
           </section>
@@ -456,7 +486,11 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                     </div>
                   </div>
                 </div>
-                {place.reviews_sample && place.reviews_sample.length > 0 && (() => {
+                {/* Per-review ratings are absent from most Google scrapes, so
+                    only render the distribution histogram when we actually have
+                    at least one rated sample — otherwise it shows 0% across the
+                    board which looks broken. */}
+                {place.reviews_sample && place.reviews_sample.length > 0 && place.reviews_sample.some((r) => (r.rating ?? 0) > 0) && (() => {
                   const dist = [5, 4, 3, 2, 1].map((stars) => {
                     const n = place.reviews_sample.filter(
                       (r) => Math.round(r.rating || 0) === stars,
@@ -484,6 +518,11 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                     </ul>
                   );
                 })()}
+                {place.reviews_sample && place.reviews_sample.length > 0 && !place.reviews_sample.some((r) => (r.rating ?? 0) > 0) && (
+                  <div className="text-xs muted">
+                    {(place.review_count ?? 0).toLocaleString()} reviews aggregated from Google Maps. Per-review breakdown coming soon.
+                  </div>
+                )}
               </div>
             )}
 

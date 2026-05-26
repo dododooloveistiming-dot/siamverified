@@ -97,17 +97,27 @@ export const listingEdits = pgTable("listing_edits", {
   appliedAt: timestamp("applied_at"),
 });
 
-// Customer inquiries sent through verifiedthai.com.
+// Customer inquiries AND direct booking requests sent through verifiedthai.com.
+// `kind` separates the two — bookings always have preferredDate set, may have
+// requestedTime + selectedService, and surface differently in the owner
+// dashboard. Both flows hit the same table so the owner has a single inbox.
 export const inquiries = pgTable("inquiries", {
   id: uuid("id").primaryKey().defaultRandom(),
   placeId: text("place_id").notNull(),
+  // "inquiry" (default) | "booking" — drives dashboard tab + customer flow.
+  kind: text("kind").notNull().default("inquiry"),
   customerName: text("customer_name").notNull(),
   customerEmail: text("customer_email").notNull(),
   customerPhone: text("customer_phone"),
   preferredDate: text("preferred_date"),
+  // HH:MM, only set on bookings
+  requestedTime: text("requested_time"),
+  // Service name from listingProfiles.services that the customer picked
+  requestedService: text("requested_service"),
   partySize: text("party_size"),
   language: text("language").default("en"),
   message: text("message").notNull(),
+  // "new" | "confirmed" | "declined" | "completed" — covers both kinds
   status: text("status").notNull().default("new"),
   // In-app reply from the business owner
   replyMessage: text("reply_message"),

@@ -56,10 +56,24 @@ export default async function InquiriesPage() {
       <nav className="text-xs text-ink-500">
         <Link href="/dashboard" className="hover:underline">Dashboard</Link> › Inquiries
       </nav>
-      <div className="mt-2 flex items-center justify-between">
-        <h1 className="text-2xl font-black tracking-tight">Inquiries</h1>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-black tracking-tight">Inquiries & Bookings</h1>
         <UsagePill used={used} limit={limit} tier={tier} />
       </div>
+      {(() => {
+        const bookingCount = list.filter((q) => q.kind === "booking").length;
+        const inquiryCount = list.length - bookingCount;
+        return (
+          <div className="mt-3 flex gap-2 text-xs">
+            <span className="rounded-full bg-emerald-50 px-3 py-1 font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+              📅 {bookingCount} booking{bookingCount === 1 ? "" : "s"}
+            </span>
+            <span className="rounded-full bg-sky-50 px-3 py-1 font-bold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
+              📩 {inquiryCount} {inquiryCount === 1 ? "inquiry" : "inquiries"}
+            </span>
+          </div>
+        );
+      })()}
 
       {tier === "free" && used >= FREE_MONTHLY_INQUIRY_LIMIT && (
         <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-950/20">
@@ -94,24 +108,41 @@ export default async function InquiriesPage() {
             return (
               <li
                 key={q.id}
-                className="rounded-xl border border-ink-100 bg-white transition hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+                className={`rounded-xl border bg-white transition hover:shadow dark:bg-ink-900 ${
+                  q.kind === "booking"
+                    ? "border-emerald-300 hover:border-emerald-500 dark:border-emerald-700"
+                    : "border-ink-100 hover:border-sky-400 dark:border-ink-800"
+                }`}
               >
                 <Link href={`/dashboard/inquiries/${q.id}`} className="block p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="text-xs text-ink-500">
-                        {place?.name ?? q.placeId} · {q.createdAt.toLocaleDateString()}
+                      <div className="flex items-center gap-2 text-xs">
+                        {q.kind === "booking" ? (
+                          <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-white">
+                            📅 Booking
+                          </span>
+                        ) : (
+                          <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
+                            📩 Inquiry
+                          </span>
+                        )}
+                        <span className="text-ink-500">
+                          {place?.name ?? q.placeId} · {q.createdAt.toLocaleDateString()}
+                        </span>
                       </div>
-                      <div className="mt-1 text-sm font-bold">{q.customerName}</div>
+                      <div className="mt-1.5 text-sm font-bold">{q.customerName}</div>
                       <div className="mt-0.5 text-xs">
                         <span className="text-emerald-700 dark:text-emerald-300">
                           {q.customerEmail}
                         </span>
                         {q.customerPhone && <span className="ml-2 text-ink-500">· {q.customerPhone}</span>}
                       </div>
-                      {(q.preferredDate || q.partySize) && (
-                        <div className="mt-1 text-[11px] text-ink-500">
-                          {q.preferredDate && <span>📅 {q.preferredDate} </span>}
+                      {(q.preferredDate || q.requestedTime || q.requestedService || q.partySize) && (
+                        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-ink-500">
+                          {q.preferredDate && <span>📅 {q.preferredDate}</span>}
+                          {q.requestedTime && <span>🕐 {q.requestedTime}</span>}
+                          {q.requestedService && <span>🛎️ {q.requestedService}</span>}
                           {q.partySize && <span>👥 {q.partySize}</span>}
                         </div>
                       )}
@@ -172,6 +203,9 @@ function UsagePill({
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
     new: "bg-emerald-100 text-emerald-800",
+    confirmed: "bg-emerald-600 text-white",
+    declined: "bg-rose-100 text-rose-800",
+    completed: "bg-violet-100 text-violet-800",
     responded: "bg-sky-100 text-sky-800",
     closed: "bg-ink-100 text-ink-600",
   };

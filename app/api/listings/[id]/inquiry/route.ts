@@ -5,10 +5,13 @@ import { notifyNewInquiry } from "@/lib/notify";
 import { getPlaceBySlug } from "@/lib/data";
 
 type Body = {
+  kind?: "inquiry" | "booking";
   customer_name?: string;
   customer_email?: string;
   customer_phone?: string;
   preferred_date?: string;
+  requested_time?: string;
+  requested_service?: string;
   party_size?: string;
   language?: string;
   message?: string;
@@ -80,14 +83,18 @@ export async function POST(
     );
   }
 
+  const kind = body.kind === "booking" ? "booking" : "inquiry";
   const [row] = await db
     .insert(inquiries)
     .values({
       placeId: params.id,
+      kind,
       customerName,
       customerEmail,
       customerPhone: (body.customer_phone ?? "").trim().slice(0, 50) || null,
       preferredDate: (body.preferred_date ?? "").trim().slice(0, 120) || null,
+      requestedTime: (body.requested_time ?? "").trim().slice(0, 10) || null,
+      requestedService: (body.requested_service ?? "").trim().slice(0, 200) || null,
       partySize: (body.party_size ?? "").trim().slice(0, 40) || null,
       language: (body.language ?? "en").slice(0, 4),
       message,

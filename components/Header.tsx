@@ -64,28 +64,49 @@ export default function Header({ lang }: { lang: Lang }) {
             >
               More <span className="text-[8px]">▼</span>
             </button>
-            <div className="absolute left-0 top-full hidden min-w-[180px] rounded-xl border border-ink-100 bg-white p-2 shadow-lg group-hover:block dark:border-ink-800 dark:bg-ink-900">
-              {NAV_NICHES_SECONDARY.map((n) => (
+            {/* Wider, sectioned dropdown — categories grouped separately from explore links so it doesn't feel like one long list */}
+            <div className="absolute left-0 top-full hidden w-[280px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
+              <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+                More categories
+              </div>
+              <div className="p-1.5">
+                {NAV_NICHES_SECONDARY.map((n) => (
+                  <Link
+                    key={n}
+                    href={`/${lang}/c/${n}/`}
+                    className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                  >
+                    <span className="text-base">{NICHE_META[n].emoji}</span>
+                    <span>{nicheName(n, lang)}</span>
+                  </Link>
+                ))}
+              </div>
+              <div className="border-t border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+                Explore
+              </div>
+              <div className="p-1.5">
                 <Link
-                  key={n}
-                  href={`/${lang}/c/${n}/`}
-                  className="block rounded-md px-3 py-2 text-xs hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                  href={`/${lang}/blog/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-bold text-emerald-700 transition hover:bg-emerald-50 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
                 >
-                  {NICHE_META[n].emoji} {nicheName(n, lang)}
+                  <span className="text-base">📖</span>
+                  <span>Korean Travel Blog</span>
                 </Link>
-              ))}
-              <Link
-                href={`/${lang}/blog/`}
-                className="block border-t border-ink-100 px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50 dark:border-ink-800 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
-              >
-                📖 Korean Blog
-              </Link>
-              <Link
-                href={`/${lang}/faq/`}
-                className="block px-3 py-2 text-xs hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-              >
-                ❓ FAQ
-              </Link>
+                <Link
+                  href={`/${lang}/faq/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">❓</span>
+                  <span>FAQ</span>
+                </Link>
+                <Link
+                  href="/for-business"
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">🏢</span>
+                  <span>For Business Owners</span>
+                </Link>
+              </div>
             </div>
           </div>
         </nav>
@@ -138,7 +159,10 @@ export default function Header({ lang }: { lang: Lang }) {
             className="fixed inset-x-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-y-auto border-b border-ink-100 bg-white shadow-lg dark:border-ink-800 dark:bg-ink-950 md:hidden"
             aria-label="Mobile navigation"
           >
-            <ul className="grid grid-cols-2 gap-2 p-4">
+            <div className="px-4 pb-1 pt-4 text-[10px] font-black uppercase tracking-wider muted">
+              Categories
+            </div>
+            <ul className="grid grid-cols-2 gap-2 px-4 pb-3">
               {NAV_NICHES.map((n) => (
                 <li key={n}>
                   <Link
@@ -152,11 +176,32 @@ export default function Header({ lang }: { lang: Lang }) {
                 </li>
               ))}
             </ul>
+            <div className="border-t border-ink-100 px-4 pb-2 pt-3 text-[10px] font-black uppercase tracking-wider muted dark:border-ink-800">
+              Explore
+            </div>
+            <div className="px-4 pb-3">
+              <Link
+                href={`/${lang}/blog/`}
+                onClick={() => setOpen(false)}
+                className="mb-1.5 flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-3 text-sm font-bold dark:border-ink-800 dark:bg-ink-900"
+              >
+                <span>📖 Korean Travel Blog</span>
+                <span className="text-ink-400">→</span>
+              </Link>
+              <Link
+                href={`/${lang}/faq/`}
+                onClick={() => setOpen(false)}
+                className="mb-1.5 flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-3 text-sm font-medium dark:border-ink-800 dark:bg-ink-900"
+              >
+                <span>❓ FAQ</span>
+                <span className="text-ink-400">→</span>
+              </Link>
+            </div>
             <div className="border-t border-ink-100 px-4 py-3 dark:border-ink-800">
               <Link
                 href="/for-business"
                 onClick={() => setOpen(false)}
-                className="mb-4 flex items-center justify-between rounded-xl border border-emerald-500 bg-emerald-50 px-3 py-3 text-sm font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+                className="mb-4 flex items-center justify-between rounded-xl border-2 border-emerald-500 bg-emerald-50 px-3 py-3 text-sm font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
               >
                 <span>🏢 For Business — Claim your listing</span>
                 <span>→</span>
