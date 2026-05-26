@@ -528,6 +528,697 @@ Korean tourists peak: December and Lunar New Year (late Jan/early Feb).`,
 Don't feel obligated to over-tip — Thai service culture is genuine and doesn't expect Western-level tips.`,
     related: [],
   },
+
+  // ─── Practical / Travel logistics ────────────────────────────────────
+  {
+    slug: "thailand-wellness-trip-daily-budget",
+    topic: "general",
+    question: "How much should I budget per day for a wellness trip to Thailand?",
+    shortAnswer:
+      "Backpacker wellness: ฿1,500–฿2,500/day (~$45–75 USD). Mid-tier: ฿4,000–฿7,500/day. Luxury wellness retreats: ฿15,000–฿35,000/day all-in.",
+    longAnswer: `Daily budgets vary wildly depending on accommodation tier and activity intensity.
+
+**Backpacker / hostel tier — ฿1,500–฿2,500/day** ($45–$75 USD):
+- Dorm bed: ฿300–฿600
+- Street food: ฿150–฿300
+- 1 drop-in yoga or Muay Thai class: ฿400–฿700
+- 1-hr Thai massage: ฿300–฿500
+- BTS / Grab transport: ฿100–฿200
+
+**Mid-tier — ฿4,000–฿7,500/day** ($120–$225):
+- Boutique hotel: ฿1,500–฿3,000
+- Mix of street food + restaurants: ฿700–฿1,200
+- 1–2 activities per day: ฿800–฿2,000
+- Oil massage at quality spa: ฿800–฿1,500
+- Grab / private driver: ฿300–฿600
+
+**Luxury wellness retreat — ฿15,000–฿35,000/day**:
+- Premium resort with spa: ฿8,000–฿20,000
+- Full wellness program (3 treatments/day, meals, classes): often all-inclusive
+- Examples: Kamalaya Koh Samui, Chiva-Som Hua Hin, Six Senses Yao Noi
+
+**One-week realistic totals** (mid-tier):
+- Bangkok yoga + massage week: ฿30,000–฿50,000 ($900–$1,500)
+- Phuket Muay Thai camp week (with dorm): ฿15,000–฿25,000
+- Chiang Mai slow-travel week with cooking: ฿20,000–฿35,000`,
+    related: ["how-much-does-muay-thai-cost-thailand", "yoga-retreat-thailand-cost", "best-wellness-retreats-thailand"],
+  },
+  {
+    slug: "thailand-safe-for-tourists-wellness",
+    topic: "general",
+    question: "Is Thailand safe for wellness tourism (Muay Thai, yoga, diving)?",
+    shortAnswer:
+      "Thailand is among the safest countries in Southeast Asia for wellness tourism. Reputable camps and studios have professional safety protocols. Main risks are road accidents and unlicensed dive shops — both avoidable.",
+    longAnswer: `Thailand attracts 30M+ tourists yearly and the wellness/training industry is mature. Major safety considerations:
+
+**Muay Thai camps** — very safe at established gyms. You won't be forced into hard sparring as a beginner. Beginners typically get 2–4 weeks of light technique work before any contact training. Stick to camps with English-speaking staff and visible insurance signage.
+
+**Yoga retreats** — extremely safe. Main risk is improper guidance for beginners. Look for certified teachers (RYT-200/500 from Yoga Alliance) and avoid unverified "spiritual" retreats with no online reviews.
+
+**Diving** — generally very safe at PADI/SSI 5-Star centers. Verify dive shop certification before booking. Avoid super-cheap Koh Tao "fun dive" operators with no certification on display — fatalities have occurred at unregulated shops.
+
+**Spa / massage** — virtually risk-free, but for therapeutic massage check that the therapist has TAT (Tourism Authority of Thailand) registration if you want medical-grade work.
+
+**Bigger actual risks**:
+- Scooter/motorbike accidents — leading cause of tourist injury. Avoid renting bikes if you're not experienced.
+- Tuk-tuk overcharging — agree on price first or use Grab/Bolt.
+- Unlicensed dive shops or "free trial" muay thai gyms with hidden fees.
+
+Travel insurance is strongly recommended (~$50–$100 for a 2-week trip).`,
+    related: ["padi-cost-thailand", "muay-thai-beginner-thailand"],
+  },
+  {
+    slug: "thailand-visa-long-stay-wellness",
+    topic: "general",
+    question: "What visa do I need for a long-stay yoga or Muay Thai trip in Thailand?",
+    shortAnswer:
+      "Most Western and Korean passports get 60 days visa-free on arrival. For 30+ day trips you can extend +30 days at immigration (฿1,900) or apply for a 60–90 day Tourist Visa beforehand. For 6+ months, look into Education Visa (ED) via your school/gym.",
+    longAnswer: `As of 2026:
+
+**Visa-free entry** (no application needed):
+- Korea, US, UK, EU, Japan, most Western passports: 60 days on arrival
+- Single extension at Bangkok Immigration: +30 days for ฿1,900
+- Maximum visa-free stay: 90 days
+
+**Tourist Visa (TR)** — apply at Thai embassy beforehand:
+- 60 days single entry: ~$40 USD, extendable +30 days in country
+- 6-month multi-entry: ~$200 USD, must exit and re-enter every 60 days
+
+**Education Visa (ED)** — for 6+ months at registered schools:
+- Many Muay Thai camps, yoga teacher trainings, and Thai language schools sponsor ED visas
+- Costs ~฿15,000–฿25,000 for school registration + visa fees
+- Allows 1 year stay with 90-day reports
+- Tiger Muay Thai (Phuket), Sinbi (Phuket), some Bangkok yoga schools offer ED programs
+
+**Retirement / Long-term**:
+- O-A (50+ retirement): 1 year, requires income proof
+- LTR (Long-Term Resident): 10 years, high income thresholds
+- Elite Visa: 5–20 years, ฿900,000+ membership fee
+
+Always check current rules at thaiembassy.com (your country) — Thai visa policy changes frequently.`,
+    related: ["thailand-wellness-trip-daily-budget"],
+  },
+  {
+    slug: "thailand-airport-to-wellness-destinations",
+    topic: "general",
+    question: "How do I get from Bangkok airport to Phuket, Chiang Mai, or Koh Samui?",
+    shortAnswer:
+      "Domestic flights are fastest and often cheapest: BKK→HKT (Phuket) 80 min ~฿1,500, BKK→CNX (Chiang Mai) 75 min ~฿1,200, BKK→USM (Koh Samui) 70 min ~฿3,500. Buses/trains are 10x slower but ~฿500.",
+    longAnswer: `Most wellness travelers fly domestic from Suvarnabhumi (BKK) or Don Mueang (DMK).
+
+**Bangkok → Phuket (HKT)**:
+- Flight: 80 min, ฿1,500–฿3,000 (Thai AirAsia, Nok Air, Bangkok Airways)
+- Bus: 12 hrs overnight, ฿800–฿1,200
+- Best for: Muay Thai camps, diving, beach wellness
+
+**Bangkok → Chiang Mai (CNX)**:
+- Flight: 75 min, ฿1,000–฿2,500
+- Overnight train: 12 hrs, ฿400–฿1,200 (1st class sleeper recommended)
+- Bus: 9 hrs, ฿600–฿900
+- Best for: Long-stay yoga, cooking classes, slow-travel
+
+**Bangkok → Koh Samui (USM)**:
+- Direct flight on Bangkok Airways: 70 min, ฿3,500–฿6,000 (monopoly route — pricey)
+- Cheaper alternative: BKK → Surat Thani (฿1,500), then ferry to Samui (฿200, 1.5 hrs)
+- Best for: Luxury wellness retreats, Kamalaya, Six Senses
+
+**Bangkok → Pattaya / Hua Hin**:
+- Bus / van: 2–3 hrs, ฿250–฿400
+- No domestic flights — too close
+
+**Tips**:
+- Book domestic flights 2–4 weeks ahead for best prices
+- Don Mueang (DMK) handles most budget airlines — different airport from BKK, allow 2 hours between connections
+- Suvarnabhumi (BKK) has Airport Rail Link (฿45) and taxi/Grab options to city`,
+    related: ["thailand-wellness-trip-daily-budget"],
+  },
+  {
+    slug: "what-to-pack-thailand-wellness-trip",
+    topic: "general",
+    question: "What should I pack for a Muay Thai or yoga trip to Thailand?",
+    shortAnswer:
+      "Thailand is hot and humid year-round. Bring breathable workout clothes, sandals, a reusable water bottle, sunscreen, and basic first-aid. Gear like gloves, mats, and rashguards is cheaper to buy locally than to bring.",
+    longAnswer: `**Clothes** (pack light — wash daily):
+- 3–5 quick-dry athletic shorts/leggings
+- 5–7 breathable workout shirts (cotton wilts in humidity)
+- 1–2 sets of "going out" clothes (modest at temples)
+- Sandals or flip-flops + 1 pair of trainers
+- Light rain jacket (May–October)
+
+**Gear** (buy locally — cheaper):
+- Muay Thai gloves: ฿1,200–฿2,500 in Thailand vs $50–$120 abroad
+- Hand wraps: ฿200/pair, bring 2–3 pairs
+- Yoga mat: ฿800–฿1,500 locally (or rent at studio for ฿50/day)
+- Rashguard: ฿500–฿1,500
+- Brand-name (Fairtex, Twins): same prices, better selection than abroad
+
+**Health**:
+- Mosquito repellent with 30%+ DEET
+- High-SPF sunscreen (50+ — expensive in Thailand)
+- Basic first-aid kit: blister patches, antiseptic, ibuprofen
+- Probiotics for first-week stomach adjustment
+- Reef-safe sunscreen for diving (mandatory in many marine parks)
+
+**Tech**:
+- Universal adapter (Thai plugs accept US 2-pin + EU 2-pin, but not UK)
+- Portable charger
+- Waterproof phone case for beaches/diving
+
+**Don't bring**:
+- Heavy clothing (you'll sweat through it)
+- Excessive supplements (Thai pharmacies have everything)
+- Expensive jewelry (theft risk on beaches)
+
+**Korean travelers** — Thai pharmacies don't carry Korean OTC meds (지사제, 진통제 brands you know). Bring a small kit.`,
+    related: [],
+  },
+  {
+    slug: "korean-friendly-massage-thailand",
+    topic: "spa",
+    question: "Where can I find Korean-friendly Thai massage shops in Bangkok?",
+    shortAnswer:
+      "Korean-friendly massage shops cluster in Sukhumvit Soi 12, Asoke, and Thonglor — areas with high Korean expat density. Look for shops with Korean signage or surface Korean reviews. Many staff speak basic Korean greetings.",
+    longAnswer: `Bangkok's Korean tourist density means a meaningful subset of massage shops have learned basic Korean service phrases.
+
+**Best neighborhoods for Korean-friendly massage**:
+- **Sukhumvit Soi 12 / Asoke** — closest Korean enclave to Sukhumvit hotels. Multiple shops with Korean reviews on Naver.
+- **Phloen Chit / Ratchadamri** — luxury hotel district, premium spas with multilingual staff.
+- **Thonglor (Sukhumvit 55)** — upscale, lots of Korean expat residents → therapists used to Korean clients.
+- **Phra Khanong / Ekkamai** — newer Korean expat area.
+
+**Things to look for**:
+- 한국어 OK or 한국 손님 환영 signage
+- Listings with multiple Korean Naver blog reviews
+- Verified Thai's place filter: 🇰🇷 Korean-friendly badge surfaces these
+
+**Prices**:
+- Foot massage: ฿250–฿450 (1 hr)
+- Thai body massage: ฿350–฿600 (1 hr)
+- Oil/aroma: ฿700–฿1,500 (1 hr)
+- Tipping: ฿50–฿100 per therapist
+
+**Korean tourist favorites** (you'll see these in Naver blog posts):
+- Health Land — big chain, English/Korean menus
+- Asia Herb Association — Sukhumvit, herbal compress specialty
+- Ruen Nuad — clean, traditional, Ploenchit
+- Let's Relax — modern, ubiquitous, English/Korean menus
+
+Filter by 🇰🇷 Korean-friendly on individual listings to pre-screen for this signal.`,
+    related: ["thai-massage-price", "best-spa-bangkok"],
+  },
+
+  // ─── Muay Thai deep dive ──────────────────────────────────────────────
+  {
+    slug: "muay-thai-trip-how-long",
+    topic: "muay-thai",
+    question: "How long should I stay for a Muay Thai trip to Thailand?",
+    shortAnswer:
+      "Minimum useful stay is 1 week (drop-in style). 2–4 weeks is ideal for technique gains. 2–3 months is the standard fight-camp experience. Diminishing returns after 4 months for amateurs.",
+    longAnswer: `Your goal sets the duration:
+
+**1 week (drop-in tourist) — ฿4,000–฿8,000 in fees**:
+- 7–10 group classes, basic technique exposure
+- Realistic outcome: learn proper stance, basic punches/kicks, jab-cross-low kick combo
+- Best for vacation training, not for fighters
+
+**2–4 weeks (immersive beginner)** — ฿12,000–฿30,000 in fees, plus housing:
+- 20–40 sessions, significant technique improvement
+- Realistic outcome: comfortable shadow boxing, pad work flow, light sparring
+- Most foreign tourists pick this duration
+
+**2–3 months (fight camp standard)** — ฿40,000–฿80,000+ all-in with housing:
+- 60–120 sessions, real conditioning and skill
+- Common for: weight loss goals, amateur fight prep, sabbatical training
+- Body adapts to twice-daily training pace by week 3–4
+
+**4–12 months (serious training)**:
+- Required for: amateur fight competition prep, fitness transformation
+- Look into Education Visa (ED) for legal long stay
+- Diminishing returns unless you're working toward fighting
+
+**Optimal trip plan**:
+- First-timers: 2 weeks
+- Returning: 1 month
+- Sabbatical: 3 months
+
+Pace yourself in week 1 — most beginners over-train day 1 and quit by day 4.`,
+    related: ["how-much-does-muay-thai-cost-thailand", "muay-thai-beginner-thailand"],
+  },
+  {
+    slug: "muay-thai-stadium-lumpinee-vs-rajadamnern",
+    topic: "muay-thai",
+    question: "Lumpinee vs Rajadamnern Stadium — which is better to watch?",
+    shortAnswer:
+      "Rajadamnern is older and more traditional (Bangkok's oldest stadium, est. 1945). New Lumpinee Stadium is bigger, more modern, and easier for tourists (English signs, AC, ฿2,000–฿3,000 tickets). Both show real championship fights.",
+    longAnswer: `Both are sanctioned by Thailand's national Muay Thai authorities — fights are legitimate, including current champions and ranked fighters.
+
+**New Lumpinee Stadium** (Ramintra area, north Bangkok):
+- Moved from old Lumpinee location in 2014
+- Modern facility: AC, English announcements, food vendors
+- Fight nights: Tuesday, Friday, Saturday
+- Tickets: ฿2,000 (3rd class) → ฿3,000 (2nd) → ฿4,000 (ringside)
+- Easier for foreign tourists — pre-purchase tickets online
+- Larger crowd, more touristy, but quality fights
+
+**Rajadamnern Stadium** (central Bangkok, Ratchadamnoen Klang Road):
+- Thailand's oldest still-active Muay Thai stadium (since 1945)
+- More traditional atmosphere, intense Thai gambling crowd in 3rd class
+- Fight nights: Monday, Wednesday, Thursday, Sunday
+- Tickets: ฿1,500 (3rd) → ฿2,500 (2nd) → ฿3,500 (ringside)
+- Walking distance from Khao San Road tourist area
+- Tickets sometimes resold higher at the door — buy online for genuine prices
+
+**Tips**:
+- Best seats: 2nd class — close enough to feel the impact, far enough to see the full ring
+- Avoid: cheap 3rd class if gambling chaos bothers you
+- Show duration: ~3 hours, 8–10 fights
+- Dress code: smart casual, no shorts/flip-flops at ringside
+- Combo tickets including Muay Thai gym visit + stadium are sold at hotels — overpriced; book directly
+
+**Worth watching even if you don't train**: A real Muay Thai stadium fight is one of Bangkok's iconic experiences.`,
+    related: ["best-muay-thai-camps-thailand"],
+  },
+  {
+    slug: "women-muay-thai-thailand",
+    topic: "muay-thai",
+    question: "Can women train at Muay Thai camps in Thailand?",
+    shortAnswer:
+      "Yes — almost all camps welcome women equally, and dedicated women's classes are common. Female-friendly camps include Sinbi (Phuket), Tiger Muay Thai (Phuket), Yokkao (Bangkok), and Lanna (Chiang Mai). 30–40% of foreign trainees at most camps are women.",
+    longAnswer: `Muay Thai's female participation has grown dramatically — many world champions are women and Thailand has fully embraced female training.
+
+**What to expect**:
+- Mixed-gender classes are the default
+- Some camps have women-only classes (better for absolute beginners)
+- Female pad holders and trainers exist at most camps
+- Hard sparring is optional — you can do technique training only
+
+**Cultural notes** (Thai-specific Muay Thai customs):
+- Women traditionally don't step over the rope into the ring — they go under it (Wai Khru cultural respect)
+- Some traditional gyms ask women to avoid touching trainers' heads (Buddhist respect)
+- Modern, tourist-facing camps are relaxed about these customs
+
+**Top female-friendly camps**:
+- **Sinbi Muay Thai (Phuket)** — known for international community, ~40% women
+- **Tiger Muay Thai (Phuket)** — largest, dedicated women's program
+- **Yokkao Training Center (Bangkok)** — polished, beginner-friendly
+- **Lanna Muay Thai (Chiang Mai)** — small, intimate, gender-balanced
+- **Petchyindee Academy (Bangkok)** — more traditional but welcomes women
+
+**Practical**:
+- Bring sports bra (not commonly sold in Thai athletic size ranges)
+- Buy gloves locally (women's sizes available)
+- Most camps provide women-friendly accommodation options
+
+Solo female travelers are very common at Thai Muay Thai camps. The international community is welcoming, and Thailand is among the safer destinations for solo female travel.`,
+    related: ["best-muay-thai-camps-thailand", "muay-thai-beginner-thailand"],
+  },
+
+  // ─── Diving deep dive ─────────────────────────────────────────────────
+  {
+    slug: "padi-vs-ssi-thailand",
+    topic: "diving",
+    question: "PADI vs SSI vs NAUI — which dive certification is best in Thailand?",
+    shortAnswer:
+      "Both PADI and SSI are equally valid worldwide and accepted at all Thai dive shops. PADI is the most globally recognized brand (60% market share). SSI is ~20% cheaper and uses identical safety standards. NAUI is rare in Thailand.",
+    longAnswer: `All three agencies meet the same WRSTC (World Recreational Scuba Training Council) standards. Differences are marketing, not safety.
+
+**PADI (Professional Association of Diving Instructors)**:
+- Most globally recognized — ask any random dive shop and they'll know PADI
+- Brand premium: courses cost ฿11,000–฿14,000 in Thailand
+- Strong in: Phuket, Similan, Koh Samui
+- Best if: you plan to dive worldwide and want maximum brand recognition
+
+**SSI (Scuba Schools International)**:
+- Equally valid, owned by Mares dive equipment
+- 15–25% cheaper than PADI in Thailand
+- Strong in: Koh Tao, Koh Lanta, Phi Phi
+- Best if: budget-conscious, doing Thailand-only trip
+
+**NAUI** — uncommon in Thailand, mainly US military and Japan
+**RAID, CMAS, BSAC** — exist but rare
+
+**Practical advice**:
+- Pick instructor over agency: a great SSI instructor > mediocre PADI instructor
+- Read individual dive shop reviews (Verified Thai aggregates these)
+- Same exact skills are taught: 4 confined water + 4 open water dives for Open Water cert
+- Once certified with any agency, you can dive at any reputable shop globally
+
+**Course duration**: 3–4 days for Open Water (theory, pool, ocean dives)
+**Minimum age**: 10 (Junior OW) or 15 (full OW)
+**Health requirement**: medical questionnaire — most conditions are fine, asthma/heart issues need doctor sign-off`,
+    related: ["padi-cost-thailand", "best-diving-koh-tao"],
+  },
+  {
+    slug: "liveaboard-thailand-cost",
+    topic: "diving",
+    question: "How much does a Thailand diving liveaboard cost?",
+    shortAnswer:
+      "Similan Islands liveaboards (the gold standard) cost ฿18,000–฿35,000 for 3–4 days, all-inclusive. Premium boats (Hin Daeng/Hin Muang) up to ฿55,000. Season: November–April only.",
+    longAnswer: `Liveaboards are multi-day dive trips where you sleep on the boat, diving 3–4x per day.
+
+**Similan Islands** (Andaman, north of Phuket) — most popular:
+- 3-day / 11-dive trip: ฿18,000–฿25,000
+- 4-day / 14-dive trip: ฿24,000–฿32,000
+- Includes: bunk berth, all meals, tanks, weights, marine park fees
+- Season: November 1 – April 30 (closed in monsoon)
+- Departures: Khao Lak (most common), Phuket
+
+**Hin Daeng / Hin Muang** (south Andaman, near Phi Phi):
+- 4-day from Phuket: ฿28,000–฿40,000
+- Manta rays, whale sharks (March–May peak)
+- Smaller boats, more advanced divers
+
+**Premium boats** (Diva Andaman, Pawara, etc.):
+- 4-day: ฿35,000–฿55,000
+- Private cabins, gourmet food, smaller groups
+- Best for: experienced divers, couples, honeymoons
+
+**Budget liveaboards** (Koh Tao based):
+- Day-trip alternatives: ฿2,500–฿4,500 per day, sleep on land
+- 2-day camp-style trips: ฿8,000–฿14,000
+- Best for: Open Water + Advanced certification combos
+
+**What's NOT included** (usually):
+- Alcohol on board
+- Rental equipment (~฿1,500/day if needed)
+- Marine park fee for non-Thais (~฿1,800 for Similan)
+- Travel insurance
+
+**Booking tips**:
+- Book 3–6 months ahead for high season (Dec–Feb)
+- Last-minute deals appear in October before season starts
+- Liveaboard requires Advanced Open Water cert minimum (PADI/SSI)`,
+    related: ["padi-cost-thailand", "diving-similan-islands"],
+  },
+
+  // ─── Yoga deep dive ───────────────────────────────────────────────────
+  {
+    slug: "yoga-teacher-training-thailand",
+    topic: "yoga-pilates",
+    question: "How much does Yoga Teacher Training (YTT) cost in Thailand?",
+    shortAnswer:
+      "200-hour YTT in Thailand costs ฿55,000–฿120,000 ($1,650–$3,600 USD) for a 3–4 week intensive, including accommodation and meals at most schools. 500-hour YTT runs ฿120,000–฿250,000.",
+    longAnswer: `Thailand is the world's #2 YTT destination after Bali, with strong programs across all major styles.
+
+**200-hour YTT** (most common — RYT-200 with Yoga Alliance):
+- Duration: 3–4 weeks intensive
+- Cost: ฿55,000–฿120,000 all-inclusive
+- Includes: shared accommodation, 2–3 vegetarian meals/day, training, certification
+
+**Popular 200-hr YTT schools**:
+- **Wonderland Healing Center** (Koh Phangan) — Yoga Alliance certified, mid-range
+- **Samahita Retreat** (Koh Samui) — premium, structured curriculum
+- **The Yoga Institute Thailand** (Chiang Mai) — traditional Hatha focus
+- **Vikasa** (Koh Samui) — luxury, modern facilities
+- **Absolute You** (Bangkok) — urban, weekend format available
+
+**Styles offered**:
+- Hatha (traditional foundation)
+- Vinyasa (flow style — most popular)
+- Yin (slow, meditative)
+- Ashtanga (rigorous structured series)
+- Trauma-informed (newer specialty)
+
+**300-hr advanced / 500-hr complete YTT**:
+- ฿120,000–฿250,000
+- Usually 4–6 weeks
+- Required for: senior teaching positions, RYT-500 designation
+
+**What to verify before signing up**:
+- School registered with Yoga Alliance (RYS-200 / RYS-500)
+- Teaching trainer credentials (E-RYT-500 minimum)
+- Reviews from past graduates (look on Verified Thai + Reddit)
+- Clear schedule — avoid programs with vague "free time" gaps
+
+**Visa**: Most 200-hr programs fit within 30-day visa-free entry. For 500-hr, you may need to extend or get Tourist Visa.`,
+    related: ["yoga-retreat-thailand-cost", "best-yoga-retreats-chiang-mai"],
+  },
+
+  // ─── Wellness comparison ──────────────────────────────────────────────
+  {
+    slug: "kamalaya-vs-chiva-som",
+    topic: "wellness",
+    question: "Kamalaya vs Chiva-Som — which luxury wellness retreat is better?",
+    shortAnswer:
+      "Chiva-Som (Hua Hin) is the older, more medical/clinical option — best for serious health resets. Kamalaya (Koh Samui) is more holistic and Asian-influenced — best for emotional/spiritual wellness. Both are $700–$1,500/night.",
+    longAnswer: `Both are at the top of Thailand's wellness retreat hierarchy, but they serve different intents.
+
+**Chiva-Som** (Hua Hin, 3 hrs south of Bangkok):
+- Founded 1995 — Thailand's wellness pioneer
+- Style: medical-spa, evidence-based, clinical
+- 19-acre beachfront property, 54 rooms (intimate)
+- Programs: detox, weight management, fitness, sleep enhancement, health screening
+- Best for: structured medical wellness, post-illness recovery, executive resets
+- Price: $800–$1,800/night all-inclusive
+- Korean travelers: well-served, multilingual concierge
+
+**Kamalaya** (Koh Samui, southwest coast):
+- Founded 2005 — designed around a hillside monk's cave (yoga heritage site)
+- Style: holistic, Asian healing traditions, emotional/spiritual focus
+- Beachfront jungle property, 76 rooms
+- Programs: yoga therapy, ayurveda, emotional balance, sleep, traditional Chinese medicine
+- Best for: emotional recovery, longevity, sleep issues, burnout
+- Price: $700–$1,500/night all-inclusive
+- Strong Korean / Japanese clientele, multilingual
+
+**Key differences**:
+- Chiva-Som: more lab tests, body composition, IV therapy, medical practitioners
+- Kamalaya: more meditation, energy work, traditional healing, naturopathy
+- Chiva-Som: structured 5–7 day programs
+- Kamalaya: flexible 3–14 night stays
+
+**Alternative tier** (similar quality, ~$300–$700/night):
+- **Six Senses Yao Noi** — beach luxury, light wellness
+- **The Sanctuary Thailand** (Koh Phangan) — affordable wellness retreat
+- **Absolute Sanctuary** (Koh Samui) — budget-luxury, yoga-focused
+
+**Booking tip**: Both have 20–30% off-peak rates April–October. Book direct via their websites — discounts are better than via Klook/Agoda.`,
+    related: ["best-wellness-retreats-thailand", "detox-thailand-cost"],
+  },
+  {
+    slug: "silent-meditation-retreat-thailand-beginner",
+    topic: "wellness",
+    question: "Is silent meditation retreat in Thailand suitable for beginners?",
+    shortAnswer:
+      "Yes — Wat Suan Mokkh (Chaiya, monthly 10-day retreats) and Wat Pah Nanachat (Ubon) accept absolute beginners. Free or donation-based. The first 2 days are hard; most beginners adapt by day 4.",
+    longAnswer: `Thailand has a 2,500-year Buddhist meditation tradition, and several monasteries run structured silent retreats specifically designed for foreigners with zero experience.
+
+**Wat Suan Mokkh International Hermitage** (Chaiya, Surat Thani):
+- 10-day retreats first 10 days of each month
+- ฿2,000 donation for entire stay (very low)
+- Anapanasati (mindfulness of breathing) tradition
+- 4 AM wake, vegetarian, 4 hours formal meditation/day
+- Accepts ~100 students per retreat — book online 1–2 months ahead
+- English-speaking teachers, very accommodating to beginners
+- ⚠️ Hard physical schedule, but mentally accessible
+
+**Wat Pah Nanachat** (Ubon Ratchathani):
+- Thai Forest Tradition (Ajahn Chah lineage)
+- More austere — guests follow monastic schedule strictly
+- 1–3 days possible for guests; longer requires more commitment
+- Free/donation-based
+
+**Dipabhavan Meditation Centre** (Koh Samui):
+- 7-day retreats monthly
+- ฿9,000 donation
+- More structured for beginners than Wat Suan Mokkh
+- Gentler intro to Vipassana
+
+**Vipassana 10-Day Course** (Goenka tradition):
+- Free, donation-based, locations near Bangkok and Chiang Mai
+- Most intense — 10 hours/day meditation
+- Strict noble silence
+- Book 6+ months ahead — extremely popular globally
+
+**What to expect on day 1–3**:
+- Mind feels like a hyperactive monkey
+- Boredom, restlessness, self-doubt
+- This is normal — instructors are unfazed
+- By day 4–5, most beginners hit a calmer rhythm
+
+**Important**: Silent retreat is mentally demanding. If you have untreated trauma or severe anxiety, consult a therapist first. These centers do not provide mental health support beyond meditation instruction.`,
+    related: ["meditation-retreat-thailand", "best-wellness-retreats-thailand"],
+  },
+
+  // ─── Cooking deep dive ────────────────────────────────────────────────
+  {
+    slug: "half-day-vs-full-day-thai-cooking",
+    topic: "cooking",
+    question: "Half-day vs full-day Thai cooking class — what's the difference?",
+    shortAnswer:
+      "Half-day (3–4 hrs, ฿800–฿1,500): 3 dishes, often no market visit, ideal for one-time tourists. Full-day (6–8 hrs, ฿1,500–฿2,800): 5–7 dishes, includes market tour, recipe book, sit-down meals. Worth the upgrade for serious learners.",
+    longAnswer: `Both formats exist at most major cooking schools (Time for Thai, Sompong, Silom Thai Cooking, etc.).
+
+**Half-day (morning or evening, 3–4 hours)**:
+- 3 dishes typical: 1 curry, 1 stir-fry, 1 dessert
+- Often skips the market visit
+- ฿800–฿1,500 per person
+- Group size: 8–12 people
+- Best for: travelers on tight schedule, complete beginners
+
+**Full-day (8 AM – 4 PM typical)**:
+- 5–7 dishes: 2 curries, 1–2 stir-fries, 1 soup, 1 salad, 1 dessert
+- Market visit included (60–90 min) — learn ingredients first-hand
+- Recipe booklet to take home
+- ฿1,500–฿2,800 per person
+- Group size: 6–10 people
+- Includes lunch (your own cooking)
+- Best for: foodies, returning cooks, serious learners
+
+**Multi-day courses** (Chiang Mai specialty):
+- 3-day intensive: ฿4,500–฿7,500
+- Different cuisine each day: northern, southern, central Thai
+- Hands-on with cleaver work, curry paste from scratch
+- Best for: chefs, restaurant owners, slow travelers
+
+**Top schools**:
+- **Bangkok**: Silom Thai Cooking School, Time for Thai, Sompong, Cooking with Poo
+- **Chiang Mai**: Thai Farm Cooking School, Asia Scenic, Smile Thai
+- **Phuket**: Pum Thai, Phuket Thai Cookery School
+
+**Beginner tip**: Pick a school with English-speaking chefs. Larger classes (12+) feel rushed; small classes (4–6) let you ask questions.
+
+**Skip these**: Hotel-based cooking classes — overpriced, often 1 chef cooks for you (you barely cook).`,
+    related: ["thai-cooking-class-price", "best-cooking-class-chiang-mai"],
+  },
+
+  // ─── Spa deep dive ────────────────────────────────────────────────────
+  {
+    slug: "thai-oil-massage-vs-aromatherapy",
+    topic: "spa",
+    question: "Thai oil massage vs aromatherapy — what's the difference?",
+    shortAnswer:
+      "Thai oil massage uses neutral massage oil + Western Swedish-style strokes — therapeutic and relaxing. Aromatherapy uses scented essential oils (lavender, jasmine) with gentler strokes — purely relaxing. Aromatherapy costs 30–50% more.",
+    longAnswer: `Both are oil-based and use a massage table (different from traditional Thai massage which is dry, on a mat).
+
+**Thai oil massage (น้ำมัน) ฿700–฿1,200/hour**:
+- Standard coconut/sesame oil base
+- Combines Swedish-style long strokes with Thai pressure techniques
+- Therapeutic — addresses tight muscles, knots, fatigue
+- Most common massage at mid-tier spas
+- Good for: post-workout recovery, jet lag, regular muscle tension
+
+**Aromatherapy massage (น้ำมันหอมระเหย) ฿900–฿1,800/hour**:
+- Scented essential oils — lavender (relaxation), jasmine (mood), peppermint (energy)
+- Gentler strokes — focus on relaxation over therapy
+- Often includes mini-facial or hot stone elements
+- Most common at upscale spas
+- Good for: stress relief, sleep, sensory experience
+
+**Traditional Thai massage (นวดแผนไทย) ฿300–฿600/hour**:
+- DRY — no oil, fully clothed
+- Pressure point + stretching on a floor mat
+- Therapeutic — more like assisted yoga
+- Good for: stiffness, joint mobility, deep tissue work
+
+**Foot massage (นวดเท้า) ฿250–฿450/hour**:
+- Reflexology + lower leg work
+- Often on shared loungers
+- Good first-day-jetlag pick
+
+**Hot stone massage ฿1,200–฿2,500/hour**:
+- Heated basalt stones along spine + meridians
+- Deep relaxation, good for cold-shouldered people
+
+**Choosing**:
+- First-time tourist: traditional Thai or foot massage
+- Sore from training: oil massage
+- Sensory escape: aromatherapy or hot stone
+- Date / romantic: aromatherapy couples package
+
+**Avoid**: places offering ฿199 massage in tourist zones (Khao San, Sukhumvit beer bar streets) — quality and hygiene unverified.`,
+    related: ["thai-massage-price", "thai-massage-vs-oil-massage"],
+  },
+
+  // ─── Coworking deep dive ──────────────────────────────────────────────
+  {
+    slug: "coworking-day-pass-thailand",
+    topic: "coworking",
+    question: "How much is a coworking day pass in Thailand?",
+    shortAnswer:
+      "Day passes range from ฿250–฿450 at independent cafes, ฿500–฿900 at dedicated coworking spaces, and ฿1,200–฿2,500 at premium business clubs. Many cafes offer informal 'buy a coffee + free wifi' coworking.",
+    longAnswer: `Thailand has 3 tiers of coworking depending on amenities and atmosphere.
+
+**Cafe coworking (informal) ฿100–฿300/day**:
+- Buy a coffee (฿80–฿150) and stay 3–4 hours
+- Common in Chiang Mai (Nimman district), Bangkok (Ari, Ekkamai)
+- Pros: cheap, atmosphere, food
+- Cons: noisy, no dedicated workstation, limited outlets, weak wifi sometimes
+
+**Dedicated coworking ฿500–฿900/day** (or ฿4,000–฿8,000/month):
+- Examples: HUBBA (Bangkok), CAMP (Chiang Mai), AltSpace (Phuket)
+- High-speed wifi, ergonomic chairs, meeting rooms, phone booths
+- Includes coffee, tea, sometimes lunch
+- Community of nomads/freelancers
+- Best for: digital nomads, video calls, full work-day productivity
+
+**Premium business clubs ฿1,200–฿2,500/day** (or ฿15,000–฿30,000/month):
+- Examples: The Great Room, Common Ground, JustCo
+- Suit-tier amenities: barista, gym, lockers, after-hours events
+- Often in CBD towers (Asoke, Siam, Sathorn)
+- Best for: business meetings, client visits, executive workspace
+
+**Best digital nomad coworking**:
+- **Chiang Mai**: CAMP (Maya Mall), Punspace (multiple locations), Hub53
+- **Bangkok**: HUBBA Thonglor, The Hive Phrom Phong, Garage Society
+- **Phuket**: AltSpace Phuket, The Project
+- **Koh Phangan**: Beachub, Beachhouse (slower vibe, jungle wifi)
+
+**Monthly nomad budget combos**:
+- ฿4,500–฿8,000/month dedicated desk + condo (฿15,000) + food (฿15,000) = ~฿35,000–฿40,000/month nomad lifestyle
+- Total: ~$1,100–$1,300 USD/month for full digital nomad setup
+
+**Wifi caveat**: Always test wifi before committing to monthly plans. Even premium spaces sometimes have outage days during Thai storm season.`,
+    related: ["best-coworking-bangkok", "best-coworking-chiang-mai", "coworking-bangkok-vs-chiang-mai"],
+  },
+
+  // ─── How to book / process ────────────────────────────────────────────
+  {
+    slug: "do-i-need-to-book-thailand-wellness-advance",
+    topic: "general",
+    question: "Do I need to book Thailand wellness activities in advance?",
+    shortAnswer:
+      "It depends. Walk-in friendly: spa, foot massage, cooking class. Book ahead: yoga retreats (1+ month), Muay Thai camps (2 weeks), liveaboards (3+ months in high season), Kamalaya/Chiva-Som (3+ months).",
+    longAnswer: `Booking lead times by activity:
+
+**Walk-in / same day OK** (low risk):
+- Spa, massage, foot reflexology (Bangkok abundance)
+- Thai cooking class (most have daily morning + afternoon sessions)
+- Drop-in yoga at urban studios
+- Drop-in Muay Thai single sessions
+- Single-day dive trips (Koh Tao, Koh Samui)
+
+**Book 1–7 days ahead** (preferred):
+- Half-day cooking class with market tour (popular slots fill)
+- Premium spa treatments (massage suites, package deals)
+- Pad work / private Muay Thai sessions
+- Open Water diving course (4-day commitment)
+
+**Book 2–4 weeks ahead**:
+- Muay Thai camps with included accommodation
+- Yoga retreats (mid-tier 3–7 day)
+- Liveaboards in shoulder season
+- Cooking class chains' Saturday/Sunday slots
+
+**Book 1–3 months ahead**:
+- High-end yoga teacher training (200-hour programs)
+- Premium yoga retreats (Samahita, Vikasa, Wonderland peak weeks)
+- Similan/Hin Daeng liveaboards in high season
+- December–February anything (peak tourist season)
+
+**Book 3–6 months ahead**:
+- Kamalaya, Chiva-Som, Six Senses (limited rooms)
+- Vipassana 10-day silent retreats (very popular globally)
+- Songkran (April 13–15) and New Year week — everything books out
+
+**Booking channels**:
+- Directly with venue (best price, direct relationship — Verified Thai surfaces these contacts)
+- Klook / Viator (convenient, +10–15% markup)
+- Hotel concierge (often overpriced 30–50%)
+
+**Cancellation policies**: Most Thai wellness venues allow free cancellation 7–14 days out. Liveaboards and premium retreats may require 30+ days notice.`,
+    related: ["thailand-wellness-trip-daily-budget"],
+  },
 ];
 
 export function getFaq(slug: string): Faq | undefined {

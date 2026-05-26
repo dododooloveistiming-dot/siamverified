@@ -56,6 +56,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
+    // City hub pages (NEW — per-city landing pages)
+    for (const c of CITIES) {
+      out.push({
+        url: `${origin}/${lang}/city/${c}/`,
+        lastModified: now,
+        priority: 0.85,
+        changeFrequency: "weekly",
+      });
+    }
+
     // City × niche guide pages
     for (const c of CITIES) {
       for (const n of NICHES) {

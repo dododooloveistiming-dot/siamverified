@@ -11,6 +11,15 @@ const NAV_NICHES_PRIMARY: Niche[] = ["spa", "yoga-pilates", "muay-thai", "diving
 const NAV_NICHES_SECONDARY: Niche[] = ["wellness", "cooking", "coworking"];
 const NAV_NICHES: Niche[] = [...NAV_NICHES_PRIMARY, ...NAV_NICHES_SECONDARY];
 
+const HEADER_CITIES: Array<{ slug: string; label: string; emoji: string }> = [
+  { slug: "bangkok", label: "Bangkok", emoji: "🏙️" },
+  { slug: "chiang-mai", label: "Chiang Mai", emoji: "🏔️" },
+  { slug: "phuket", label: "Phuket", emoji: "🏝️" },
+  { slug: "pattaya", label: "Pattaya", emoji: "🏖️" },
+  { slug: "hua-hin", label: "Hua Hin", emoji: "🌅" },
+  { slug: "koh-samui", label: "Koh Samui", emoji: "🌴" },
+];
+
 const LANG_LABEL: Record<Lang, string> = {
   en: "English", ko: "한국어", th: "ไทย", zh: "中文", ja: "日本語", ar: "العربية",
 };
@@ -46,8 +55,8 @@ export default function Header({ lang }: { lang: Lang }) {
           <span className="text-sm sm:text-base">{SITE.name}</span>
         </Link>
 
-        <nav className="hidden flex-1 items-center gap-4 text-xs font-medium md:flex">
-          {NAV_NICHES_PRIMARY.map((n) => (
+        <nav className="hidden flex-1 items-center gap-3 text-xs font-medium md:flex lg:gap-4">
+          {NAV_NICHES_PRIMARY.slice(0, 3).map((n) => (
             <Link
               key={n}
               href={`/${lang}/c/${n}/`}
@@ -56,6 +65,89 @@ export default function Header({ lang }: { lang: Lang }) {
               {NICHE_META[n].emoji} {nicheName(n, lang)}
             </Link>
           ))}
+
+          {/* Cities dropdown — promoted to primary nav because /city hub pages are high-AEO landing pages */}
+          <div className="group relative">
+            <button
+              type="button"
+              className="muted inline-flex items-center gap-1 whitespace-nowrap transition hover:text-emerald-600"
+              aria-haspopup="true"
+            >
+              🏙️ Cities <span className="text-[8px]">▼</span>
+            </button>
+            <div className="absolute left-0 top-full hidden w-[240px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
+              <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+                Cities
+              </div>
+              <div className="p-1.5">
+                {HEADER_CITIES.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/${lang}/city/${c.slug}/`}
+                    className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                  >
+                    <span className="text-base">{c.emoji}</span>
+                    <span>{c.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Guides dropdown — surface wiki content (currently 252 city×niche pages buried) */}
+          <div className="group relative">
+            <button
+              type="button"
+              className="muted inline-flex items-center gap-1 whitespace-nowrap transition hover:text-emerald-600"
+              aria-haspopup="true"
+            >
+              📖 Guides <span className="text-[8px]">▼</span>
+            </button>
+            <div className="absolute left-0 top-full hidden w-[260px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
+              <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+                Popular guides
+              </div>
+              <div className="p-1.5">
+                {[
+                  { href: `/${lang}/guide/bangkok-yoga-pilates/`, label: "Bangkok yoga", emoji: "🧘" },
+                  { href: `/${lang}/guide/phuket-diving/`, label: "Phuket diving", emoji: "🤿" },
+                  { href: `/${lang}/guide/phuket-muay-thai/`, label: "Phuket Muay Thai", emoji: "🥊" },
+                  { href: `/${lang}/guide/chiang-mai-cooking/`, label: "Chiang Mai cooking", emoji: "🍜" },
+                  { href: `/${lang}/guide/bangkok-spa/`, label: "Bangkok spa", emoji: "💆" },
+                ].map((g) => (
+                  <Link
+                    key={g.href}
+                    href={g.href}
+                    className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                  >
+                    <span className="text-base">{g.emoji}</span>
+                    <span>{g.label}</span>
+                  </Link>
+                ))}
+              </div>
+              <div className="border-t border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+                Reference
+              </div>
+              <div className="p-1.5">
+                <Link
+                  href={`/${lang}/faq/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">❓</span>
+                  <span>All FAQs</span>
+                </Link>
+                <Link
+                  href={`/${lang}/compare/bangkok-vs-chiang-mai/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">⚖️</span>
+                  <span>City vs city</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* More — leftover niches + blog */}
           <div className="group relative">
             <button
               type="button"
@@ -64,12 +156,19 @@ export default function Header({ lang }: { lang: Lang }) {
             >
               More <span className="text-[8px]">▼</span>
             </button>
-            {/* Wider, sectioned dropdown — categories grouped separately from explore links so it doesn't feel like one long list */}
-            <div className="absolute left-0 top-full hidden w-[280px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
+            <div className="absolute left-0 top-full hidden w-[260px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
               <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
                 More categories
               </div>
               <div className="p-1.5">
+                {/* diving lives in primary already; show wellness/cooking/coworking + the 4th primary fallback */}
+                <Link
+                  href={`/${lang}/c/diving/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">{NICHE_META["diving"].emoji}</span>
+                  <span>{nicheName("diving", lang)}</span>
+                </Link>
                 {NAV_NICHES_SECONDARY.map((n) => (
                   <Link
                     key={n}
@@ -89,15 +188,8 @@ export default function Header({ lang }: { lang: Lang }) {
                   href={`/${lang}/blog/`}
                   className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-bold text-emerald-700 transition hover:bg-emerald-50 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
                 >
-                  <span className="text-base">📖</span>
+                  <span className="text-base">✍️</span>
                   <span>Korean Travel Blog</span>
-                </Link>
-                <Link
-                  href={`/${lang}/faq/`}
-                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                >
-                  <span className="text-base">❓</span>
-                  <span>FAQ</span>
                 </Link>
                 <Link
                   href="/for-business"
@@ -105,6 +197,13 @@ export default function Header({ lang }: { lang: Lang }) {
                 >
                   <span className="text-base">🏢</span>
                   <span>For Business Owners</span>
+                </Link>
+                <Link
+                  href={`/${lang}/about/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">ℹ️</span>
+                  <span>About &amp; Contact</span>
                 </Link>
               </div>
             </div>
@@ -114,7 +213,7 @@ export default function Header({ lang }: { lang: Lang }) {
         <div className="flex items-center gap-2">
           <Link
             href="/for-business"
-            className="hidden rounded-md border border-emerald-500 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 sm:inline-flex"
+            className="hidden rounded-md border border-emerald-500 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 lg:inline-flex"
             title="For business owners"
           >
             For Business →
@@ -159,8 +258,27 @@ export default function Header({ lang }: { lang: Lang }) {
             className="fixed inset-x-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-y-auto border-b border-ink-100 bg-white shadow-lg dark:border-ink-800 dark:bg-ink-950 md:hidden"
             aria-label="Mobile navigation"
           >
+            {/* Cities first — most useful nav for tourists */}
             <div className="px-4 pb-1 pt-4 text-[10px] font-black uppercase tracking-wider muted">
-              Categories
+              🏙️ Cities
+            </div>
+            <ul className="grid grid-cols-2 gap-2 px-4 pb-3">
+              {HEADER_CITIES.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/${lang}/city/${c.slug}/`}
+                    onClick={() => setOpen(false)}
+                    className="flex min-h-[56px] items-center gap-3 rounded-xl border border-ink-100 bg-emerald-50/40 px-3 py-3 text-sm font-medium transition active:scale-[0.98] dark:border-ink-800 dark:bg-emerald-950/20"
+                  >
+                    <span className="text-xl">{c.emoji}</span>
+                    <span className="leading-tight">{c.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="border-t border-ink-100 px-4 pb-1 pt-3 text-[10px] font-black uppercase tracking-wider muted dark:border-ink-800">
+              🏷️ Categories
             </div>
             <ul className="grid grid-cols-2 gap-2 px-4 pb-3">
               {NAV_NICHES.map((n) => (
@@ -168,7 +286,7 @@ export default function Header({ lang }: { lang: Lang }) {
                   <Link
                     href={`/${lang}/c/${n}/`}
                     onClick={() => setOpen(false)}
-                    className="flex min-h-[56px] items-center gap-3 rounded-xl border border-ink-100 bg-ink-50 px-3 py-3 text-sm font-medium transition hover:border-emerald-400 active:scale-[0.98] dark:border-ink-800 dark:bg-ink-900"
+                    className="flex min-h-[52px] items-center gap-3 rounded-xl border border-ink-100 bg-ink-50 px-3 py-3 text-sm font-medium transition active:scale-[0.98] dark:border-ink-800 dark:bg-ink-900"
                   >
                     <span className="text-xl">{NICHE_META[n].emoji}</span>
                     <span className="leading-tight">{nicheName(n, lang)}</span>
@@ -176,16 +294,17 @@ export default function Header({ lang }: { lang: Lang }) {
                 </li>
               ))}
             </ul>
+
             <div className="border-t border-ink-100 px-4 pb-2 pt-3 text-[10px] font-black uppercase tracking-wider muted dark:border-ink-800">
-              Explore
+              📖 Wiki / Reference
             </div>
             <div className="px-4 pb-3">
               <Link
-                href={`/${lang}/blog/`}
+                href={`/${lang}/guide/bangkok-yoga-pilates/`}
                 onClick={() => setOpen(false)}
-                className="mb-1.5 flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-3 text-sm font-bold dark:border-ink-800 dark:bg-ink-900"
+                className="mb-1.5 flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-3 text-sm font-medium dark:border-ink-800 dark:bg-ink-900"
               >
-                <span>📖 Korean Travel Blog</span>
+                <span>🧘 Sample guide — Bangkok yoga</span>
                 <span className="text-ink-400">→</span>
               </Link>
               <Link
@@ -193,10 +312,27 @@ export default function Header({ lang }: { lang: Lang }) {
                 onClick={() => setOpen(false)}
                 className="mb-1.5 flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-3 text-sm font-medium dark:border-ink-800 dark:bg-ink-900"
               >
-                <span>❓ FAQ</span>
+                <span>❓ All FAQs</span>
+                <span className="text-ink-400">→</span>
+              </Link>
+              <Link
+                href={`/${lang}/compare/bangkok-vs-chiang-mai/`}
+                onClick={() => setOpen(false)}
+                className="mb-1.5 flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-3 text-sm font-medium dark:border-ink-800 dark:bg-ink-900"
+              >
+                <span>⚖️ Compare cities</span>
+                <span className="text-ink-400">→</span>
+              </Link>
+              <Link
+                href={`/${lang}/blog/`}
+                onClick={() => setOpen(false)}
+                className="mb-1.5 flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-3 text-sm font-bold dark:border-ink-800 dark:bg-ink-900"
+              >
+                <span>✍️ Korean Travel Blog</span>
                 <span className="text-ink-400">→</span>
               </Link>
             </div>
+
             <div className="border-t border-ink-100 px-4 py-3 dark:border-ink-800">
               <Link
                 href="/for-business"

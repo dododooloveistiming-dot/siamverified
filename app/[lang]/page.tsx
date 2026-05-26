@@ -113,11 +113,11 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           {/* Quick paths */}
           <div className="mt-8 flex flex-wrap gap-2">
             {[
-              { label: "Bangkok spa", href: `/${lang}/c/spa/?city=bangkok` },
-              { label: "Phuket diving", href: `/${lang}/c/diving/?city=phuket` },
-              { label: "Chiang Mai yoga", href: `/${lang}/c/yoga-pilates/?city=chiang-mai` },
+              { label: "Bangkok spa", href: `/${lang}/guide/bangkok-spa/` },
+              { label: "Phuket diving", href: `/${lang}/guide/phuket-diving/` },
+              { label: "Chiang Mai yoga", href: `/${lang}/guide/chiang-mai-yoga-pilates/` },
               { label: "Muay thai camps", href: `/${lang}/c/muay-thai/` },
-              { label: "Cooking class", href: `/${lang}/c/cooking/?city=bangkok` },
+              { label: "Cooking class", href: `/${lang}/guide/bangkok-cooking/` },
               { label: "Wellness retreats", href: `/${lang}/c/wellness/` },
             ].map((p) => (
               <Link
@@ -264,17 +264,20 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-6">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Browse by city</h2>
-          <p className="mt-1 text-sm muted">Tap a city to see all verified places</p>
+          <p className="mt-1 text-sm muted">Tap a city to see all categories with verified picks</p>
         </div>
-        <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {FEATURED_CITIES.map((c) => (
             <Link
               key={c.slug}
-              href={`/${lang}/c/spa/?city=${c.slug}`}
-              className="group rounded-xl border border-ink-100 bg-white p-4 text-center transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+              href={`/${lang}/city/${c.slug}/`}
+              className="group flex items-center gap-3 rounded-xl border border-ink-100 bg-white p-4 transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900 sm:flex-col sm:gap-1 sm:text-center"
             >
               <div className="text-3xl">{c.emoji}</div>
-              <div className="mt-1 text-sm font-bold">{c.label}</div>
+              <div>
+                <div className="text-sm font-bold">{c.label}</div>
+                <div className="text-[10px] muted sm:hidden">View hub →</div>
+              </div>
             </Link>
           ))}
         </div>

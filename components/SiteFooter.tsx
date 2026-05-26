@@ -47,7 +47,18 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
         </div>
 
         {/* Wiki / guides navigation */}
-        <div className="mb-6 grid grid-cols-2 gap-4 text-xs sm:grid-cols-4">
+        <div className="mb-6 grid grid-cols-2 gap-4 text-xs sm:grid-cols-5">
+          <div>
+            <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Cities</div>
+            <ul className="space-y-1">
+              <li><a href={`/${lang}/city/bangkok/`} className="hover:underline">🏙️ Bangkok</a></li>
+              <li><a href={`/${lang}/city/chiang-mai/`} className="hover:underline">🏔️ Chiang Mai</a></li>
+              <li><a href={`/${lang}/city/phuket/`} className="hover:underline">🏝️ Phuket</a></li>
+              <li><a href={`/${lang}/city/pattaya/`} className="hover:underline">🏖️ Pattaya</a></li>
+              <li><a href={`/${lang}/city/hua-hin/`} className="hover:underline">🌅 Hua Hin</a></li>
+              <li><a href={`/${lang}/city/koh-samui/`} className="hover:underline">🌴 Koh Samui</a></li>
+            </ul>
+          </div>
           <div>
             <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Guides</div>
             <ul className="space-y-1">
@@ -55,6 +66,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
               <li><a href={`/${lang}/guide/phuket-diving/`} className="hover:underline">Phuket diving</a></li>
               <li><a href={`/${lang}/guide/chiang-mai-coworking/`} className="hover:underline">Chiang Mai coworking</a></li>
               <li><a href={`/${lang}/guide/bangkok-spa/`} className="hover:underline">Bangkok spa</a></li>
+              <li><a href={`/${lang}/guide/phuket-muay-thai/`} className="hover:underline">Phuket Muay Thai</a></li>
             </ul>
           </div>
           <div>
