@@ -8,6 +8,8 @@ import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
 import InquiryForm from "@/components/InquiryForm";
 import HeroMosaic from "@/components/HeroMosaic";
+import KlookOffer from "@/components/KlookOffer";
+import YouTubeFacade from "@/components/YouTubeFacade";
 import PlaceFAQ from "@/components/PlaceFAQ";
 import type { FAQItem } from "@/components/PlaceFAQ";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
@@ -305,6 +307,14 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         <div className="mx-auto max-w-5xl px-4">
 
+        {/* KLOOK OFFER — above-the-fold booking card (highest conversion) */}
+        {klookData && klookData.products.length > 0 && (
+          <section className="mt-6">
+            <KlookOffer data={klookData} placeName={place.name} />
+            <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
+          </section>
+        )}
+
         {/* OWNER-WRITTEN DESCRIPTION */}
         {displayDescription && (
           <section className="mt-8 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
@@ -395,65 +405,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           <InquiryForm placeId={place.slug} placeName={place.name} lang={lang} />
         </section>
 
-        {/* KLOOK PRODUCT CARDS — real products w/ rating + price + photo (highest conversion) */}
-        {klookData && klookData.products.length > 0 && (
-          <section className="mt-8">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-sm font-bold uppercase tracking-wide muted">
-                ⚡ Instant book on Klook
-              </h2>
-              <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">
-                Free cancellation
-              </span>
-            </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {klookData.products.slice(0, 3).map((prod, i) => (
-                <a
-                  key={i}
-                  href={prod.product_url}
-                  target="_blank"
-                  rel="nofollow sponsored noopener"
-                  className="group block overflow-hidden rounded-2xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-md dark:border-ink-800 dark:bg-ink-900"
-                >
-                  {prod.photo_url ? (
-                    <div className="relative aspect-video bg-ink-100 dark:bg-ink-800">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={prod.photo_url}
-                        alt={prod.title}
-                        className="h-full w-full object-cover transition group-hover:scale-[1.03]"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
-                    <div className="grid aspect-video place-items-center bg-gradient-to-br from-rose-50 to-orange-50 text-2xl dark:from-rose-950/30 dark:to-orange-950/30">
-                      ⚡
-                    </div>
-                  )}
-                  <div className="p-3">
-                    <div className="line-clamp-2 text-sm font-bold leading-snug">{prod.title}</div>
-                    <div className="mt-2 flex items-center justify-between text-xs">
-                      {prod.rating != null && (
-                        <span className="font-semibold">
-                          ★ {prod.rating}
-                          {prod.review_count ? <span className="muted"> ({prod.review_count.toLocaleString()})</span> : null}
-                        </span>
-                      )}
-                      {prod.price_thb != null && (
-                        <span className="font-black text-rose-700 dark:text-rose-400">
-                          ฿{prod.price_thb.toLocaleString()}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-            <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
-          </section>
-        )}
-
-        {/* AFFILIATE CTAs — secondary fallback for non-Klook platforms */}
+        {/* AFFILIATE CTAs — secondary fallback for places without Klook data */}
         {!(klookData && klookData.products.length > 0) && (
           <section className="mt-6">
             <h2 className="mb-2 text-xs font-bold uppercase tracking-wide muted">
@@ -631,45 +583,55 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </section>
         )}
 
-        {/* PER-PLACE YOUTUBE */}
-        {mentions.youtube.length > 0 && (
-          <section className="mt-10">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
-              <span>▶</span> Videos about {place.name}
-              <span className="text-xs font-normal muted">({mentions.youtube.length})</span>
-            </h2>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {mentions.youtube.map((v, i) => (
-                <a
-                  key={i}
-                  href={v.video_url}
-                  target="_blank"
-                  rel="nofollow noopener"
-                  className="group block overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:border-emerald-400 dark:border-ink-800 dark:bg-ink-900"
-                >
-                  <div className="relative aspect-video bg-ink-100 dark:bg-ink-800">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`https://i.ytimg.com/vi/${v.video_id}/hqdefault.jpg`}
-                      alt={v.title}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 grid place-items-center bg-black/20 transition group-hover:bg-black/30">
-                      <div className="grid h-12 w-12 place-items-center rounded-full bg-red-600 text-white shadow-lg">
-                        ▶
-                      </div>
+        {/* PER-PLACE YOUTUBE — facade-loaded players (1 featured + grid) */}
+        {mentions.youtube.length > 0 && (() => {
+          // Prefer Korean-channel/title videos as featured (matches our KR audience).
+          const sorted = [...mentions.youtube].sort((a, b) => {
+            const isKo = (s: string) => /[가-힯]/.test(s);
+            const aKo = (isKo(a.channel_title || "") ? 2 : 0) + (isKo(a.title || "") ? 1 : 0);
+            const bKo = (isKo(b.channel_title || "") ? 2 : 0) + (isKo(b.title || "") ? 1 : 0);
+            return bKo - aKo;
+          });
+          const featured = sorted[0];
+          const rest = sorted.slice(1, 4);
+          const featuredIsKo = /[가-힯]/.test(featured.channel_title || "") || /[가-힯]/.test(featured.title || "");
+          return (
+            <section className="mt-10">
+              <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+                <span>▶</span> Videos about {place.name}
+                <span className="text-xs font-normal muted">({mentions.youtube.length})</span>
+                {featuredIsKo && (
+                  <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">
+                    🇰🇷 Korean review
+                  </span>
+                )}
+              </h2>
+              {/* Featured video — full-size embed on click */}
+              <YouTubeFacade
+                videoId={featured.video_id}
+                title={featured.title}
+                channel={featured.channel_title}
+              />
+              <div className="mt-1.5 px-1 text-xs">
+                <div className="line-clamp-2 font-semibold leading-snug">{featured.title}</div>
+                <div className="mt-0.5 text-[10px] muted">{featured.channel_title}</div>
+              </div>
+              {rest.length > 0 && (
+                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  {rest.map((v) => (
+                    <div key={v.video_id}>
+                      <YouTubeFacade
+                        videoId={v.video_id}
+                        title={v.title}
+                        channel={v.channel_title}
+                      />
                     </div>
-                  </div>
-                  <div className="p-3">
-                    <div className="line-clamp-2 text-xs font-semibold leading-snug">{v.title}</div>
-                    <div className="mt-1 text-[10px] muted">{v.channel_title}</div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
+                  ))}
+                </div>
+              )}
+            </section>
+          );
+        })()}
 
         {/* PER-PLACE PANTIP (Thai forum threads) */}
         {mentions.pantip.length > 0 && (
