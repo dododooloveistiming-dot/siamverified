@@ -21,3 +21,8 @@ scripts/__pycache__/
 # Locally cached Google photos (385MB+). Production uses Google CDN URLs
 # directly. Keep for backup / future Vercel Blob migration.
 public/place-photos/
+
+# Raw bulk gov-data dumps (~200MB CSVs from data.go.th + TAT). Rebuilt by
+# scripts/fetch_thai_gov_data.py. The matched output (per_place_verifications.json)
+# is what we ship.
+public/data/_raw/
