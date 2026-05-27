@@ -22,6 +22,11 @@ DIGITS_RE = re.compile(r"\D+")
 
 # ---------- normalization ----------
 
+def clean_handle(s: str) -> str:
+    """Strip trailing HTML-escape junk (\\, /, whitespace, &amp; remnants) from a handle."""
+    if not s: return s
+    return s.rstrip("\\/ \t\r\n;,.").strip()
+
 def norm_name(s: str) -> str:
     if not s: return ""
     s = unicodedata.normalize("NFKC", s)
@@ -44,9 +49,23 @@ TT_HOSTS = {"tiktok.com","www.tiktok.com","vm.tiktok.com"}
 YT_HOSTS = {"youtube.com","www.youtube.com","youtu.be","m.youtube.com"}
 
 # Generic FB URL paths to discard as "handle"
-FB_RESERVED = {"sharer","plugins","ads","groups","watch","gaming","marketplace","help","login","r.php",
+FB_RESERVED = {"sharer","share","plugins","ads","groups","watch","gaming","marketplace","help","login","r.php",
                "search","events","story.php","photos","posts","videos","login.php","permalink.php",
-               "pages","public","profile.php","reel","reels","tr"}
+               "pages","public","profile.php","reel","reels","tr","p","l.php","dialog","intern",
+               "policies","terms","privacy","about","careers","brand","hashtag","games","fundraisers"}
+
+# Bare names of 3rd-party platforms / marketing tools that are never a real business handle.
+# Matched ACROSS all platforms, with and without leading "@".
+_THIRD_PARTY_NAMES = {
+    "linktr.ee","linktree","getyourguide","getseeu","getseeuth","openlinkco","openlink",
+    "wix","2008","wordpress","squarespace","tripadvisor","klook","trip.com","booking.com",
+    "airbnb","google","tiktok","instagram","facebook","line","youtube","twitter","threads",
+}
+HANDLE_BLACKLIST = set()
+for plat in ("facebook","instagram","line","tiktok","youtube"):
+    for name in _THIRD_PARTY_NAMES:
+        HANDLE_BLACKLIST.add((plat, name))
+        HANDLE_BLACKLIST.add((plat, "@"+name))
 
 def extract_fb(url: str) -> str:
     """Return canonical FB handle (lowercase) or empty."""
@@ -64,10 +83,9 @@ def extract_fb(url: str) -> str:
     if first == "profile.php":
         qs = parse_qs(u.query)
         ids = qs.get("id") or qs.get("ID") or []
-        return "profile:" + ids[0] if ids else ""
+        return clean_handle("profile:" + ids[0]) if ids else ""
     if first in FB_RESERVED: return ""
-    # strip trailing query/fragments — already done by urlparse
-    return first.lower()
+    return clean_handle(first.lower())
 
 def extract_ig(url: str) -> str:
     if not url: return ""
@@ -82,7 +100,7 @@ def extract_ig(url: str) -> str:
     first = path[0].lower()
     if first in {"p","explore","reel","reels","stories","accounts","direct","tv"}:
         return ""
-    return first
+    return clean_handle(first)
 
 def extract_line(url: str) -> str:
     """
@@ -102,15 +120,27 @@ def extract_line(url: str) -> str:
     if host not in LINE_HOSTS: return ""
     path = (u.path or "/").strip("/")
     if not path: return ""
+    # Clean trailing escapes / garbage
+    path = path.rstrip("\\/").strip()
     if host == "lin.ee":
-        return f"lin.ee/{path}".lower()
-    parts = path.split("/")
+        token = path.split("/")[0]
+        # URL-decode %40 -> @ etc.
+        from urllib.parse import unquote
+        token = unquote(token).rstrip("\\/ ")
+        return f"lin.ee/{token}".lower() if token else ""
+    parts = [p for p in path.split("/") if p]
+    if not parts: return ""
     # R/ti/p/<id>
     for marker in ("p","g"):
         if marker in parts:
             i = parts.index(marker)
-            if i+1 < len(parts): return parts[i+1]
-    return parts[-1]
+            if i+1 < len(parts):
+                from urllib.parse import unquote
+                token = unquote(parts[i+1]).rstrip("\\/ ")
+                return token if len(token) >= 2 else ""
+    from urllib.parse import unquote
+    token = unquote(parts[-1]).rstrip("\\/ ")
+    return token if len(token) >= 2 else ""
 
 def extract_tt(url: str) -> str:
     if not url: return ""
@@ -123,8 +153,8 @@ def extract_tt(url: str) -> str:
     path = (u.path or "/").strip("/").split("/")
     if not path or not path[0]: return ""
     first = path[0]
-    if first.startswith("@"): return first.lower()
-    return first.lower()
+    if first.startswith("@"): return clean_handle(first.lower())
+    return clean_handle(first.lower())
 
 def extract_yt(url: str) -> str:
     if not url: return ""
@@ -138,8 +168,8 @@ def extract_yt(url: str) -> str:
     if not path or not path[0]: return ""
     first = path[0]
     if first.startswith("@") or first in ("c","channel","user"):
-        if first.startswith("@"): return first.lower()
-        if len(path) >= 2: return ("@" if first=="c" else "") + path[1].lower()
+        if first.startswith("@"): return clean_handle(first.lower())
+        if len(path) >= 2: return clean_handle(("@" if first=="c" else "") + path[1].lower())
     return ""
 
 EXTRACTORS = {"facebook": extract_fb, "instagram": extract_ig, "line": extract_line, "tiktok": extract_tt, "youtube": extract_yt}
