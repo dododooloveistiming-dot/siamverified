@@ -80,16 +80,21 @@ def main():
             t0 = time.time()
             done = 0
             for h in todo:
-                # If a sibling scraper fetched this handle while we were running, skip
-                if done % 25 == 0:
-                    cache = load_cache()
+                # If a sibling scraper fetched this handle while we were running, skip.
+                # Also sync our in-memory cache with disk so a sibling's writes don't
+                # get clobbered when we save below.
+                if done % 25 == 0 and done > 0:
+                    disk = load_cache()
+                    for k, v in disk.items():
+                        if k not in cache:
+                            cache[k] = v
                     if h in cache:
                         log(f"  skip (cached by sibling): {h}")
                         done += 1
                         continue
                 rec = scrape_one(page, h)
                 if (not rec.get("ok")) and rec.get("error") == "timeout" or rec.get("login_wall") or rec.get("suspicious"):
-                    log(f"  {h}: wall/timeout — rotate")
+                    log(f"  {h}: wall/timeout - rotate")
                     try: ctx.close()
                     except Exception: pass
                     try: browser.close()
@@ -99,8 +104,6 @@ def main():
                     browser, ctx = make_context(p, port)
                     page = ctx.new_page()
                     rec = scrape_one(page, h)
-                # Read latest cache + merge our entry (avoid clobbering sibling writes)
-                cache = load_cache()
                 cache[h] = rec
                 done += 1
                 if done % 5 == 0 or done == len(todo):

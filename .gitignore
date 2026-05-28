@@ -26,3 +26,6 @@ public/place-photos/
 # scripts/fetch_thai_gov_data.py. The matched output (per_place_verifications.json)
 # is what we ship.
 public/data/_raw/
+
+# Local detached scraper logs (not source code)
+logs/
