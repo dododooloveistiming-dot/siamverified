@@ -45,6 +45,12 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
   const bundle = loadPlaces();
   const topPerNiche = getTopPlacesPerNiche(4);
 
+  // Signal-derived stats for the landing banner. Computed once at build —
+  // every shift in the underlying scrape recomputes on next deploy.
+  const establishedCount = bundle.places.filter((p) => p.is_established).length;
+  const activeCount = bundle.places.filter((p) => p.is_active_recently).length;
+  const koCount = bundle.places.filter((p) => p.languages?.ko).length;
+
   // Hero photo: walk a curated niche preference (aspirational first), grabbing
   // the highest-trust place that has a photo. spa/diving/coworking have ZERO
   // photos in current data (see by_niche photo counts), so they fall through.
@@ -139,13 +145,21 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
         )}
       </section>
 
-      {/* STATS BANNER */}
-      <section className="bg-white py-6 dark:bg-ink-950">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-4 text-center sm:grid-cols-4">
-          <BannerStat value={bundle.total.toLocaleString()} label="Verified places" />
-          <BannerStat value="6" label="Languages" />
-          <BannerStat value="6" label="Trust sources" />
-          <BannerStat value="$0" label="Listing fee" />
+      {/* STATS BANNER — signal-driven, links to methodology for transparency */}
+      <section className="bg-white py-7 dark:bg-ink-950">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
+            <BannerStat value={bundle.total.toLocaleString()} label="Verified places" />
+            <BannerStat value={establishedCount.toLocaleString()} label="Established 5y+" />
+            <BannerStat value={activeCount.toLocaleString()} label="Active last 90d" />
+            <BannerStat value={koCount.toLocaleString()} label="🇰🇷 Korean-friendly" />
+          </div>
+          <div className="mt-4 text-center text-[11px] muted">
+            6 cross-source verification · No paid placement ·{" "}
+            <Link href={`/${lang}/trust/`} className="text-emerald-700 hover:underline dark:text-emerald-400">
+              See how trust is calculated →
+            </Link>
+          </div>
         </div>
       </section>
 
