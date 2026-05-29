@@ -98,6 +98,14 @@ export interface Place {
   bookable?: { klook: boolean; viator: boolean };
   // Was deep-scraped from Google Maps overnight
   has_google_scrape?: boolean;
+  // Computed at loadPlaces() from enrichment signals (per_place_wayback/recency).
+  // Optional — present on every server-loaded place but absent if a Place is
+  // deserialized from elsewhere (e.g. owner profile API). See lib/signals.ts.
+  is_veteran?: boolean;          // ≥10y first wayback capture
+  is_established?: boolean;      // ≥5y first wayback capture
+  is_very_active?: boolean;      // ≥1 Google review in last 30d
+  is_active_recently?: boolean;  // any review activity in last 90d
+  founding_year?: number;        // YYYY from earliest wayback capture
 }
 
 export interface CommunityThread {

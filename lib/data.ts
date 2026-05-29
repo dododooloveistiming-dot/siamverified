@@ -23,11 +23,19 @@ export function loadPlaces(): PlacesBundle {
   const raw = fs.readFileSync(p, "utf-8");
   const bundle = JSON.parse(raw) as PlacesBundle;
   // Apply enrichment-signal boost so wayback/recency/email infra feed into
-  // ranking everywhere — not just the badges on the detail page.
+  // ranking everywhere — not just the badges on the detail page. Also project
+  // the boolean flags onto each place so client-side filters (CategoryClient)
+  // can use them without re-loading the server-only signal JSONs.
   let trustSum = 0;
   for (const place of bundle.places) {
-    const boost = computeTrustBoost(getPlaceSignals(place.id));
+    const signals = getPlaceSignals(place.id);
+    const boost = computeTrustBoost(signals);
     if (boost > 0) place.trust_score = Math.min(100, place.trust_score + boost);
+    if (signals.ageTier === "veteran") place.is_veteran = true;
+    if (signals.ageTier === "veteran" || signals.ageTier === "established") place.is_established = true;
+    if (signals.recencyTier === "very_active") place.is_very_active = true;
+    if (signals.recencyTier === "very_active" || signals.recencyTier === "active") place.is_active_recently = true;
+    if (signals.foundingYear) place.founding_year = signals.foundingYear;
     trustSum += place.trust_score;
   }
   bundle.avg_trust = bundle.places.length

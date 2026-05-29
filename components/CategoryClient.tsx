@@ -40,6 +40,8 @@ export default function CategoryClient({
   const [koOnly, setKoOnly] = useState(false);
   const [beginnerOnly, setBeginnerOnly] = useState(false);
   const [open24Only, setOpen24Only] = useState(false);
+  const [establishedOnly, setEstablishedOnly] = useState(false);
+  const [activeOnly, setActiveOnly] = useState(false);
   const [hideViral, setHideViral] = useState(true);
   const [sort, setSort] = useState<Sort>("trust");
 
@@ -73,6 +75,8 @@ export default function CategoryClient({
     if (searchParams.get("ko") === "1") setKoOnly(true);
     if (searchParams.get("beginner") === "1") setBeginnerOnly(true);
     if (searchParams.get("open24") === "1") setOpen24Only(true);
+    if (searchParams.get("est") === "1") setEstablishedOnly(true);
+    if (searchParams.get("active") === "1") setActiveOnly(true);
     const urlSort = searchParams.get("sort");
     if (urlSort && ["trust", "reviews", "rating"].includes(urlSort)) {
       setSort(urlSort as Sort);
@@ -91,6 +95,8 @@ export default function CategoryClient({
       if (koOnly && !p.languages.ko) return false;
       if (beginnerOnly && !p.is_beginner_friendly) return false;
       if (open24Only && !p.is_open_24h) return false;
+      if (establishedOnly && !p.is_established) return false;
+      if (activeOnly && !p.is_active_recently) return false;
       if (q) {
         const hay = `${p.name} ${p.city} ${p.category}`.toLowerCase();
         if (!hay.includes(q)) return false;
@@ -104,7 +110,7 @@ export default function CategoryClient({
       return 0;
     });
     return list;
-  }, [places, query, city, priceBand, koOnly, beginnerOnly, open24Only, hideViral, sort]);
+  }, [places, query, city, priceBand, koOnly, beginnerOnly, open24Only, establishedOnly, activeOnly, hideViral, sort]);
 
   const meta = NICHE_META[niche];
 
@@ -144,6 +150,8 @@ export default function CategoryClient({
       )}
 
       <div className="mt-3 flex flex-wrap gap-2 text-xs">
+        <Pill on={establishedOnly} onClick={() => setEstablishedOnly((v) => !v)}>🏛 {t("filter_established", lang)}</Pill>
+        <Pill on={activeOnly} onClick={() => setActiveOnly((v) => !v)}>🟢 {t("filter_active", lang)}</Pill>
         <Pill on={koOnly} onClick={() => setKoOnly((v) => !v)}>🇰🇷 {t("filter_korean_friendly", lang)}</Pill>
         <Pill on={beginnerOnly} onClick={() => setBeginnerOnly((v) => !v)}>🐣 {t("filter_beginner", lang)}</Pill>
         <Pill on={open24Only} onClick={() => setOpen24Only((v) => !v)}>🌙 {t("filter_24h", lang)}</Pill>
@@ -158,10 +166,10 @@ export default function CategoryClient({
 
       <div className="mt-4 flex items-baseline justify-between text-xs muted">
         <span>{filtered.length.toLocaleString()} / {places.length.toLocaleString()} {t("places_count", lang)}</span>
-        {(query || city || priceBand || koOnly || beginnerOnly || open24Only) && (
+        {(query || city || priceBand || koOnly || beginnerOnly || open24Only || establishedOnly || activeOnly) && (
           <button
             type="button"
-            onClick={() => { setQuery(""); setCity(""); setPriceBand(""); setKoOnly(false); setBeginnerOnly(false); setOpen24Only(false); }}
+            onClick={() => { setQuery(""); setCity(""); setPriceBand(""); setKoOnly(false); setBeginnerOnly(false); setOpen24Only(false); setEstablishedOnly(false); setActiveOnly(false); }}
             className="rounded-md px-2 py-1 font-medium text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
           >
             ✕ {t("reset", lang)}
@@ -350,6 +358,16 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
         )}
 
         <div className="mt-auto flex flex-wrap items-center gap-1.5 text-[10px]">
+          {p.is_very_active && (
+            <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300" title="At least one review in the last 30 days">
+              🟢 Active
+            </span>
+          )}
+          {p.is_veteran && p.founding_year && (
+            <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-amber-900 dark:bg-amber-950/40 dark:text-amber-300" title={`Online since ${p.founding_year} (archive.org)`}>
+              🏛 {p.founding_year}
+            </span>
+          )}
           {p.is_beginner_friendly && (
             <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
               🐣 {t("filter_beginner", lang)}

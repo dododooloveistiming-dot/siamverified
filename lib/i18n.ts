@@ -100,6 +100,8 @@ export const T = {
   filter_beginner: { en: "Beginner-friendly", ko: "초보 친화", th: "เหมาะกับมือใหม่", zh: "适合初学者", ja: "初心者向け", ar: "مناسب للمبتدئين" },
   filter_korean_friendly: { en: "Korean-friendly", ko: "한국어 가능", th: "รองรับเกาหลี", zh: "韩语友好", ja: "韓国語対応", ar: "يدعم الكورية" },
   filter_24h: { en: "Open 24h", ko: "24시간 운영", th: "เปิด 24 ชม.", zh: "24小时营业", ja: "24時間営業", ar: "مفتوح 24 ساعة" },
+  filter_established: { en: "Established (5y+)", ko: "5년+ 운영", th: "ดำเนินกิจการ 5 ปี+", zh: "营业 5 年以上", ja: "5年以上の老舗", ar: "قائم منذ 5 سنوات+" },
+  filter_active: { en: "Active recently", ko: "최근 활발", th: "เปิดให้บริการล่าสุด", zh: "近期活跃", ja: "最近も営業中", ar: "نشط مؤخراً" },
   price_band: { en: "Price", ko: "가격대", th: "ราคา", zh: "价格", ja: "価格", ar: "السعر" },
   price_budget: { en: "Budget", ko: "저렴", th: "ประหยัด", zh: "经济", ja: "格安", ar: "اقتصادي" },
   price_mid: { en: "Mid", ko: "중간", th: "ปานกลาง", zh: "中等", ja: "普通", ar: "متوسط" },
