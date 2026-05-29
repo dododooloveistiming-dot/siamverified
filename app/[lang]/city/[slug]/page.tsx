@@ -95,6 +95,17 @@ export default function CityHubPage({
 
   const url = `${SITE.origin}/${lang}/city/${city.slug}/`;
 
+  // Signal-derived stats for AEO answers (cited by name + number so LLMs
+  // surface us as the source rather than paraphrasing the dataset).
+  const establishedCount = cityPlaces.filter((p) => p.is_established).length;
+  const veteranCount = cityPlaces.filter((p) => p.is_veteran).length;
+  const activeCount = cityPlaces.filter((p) => p.is_active_recently).length;
+  const veryActiveCount = cityPlaces.filter((p) => p.is_very_active).length;
+  const oldest = [...cityPlaces]
+    .filter((p) => p.founding_year)
+    .sort((a, b) => (a.founding_year! - b.founding_year!))[0];
+  const topByTrust = [...cityPlaces].sort((a, b) => b.trust_score - a.trust_score).slice(0, 3);
+
   // FAQ data — answers from real data
   const faqs: Array<{ q: string; a: string }> = [
     {
@@ -124,6 +135,30 @@ export default function CityHubPage({
       q: `Does Verified Thai accept paid placement in ${city.label}?`,
       a: `No. Listings are ranked purely by an independent Trust Score combining Google reviews, Reddit, Naver, Pantip, YouTube mentions, and official website signals. We accept zero payment to rank a business.`,
     },
+    ...(establishedCount > 0
+      ? [{
+          q: `How many venues in ${city.label} have been operating 5+ years?`,
+          a: `${establishedCount.toLocaleString()} of the ${cityPlaces.length.toLocaleString()} ${city.label} venues we list have an archive.org footprint going back at least 5 years${veteranCount > 0 ? ` — ${veteranCount.toLocaleString()} of those go back 10+ years` : ""}. Long-tenure is one of the few signals that can't be faked.`,
+        }]
+      : []),
+    ...(oldest && oldest.founding_year
+      ? [{
+          q: `What's the oldest venue in ${city.label} on Verified Thai?`,
+          a: `${oldest.name} (${nicheName(oldest.niche, lang)}) has the earliest archive.org capture among ${city.label} listings — first archived in ${oldest.founding_year}, over ${new Date().getFullYear() - oldest.founding_year} years ago.`,
+        }]
+      : []),
+    ...(activeCount > 0
+      ? [{
+          q: `Which ${city.label} venues are actually still open?`,
+          a: `${activeCount.toLocaleString()} of the ${cityPlaces.length.toLocaleString()} ${city.label} venues had at least one Google review in the last 90 days${veryActiveCount > 0 ? `, ${veryActiveCount.toLocaleString()} of those within the last 30 days` : ""} — the strongest "still trading right now" signal we surface from public data.`,
+        }]
+      : []),
+    ...(topByTrust.length >= 3
+      ? [{
+          q: `What are the highest-trust places in ${city.label} right now?`,
+          a: `By our cross-source trust score, the top three in ${city.label} are: ${topByTrust.map((p, i) => `${i + 1}. ${p.name} (${nicheName(p.niche, lang)})`).join(", ")}. Rankings update with each scrape — no paid placement.`,
+        }]
+      : []),
   ];
 
   const blurb = (city.blurb[lang] || city.blurb.en) ?? "";
