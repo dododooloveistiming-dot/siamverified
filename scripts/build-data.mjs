@@ -39,9 +39,14 @@ function loadJsonSafe(p, fallback = {}) {
 const PER_GOOGLE = loadJsonSafe(path.join(OUT_DIR, "per_place_google.json"));
 const PER_BOOKABLE = loadJsonSafe(path.join(OUT_DIR, "per_place_bookable.json"));
 const PER_PHOTO_MAP = loadJsonSafe(path.join(OUT_DIR, "per_place_photos.json"));
+// Place Details (Places API v1) cache — filled in by enrich_place_details.py
+// for venues discovered without website/phone. Drives the loadDiscoveredRows
+// shaper so the discovered places are no longer wayback/DNS/email-blind.
+const PER_DETAILS = loadJsonSafe(path.join(OUT_DIR, "_raw", "place_details_cache.json"));
 console.log(`[enrich] google=${Object.keys(PER_GOOGLE).length}, ` +
             `bookable=${Object.keys(PER_BOOKABLE).length}, ` +
-            `photo_cache=${Object.keys(PER_PHOTO_MAP).length}`);
+            `photo_cache=${Object.keys(PER_PHOTO_MAP).length}, ` +
+            `place_details=${Object.keys(PER_DETAILS).length}`);
 
 function localizePhoto(url) {
   // If we cached the photo locally, prefer that path (faster + immortal).
@@ -114,6 +119,13 @@ function loadDiscoveredRows(niche, relCols) {
       const rows = parse(raw, { columns: true, skip_empty_lines: true, relax_quotes: true, relax_column_count: true });
       for (const r of rows) {
         if (!r.place_id || !r.name) continue;
+        // Place Details overlay (paid for via scripts/enrich_place_details.py,
+        // cached locally). When present, gives us website + phone +
+        // businessStatus so the discovered place stops being wayback-blind.
+        const det = PER_DETAILS[r.place_id] || {};
+        if (det.businessStatus === "CLOSED_PERMANENTLY") continue;
+        const website = det.websiteUri || "";
+        const phone = det.nationalPhoneNumber || det.internationalPhoneNumber || "";
         // Shape to dbd-master columns so normalize() reads it cleanly.
         const shaped = {
           place_id: r.place_id,
@@ -124,6 +136,8 @@ function loadDiscoveredRows(niche, relCols) {
           city: "",                  // re-derived in lib/data.ts from address
           category: (r.types || "").replace(/;/g, ", ").slice(0, 80),
           google_maps_url: `https://www.google.com/maps/place/?q=place_id:${r.place_id}`,
+          website: website,
+          phone: phone,
           reviews_scraped_count: "",
           photos_count: "",
           videos_count: "",
