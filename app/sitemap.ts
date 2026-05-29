@@ -54,6 +54,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.85,
         changeFrequency: "weekly",
       });
+      // Filter sub-pages (enrichment-signal driven SEO targets)
+      for (const f of ["established", "active"]) {
+        out.push({
+          url: `${origin}/${lang}/c/${n}/${f}/`,
+          lastModified: now,
+          priority: 0.8,
+          changeFrequency: "weekly",
+        });
+      }
     }
 
     // City hub pages (NEW — per-city landing pages)
