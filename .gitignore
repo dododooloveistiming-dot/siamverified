@@ -38,3 +38,7 @@ outreach/queue.csv
 outreach/drafts/
 outreach/batches/
 outreach/sent/
+
+# Discovery CSVs (scripts/discover_gaps.py output) contain raw scraped
+# venue data — don't bloat the repo. README and the script itself ship.
+outreach/discovered/*.csv
