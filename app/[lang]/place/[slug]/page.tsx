@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook } from "@/lib/data";
+import { getPlaceSignals, emailProviderLabel } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
@@ -90,6 +91,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const mentions = getPlaceMentions(place.id);
   const klookData = getPlaceKlook(place.id);
   const ownerProfile = await getOwnerProfile(place.id);
+  const signals = getPlaceSignals(place.id);
 
   // Owner-controlled overlays (live DB) take precedence over scraped values
   const displayHours = ownerProfile?.hours || null;
@@ -133,6 +135,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
     telephone: place.phone || undefined,
     url: place.website || undefined,
     image: place.top_photo_url || undefined,
+    foundingDate: signals.foundingYear ? String(signals.foundingYear) : undefined,
     aggregateRating: place.rating
       ? { "@type": "AggregateRating", ratingValue: place.rating, reviewCount: place.review_count ?? 1 }
       : undefined,
@@ -240,6 +243,30 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 ⚡ Instant book on Klook
               </span>
             )}
+            {signals.recencyTier === "very_active" && (
+              <span
+                className="rounded-full bg-emerald-100 px-2.5 py-0.5 font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                title="At least one Google review in the last 30 days"
+              >
+                🟢 Active last 30d
+              </span>
+            )}
+            {signals.ageTier === "veteran" && signals.foundingYear && (
+              <span
+                className="rounded-full bg-amber-100 px-2.5 py-0.5 font-bold text-amber-900 dark:bg-amber-950/40 dark:text-amber-300"
+                title={`First archived ${signals.foundingYear} (${signals.ageYears}y online)`}
+              >
+                🏛 Since {signals.foundingYear}
+              </span>
+            )}
+            {signals.ageTier === "established" && signals.foundingYear && (
+              <span
+                className="rounded-full bg-ink-100 px-2.5 py-0.5 font-semibold dark:bg-ink-800"
+                title={`First archived ${signals.foundingYear} (${signals.ageYears}y online)`}
+              >
+                📅 Since {signals.foundingYear}
+              </span>
+            )}
             {place.price_band !== "unknown" && place.price_min_thb > 0 && (
               <span className="rounded-full bg-ink-100 px-2.5 py-0.5 font-semibold text-ink-900 dark:bg-ink-800 dark:text-ink-100">
                 ฿{place.price_min_thb.toLocaleString()}
@@ -299,6 +326,15 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   <span>{s.name}</span>
                 </span>
               ))}
+              {signals.emailProvider && (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full bg-sky-50 px-2.5 py-1 font-medium text-sky-800 dark:bg-sky-950/40 dark:text-sky-300"
+                  title={`Business email runs on ${emailProviderLabel(signals.emailProvider)} — sign of a real, maintained operation`}
+                >
+                  <span>📧</span>
+                  <span>{emailProviderLabel(signals.emailProvider)}</span>
+                </span>
+              )}
             </div>
             <span className="muted hidden sm:inline">
               {place.photos_count} photos · {place.videos_count} videos
@@ -825,6 +861,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               telephone: place.phone || undefined,
               url: place.website || undefined,
               image: place.top_photo_url || undefined,
+              foundingDate: signals.foundingYear ? String(signals.foundingYear) : undefined,
               priceRange:
                 place.price_min_thb > 0
                   ? `฿${place.price_min_thb}${place.price_max_thb > place.price_min_thb ? `–฿${place.price_max_thb}` : ""}`
