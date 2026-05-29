@@ -119,6 +119,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
+    // Trust methodology — authoritative single-page explainer
+    out.push({ url: `${origin}/${lang}/trust/`, lastModified: now, priority: 0.85, changeFrequency: "monthly" });
+
     // FAQ index + each FAQ
     out.push({ url: `${origin}/${lang}/faq/`, lastModified: now, priority: 0.75, changeFrequency: "monthly" });
     for (const f of listFaqs()) {
