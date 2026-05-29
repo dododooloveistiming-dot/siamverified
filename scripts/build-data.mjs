@@ -97,6 +97,49 @@ function enrichPlace(place) {
 //   2. legacy C:\dbd-scraper\{folder}\...  (kept for the old computer's pipeline)
 const LOCAL_EXTERNAL_DATA = path.join(process.cwd(), "external_data");
 
+// Read all outreach/discovered/{niche}__*.csv produced by
+// scripts/discover_gaps.py. Each row gets mapped to the dbd-scraper master
+// CSV shape so the existing normalize() pipeline can consume it unchanged.
+// place_id-deduped against the master rows in the caller — master wins.
+const DISCOVERED_DIR = path.join(process.cwd(), "outreach", "discovered");
+function loadDiscoveredRows(niche, relCols) {
+  if (!fs.existsSync(DISCOVERED_DIR)) return [];
+  const files = fs.readdirSync(DISCOVERED_DIR).filter((f) =>
+    f.startsWith(`${niche}__`) && f.endsWith(".csv"),
+  );
+  const out = [];
+  for (const f of files) {
+    try {
+      const raw = fs.readFileSync(path.join(DISCOVERED_DIR, f), "utf-8");
+      const rows = parse(raw, { columns: true, skip_empty_lines: true, relax_quotes: true, relax_column_count: true });
+      for (const r of rows) {
+        if (!r.place_id || !r.name) continue;
+        // Shape to dbd-master columns so normalize() reads it cleanly.
+        const shaped = {
+          place_id: r.place_id,
+          name: r.name,
+          rating: r.rating || "",
+          review_count: r.user_ratings_total || "",
+          address: r.address || "",
+          city: "",                  // re-derived in lib/data.ts from address
+          category: (r.types || "").replace(/;/g, ", ").slice(0, 80),
+          google_maps_url: `https://www.google.com/maps/place/?q=place_id:${r.place_id}`,
+          reviews_scraped_count: "",
+          photos_count: "",
+          videos_count: "",
+          data_sources: "discovery",
+        };
+        // Set the niche's relevance flag so the existing filter accepts it.
+        for (const col of relCols) shaped[col] = "1";
+        out.push(shaped);
+      }
+    } catch (e) {
+      console.warn(`  discovered CSV read fail (${f}): ${e.message}`);
+    }
+  }
+  return out;
+}
+
 function loadBroadCsv(folder, kind) {
   const fname = kind === "naver"  ? `${folder}_naver_blogs_broad.csv`
               : kind === "pantip" ? `${folder}_pantip_threads.csv`
@@ -415,8 +458,17 @@ for (const src of SOURCES) {
     byNiche[src.niche] = 0;
     continue;
   }
+  // Merge in discovery CSVs (geographic backfill from Places API). Dedupe
+  // by place_id — anything already in the master keeps its richer columns.
+  const discovered = loadDiscoveredRows(src.niche, src.relCols);
+  if (discovered.length > 0) {
+    const existingIds = new Set(rows.map((r) => r.place_id).filter(Boolean));
+    const newOnes = discovered.filter((d) => !existingIds.has(d.place_id));
+    rows = rows.concat(newOnes);
+    console.log(`[${src.niche}] +${newOnes.length} from discovery (skipped ${discovered.length - newOnes.length} dupes)`);
+  }
   console.log(`[${src.niche}] loaded ${rows.length} rows`);
-  const NICHE_CAPS = { "muay-thai": 500, "yoga-pilates": 500, "wellness": 300, "cooking": 500, "diving": 300, "spa": 800, "coworking": 200 };
+  const NICHE_CAPS = { "muay-thai": 1500, "yoga-pilates": 1500, "wellness": 1000, "cooking": 1000, "diving": 800, "spa": 2000, "coworking": 500 };
   const cap = NICHE_CAPS[src.niche] ?? 500;
 
   let candidates = rows
