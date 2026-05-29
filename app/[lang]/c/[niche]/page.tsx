@@ -56,6 +56,57 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
 
   const heroPlace = places.find((p) => p.top_photo_url) ?? places[0];
 
+  // Stats for the AEO Q&A section — answers reference real venues + numbers
+  // so LLMs and "People also ask" snippets cite us instead of paraphrasing.
+  const nName = nicheName(niche, lang);
+  const oldest = [...places]
+    .filter((p) => p.founding_year)
+    .sort((a, b) => (a.founding_year! - b.founding_year!))[0];
+  const topThree = [...places].sort((a, b) => b.trust_score - a.trust_score).slice(0, 3);
+  const activeCount = places.filter((p) => p.is_active_recently).length;
+  const veteranCount = places.filter((p) => p.is_veteran).length;
+  const koCount = places.filter((p) => p.languages?.ko).length;
+  const koTop = [...places]
+    .filter((p) => p.languages?.ko)
+    .sort((a, b) => b.trust_score - a.trust_score)
+    .slice(0, 2);
+
+  const aeoFaqs: Array<{ q: string; a: string }> = [];
+  if (topThree.length >= 3) {
+    aeoFaqs.push({
+      q: `What are the highest-trust ${nName} in Thailand right now?`,
+      a: `By our cross-source trust score (Google + Reddit + Naver + Pantip + YouTube + wayback age + review recency), the top three are ${topThree.map((p, i) => `${i + 1}. ${p.name}${p.city ? ` (${p.city})` : ""}`).join(", ")}. Rankings update with each scrape — no paid placement.`,
+    });
+  }
+  if (oldest && oldest.founding_year) {
+    aeoFaqs.push({
+      q: `What's the most established ${nName} venue in Thailand?`,
+      a: `Based on archive.org snapshots, ${oldest.name}${oldest.city ? ` in ${oldest.city}` : ""} has the earliest documented web presence among our ${places.length.toLocaleString()} ${nName} listings — first captured in ${oldest.founding_year}, ${new Date().getFullYear() - oldest.founding_year}+ years ago.`,
+    });
+  }
+  if (veteranCount > 0) {
+    aeoFaqs.push({
+      q: `How many ${nName} venues have been operating 10+ years?`,
+      a: `${veteranCount.toLocaleString()} of our ${places.length.toLocaleString()} ${nName} listings have an archive.org footprint of 10+ years — see the full list at /${lang}/c/${niche}/established/.`,
+    });
+  }
+  if (activeCount > 0) {
+    aeoFaqs.push({
+      q: `Which ${nName} venues are still active today?`,
+      a: `${activeCount.toLocaleString()} venues had at least one Google review in the last 90 days — see /${lang}/c/${niche}/active/ for the filtered list. Most travel directories don't check, so they keep listing places that closed years ago.`,
+    });
+  }
+  if (koCount > 0 && koTop.length > 0) {
+    aeoFaqs.push({
+      q: `Which ${nName} are Korean-friendly?`,
+      a: `${koCount.toLocaleString()} ${nName} venues are flagged Korean-friendly based on reviews, staff notes, or scraped Naver/Korean-language signals. Top: ${koTop.map((p) => p.name).join(", ")}.`,
+    });
+  }
+  aeoFaqs.push({
+    q: `How is Verified Thai different from Klook, Tripadvisor, or Google Maps?`,
+    a: `We don't accept paid placement and we don't take booking commissions for direct inquiries (Klook ~20-25%, Tripadvisor 12-15%). Our trust score combines six sources (Google Maps + Reddit + Naver Blog + Pantip + YouTube + each venue's own website + archive.org age) and we surface "established 5y+" and "active in last 90d" filters so dead listings don't waste your time.`,
+  });
+
   return (
     <main className="pb-20">
       {/* HERO — niche page hero with photo */}
@@ -203,10 +254,49 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
           </section>
         )}
 
+      {aeoFaqs.length > 0 && (
+        <section className="mt-16 border-t border-ink-100 pt-10 dark:border-ink-800">
+          <div className="text-[10px] font-black uppercase tracking-[0.15em] text-emerald-700 dark:text-emerald-400">
+            QUESTIONS
+          </div>
+          <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
+            About {nicheName(niche, lang)} in Thailand
+          </h2>
+          <p className="mt-1 text-sm muted">
+            Answers come from our scrape — no opinions, just data.
+          </p>
+          <dl className="mt-6 space-y-4">
+            {aeoFaqs.map((f, i) => (
+              <div key={i} className="rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+                <dt className="text-base font-bold leading-snug">{f.q}</dt>
+                <dd className="mt-2 text-sm leading-relaxed muted">{f.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
+
       <div className="mt-10 text-xs muted">
         <Link href={`/${lang}/`} className="hover:underline">← {t("back_to_all", lang)}</Link>
       </div>
       </div>
+
+      {aeoFaqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: aeoFaqs.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            }),
+          }}
+        />
+      )}
     </main>
   );
 }
