@@ -361,6 +361,26 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 0% fee
               </span>
             </div>
+            {klookData && klookData.products.length > 0 && (
+              <div className="mb-3 grid grid-cols-2 gap-2 rounded-lg border border-emerald-200/70 bg-white/70 p-2.5 text-[11px] dark:border-emerald-800/70 dark:bg-ink-900/40">
+                <div>
+                  <div className="font-black text-emerald-700 dark:text-emerald-400">💎 Direct (this form)</div>
+                  <ul className="mt-1 space-y-0.5 text-ink-700 dark:text-ink-300">
+                    <li>✓ 0% platform fee</li>
+                    <li>✓ Venue keeps every baht</li>
+                    <li>· Reply usually within 24h</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="font-black text-ink-700 dark:text-ink-300">⚡ Klook (also below)</div>
+                  <ul className="mt-1 space-y-0.5 muted">
+                    <li>✗ ~20-25% to platform</li>
+                    <li>· Free cancellation</li>
+                    <li>· Instant confirmation</li>
+                  </ul>
+                </div>
+              </div>
+            )}
             <BookingForm
               placeId={place.slug}
               placeName={place.name}
