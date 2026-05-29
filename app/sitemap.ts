@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { loadPlaces, loadBlogPosts } from "@/lib/data";
+import { loadPlaces, loadBlogPosts, getPlacesByNiche } from "@/lib/data";
+import { CITIES as CITY_DEFS, placesInCity } from "@/lib/cities";
 import { listFaqs } from "@/lib/faqs";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import type { Niche } from "@/lib/types";
@@ -84,6 +85,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
           priority: 0.8,
           changeFrequency: "weekly",
         });
+      }
+    }
+
+    // /best/{city}-{niche}-established/ — handcrafted long-tail SEO pages.
+    // Only emit combos with ≥5 established places (avoid thin content).
+    for (const city of CITY_DEFS) {
+      for (const n of NICHES) {
+        const ps = placesInCity(getPlacesByNiche(n), city).filter((p) => p.is_established);
+        if (ps.length >= 5) {
+          out.push({
+            url: `${origin}/${lang}/best/${city.slug}-${n}-established/`,
+            lastModified: now,
+            priority: 0.8,
+            changeFrequency: "monthly",
+          });
+        }
       }
     }
 
