@@ -7,6 +7,47 @@ import { getPlaceSignals, computeTrustBoost } from "./signals";
 let cache: PlacesBundle | null = null;
 const byNicheCache = new Map<Niche, Place[]>();
 
+// Upstream scrape pipeline assigns `city` carelessly — many island/Phuket
+// venues land as "Bangkok" because their administrative_area lookup
+// defaulted there. Re-derive from the address (which is reliably set) so
+// /best/{city}-{niche}-* pages and city hubs are not wrong. Priority order
+// matters: sub-city tokens beat their containing province (Ko Tao > Surat
+// Thani; Rawai/Patong > Phuket, etc).
+const CITY_TOKENS: Array<[RegExp, string]> = [
+  // Tourist islands & beach destinations — most aggressive override
+  [/\bko(h)?\s*tao\b/i, "Koh Tao"],
+  [/\bko(h)?\s*pha[\-\s]?ngan\b|\bkohphangan\b/i, "Koh Phangan"],
+  [/\bko(h)?\s*samui\b/i, "Koh Samui"],
+  [/\bko(h)?\s*lanta\b/i, "Koh Lanta"],
+  [/\bphi\s*phi\b/i, "Koh Phi Phi"],
+  [/\bko(h)?\s*chang\b/i, "Koh Chang"],
+  [/\bko(h)?\s*lipe\b/i, "Koh Lipe"],
+  [/\b(patong|karon|kata|rawai|kamala|chalong|naka)\b/i, "Phuket"],
+  [/\bphuket\b/i, "Phuket"],
+  [/\bkhao\s*lak\b/i, "Khao Lak"],
+  [/\bphang[\-\s]?nga\b/i, "Phang Nga"],
+  [/\bao\s*nang\b|\brailay\b|\bkrabi\b/i, "Krabi"],
+  // Mainland tourist cities
+  [/\bhua\s*hin\b|\bcha[\-\s]?am\b/i, "Hua Hin"],
+  [/\bpattaya\b|\bjomtien\b|\bbang\s*saray\b/i, "Pattaya"],
+  [/\bchiang\s*mai\b|\bmae\s*rim\b|\bsan\s*sai\b|\bhang\s*dong\b/i, "Chiang Mai"],
+  [/\bchiang\s*rai\b/i, "Chiang Rai"],
+  // Bangkok-area suburbs that should NOT collapse into Bangkok
+  [/\bnonthaburi\b/i, "Nonthaburi"],
+  [/\bsamut\s*prakan\b/i, "Samut Prakan"],
+  [/\bpathum\s*thani\b/i, "Pathum Thani"],
+  // Bangkok (broad fallback — must come last so sub-cities win)
+  [/\bbangkok\b|\bkrung\s*thep\b/i, "Bangkok"],
+];
+
+function deriveCity(address: string | undefined | null, fallback: string): string {
+  if (!address) return fallback;
+  for (const [re, canonical] of CITY_TOKENS) {
+    if (re.test(address)) return canonical;
+  }
+  return fallback;
+}
+
 export function loadPlaces(): PlacesBundle {
   if (cache) return cache;
   const p = path.join(process.cwd(), "public", "data", "places.json");
@@ -28,6 +69,9 @@ export function loadPlaces(): PlacesBundle {
   // can use them without re-loading the server-only signal JSONs.
   let trustSum = 0;
   for (const place of bundle.places) {
+    // Re-derive city from address before doing anything else — boost,
+    // signal flags, city-scoped pages all depend on the corrected value.
+    place.city = deriveCity(place.address, place.city);
     const signals = getPlaceSignals(place.id);
     const boost = computeTrustBoost(signals);
     if (boost > 0) place.trust_score = Math.min(100, place.trust_score + boost);
