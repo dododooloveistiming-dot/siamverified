@@ -2,6 +2,7 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 import type { PlacesBundle, Place, Niche, CommunityBundle } from "./types";
+import { getPlaceSignals, computeTrustBoost } from "./signals";
 
 let cache: PlacesBundle | null = null;
 const byNicheCache = new Map<Niche, Place[]>();
@@ -20,7 +21,19 @@ export function loadPlaces(): PlacesBundle {
     return cache;
   }
   const raw = fs.readFileSync(p, "utf-8");
-  cache = JSON.parse(raw) as PlacesBundle;
+  const bundle = JSON.parse(raw) as PlacesBundle;
+  // Apply enrichment-signal boost so wayback/recency/email infra feed into
+  // ranking everywhere — not just the badges on the detail page.
+  let trustSum = 0;
+  for (const place of bundle.places) {
+    const boost = computeTrustBoost(getPlaceSignals(place.id));
+    if (boost > 0) place.trust_score = Math.min(100, place.trust_score + boost);
+    trustSum += place.trust_score;
+  }
+  bundle.avg_trust = bundle.places.length
+    ? Math.round((trustSum / bundle.places.length) * 10) / 10
+    : 0;
+  cache = bundle;
   return cache;
 }
 

@@ -126,3 +126,17 @@ export function formatSubs(n: number): string {
   if (n >= 1_000) return `${(n / 1_000).toFixed(n >= 10_000 ? 0 : 1)}K`;
   return String(n);
 }
+
+// Trust boost applied on top of the base trust_score from places.json.
+// Capped at +25 so even max-boosted weak places (e.g. base 50 + 25 = 75) sit
+// below well-reviewed venues (base 90+). Veteran + active is the strongest
+// combined real-world signal we can prove without manual verification.
+export function computeTrustBoost(s: PlaceSignals): number {
+  let b = 0;
+  if (s.ageTier === "veteran") b += 12;
+  else if (s.ageTier === "established") b += 6;
+  if (s.recencyTier === "very_active") b += 10;
+  if (s.emailProvider) b += 5;
+  if (s.youtube) b += 3;
+  return Math.min(25, b);
+}
