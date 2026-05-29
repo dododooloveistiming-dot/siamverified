@@ -88,18 +88,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       }
     }
 
-    // /best/{city}-{niche}-established/ — handcrafted long-tail SEO pages.
-    // Only emit combos with ≥5 established places (avoid thin content).
+    // /best/{city}-{niche}-{kind}/ — handcrafted long-tail SEO pages.
+    // Only emit combos with ≥5 matching places (avoid thin content).
     for (const city of CITY_DEFS) {
       for (const n of NICHES) {
-        const ps = placesInCity(getPlacesByNiche(n), city).filter((p) => p.is_established);
-        if (ps.length >= 5) {
-          out.push({
-            url: `${origin}/${lang}/best/${city.slug}-${n}-established/`,
-            lastModified: now,
-            priority: 0.8,
-            changeFrequency: "monthly",
-          });
+        const inCity = placesInCity(getPlacesByNiche(n), city);
+        for (const [kind, pred] of [
+          ["established", (p: typeof inCity[0]) => p.is_established],
+          ["active", (p: typeof inCity[0]) => p.is_active_recently],
+        ] as const) {
+          if (inCity.filter(pred).length >= 5) {
+            out.push({
+              url: `${origin}/${lang}/best/${city.slug}-${n}-${kind}/`,
+              lastModified: now,
+              priority: 0.8,
+              changeFrequency: "monthly",
+            });
+          }
         }
       }
     }
