@@ -30,3 +30,11 @@ public/data/_raw/
 # Local detached scraper logs (not source code)
 logs/
 .dev.log
+
+# Owner outreach queue + drafts contain real email addresses (PII).
+# Generated locally by scripts/build_outreach.py — never commit.
+outreach/queue.json
+outreach/queue.csv
+outreach/drafts/
+outreach/batches/
+outreach/sent/
