@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook } from "@/lib/data";
+import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats } from "@/lib/data";
 import { getPlaceSignals, emailProviderLabel, trustBreakdown } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
@@ -93,6 +93,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const mentions = getPlaceMentions(place.id);
   const klookData = getPlaceKlook(place.id);
   const ownerProfile = await getOwnerProfile(place.id);
+  const replyStats = ownerProfile ? await getReplyTimeStats(place.id) : null;
   const signals = getPlaceSignals(place.id);
 
   // Owner-controlled overlays (live DB) take precedence over scraped values
@@ -389,10 +390,21 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   No commission · No booking platform markup · Pay at the venue
                 </p>
               </div>
-              <span className="rounded-full bg-emerald-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow">
-                0% fee
-              </span>
+              <div className="flex flex-col items-end gap-1">
+                <span className="rounded-full bg-emerald-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow">
+                  0% fee
+                </span>
+                {replyStats && (
+                  <span
+                    className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                    title={`Average reply time across ${replyStats.sampleSize} inquiries`}
+                  >
+                    ⏱ Replies in ~{replyStats.avgHours < 1 ? `${Math.round(replyStats.avgHours * 60)}min` : `${replyStats.avgHours}h`}
+                  </span>
+                )}
+              </div>
             </div>
+
             {klookData && klookData.products.length > 0 && (
               <div className="mb-3 grid grid-cols-2 gap-2 rounded-lg border border-emerald-200/70 bg-white/70 p-2.5 text-[11px] dark:border-emerald-800/70 dark:bg-ink-900/40">
                 <div>

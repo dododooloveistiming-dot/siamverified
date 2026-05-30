@@ -133,6 +133,38 @@ export type OwnerProfile = {
   updatedAt?: Date;
 };
 
+export type ReplyTimeStats = {
+  avgHours: number;
+  sampleSize: number;
+};
+
+/**
+ * Owner reply-time stats for a claimed listing. Closes the speed-gap
+ * narrative vs Klook's instant booking — when shown, demonstrates the
+ * owner actually responds. Requires ≥3 replied inquiries to surface.
+ */
+export async function getReplyTimeStats(placeId: string): Promise<ReplyTimeStats | null> {
+  try {
+    const { db, inquiries } = await import("./db");
+    const { sql, eq, and, isNotNull } = await import("drizzle-orm");
+    const rows = await db
+      .select({
+        avg: sql<number>`AVG(EXTRACT(EPOCH FROM (${inquiries.repliedAt} - ${inquiries.createdAt})))`,
+        count: sql<number>`COUNT(*)`,
+      })
+      .from(inquiries)
+      .where(and(eq(inquiries.placeId, placeId), isNotNull(inquiries.repliedAt)));
+    const r = rows[0];
+    const cnt = Number(r?.count ?? 0);
+    if (!r || cnt < 3) return null;
+    const avgSec = Number(r.avg ?? 0);
+    return { avgHours: Math.round((avgSec / 3600) * 10) / 10, sampleSize: cnt };
+  } catch (e) {
+    console.warn("[data] getReplyTimeStats failed:", e);
+    return null;
+  }
+}
+
 /**
  * Fetch the live owner-controlled profile from listing_profiles.
  * Called from server-rendered place pages. Returns null if no claimed
