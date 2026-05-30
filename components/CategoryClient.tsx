@@ -341,13 +341,23 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
       <div className="flex flex-1 flex-col gap-2 px-4 pb-4">
         <h3 className="line-clamp-2 text-base font-bold leading-tight">{p.name}</h3>
 
-        <div className="flex items-center gap-2 text-xs muted">
-          {p.city && <span className="truncate">📍 {p.city}</span>}
-          {p.rating != null && (
-            <span className="shrink-0 font-semibold text-amber-600 dark:text-amber-400">
-              ★ {p.rating.toFixed(1)}
-              {p.review_count ? <span className="ml-0.5 font-normal muted">({p.review_count.toLocaleString()})</span> : null}
+        <div className="flex items-center justify-between gap-2 text-xs muted">
+          <div className="flex items-center gap-2 min-w-0">
+            {p.city && <span className="truncate">📍 {p.city}</span>}
+            {p.rating != null && (
+              <span className="shrink-0 font-semibold text-amber-600 dark:text-amber-400">
+                ★ {p.rating.toFixed(1)}
+                {p.review_count ? <span className="ml-0.5 font-normal muted">({p.review_count.toLocaleString()})</span> : null}
+              </span>
+            )}
+          </div>
+          {p.price_min_thb > 0 ? (
+            <span className="shrink-0 font-black tabular-nums text-emerald-700 dark:text-emerald-400">
+              ฿{p.price_min_thb.toLocaleString()}
+              {p.price_max_thb > p.price_min_thb ? `–${p.price_max_thb.toLocaleString()}` : ""}
             </span>
+          ) : (
+            <span className="shrink-0 text-[10px] muted italic">price on inquiry</span>
           )}
         </div>
 
