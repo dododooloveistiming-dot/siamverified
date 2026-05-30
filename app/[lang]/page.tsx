@@ -5,6 +5,7 @@ import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
+import { currentSeason } from "@/lib/seasons";
 
 export const dynamic = "force-static";
 
@@ -162,6 +163,61 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           </div>
         </div>
       </section>
+
+      {/* SEASONAL WIDGET — month-aware Thailand context, sets expectations */}
+      {(() => {
+        const season = currentSeason();
+        const MONTH_NAME = ({
+          en: ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+          ko: ["", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+          ja: ["", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+          zh: ["", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+          th: ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
+          ar: ["", "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
+        } as const)[lang][season.month];
+        return (
+          <section className="mx-auto max-w-6xl px-4 pt-12">
+            <div className="rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50/80 to-rose-50/60 p-5 dark:border-amber-800/60 dark:from-amber-950/30 dark:to-rose-950/20">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{season.emoji}</span>
+                  <h2 className="text-lg font-black tracking-tight sm:text-xl">
+                    {MONTH_NAME} · {season.headline[lang]}
+                  </h2>
+                </div>
+                <span className="rounded-full bg-amber-200/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
+                  This month in Thailand
+                </span>
+              </div>
+              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-700 dark:text-ink-300">
+                {season.context[lang]}
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {season.niches.map((n) => (
+                  <Link
+                    key={n}
+                    href={`/${lang}/c/${n}/`}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-emerald-700 shadow-sm transition hover:bg-emerald-50 dark:bg-ink-900 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+                  >
+                    <span>{NICHE_META[n].emoji}</span>
+                    <span>{nicheName(n, lang)}</span>
+                  </Link>
+                ))}
+                {season.cities.map((c) => (
+                  <Link
+                    key={c}
+                    href={`/${lang}/city/${c}/`}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 shadow-sm transition hover:bg-emerald-50 dark:bg-ink-900 dark:text-ink-300 dark:hover:bg-emerald-950/40"
+                  >
+                    <span>📍</span>
+                    <span className="capitalize">{c.replace(/-/g, " ")}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* TRIP-PURPOSE FUNNEL — lowest-friction entry for category-uncertain visitors */}
       <section className="mx-auto max-w-6xl px-4 pt-12">
