@@ -16,6 +16,7 @@ import BookingForm from "@/components/BookingForm";
 import type { FAQItem } from "@/components/PlaceFAQ";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
+import ShareButton from "@/components/ShareButton";
 
 // ISR — initially built static, refreshed from DB (owner profile) every
 // 10 minutes. Owner edits go live within ~10 min; trade-off for 90% fewer
@@ -212,9 +213,17 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             <span className="truncate">{place.name}</span>
           </nav>
 
-          <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl md:text-5xl">
-            {place.name}
-          </h1>
+          <div className="mt-3 flex flex-wrap items-start justify-between gap-3">
+            <h1 className="text-3xl font-black leading-tight tracking-tight sm:text-4xl md:text-5xl">
+              {place.name}
+            </h1>
+            <ShareButton
+              url={`${SITE.origin}/${lang}/place/${place.slug}/`}
+              title={place.name}
+              text={`${place.name} — ${nicheName(place.niche, lang)}${place.city ? ` (${place.city})` : ""} · Trust ${place.trust_score}/100 on ${SITE.name}`}
+              label={({ en: "Share", ko: "공유", ja: "シェア", zh: "分享", th: "แชร์", ar: "مشاركة" } as const)[lang]}
+            />
+          </div>
 
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm muted">
             {place.rating != null && (
