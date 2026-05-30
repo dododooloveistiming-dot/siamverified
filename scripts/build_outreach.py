@@ -49,13 +49,13 @@ NICHE_LABEL = {
     "coworking": "coworking space",
 }
 NICHE_INTRO = {
-    "muay-thai": "Korean travelers actively search for Muay Thai camps in your area",
-    "yoga-pilates": "wellness travelers from Korea, Japan, and the Middle East look for studios like yours",
-    "wellness": "international wellness travelers (KR/JP/EN) discover venues like yours through us",
-    "cooking": "tourists looking for authentic Thai cooking classes find your school through our site",
-    "diving": "divers planning Thailand trips compare PADI centers on our directory",
-    "spa": "tourists comparing spas in Bangkok, Phuket, and Chiang Mai use us to filter the legit ones",
-    "coworking": "digital nomads researching Thai coworking spaces land on our directory",
+    "muay-thai": "Korean, Japanese, and Chinese travelers actively search for Muay Thai camps in your area — they all use different search engines and platforms, so we surface your venue in all six languages we publish in",
+    "yoga-pilates": "wellness travelers from Korea, Japan, China, the Middle East, and English-speaking countries look for studios like yours — our 6-language site (KR/JP/ZH/AR/EN/TH) means each visitor lands in their own language",
+    "wellness": "international wellness travelers (Korean / Japanese / Chinese / English / Thai / Arabic) discover venues like yours through us — we're the only Thailand-focused directory that publishes in all six",
+    "cooking": "tourists looking for authentic Thai cooking classes find your school through our multi-language site — KR, JP, ZH, EN, TH, AR — so a Chinese family planning a trip lands on a page they can actually read",
+    "diving": "divers planning Thailand trips compare PADI centers on our directory — published in 6 languages so a Korean group and a German couple both find your shop without translation friction",
+    "spa": "tourists comparing spas in Bangkok, Phuket, and Chiang Mai use us to filter the legit ones — our KR / JP / ZH / EN / TH / AR pages each rank in the home-country search engines those travelers actually use",
+    "coworking": "digital nomads researching Thai coworking spaces land on our directory — we publish in EN, KR, JP, ZH, TH, AR so the long-stay Korean and Japanese nomad communities (currently the biggest growth segment) can compare in their own language",
 }
 
 
@@ -103,15 +103,16 @@ def draft_body(place, email_rec, has_klook, age_years, claim_url, listing_url, l
     subject = f"Free verifiedthai.com listing for {name} — claim in 60 seconds?"
     body = f"""Hi {name} team,
 
-We run verifiedthai.com — a directory of trusted {label}s in Thailand built for international travelers. {intro.capitalize()}.
+We run verifiedthai.com — a directory of trusted {label}s in Thailand built for international travelers. {intro[:1].upper() + intro[1:]}.
 
 We've built a listing for {name} ({city}) based on your public Google profile and website:
 {listing_url}
 
 {age_line}{klook_line}If you'd like to take it over (free), you can:
   • Add your own photos, hours, and service menu
-  • Receive direct inquiries from travelers (0% commission, lead goes to your email)
-  • Highlight Korean/English/Thai language support
+  • Receive direct inquiries from travelers in their own language (0% commission)
+  • Tap multi-language reach: KR · JP · ZH · EN · TH · AR — your listing exists in all six
+  • Flag Korean-speaking / Japanese-speaking staff so KR/JP guests filter your venue in
 
 Claim here: {claim_url}
 

@@ -177,6 +177,58 @@ export default async function ForBusinessLanding() {
         </div>
       </section>
 
+      {/* MULTI-LANGUAGE REACH — 6-language audience visualization */}
+      <section className="mx-auto max-w-6xl px-4 py-14">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-3 py-1 text-[11px] font-bold text-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
+            6-LANGUAGE AUDIENCE
+          </div>
+          <h2 className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">
+            Your listing reaches travelers in 6 languages — no translation work on your side
+          </h2>
+          <p className="mt-2 mx-auto max-w-2xl text-sm muted">
+            Every listing is published in Korean, Japanese, Chinese, English, Thai, and Arabic. Each
+            language version ranks separately in its home-country search engines. You write nothing —
+            we handle the translation layer.
+          </p>
+        </div>
+
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {[
+            { flag: "🇰🇷", lang: "Korean", market: "Naver · Daum · Kakao",          note: "Largest single segment for spa/cooking/muay-thai" },
+            { flag: "🇯🇵", lang: "Japanese", market: "Google JP · Yahoo JP",         note: "Wellness + cooking-class core" },
+            { flag: "🇨🇳", lang: "Chinese", market: "Bing CN · Sogou · global Google",note: "Recovering rapidly post-2024" },
+            { flag: "🇺🇸", lang: "English", market: "Google + Bing global",          note: "AU · UK · US · SG · IN traffic" },
+            { flag: "🇹🇭", lang: "Thai",    market: "Google TH · Pantip",            note: "Domestic Thai customers" },
+            { flag: "🇸🇦", lang: "Arabic",  market: "Google AR · Yandex",            note: "Gulf wellness traveler segment" },
+          ].map((l) => (
+            <div
+              key={l.lang}
+              className="rounded-2xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">{l.flag}</span>
+                <span className="text-sm font-black">{l.lang}</span>
+              </div>
+              <div className="mt-2 text-[10px] font-semibold uppercase tracking-wide muted">
+                {l.market}
+              </div>
+              <div className="mt-1 text-[11px] leading-snug">{l.note}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 rounded-2xl border-2 border-emerald-200 bg-emerald-50/60 p-5 text-sm dark:border-emerald-800 dark:bg-emerald-950/20">
+          <p>
+            <strong>Why this matters for owners:</strong> a Korean tourist Googling in Korean,
+            a Japanese family searching on Yahoo JP, and a Chinese couple browsing in Bing CN
+            all need different landing pages to actually convert. Most Thai venues publish only
+            in Thai + English and miss the other 4 segments entirely. Your Verified Thai listing
+            ranks in all six from day one — your only job is to reply to the inquiries.
+          </p>
+        </div>
+      </section>
+
       {/* DASHBOARD PREVIEW — full feature tour */}
       <section id="dashboard-preview" className="border-y border-ink-100 bg-ink-50 py-14 dark:border-ink-800 dark:bg-ink-900/40">
         <div className="mx-auto max-w-6xl px-4">
