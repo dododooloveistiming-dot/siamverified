@@ -163,6 +163,72 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
         </div>
       </section>
 
+      {/* TRIP-PURPOSE FUNNEL — lowest-friction entry for category-uncertain visitors */}
+      <section className="mx-auto max-w-6xl px-4 pt-12">
+        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          {({ en: "I want to…", ko: "나는…", ja: "やりたいこと…", zh: "我想…", th: "ฉันอยาก…", ar: "أريد أن…" } as const)[lang]}
+        </h2>
+        <p className="mt-1 text-sm muted">
+          {({
+            en: "Not sure what category fits your trip? Pick a vibe.",
+            ko: "어떤 카테고리에 가야 할지 모르겠다면, 분위기로 골라봐.",
+            ja: "どのカテゴリーかわからない？気分で選ぼう。",
+            zh: "不知道选哪个分类？按心情来选。",
+            th: "ไม่แน่ใจว่าเลือกหมวดไหนดี? เลือกตามอารมณ์",
+            ar: "غير متأكد من الفئة؟ اختر حسب الأجواء.",
+          } as const)[lang]}
+        </p>
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {([
+            { emoji: "🧘", href: `/${lang}/c/wellness/`,
+              en: ["Relax & restore", "Wellness · spa · yoga"],
+              ko: ["쉬고 회복하기", "웰니스 · 스파 · 요가"],
+              ja: ["癒し・回復", "ウェルネス · スパ · ヨガ"],
+              zh: ["放松恢复", "养生 · 水疗 · 瑜伽"],
+              th: ["พักผ่อนและฟื้นฟู", "เวลเนส · สปา · โยคะ"],
+              ar: ["استرخاء وراحة", "العافية · سبا · يوغا"],
+            },
+            { emoji: "🥊", href: `/${lang}/c/muay-thai/established/`,
+              en: ["Train hard", "Muay Thai · fight camps"],
+              ko: ["빡세게 운동", "무에타이 · 파이트 캠프"],
+              ja: ["本格トレーニング", "ムエタイ · ファイトキャンプ"],
+              zh: ["认真训练", "泰拳 · 格斗营"],
+              th: ["ฝึกหนัก", "มวยไทย · ค่ายมวย"],
+              ar: ["تدريب مكثف", "مواي تاي · معسكرات قتال"],
+            },
+            { emoji: "🍳", href: `/${lang}/c/cooking/`,
+              en: ["Learn something", "Thai cooking classes"],
+              ko: ["뭔가 배우기", "태국 요리 클래스"],
+              ja: ["何か学ぶ", "タイ料理教室"],
+              zh: ["学点东西", "泰式烹饪课"],
+              th: ["เรียนรู้อะไรใหม่ๆ", "คลาสทำอาหารไทย"],
+              ar: ["تعلم شيئاً", "دروس طبخ تايلاندي"],
+            },
+            { emoji: "🤿", href: `/${lang}/c/diving/active/`,
+              en: ["Get adventurous", "Dive shops · PADI"],
+              ko: ["모험 떠나기", "다이브 샵 · PADI"],
+              ja: ["冒険する", "ダイブショップ · PADI"],
+              zh: ["开始冒险", "潜水店 · PADI"],
+              th: ["ออกผจญภัย", "ร้านดำน้ำ · PADI"],
+              ar: ["مغامرة", "متاجر غوص · PADI"],
+            },
+          ] as const).map((opt) => {
+            const [title, sub] = opt[lang];
+            return (
+              <Link
+                key={opt.href}
+                href={opt.href}
+                className="group flex flex-col items-start gap-1.5 rounded-2xl border-2 border-ink-100 bg-white p-4 transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900"
+              >
+                <span className="text-3xl">{opt.emoji}</span>
+                <span className="text-sm font-black leading-tight">{title}</span>
+                <span className="text-[11px] muted">{sub}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
       {/* NICHE TILES — full-photo, distinctive */}
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-6 flex items-end justify-between">
