@@ -7,6 +7,7 @@ import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { CITIES, getCityBySlug, placesInCity, countNichesInCity } from "@/lib/cities";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
+import PlaceMap from "@/components/PlaceMap";
 
 export const dynamic = "force-static";
 
@@ -217,6 +218,20 @@ export default function CityHubPage({
 
       <div className="mx-auto max-w-6xl px-4">
         {/* BROWSE BY CATEGORY in this city */}
+        {(() => {
+          const mapped = cityPlaces.filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lng));
+          if (mapped.length < 3) return null;
+          return (
+            <section className="mt-10">
+              <div className="mb-3 flex items-baseline justify-between">
+                <h2 className="text-2xl font-bold tracking-tight">Map of {city.label}</h2>
+                <span className="text-xs muted">{mapped.length} mapped venues</span>
+              </div>
+              <PlaceMap places={mapped.slice(0, 200)} lang={lang} height={500} />
+            </section>
+          );
+        })()}
+
         <section className="mt-10">
           <h2 className="text-2xl font-bold tracking-tight">
             Browse {city.label} by category

@@ -8,6 +8,7 @@ import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import PlaceFAQ, { type FAQItem } from "@/components/PlaceFAQ";
+import PlaceMap from "@/components/PlaceMap";
 
 // /best/{city}-{niche}-{kind}/ — handcrafted SEO landings targeting exact
 // long-tail queries like "established Muay Thai gym Bangkok" or "active
@@ -359,6 +360,19 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
         </section>
 
         <div className="mx-auto max-w-5xl px-4">
+          {(() => {
+            const mapped = places.filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lng));
+            if (mapped.length < 3) return null;
+            return (
+              <section className="mt-8">
+                <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
+                  Map view · {mapped.length} mapped
+                </h2>
+                <PlaceMap places={mapped} lang={lang} height={400} />
+              </section>
+            );
+          })()}
+
           <ol className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {places.map((p, i) => (
               <li key={p.id}>

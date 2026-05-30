@@ -138,6 +138,8 @@ function loadDiscoveredRows(niche, relCols) {
           google_maps_url: `https://www.google.com/maps/place/?q=place_id:${r.place_id}`,
           website: website,
           phone: phone,
+          lat: r.lat || "",
+          lng: r.lng || "",
           reviews_scraped_count: "",
           photos_count: "",
           videos_count: "",
@@ -336,10 +338,28 @@ function relevant(r, relCols) {
   return true; // if no relevance column, assume relevant (new niches default)
 }
 
+// Pull lat/lng either from the explicit fields (discovered places) or by
+// regex against the legacy @lat,lng pattern in google_maps_url.
+const LATLNG_RE = /@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/;
+function extractLatLng(r) {
+  const lat = parseFloat(String(r.lat || ""));
+  const lng = parseFloat(String(r.lng || ""));
+  if (Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0) {
+    return { lat, lng };
+  }
+  const m = LATLNG_RE.exec(String(r.google_maps_url || ""));
+  if (m) {
+    const la = parseFloat(m[1]); const ln = parseFloat(m[2]);
+    if (Number.isFinite(la) && Number.isFinite(ln)) return { lat: la, lng: ln };
+  }
+  return null;
+}
+
 function normalize(r, niche) {
   const reviews = safeJson(r.reviews_json, []);
   const photos = safeJson(r.photo_urls_json, []);
   const videos = safeJson(r.videos_json, []);
+  const coords = extractLatLng(r);
   return {
     id: r.place_id,
     slug: slugify(`${niche}-${r.name}-${String(r.place_id || "").slice(-6)}`),
@@ -412,6 +432,8 @@ function normalize(r, niche) {
       bookimed: r.bookimed_url || "",
     },
     is_partner: false,
+    lat: coords ? coords.lat : undefined,
+    lng: coords ? coords.lng : undefined,
   };
 }
 

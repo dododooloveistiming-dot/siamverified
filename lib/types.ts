@@ -107,6 +107,8 @@ export interface Place {
   is_active_recently?: boolean;  // any review activity in last 90d
   founding_year?: number;        // YYYY from earliest wayback capture
   kr_mentions?: number;          // naver blog + cafe count for this place
+  lat?: number;                  // geographic coordinates (Places API or extracted from google_maps_url)
+  lng?: number;
 }
 
 export interface CommunityThread {
