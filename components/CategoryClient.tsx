@@ -6,6 +6,7 @@ import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 import { t } from "@/lib/i18n";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
+import WishlistButton from "@/components/WishlistButton";
 
 // nicheName is imported from lib/types when needed
 
@@ -336,6 +337,9 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
             ★ Partner
           </div>
         )}
+        <div className="absolute right-2 bottom-2">
+          <WishlistButton place={p} />
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col gap-2 px-4 pb-4">
