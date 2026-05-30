@@ -140,3 +140,17 @@ export function computeTrustBoost(s: PlaceSignals): number {
   if (s.youtube) b += 3;
   return Math.min(25, b);
 }
+
+export type TrustBreakdownItem = { label: string; pts: number };
+
+// Returns the boost components in display order. Used for the tooltip on
+// place cards/detail badges so users see WHY a venue scored what it did.
+export function trustBreakdown(s: PlaceSignals): TrustBreakdownItem[] {
+  const items: TrustBreakdownItem[] = [];
+  if (s.ageTier === "veteran") items.push({ label: "Veteran (10y+ online)", pts: 12 });
+  else if (s.ageTier === "established") items.push({ label: "Established (5y+ online)", pts: 6 });
+  if (s.recencyTier === "very_active") items.push({ label: "Active in last 30d", pts: 10 });
+  if (s.emailProvider) items.push({ label: `Pro email (${emailProviderLabel(s.emailProvider)})`, pts: 5 });
+  if (s.youtube) items.push({ label: "YouTube channel ≥5k subs", pts: 3 });
+  return items;
+}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook } from "@/lib/data";
-import { getPlaceSignals, emailProviderLabel } from "@/lib/signals";
+import { getPlaceSignals, emailProviderLabel, trustBreakdown } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
@@ -235,9 +235,24 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </div>
 
           <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
-            <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 font-bold text-white">
-              Trust {place.trust_score}/100
-            </span>
+            {(() => {
+              const items = trustBreakdown(signals);
+              const totalBoost = items.reduce((s, i) => s + i.pts, 0);
+              const base = Math.max(0, place.trust_score - totalBoost);
+              const tip = items.length > 0
+                ? `Base ${base} + ${items.map((i) => `${i.label} +${i.pts}`).join(" + ")} = ${place.trust_score}/100`
+                : `Computed from Google reviews, photo count, cross-source mentions, and website signals.`;
+              return (
+                <Link
+                  href={`/${lang}/trust/`}
+                  title={tip + " — see /trust for methodology"}
+                  className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-0.5 font-bold text-white transition hover:bg-emerald-600"
+                >
+                  <span>Trust {place.trust_score}/100</span>
+                  <span className="text-[9px] opacity-80">ⓘ</span>
+                </Link>
+              );
+            })()}
             {place.bookable?.klook && (
               <span className="rounded-full bg-rose-600 px-2.5 py-0.5 font-bold text-white">
                 ⚡ Instant book on Klook
