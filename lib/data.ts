@@ -7,6 +7,12 @@ import { getPlaceSignals, computeTrustBoost } from "./signals";
 let cache: PlacesBundle | null = null;
 const byNicheCache = new Map<Niche, Place[]>();
 
+function loadJsonOrEmpty<T>(p: string): T {
+  if (!fs.existsSync(p)) return {} as T;
+  try { return JSON.parse(fs.readFileSync(p, "utf-8")) as T; }
+  catch { return {} as T; }
+}
+
 // Upstream scrape pipeline assigns `city` carelessly — many island/Phuket
 // venues land as "Bangkok" because their administrative_area lookup
 // defaulted there. Re-derive from the address (which is reliably set) so
@@ -63,6 +69,14 @@ export function loadPlaces(): PlacesBundle {
   }
   const raw = fs.readFileSync(p, "utf-8");
   const bundle = JSON.parse(raw) as PlacesBundle;
+  // Load Korean-mention counts (naver blog + cafe) so cards can surface a
+  // KR-discovery badge. Read once before the per-place loop to amortize.
+  const naverHits = loadJsonOrEmpty<Record<string, unknown[]>>(
+    path.join(process.cwd(), "public", "data", "per_place_naver.json"),
+  );
+  const cafeHits = loadJsonOrEmpty<Record<string, unknown[]>>(
+    path.join(process.cwd(), "public", "data", "per_place_naver_cafe.json"),
+  );
   // Apply enrichment-signal boost so wayback/recency/email infra feed into
   // ranking everywhere — not just the badges on the detail page. Also project
   // the boolean flags onto each place so client-side filters (CategoryClient)
@@ -80,6 +94,8 @@ export function loadPlaces(): PlacesBundle {
     if (signals.recencyTier === "very_active") place.is_very_active = true;
     if (signals.recencyTier === "very_active" || signals.recencyTier === "active") place.is_active_recently = true;
     if (signals.foundingYear) place.founding_year = signals.foundingYear;
+    const krCount = (naverHits[place.id] || []).length + (cafeHits[place.id] || []).length;
+    if (krCount > 0) place.kr_mentions = krCount;
     trustSum += place.trust_score;
   }
   bundle.avg_trust = bundle.places.length

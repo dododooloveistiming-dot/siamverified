@@ -378,6 +378,14 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
               🇰🇷 KO
             </span>
           )}
+          {p.kr_mentions && p.kr_mentions > 0 && (
+            <span
+              className="rounded-full bg-rose-50 px-2 py-0.5 font-bold text-rose-800 dark:bg-rose-950/30 dark:text-rose-300"
+              title={`${p.kr_mentions} mentions across Naver blogs + cafes`}
+            >
+              🇰🇷 {p.kr_mentions} mentions
+            </span>
+          )}
           {p.languages.ja && (
             <span className="rounded-full bg-pink-100 px-2 py-0.5 font-medium text-pink-700 dark:bg-pink-900/40 dark:text-pink-300">
               🇯🇵 JA
