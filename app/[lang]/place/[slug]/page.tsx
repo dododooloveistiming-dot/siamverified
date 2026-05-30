@@ -17,6 +17,7 @@ import type { FAQItem } from "@/components/PlaceFAQ";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
 import ShareButton from "@/components/ShareButton";
+import PlaceMap from "@/components/PlaceMap";
 
 // ISR — initially built static, refreshed from DB (owner profile) every
 // 10 minutes. Owner edits go live within ~10 min; trade-off for 90% fewer
@@ -326,13 +327,20 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </div>
         </section>
 
-        {/* PHOTO MOSAIC — Airbnb-style 1+4 grid with fullscreen lightbox */}
+        {/* PHOTO MOSAIC — Airbnb-style 1+4 grid with fullscreen lightbox.
+            When no photos exist but coords do, swap to a map-as-hero —
+            map of the venue location is more useful to a traveler than
+            yet another generic placeholder. */}
         <section className="mx-auto mt-5 max-w-5xl px-4">
-          <HeroMosaic
-            photos={mosaicPhotos}
-            alt={place.name}
-            placeholder={<PlacePlaceholder niche={place.niche} size="xl" />}
-          />
+          {mosaicPhotos.length === 0 && Number.isFinite(place.lat) && Number.isFinite(place.lng) ? (
+            <PlaceMap places={[place]} lang={lang} height={400} />
+          ) : (
+            <HeroMosaic
+              photos={mosaicPhotos}
+              alt={place.name}
+              placeholder={<PlacePlaceholder niche={place.niche} size="xl" />}
+            />
+          )}
         </section>
 
         {/* TRUST STRIP — sources cross-checked */}
