@@ -225,6 +225,12 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   // Photos for the mosaic — owner uploads first, otherwise scraped
   const mosaicPhotos = displayPhotos.slice(0, 30);
 
+  // Social proof shows expanded only when it matches the visitor's language;
+  // otherwise collapsed (e.g. a Japanese reader isn't led with Korean blogs).
+  const expandKorean = lang === "ko";
+  const expandPantip = lang === "th";
+  const expandGoogleReviews = lang === "th"; // raw Google reviews are Thai
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -423,8 +429,8 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         {/* REVIEWS — Booking.com-style rating summary widget + sample quotes */}
         {(place.top_review_text || place.rating) && (
-          <section id="reviews" className="scroll-mt-20 mt-10">
-            <h2 className="mb-4 text-lg font-bold">{t("patient_voices", lang)}</h2>
+          <details id="reviews" className="scroll-mt-20 mt-10 group" open={expandGoogleReviews}>
+            <summary className="mb-4 flex cursor-pointer list-none items-center gap-2 text-lg font-bold">{t("patient_voices", lang)}<span className="ml-auto text-xs font-normal muted group-open:hidden">{t("social_more", lang)} ▾</span></summary>
 
             {place.rating && (
               <div className="mb-4 grid gap-4 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 sm:grid-cols-[auto_1fr] sm:items-center">
@@ -502,7 +508,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 })}
               </ul>
             )}
-          </section>
+          </details>
         )}
 
         {/* DIRECT BOOKING — 0% commission CTA card, above-the-fold (primary intent) */}
@@ -720,13 +726,14 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         {/* PER-PLACE NAVER (Korean blogs + cafe posts about this specific business) */}
         {(mentions.naver.length > 0 || mentions.cafe.length > 0) && (
-          <section className="mt-10">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+          <details className="mt-10 group" open={expandKorean}>
+            <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 text-lg font-bold">
               <span>🇰🇷</span> Korean reviews
               <span className="text-xs font-normal muted">
                 ({mentions.naver.length + mentions.cafe.length})
               </span>
-            </h2>
+              <span className="ml-auto text-xs font-normal muted group-open:hidden">{t("social_more", lang)} ▾</span>
+            </summary>
             <ul className="space-y-2">
               {mentions.naver.map((b, i) => (
                 <li key={`b${i}`}>
@@ -767,7 +774,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 </li>
               ))}
             </ul>
-          </section>
+          </details>
         )}
 
         {/* PER-PLACE YOUTUBE — facade-loaded players (1 featured + grid) */}
@@ -822,11 +829,12 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         {/* PER-PLACE PANTIP (Thai forum threads) */}
         {mentions.pantip.length > 0 && (
-          <section className="mt-10">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+          <details className="mt-10 group" open={expandPantip}>
+            <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 text-lg font-bold">
               <span>🇹🇭</span> Local Thai discussions
               <span className="text-xs font-normal muted">({mentions.pantip.length})</span>
-            </h2>
+              <span className="ml-auto text-xs font-normal muted group-open:hidden">{t("social_more", lang)} ▾</span>
+            </summary>
             <ul className="space-y-2">
               {mentions.pantip.map((p, i) => (
                 <li key={i}>
@@ -849,7 +857,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 </li>
               ))}
             </ul>
-          </section>
+          </details>
         )}
 
         {/* COMMUNITY MENTIONS — fuzzy-matched by place name */}
