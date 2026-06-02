@@ -144,6 +144,10 @@ export type ReplyTimeStats = {
  * owner actually responds. Requires ≥3 replied inquiries to surface.
  */
 export async function getReplyTimeStats(placeId: string): Promise<ReplyTimeStats | null> {
+  // Skip the DB during static generation (`next build`) — these owner overlays
+  // are filled in at runtime via ISR revalidation instead. Avoids a DB
+  // roundtrip per prebuilt place page, which was slowing the build to a crawl.
+  if (process.env.NEXT_PHASE === "phase-production-build") return null;
   try {
     const { db, inquiries } = await import("./db");
     const { sql, eq, and, isNotNull } = await import("drizzle-orm");
@@ -171,6 +175,10 @@ export async function getReplyTimeStats(placeId: string): Promise<ReplyTimeStats
  * owner has filled in custom content yet.
  */
 export async function getOwnerProfile(placeId: string): Promise<OwnerProfile | null> {
+  // Skip the DB during static generation (`next build`) — the owner overlay is
+  // fetched at runtime via ISR revalidation (revalidate=600 on the place page).
+  // Avoids a DB roundtrip per prebuilt place page (the build-time bottleneck).
+  if (process.env.NEXT_PHASE === "phase-production-build") return null;
   try {
     const { db, listingProfiles } = await import("./db");
     const { eq } = await import("drizzle-orm");
