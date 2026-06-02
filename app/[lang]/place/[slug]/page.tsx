@@ -342,6 +342,24 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </div>
         </section>
 
+        {/* IN-PAGE NAV — anchor TOC for long detail pages (native smooth scroll) */}
+        <nav className="mx-auto mt-4 max-w-5xl px-4">
+          <ul className="flex flex-wrap gap-2 text-xs font-semibold">
+            {[
+              { href: "#reviews", label: `⭐ ${t("patient_voices", lang)}` },
+              { href: "#services", label: "💲 Services" },
+              { href: "#location", label: "📍 Location" },
+              { href: "#book", label: "📩 Book" },
+            ].map((a) => (
+              <li key={a.href}>
+                <a href={a.href} className="inline-block rounded-full border border-ink-200 px-3 py-1 text-ink-700 transition hover:border-emerald-400 hover:text-emerald-700 dark:border-ink-700 dark:text-ink-300">
+                  {a.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         {/* PHOTO MOSAIC — Airbnb-style 1+4 grid with fullscreen lightbox.
             When no photos exist but coords do, swap to a map-as-hero —
             map of the venue location is more useful to a traveler than
@@ -391,8 +409,92 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         <div className="mx-auto max-w-5xl px-4">
 
+        {/* REVIEWS — Booking.com-style rating summary widget + sample quotes */}
+        {(place.top_review_text || place.rating) && (
+          <section id="reviews" className="scroll-mt-20 mt-10">
+            <h2 className="mb-4 text-lg font-bold">{t("patient_voices", lang)}</h2>
+
+            {place.rating && (
+              <div className="mb-4 grid gap-4 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 sm:grid-cols-[auto_1fr] sm:items-center">
+                <div className="flex items-center gap-3 sm:flex-col sm:items-start">
+                  <div className="rounded-xl bg-emerald-600 px-3 py-2 text-2xl font-black text-white tabular-nums sm:text-3xl">
+                    {place.rating.toFixed(1)}
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold leading-tight">
+                      {place.rating >= 4.7 ? "Exceptional" : place.rating >= 4.3 ? "Excellent" : place.rating >= 3.8 ? "Very good" : "Good"}
+                    </div>
+                    <div className="text-xs muted">
+                      {(place.review_count ?? 0).toLocaleString()} reviews
+                    </div>
+                  </div>
+                </div>
+                {/* Per-review ratings are absent from most Google scrapes, so
+                    only render the distribution histogram when we actually have
+                    at least one rated sample — otherwise it shows 0% across the
+                    board which looks broken. */}
+                {place.reviews_sample && place.reviews_sample.length > 0 && place.reviews_sample.some((r) => (r.rating ?? 0) > 0) && (() => {
+                  const dist = [5, 4, 3, 2, 1].map((stars) => {
+                    const n = place.reviews_sample.filter(
+                      (r) => Math.round(r.rating || 0) === stars,
+                    ).length;
+                    return { stars, n };
+                  });
+                  const total = dist.reduce((s, d) => s + d.n, 0) || 1;
+                  return (
+                    <ul className="space-y-1 text-xs">
+                      {dist.map((d) => {
+                        const pct = Math.round((d.n / total) * 100);
+                        return (
+                          <li key={d.stars} className="flex items-center gap-2">
+                            <span className="w-7 shrink-0 text-right tabular-nums muted">{d.stars}★</span>
+                            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
+                              <div
+                                className="h-full rounded-full bg-emerald-500"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                            <span className="w-9 shrink-0 text-right tabular-nums muted">{pct}%</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  );
+                })()}
+                {place.reviews_sample && place.reviews_sample.length > 0 && !place.reviews_sample.some((r) => (r.rating ?? 0) > 0) && (
+                  <div className="text-xs muted">
+                    {(place.review_count ?? 0).toLocaleString()} reviews aggregated from Google Maps. Per-review breakdown coming soon.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {place.top_review_text && cleanReviewText(place.top_review_text) && (
+              <blockquote className="rounded-2xl border-l-4 border-emerald-400 bg-emerald-50/50 p-4 text-sm leading-relaxed dark:bg-emerald-950/20">
+                "{cleanReviewText(place.top_review_text)}"
+              </blockquote>
+            )}
+            {place.reviews_sample.length > 1 && (
+              <ul className="mt-4 space-y-3">
+                {place.reviews_sample.slice(1, 5).map((rv, i) => {
+                  const body = cleanReviewText(rv.text || "");
+                  if (!body) return null;
+                  return (
+                    <li key={i} className="rounded-xl border border-ink-100 bg-white p-3 text-sm dark:border-ink-800 dark:bg-ink-900">
+                      <div className="text-xs muted">
+                        {rv.reviewer || "Anonymous"} {rv.rating ? `· ★ ${rv.rating}` : ""} {rv.date ? `· ${rv.date}` : ""}
+                      </div>
+                      <p className="mt-1">{body}</p>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        )}
+
         {/* DIRECT BOOKING — 0% commission CTA card, above-the-fold (primary intent) */}
-        <section className="mt-6">
+        <section id="book" className="scroll-mt-20 mt-6">
           <div className="rounded-2xl border-2 border-emerald-300 bg-gradient-to-br from-emerald-50 to-white p-4 dark:border-emerald-700 dark:from-emerald-950/30 dark:to-ink-900">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <div>
@@ -474,7 +576,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         {/* SERVICES & PRICING */}
         {services.length > 0 && (
-          <section className="mt-8 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+          <section id="services" className="scroll-mt-20 mt-8 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
             <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">Services & pricing</h2>
             <ul className="space-y-2">
               {services.map((s, i) => (
@@ -579,90 +681,6 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             </a>
           </div>
         </section>
-
-        {/* REVIEWS — Booking.com-style rating summary widget + sample quotes */}
-        {(place.top_review_text || place.rating) && (
-          <section className="mt-10">
-            <h2 className="mb-4 text-lg font-bold">{t("patient_voices", lang)}</h2>
-
-            {place.rating && (
-              <div className="mb-4 grid gap-4 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 sm:grid-cols-[auto_1fr] sm:items-center">
-                <div className="flex items-center gap-3 sm:flex-col sm:items-start">
-                  <div className="rounded-xl bg-emerald-600 px-3 py-2 text-2xl font-black text-white tabular-nums sm:text-3xl">
-                    {place.rating.toFixed(1)}
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold leading-tight">
-                      {place.rating >= 4.7 ? "Exceptional" : place.rating >= 4.3 ? "Excellent" : place.rating >= 3.8 ? "Very good" : "Good"}
-                    </div>
-                    <div className="text-xs muted">
-                      {(place.review_count ?? 0).toLocaleString()} reviews
-                    </div>
-                  </div>
-                </div>
-                {/* Per-review ratings are absent from most Google scrapes, so
-                    only render the distribution histogram when we actually have
-                    at least one rated sample — otherwise it shows 0% across the
-                    board which looks broken. */}
-                {place.reviews_sample && place.reviews_sample.length > 0 && place.reviews_sample.some((r) => (r.rating ?? 0) > 0) && (() => {
-                  const dist = [5, 4, 3, 2, 1].map((stars) => {
-                    const n = place.reviews_sample.filter(
-                      (r) => Math.round(r.rating || 0) === stars,
-                    ).length;
-                    return { stars, n };
-                  });
-                  const total = dist.reduce((s, d) => s + d.n, 0) || 1;
-                  return (
-                    <ul className="space-y-1 text-xs">
-                      {dist.map((d) => {
-                        const pct = Math.round((d.n / total) * 100);
-                        return (
-                          <li key={d.stars} className="flex items-center gap-2">
-                            <span className="w-7 shrink-0 text-right tabular-nums muted">{d.stars}★</span>
-                            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
-                              <div
-                                className="h-full rounded-full bg-emerald-500"
-                                style={{ width: `${pct}%` }}
-                              />
-                            </div>
-                            <span className="w-9 shrink-0 text-right tabular-nums muted">{pct}%</span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  );
-                })()}
-                {place.reviews_sample && place.reviews_sample.length > 0 && !place.reviews_sample.some((r) => (r.rating ?? 0) > 0) && (
-                  <div className="text-xs muted">
-                    {(place.review_count ?? 0).toLocaleString()} reviews aggregated from Google Maps. Per-review breakdown coming soon.
-                  </div>
-                )}
-              </div>
-            )}
-
-            {place.top_review_text && cleanReviewText(place.top_review_text) && (
-              <blockquote className="rounded-2xl border-l-4 border-emerald-400 bg-emerald-50/50 p-4 text-sm leading-relaxed dark:bg-emerald-950/20">
-                "{cleanReviewText(place.top_review_text)}"
-              </blockquote>
-            )}
-            {place.reviews_sample.length > 1 && (
-              <ul className="mt-4 space-y-3">
-                {place.reviews_sample.slice(1, 5).map((rv, i) => {
-                  const body = cleanReviewText(rv.text || "");
-                  if (!body) return null;
-                  return (
-                    <li key={i} className="rounded-xl border border-ink-100 bg-white p-3 text-sm dark:border-ink-800 dark:bg-ink-900">
-                      <div className="text-xs muted">
-                        {rv.reviewer || "Anonymous"} {rv.rating ? `· ★ ${rv.rating}` : ""} {rv.date ? `· ${rv.date}` : ""}
-                      </div>
-                      <p className="mt-1">{body}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </section>
-        )}
 
         {/* (Photos moved to top-of-page mosaic) */}
 
@@ -857,7 +875,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         )}
 
         {/* CONTACT */}
-        <section className="mt-10 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+        <section id="location" className="scroll-mt-20 mt-10 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
           <h2 className="mb-3 text-lg font-bold">{t("contact_links", lang)}</h2>
           <dl className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
             {place.address && (
