@@ -23,8 +23,9 @@ for (const p of bundle.places) {
   for (const f of DROP_FIELDS) {
     if (f in p) {
       if (f === "reviews_sample" && Array.isArray(p[f])) {
-        // Keep first review only; top_review_text already covers the headline
-        p[f] = p[f].slice(0, 1);
+        // Keep up to 3 reviews — page renders a quote list; top_review_text
+        // covers the headline. (was slice(0,1); widened for review density)
+        p[f] = p[f].slice(0, 3);
         removedReviews += 1;
       } else {
         delete p[f];
