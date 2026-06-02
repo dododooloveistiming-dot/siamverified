@@ -974,21 +974,25 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                       reviewCount: place.review_count,
                     }
                   : undefined,
-              // Embed sample reviews for Google rich snippets
-              review: (place.reviews_sample || []).slice(0, 3).map((rv) => ({
-                "@type": "Review",
-                reviewBody: (rv.text || "").slice(0, 200),
-                author: { "@type": "Person", name: rv.reviewer || "Verified visitor" },
-                ...(rv.rating
-                  ? {
-                      reviewRating: {
-                        "@type": "Rating",
-                        ratingValue: rv.rating,
-                        bestRating: 5,
-                      },
-                    }
-                  : {}),
-              })),
+              // Embed sample reviews for Google rich snippets (de-noised; drop empties)
+              review: (place.reviews_sample || [])
+                .map((rv) => ({ rv, body: cleanReviewText(rv.text || "").slice(0, 200) }))
+                .filter((x) => x.body)
+                .slice(0, 3)
+                .map(({ rv, body }) => ({
+                  "@type": "Review",
+                  reviewBody: body,
+                  author: { "@type": "Person", name: rv.reviewer || "Verified visitor" },
+                  ...(rv.rating
+                    ? {
+                        reviewRating: {
+                          "@type": "Rating",
+                          ratingValue: rv.rating,
+                          bestRating: 5,
+                        },
+                      }
+                    : {}),
+                })),
             }),
           }}
         />
