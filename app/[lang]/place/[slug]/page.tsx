@@ -640,21 +640,25 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               </div>
             )}
 
-            {place.top_review_text && (
+            {place.top_review_text && cleanReviewText(place.top_review_text) && (
               <blockquote className="rounded-2xl border-l-4 border-emerald-400 bg-emerald-50/50 p-4 text-sm leading-relaxed dark:bg-emerald-950/20">
-                "{place.top_review_text}"
+                "{cleanReviewText(place.top_review_text)}"
               </blockquote>
             )}
             {place.reviews_sample.length > 1 && (
               <ul className="mt-4 space-y-3">
-                {place.reviews_sample.slice(1, 5).map((rv, i) => (
-                  <li key={i} className="rounded-xl border border-ink-100 bg-white p-3 text-sm dark:border-ink-800 dark:bg-ink-900">
-                    <div className="text-xs muted">
-                      {rv.reviewer || "Anonymous"} {rv.rating ? `· ★ ${rv.rating}` : ""} {rv.date ? `· ${rv.date}` : ""}
-                    </div>
-                    <p className="mt-1">{rv.text}</p>
-                  </li>
-                ))}
+                {place.reviews_sample.slice(1, 5).map((rv, i) => {
+                  const body = cleanReviewText(rv.text || "");
+                  if (!body) return null;
+                  return (
+                    <li key={i} className="rounded-xl border border-ink-100 bg-white p-3 text-sm dark:border-ink-800 dark:bg-ink-900">
+                      <div className="text-xs muted">
+                        {rv.reviewer || "Anonymous"} {rv.rating ? `· ★ ${rv.rating}` : ""} {rv.date ? `· ${rv.date}` : ""}
+                      </div>
+                      <p className="mt-1">{body}</p>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </section>
