@@ -254,6 +254,19 @@ export const T = {
     ja: "Verified Thaiは独立したディレクトリです。提携先からの手数料はサイト運営を支えますが、信頼スコアには影響しません。",
     ar: "Verified Thai دليل مستقل. عمولات الشركاء تدعم الموقع لكنها لا تؤثر على درجات الثقة.",
   },
+  // place-detail highlights ("이 곳 한눈에")
+  hl_title: { en: "At a glance", ko: "이 곳 한눈에", th: "ภาพรวม", zh: "一览", ja: "ひと目で", ar: "لمحة سريعة" },
+  hl_since: { en: "Since {y}", ko: "{y}년부터", th: "ตั้งแต่ {y}", zh: "{y}年起", ja: "{y}年から", ar: "منذ {y}" },
+  hl_years: { en: "{n}y running", ko: "{n}년차", th: "{n} ปี", zh: "经营{n}年", ja: "{n}年目", ar: "{n} سنوات" },
+  hl_reviews: { en: "{n} reviews", ko: "리뷰 {n}개", th: "{n} รีวิว", zh: "{n}条评价", ja: "{n}件", ar: "{n} تقييم" },
+  hl_lang_ok: { en: "English-friendly", ko: "한국어 가능", th: "พูดไทยได้", zh: "中文友好", ja: "日本語対応", ar: "نتحدث العربية" },
+  hl_price_from: { en: "from ฿{n}", ko: "฿{n}~", th: "เริ่ม ฿{n}", zh: "฿{n}起", ja: "฿{n}〜", ar: "من ฿{n}" },
+  hl_price_on_inquiry: { en: "Price on inquiry", ko: "가격: 문의 시 안내", th: "ราคาสอบถาม", zh: "价格请咨询", ja: "価格はお問い合わせ", ar: "السعر عند الطلب" },
+  // place-detail smart CTA
+  cta_check_booking: { en: "Check availability & price", ko: "예약·가격 확인", th: "เช็คคิวและราคา", zh: "查看可订与价格", ja: "空き状況・料金を確認", ar: "تحقق من التوفر والسعر" },
+  cta_inquiry_main: { en: "Send inquiry · reply within 24h", ko: "지금 문의 · 보통 24시간 내 답변", th: "ส่งคำถาม · ตอบใน 24 ชม.", zh: "立即咨询 · 24小时内回复", ja: "問い合わせ · 24時間以内に返信", ar: "أرسل استفسارًا · رد خلال 24 ساعة" },
+  cta_inquiry_short: { en: "Inquire", ko: "문의하기", th: "สอบถาม", zh: "咨询", ja: "問い合わせ", ar: "استفسر" },
+  social_more: { en: "More reviews & mentions", ko: "더 많은 후기·언급 보기", th: "ดูรีวิว/การกล่าวถึงเพิ่มเติม", zh: "更多评价与提及", ja: "他のレビュー・言及を見る", ar: "المزيد من التقييمات والإشارات" },
 } as const;
 
 export function t<K extends keyof typeof T>(key: K, lang: Lang): string {
