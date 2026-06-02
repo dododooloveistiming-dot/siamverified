@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats } from "@/lib/data";
 import { getPlaceSignals, emailProviderLabel, trustBreakdown } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
+import { isIndexablePlace, cleanReviewText } from "@/lib/reviews";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
@@ -43,6 +44,9 @@ export async function generateMetadata({ params }: { params: { lang: Lang; slug:
   return {
     title: `${place.name} — ${cat} | ${SITE.name}`,
     description: `Trust Score ${place.trust_score}. ${place.review_count ?? 0} reviews on Google. ${t("sources_pitch", params.lang)}.`,
+    robots: isIndexablePlace(place)
+      ? undefined
+      : { index: false, follow: true },
     alternates: {
       canonical: url,
       languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/place/${place.slug}/`])),
@@ -51,7 +55,17 @@ export async function generateMetadata({ params }: { params: { lang: Lang; slug:
       title: place.name,
       description: `${cat} · Trust Score ${place.trust_score}`,
       url,
-      images: place.top_photo_url ? [{ url: place.top_photo_url, width: 1200, height: 630 }] : [],
+      images: [{
+        url: `${SITE.origin}/api/og/place/${place.slug}`,
+        width: 1200, height: 630,
+        alt: place.name,
+      }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: place.name,
+      description: `${cat} · Trust ${place.trust_score}/100`,
+      images: [`${SITE.origin}/api/og/place/${place.slug}`],
     },
   };
 }
