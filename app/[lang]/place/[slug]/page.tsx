@@ -25,15 +25,21 @@ import PlaceMap from "@/components/PlaceMap";
 // function invocations vs 60s revalidation.
 export const revalidate = 600;
 
+// Allow on-demand rendering of place pages not pre-built below (the App
+// Router default, made explicit here because it's load-bearing).
+export const dynamicParams = true;
+
+// Pre-render ONLY indexable places, and ONLY the canonical `en` route.
+// Building all 4,206 places × 6 langs (~25k pages) overran Vercel's 45-min
+// build limit and failed every deploy since the dataset expansion. Everything
+// not pre-built here (other languages, thin/noindexed places) renders on first
+// request and is then cached via ISR (`revalidate` above). The sitemap only
+// lists indexable `en` place URLs, so crawlers warm exactly this set.
 export function generateStaticParams() {
   const bundle = loadPlaces();
-  const params: Array<{ lang: Lang; slug: string }> = [];
-  for (const lang of SUPPORTED_LANGS) {
-    for (const p of bundle.places) {
-      params.push({ lang, slug: p.slug });
-    }
-  }
-  return params;
+  return bundle.places
+    .filter(isIndexablePlace)
+    .map((p) => ({ lang: "en" as Lang, slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: { lang: Lang; slug: string } }): Promise<Metadata> {
