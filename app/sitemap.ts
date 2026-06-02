@@ -3,6 +3,7 @@ import { loadPlaces, loadBlogPosts, getPlacesByNiche } from "@/lib/data";
 import { CITIES as CITY_DEFS, placesInCity } from "@/lib/cities";
 import { listFaqs } from "@/lib/faqs";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { isIndexablePlace } from "@/lib/reviews";
 import type { Niche } from "@/lib/types";
 
 // Mirrors definitions used by app/[lang]/guide/[slug] and /compare/[slug]
@@ -156,7 +157,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const bundle = loadPlaces();
   const enrichedAt = (bundle as unknown as { enriched_at?: string }).enriched_at;
   const lastMod = enrichedAt ? new Date(enrichedAt) : now;
-  for (const p of bundle.places) {
+  // Only emit substantive pages — thin places are noindexed (see lib/reviews).
+  for (const p of bundle.places.filter(isIndexablePlace)) {
     out.push({
       url: `${origin}/en/place/${p.slug}/`,
       lastModified: lastMod,
