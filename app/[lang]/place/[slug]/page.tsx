@@ -8,6 +8,7 @@ import { isIndexablePlace, cleanReviewText } from "@/lib/reviews";
 import { placeHighlights } from "@/lib/highlights";
 import PlaceHighlights from "@/components/PlaceHighlights";
 import PrimaryCTA from "@/components/PrimaryCTA";
+import KoreanProof from "@/components/KoreanProof";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
@@ -426,6 +427,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         <div className="mx-auto max-w-5xl px-4">
         <PlaceHighlights items={highlights} title={t("hl_title", lang)} />
         <PrimaryCTA place={place} lang={lang} hasKlookProducts={!!(klookData && klookData.products.length > 0)} />
+        {lang === "ko" && <KoreanProof naver={mentions.naver} cafe={mentions.cafe} />}
 
         {/* REVIEWS — Booking.com-style rating summary widget + sample quotes */}
         {(place.top_review_text || place.rating) && (
@@ -725,7 +727,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         ) : null}
 
         {/* PER-PLACE NAVER (Korean blogs + cafe posts about this specific business) */}
-        {(mentions.naver.length > 0 || mentions.cafe.length > 0) && (
+        {lang !== "ko" && (mentions.naver.length > 0 || mentions.cafe.length > 0) && (
           <details className="mt-10 group" open={expandKorean}>
             <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 text-lg font-bold">
               <span>🇰🇷</span> Korean reviews
