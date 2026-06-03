@@ -318,6 +318,19 @@ export function getPlaceMentions(placeId: string): {
   };
 }
 
+// Korean one-line summary of a place's Thai Google reviews (generated offline
+// by scripts/translate_reviews_ko.mjs). Shown on /ko so Korean readers get the
+// gist without reading the collapsed Thai reviews. Null if not generated.
+let reviewKoCache: Record<string, string> | null = null;
+export function getReviewKo(placeId: string): string | null {
+  if (reviewKoCache === null) {
+    reviewKoCache = loadJsonOrEmpty<Record<string, string>>(
+      path.join(process.cwd(), "public", "data", "per_place_review_ko.json"),
+    );
+  }
+  return reviewKoCache[placeId] ?? null;
+}
+
 export type BlogPost = {
   slug: string;
   lang: string;

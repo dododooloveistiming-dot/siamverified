@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats } from "@/lib/data";
+import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats, getReviewKo } from "@/lib/data";
 import { getPlaceSignals, emailProviderLabel, trustBreakdown } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import { isIndexablePlace, cleanReviewText } from "@/lib/reviews";
@@ -120,6 +120,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const replyStats = ownerProfile ? await getReplyTimeStats(place.id) : null;
   const signals = getPlaceSignals(place.id);
   const highlights = placeHighlights(place, lang, signals);
+  const reviewKo = lang === "ko" ? getReviewKo(place.id) : null;
 
   // Owner-controlled overlays (live DB) take precedence over scraped values
   const displayHours = ownerProfile?.hours || null;
@@ -427,6 +428,12 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         <div className="mx-auto max-w-5xl px-4">
         <PlaceHighlights items={highlights} title={t("hl_title", lang)} />
         <PrimaryCTA place={place} lang={lang} hasKlookProducts={!!(klookData && klookData.products.length > 0)} />
+        {reviewKo && (
+          <div className="mt-6 rounded-2xl border border-blue-100 bg-blue-50/60 px-5 py-4 dark:border-blue-900/40 dark:bg-blue-950/20">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-blue-500">🇰🇷 한국어 리뷰 요약</p>
+            <p className="text-sm leading-relaxed text-ink-800 dark:text-ink-200">{reviewKo}</p>
+          </div>
+        )}
         {lang === "ko" && <KoreanProof naver={mentions.naver} cafe={mentions.cafe} />}
 
         {/* REVIEWS — Booking.com-style rating summary widget + sample quotes */}
