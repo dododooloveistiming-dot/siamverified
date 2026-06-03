@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { PlacesBundle, Place, Niche, CommunityBundle } from "./types";
 import { getPlaceSignals, computeTrustBoost } from "./signals";
+import { isThaiRelevantText } from "@/lib/mentions";
 
 let cache: PlacesBundle | null = null;
 const byNicheCache = new Map<Niche, Place[]>();
@@ -305,11 +306,15 @@ export function getPlaceMentions(placeId: string): {
   pantip: PerPlacePantipHit[];
   cafe: PerPlaceCafeHit[];
 } {
+  const naverRaw = (loadPerPlace("naver")[placeId] as PerPlaceNaverHit[]) ?? [];
+  const cafeRaw = (loadPerPlace("naver_cafe")[placeId] as PerPlaceCafeHit[]) ?? [];
   return {
-    naver: (loadPerPlace("naver")[placeId] as PerPlaceNaverHit[]) ?? [],
+    // Korean matches are fuzzy — keep only ones whose title/snippet actually
+    // reference Thailand, so same-named Korean businesses are filtered out.
+    naver: naverRaw.filter((h) => isThaiRelevantText(`${h.blog_title ?? ""} ${h.blog_snippet ?? ""}`)),
     youtube: (loadPerPlace("youtube")[placeId] as PerPlaceYoutubeHit[]) ?? [],
     pantip: (loadPerPlace("pantip")[placeId] as PerPlacePantipHit[]) ?? [],
-    cafe: (loadPerPlace("naver_cafe")[placeId] as PerPlaceCafeHit[]) ?? [],
+    cafe: cafeRaw.filter((h) => isThaiRelevantText(`${h.post_title ?? ""} ${h.post_snippet ?? ""}`)),
   };
 }
 
