@@ -4,6 +4,7 @@ import { loadPlaces, getTopPlacesPerNiche, getTopPlaces, getPlacesByNiche } from
 import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
+import { orderedNiches, isKoreanPopular } from "@/lib/niches";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import { currentSeason } from "@/lib/seasons";
 
@@ -28,9 +29,6 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
   };
 }
 
-const NICHES: Niche[] = [
-  "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
-];
 
 const FEATURED_CITIES: Array<{ slug: string; label: string; emoji: string }> = [
   { slug: "bangkok", label: "Bangkok", emoji: "🏙️" },
@@ -296,7 +294,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {NICHES.map((n) => {
+          {orderedNiches(lang).map((n) => {
             const meta = NICHE_META[n];
             const count = (bundle.by_niche as Record<string, number>)[n] ?? 0;
             const isReady = count > 0;
@@ -329,6 +327,13 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                 <div className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-black tabular-nums shadow-md dark:bg-ink-900/95">
                   {count.toLocaleString()}
                 </div>
+
+                {/* Korea-popular signal (ko only) */}
+                {lang === "ko" && isKoreanPopular(n) && (
+                  <div className="absolute left-3 top-3 rounded-full bg-rose-600 px-2.5 py-1 text-[10px] font-black text-white shadow-md">
+                    🇰🇷 인기
+                  </div>
+                )}
 
                 {/* Content overlay */}
                 <div className="absolute inset-x-0 bottom-0 p-5 text-white">
