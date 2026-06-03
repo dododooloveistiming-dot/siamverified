@@ -165,10 +165,9 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
     }
   })();
 
-  // sameAs: link to Google Maps + own website for entity disambiguation
+  // sameAs: external identity links only (not the canonical url field)
   const sameAs: string[] = [];
   if (place.google_maps_url) sameAs.push(place.google_maps_url);
-  if (place.website) sameAs.push(place.website);
 
   // Build FAQ items from data — drives both visible accordion + FAQPage JSON-LD
   const faqs: FAQItem[] = [];
@@ -279,7 +278,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
             {(() => {
               const items = trustBreakdown(signals);
-              const totalBoost = items.reduce((s, i) => s + i.pts, 0);
+              const totalBoost = Math.min(25, items.reduce((s, i) => s + i.pts, 0));
               const base = Math.max(0, place.trust_score - totalBoost);
               const tip = items.length > 0
                 ? `Base ${base} + ${items.map((i) => `${i.label} +${i.pts}`).join(" + ")} = ${place.trust_score}/100`
@@ -696,9 +695,11 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* DIRECT CONTACT — WhatsApp / LINE buttons + LINE QR (one-tap) */}
         {(whatsapp || lineId || signals.lineQrUrl) && (
           <section className="mt-8">
-            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
-              💬 Message {place.name} directly
-            </h2>
+            {(whatsapp || lineId) && (
+              <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
+                💬 Message {place.name} directly
+              </h2>
+            )}
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {whatsapp && (
                 <a
@@ -1069,14 +1070,13 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 place.price_min_thb > 0
                   ? `฿${place.price_min_thb}${place.price_max_thb > place.price_min_thb ? `–฿${place.price_max_thb}` : ""}`
                   : undefined,
-              aggregateRating:
-                place.rating && place.review_count
-                  ? {
-                      "@type": "AggregateRating",
-                      ratingValue: place.rating,
-                      reviewCount: place.review_count,
-                    }
-                  : undefined,
+              aggregateRating: place.rating
+                ? {
+                    "@type": "AggregateRating",
+                    ratingValue: place.rating,
+                    reviewCount: place.review_count ?? 1,
+                  }
+                : undefined,
               review: (place.reviews_sample || [])
                 .map((rv) => ({ rv, body: cleanReviewText(rv.text || "").slice(0, 200) }))
                 .filter((x) => x.body)

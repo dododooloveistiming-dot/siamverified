@@ -151,7 +151,7 @@ export function getPlaceSignals(placeId: string): PlaceSignals {
   let whoisExpiryYear: number | null = null;
   if (wh?.ok && wh.expires) {
     const y = parseInt(wh.expires.slice(0, 4), 10);
-    if (y > 2024) whoisExpiryYear = y;
+    if (y > new Date().getFullYear()) whoisExpiryYear = y;
   }
 
   let govCert: PlaceSignals["govCert"] = null;

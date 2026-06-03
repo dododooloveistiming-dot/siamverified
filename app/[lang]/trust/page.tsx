@@ -186,6 +186,7 @@ export default function TrustPage({ params }: { params: { lang: Lang } }) {
               {[
                 ["+12", "Veteran (10y+)", "archive.org first capture ≥10 years ago — venue had a real website a decade back"],
                 ["+10", "Active 30d", "≥1 Google review in the last 30 days — venue is clearly still trading"],
+                ["+8", "Gov. certified", "Thailand SHA (Safety & Health Administration) or TAT (Tourism Authority of Thailand) official registration — government-verified, not self-reported"],
                 ["+6", "Established (5y+)", "archive.org first capture ≥5 years ago"],
                 ["+5", "Pro email infra", "DNS MX records pointing to Google Workspace / Microsoft 365 / Zoho / Proton / Fastmail"],
                 ["+3", "YouTube channel ≥5k subs", "Venue runs an owned, audience-validated channel (verified via /about page)"],
