@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats, getReviewKo } from "@/lib/data";
-import { getPlaceSignals, emailProviderLabel, trustBreakdown } from "@/lib/signals";
+import { getPlaceSignals, emailProviderLabel, trustBreakdown, formatSubs } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import { isIndexablePlace, cleanReviewText } from "@/lib/reviews";
 import { placeHighlights } from "@/lib/highlights";
@@ -431,6 +431,18 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   <span>📧</span>
                   <span>{emailProviderLabel(signals.emailProvider)}</span>
                 </span>
+              )}
+              {signals.instagram && (
+                <a
+                  href={signals.instagram.url}
+                  target="_blank"
+                  rel="noopener nofollow"
+                  className="inline-flex items-center gap-1 rounded-full bg-pink-50 px-2.5 py-1 font-medium text-pink-800 transition hover:bg-pink-100 dark:bg-pink-950/30 dark:text-pink-300"
+                  title={`@${signals.instagram.handle} · ${signals.instagram.followers.toLocaleString()} Instagram followers`}
+                >
+                  <span>📸</span>
+                  <span>{formatSubs(signals.instagram.followers)} on Instagram</span>
+                </a>
               )}
               {signals.whoisExpiryYear && (
                 <span

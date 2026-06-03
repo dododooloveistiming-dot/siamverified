@@ -55,17 +55,25 @@ type LineRec = {
   qr_url: string;
   og_image: string;
 };
+type InstagramRec = {
+  handle: string;
+  url: string;
+  ok: boolean;
+  followers: number | null;
+  is_verified: boolean;
+};
 
 type Caches = {
-  wayback:  Record<string, WaybackRec>  | null;
-  dns:      Record<string, DnsRec>      | null;
-  recency:  Record<string, RecencyRec>  | null;
-  youtube:  Record<string, YoutubeRec>  | null;
-  whois:    Record<string, WhoisRec>    | null;
-  verif:    Record<string, VerifRec>    | null;
-  line:     Record<string, LineRec>     | null;
+  wayback:   Record<string, WaybackRec>   | null;
+  dns:       Record<string, DnsRec>       | null;
+  recency:   Record<string, RecencyRec>   | null;
+  youtube:   Record<string, YoutubeRec>   | null;
+  whois:     Record<string, WhoisRec>     | null;
+  verif:     Record<string, VerifRec>     | null;
+  line:      Record<string, LineRec>      | null;
+  instagram: Record<string, InstagramRec> | null;
 };
-const caches: Caches = { wayback: null, dns: null, recency: null, youtube: null, whois: null, verif: null, line: null };
+const caches: Caches = { wayback: null, dns: null, recency: null, youtube: null, whois: null, verif: null, line: null, instagram: null };
 
 function loadFile<T>(name: string): Record<string, T> {
   const p = path.join(process.cwd(), "public", "data", name);
@@ -89,6 +97,7 @@ export type PlaceSignals = {
   whoisExpiryYear: number | null;    // domain paid-up until this year
   govCert: { type: "sha"; certId: string; level: string } | { type: "tat"; kind: string } | null;
   lineQrUrl: string | null;          // LINE Official Account QR image URL
+  instagram: { handle: string; followers: number; url: string } | null; // only if ≥1k followers
 };
 
 const PRO_PROVIDERS = new Set(["google", "microsoft365", "zoho", "proton", "fastmail"]);
@@ -98,9 +107,10 @@ export function getPlaceSignals(placeId: string): PlaceSignals {
   if (caches.dns === null)     caches.dns     = loadFile<DnsRec>("per_place_dns.json");
   if (caches.recency === null) caches.recency = loadFile<RecencyRec>("per_place_recency.json");
   if (caches.youtube === null) caches.youtube = loadFile<YoutubeRec>("per_place_youtube.json");
-  if (caches.whois === null)   caches.whois   = loadFile<WhoisRec>("per_place_whois.json");
-  if (caches.verif === null)   caches.verif   = loadFile<VerifRec>("per_place_verifications.json");
-  if (caches.line === null)    caches.line    = loadFile<LineRec>("per_place_line.json");
+  if (caches.whois === null)     caches.whois     = loadFile<WhoisRec>("per_place_whois.json");
+  if (caches.verif === null)     caches.verif     = loadFile<VerifRec>("per_place_verifications.json");
+  if (caches.line === null)      caches.line      = loadFile<LineRec>("per_place_line.json");
+  if (caches.instagram === null) caches.instagram = loadFile<InstagramRec>("per_place_instagram.json");
 
   const wb = caches.wayback[placeId];
   const dn = caches.dns[placeId];
@@ -109,6 +119,7 @@ export function getPlaceSignals(placeId: string): PlaceSignals {
   const wh = caches.whois[placeId];
   const vf = caches.verif[placeId];
   const ln = caches.line[placeId];
+  const ig = caches.instagram[placeId];
 
   let foundingYear: number | null = null;
   let ageYears: number | null = null;
@@ -165,7 +176,12 @@ export function getPlaceSignals(placeId: string): PlaceSignals {
 
   const lineQrUrl = (ln?.alive && ln.qr_url) ? ln.qr_url : null;
 
-  return { foundingYear, ageYears, ageTier, emailProvider, recencyTier, recencyDaysSince, reviews30d, reviews90d, reviews365d, youtube, whoisExpiryYear, govCert, lineQrUrl };
+  const instagram =
+    ig?.ok && ig.followers && ig.followers >= 1000
+      ? { handle: ig.handle, followers: ig.followers, url: ig.url }
+      : null;
+
+  return { foundingYear, ageYears, ageTier, emailProvider, recencyTier, recencyDaysSince, reviews30d, reviews90d, reviews365d, youtube, whoisExpiryYear, govCert, lineQrUrl, instagram };
 }
 
 // Display helpers
