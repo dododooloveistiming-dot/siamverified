@@ -34,14 +34,38 @@ type YoutubeRec = {
   subscribers: number | null;
   views: number | null;
 };
+type WhoisRec = {
+  ok: boolean;
+  registered: string;
+  expires: string;           // ISO datetime
+  registrar: string;
+  age_days: number;
+  age_years: number;
+};
+type VerifRec = {
+  sha?: { level: string; cert_id: string; date: string; category: string; name_en: string };
+  tat_attraction?: { kind: string; name_en: string; province_th: string };
+  tat_restaurant?: { kind: string; name_en: string; province_th: string };
+};
+type LineRec = {
+  handle: string;
+  url: string;
+  alive: boolean;
+  oa_id: string;
+  qr_url: string;
+  og_image: string;
+};
 
 type Caches = {
-  wayback: Record<string, WaybackRec> | null;
-  dns: Record<string, DnsRec> | null;
-  recency: Record<string, RecencyRec> | null;
-  youtube: Record<string, YoutubeRec> | null;
+  wayback:  Record<string, WaybackRec>  | null;
+  dns:      Record<string, DnsRec>      | null;
+  recency:  Record<string, RecencyRec>  | null;
+  youtube:  Record<string, YoutubeRec>  | null;
+  whois:    Record<string, WhoisRec>    | null;
+  verif:    Record<string, VerifRec>    | null;
+  line:     Record<string, LineRec>     | null;
 };
-const caches: Caches = { wayback: null, dns: null, recency: null, youtube: null };
+const caches: Caches = { wayback: null, dns: null, recency: null, youtube: null, whois: null, verif: null, line: null };
 
 function loadFile<T>(name: string): Record<string, T> {
   const p = path.join(process.cwd(), "public", "data", name);
@@ -57,7 +81,14 @@ export type PlaceSignals = {
   emailProvider: "google" | "microsoft365" | "zoho" | "proton" | "fastmail" | null;
   recencyTier: "very_active" | "active" | "quiet" | null; // 30d / 90d / 365d
   recencyDaysSince: number | null;
+  reviews30d: number;
+  reviews90d: number;
+  reviews365d: number;
   youtube: { subs: number; channelId: string; url: string } | null; // only if ≥5k subs
+  // New signals
+  whoisExpiryYear: number | null;    // domain paid-up until this year
+  govCert: { type: "sha"; certId: string; level: string } | { type: "tat"; kind: string } | null;
+  lineQrUrl: string | null;          // LINE Official Account QR image URL
 };
 
 const PRO_PROVIDERS = new Set(["google", "microsoft365", "zoho", "proton", "fastmail"]);
@@ -67,11 +98,17 @@ export function getPlaceSignals(placeId: string): PlaceSignals {
   if (caches.dns === null)     caches.dns     = loadFile<DnsRec>("per_place_dns.json");
   if (caches.recency === null) caches.recency = loadFile<RecencyRec>("per_place_recency.json");
   if (caches.youtube === null) caches.youtube = loadFile<YoutubeRec>("per_place_youtube.json");
+  if (caches.whois === null)   caches.whois   = loadFile<WhoisRec>("per_place_whois.json");
+  if (caches.verif === null)   caches.verif   = loadFile<VerifRec>("per_place_verifications.json");
+  if (caches.line === null)    caches.line    = loadFile<LineRec>("per_place_line.json");
 
   const wb = caches.wayback[placeId];
   const dn = caches.dns[placeId];
   const rc = caches.recency[placeId];
   const yt = caches.youtube[placeId];
+  const wh = caches.whois[placeId];
+  const vf = caches.verif[placeId];
+  const ln = caches.line[placeId];
 
   let foundingYear: number | null = null;
   let ageYears: number | null = null;
@@ -91,8 +128,12 @@ export function getPlaceSignals(placeId: string): PlaceSignals {
 
   let recencyTier: PlaceSignals["recencyTier"] = null;
   let recencyDaysSince: number | null = null;
+  let reviews30d = 0, reviews90d = 0, reviews365d = 0;
   if (rc) {
     recencyDaysSince = rc.days_since_last_review;
+    reviews30d = rc.reviews_last_30d ?? 0;
+    reviews90d = rc.reviews_last_90d ?? 0;
+    reviews365d = rc.reviews_last_365d ?? 0;
     if (rc.reviews_last_30d > 0) recencyTier = "very_active";
     else if (rc.active_90d) recencyTier = "active";
     else if (rc.active_365d) recencyTier = "quiet";
@@ -107,7 +148,24 @@ export function getPlaceSignals(placeId: string): PlaceSignals {
     };
   }
 
-  return { foundingYear, ageYears, ageTier, emailProvider, recencyTier, recencyDaysSince, youtube };
+  let whoisExpiryYear: number | null = null;
+  if (wh?.ok && wh.expires) {
+    const y = parseInt(wh.expires.slice(0, 4), 10);
+    if (y > 2024) whoisExpiryYear = y;
+  }
+
+  let govCert: PlaceSignals["govCert"] = null;
+  if (vf?.sha) {
+    govCert = { type: "sha", certId: vf.sha.cert_id, level: vf.sha.level };
+  } else if (vf?.tat_attraction) {
+    govCert = { type: "tat", kind: vf.tat_attraction.kind };
+  } else if (vf?.tat_restaurant) {
+    govCert = { type: "tat", kind: vf.tat_restaurant.kind };
+  }
+
+  const lineQrUrl = (ln?.alive && ln.qr_url) ? ln.qr_url : null;
+
+  return { foundingYear, ageYears, ageTier, emailProvider, recencyTier, recencyDaysSince, reviews30d, reviews90d, reviews365d, youtube, whoisExpiryYear, govCert, lineQrUrl };
 }
 
 // Display helpers
@@ -138,6 +196,7 @@ export function computeTrustBoost(s: PlaceSignals): number {
   if (s.recencyTier === "very_active") b += 10;
   if (s.emailProvider) b += 5;
   if (s.youtube) b += 3;
+  if (s.govCert) b += 8;
   return Math.min(25, b);
 }
 
@@ -152,5 +211,7 @@ export function trustBreakdown(s: PlaceSignals): TrustBreakdownItem[] {
   if (s.recencyTier === "very_active") items.push({ label: "Active in last 30d", pts: 10 });
   if (s.emailProvider) items.push({ label: `Pro email (${emailProviderLabel(s.emailProvider)})`, pts: 5 });
   if (s.youtube) items.push({ label: "YouTube channel ≥5k subs", pts: 3 });
+  if (s.govCert?.type === "sha") items.push({ label: `Thailand SHA certified (${s.govCert.certId})`, pts: 8 });
+  else if (s.govCert?.type === "tat") items.push({ label: "TAT registered business", pts: 8 });
   return items;
 }

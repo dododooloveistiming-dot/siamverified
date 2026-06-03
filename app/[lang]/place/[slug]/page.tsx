@@ -53,7 +53,17 @@ export async function generateMetadata({ params }: { params: { lang: Lang; slug:
   const cat = nicheName(place.niche, params.lang);
   return {
     title: `${place.name} — ${cat} | ${SITE.name}`,
-    description: `Trust Score ${place.trust_score}. ${place.review_count ?? 0} reviews on Google. ${t("sources_pitch", params.lang)}.`,
+    description: (() => {
+      const parts: string[] = [];
+      parts.push(`${cat} in ${place.city}, Thailand`);
+      if (place.rating && place.review_count) parts.push(`★ ${place.rating.toFixed(1)} · ${place.review_count.toLocaleString()} reviews`);
+      if (place.trust_score) parts.push(`Trust ${place.trust_score}/100`);
+      if (place.is_beginner_friendly) parts.push("Beginner-friendly");
+      const signals = getPlaceSignals(place.id);
+      if (signals.govCert?.type === "sha") parts.push("SHA Certified");
+      if (place.price_min_thb > 0) parts.push(`from ฿${place.price_min_thb.toLocaleString()}`);
+      return parts.join(" · ") + ". " + t("sources_pitch", params.lang) + ".";
+    })(),
     robots: isIndexablePlace(place)
       ? undefined
       : { index: false, follow: true },
@@ -155,20 +165,10 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
     }
   })();
 
-  // JSON-LD: LocalBusiness + AggregateRating + FAQ
-  const jsonLd: any = {
-    "@context": "https://schema.org",
-    "@type": place.niche === "wellness" ? "HealthAndBeautyBusiness" : "LocalBusiness",
-    name: place.name,
-    address: { "@type": "PostalAddress", streetAddress: place.address, addressLocality: place.city, addressCountry: "TH" },
-    telephone: place.phone || undefined,
-    url: place.website || undefined,
-    image: place.top_photo_url || undefined,
-    foundingDate: signals.foundingYear ? String(signals.foundingYear) : undefined,
-    aggregateRating: place.rating
-      ? { "@type": "AggregateRating", ratingValue: place.rating, reviewCount: place.review_count ?? 1 }
-      : undefined,
-  };
+  // sameAs: link to Google Maps + own website for entity disambiguation
+  const sameAs: string[] = [];
+  if (place.google_maps_url) sameAs.push(place.google_maps_url);
+  if (place.website) sameAs.push(place.website);
 
   // Build FAQ items from data — drives both visible accordion + FAQPage JSON-LD
   const faqs: FAQItem[] = [];
@@ -235,7 +235,6 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className="pb-28 md:pb-20">
         {/* HERO — clean text header + Airbnb-style photo mosaic */}
         <section className="mx-auto max-w-5xl px-4 pt-6 sm:pt-8">
@@ -299,6 +298,22 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             {place.bookable?.klook && (
               <span className="rounded-full bg-rose-600 px-2.5 py-0.5 font-bold text-white">
                 ⚡ Instant book on Klook
+              </span>
+            )}
+            {signals.govCert?.type === "sha" && (
+              <span
+                className="rounded-full bg-blue-100 px-2.5 py-0.5 font-bold text-blue-900 dark:bg-blue-950/40 dark:text-blue-300"
+                title={`Thailand SHA (Safety & Health Administration) certified · ${signals.govCert.certId}`}
+              >
+                🏛 SHA Certified · {signals.govCert.certId}
+              </span>
+            )}
+            {signals.govCert?.type === "tat" && (
+              <span
+                className="rounded-full bg-blue-100 px-2.5 py-0.5 font-bold text-blue-900 dark:bg-blue-950/40 dark:text-blue-300"
+                title="Registered with Thailand's Tourism Authority (TAT)"
+              >
+                🏛 TAT Registered
               </span>
             )}
             {signals.recencyTier === "very_active" && (
@@ -418,6 +433,15 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   <span>{emailProviderLabel(signals.emailProvider)}</span>
                 </span>
               )}
+              {signals.whoisExpiryYear && (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full bg-ink-50 px-2.5 py-1 font-medium text-ink-700 dark:bg-ink-800 dark:text-ink-300"
+                  title={`Domain registration paid until ${signals.whoisExpiryYear} — business isn't planning to disappear`}
+                >
+                  <span>🔒</span>
+                  <span>Domain until {signals.whoisExpiryYear}</span>
+                </span>
+              )}
             </div>
             <span className="muted hidden sm:inline">
               {place.photos_count} photos · {place.videos_count} videos
@@ -435,6 +459,44 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </div>
         )}
         {lang === "ko" && <KoreanProof naver={mentions.naver} cafe={mentions.cafe} />}
+
+        {/* REVIEW ACTIVITY — recency bars (unique: TripAdvisor doesn't show this) */}
+        {signals.reviews365d > 0 && (() => {
+          const bars = [
+            { label: "Last 30 days", count: signals.reviews30d },
+            { label: "Last 90 days", count: signals.reviews90d },
+            { label: "This year",    count: signals.reviews365d },
+          ];
+          const daysAgo = signals.recencyDaysSince;
+          const lastLabel = daysAgo == null ? null
+            : daysAgo <= 1   ? "today"
+            : daysAgo <= 7   ? `${daysAgo}d ago`
+            : daysAgo <= 60  ? `${Math.round(daysAgo / 7)}w ago`
+            : daysAgo <= 730 ? `${Math.round(daysAgo / 30)}mo ago`
+            : `${Math.round(daysAgo / 365)}y ago`;
+          return (
+            <div className="mt-6 rounded-2xl border border-ink-100 bg-white px-5 py-4 dark:border-ink-800 dark:bg-ink-900">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-500 dark:text-ink-400">Review Activity</p>
+              <div className="space-y-2">
+                {bars.map(({ label, count }) => (
+                  <div key={label} className="flex items-center gap-3">
+                    <span className="w-24 shrink-0 text-xs text-ink-500 dark:text-ink-400">{label}</span>
+                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
+                      <div
+                        className="h-2 rounded-full bg-emerald-500 transition-all"
+                        style={{ width: `${Math.round((count / signals.reviews365d) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="w-4 text-right text-xs font-semibold tabular-nums text-ink-700 dark:text-ink-300">{count}</span>
+                  </div>
+                ))}
+              </div>
+              {lastLabel && (
+                <p className="mt-3 text-xs text-ink-400 dark:text-ink-500">Last reviewed {lastLabel}</p>
+              )}
+            </div>
+          );
+        })()}
 
         {/* REVIEWS — Booking.com-style rating summary widget + sample quotes */}
         {(place.top_review_text || place.rating) && (
@@ -631,8 +693,8 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </section>
         )}
 
-        {/* DIRECT CONTACT — WhatsApp / LINE buttons (one-tap) */}
-        {(whatsapp || lineId) && (
+        {/* DIRECT CONTACT — WhatsApp / LINE buttons + LINE QR (one-tap) */}
+        {(whatsapp || lineId || signals.lineQrUrl) && (
           <section className="mt-8">
             <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
               💬 Message {place.name} directly
@@ -661,6 +723,16 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 </a>
               )}
             </div>
+            {signals.lineQrUrl && (
+              <div className="mt-4 flex items-center gap-4 rounded-xl border border-ink-100 bg-white p-3 dark:border-ink-800 dark:bg-ink-900">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={signals.lineQrUrl} alt="LINE QR code" width={80} height={80} loading="lazy" className="shrink-0 rounded-lg" />
+                <div>
+                  <p className="text-sm font-bold">Scan to chat on LINE</p>
+                  <p className="mt-0.5 text-xs text-ink-500 dark:text-ink-400">Open LINE camera → scan this QR → book directly</p>
+                </div>
+              </div>
+            )}
           </section>
         )}
 
@@ -970,15 +1042,16 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </Link>
         </div>
 
-        {/* Schema.org LocalBusiness — boosts SEO + AEO (LLM citing) */}
+        {/* Schema.org LocalBusiness — single canonical block, SEO + AEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "LocalBusiness",
+              "@type": place.niche === "wellness" ? "HealthAndBeautyBusiness" : "LocalBusiness",
               "@id": `${SITE.origin}/${lang}/place/${place.slug}/`,
               name: place.name,
+              description: `${nicheName(place.niche, lang)} in ${place.city}, Thailand. Trust Score ${place.trust_score}/100.${place.is_beginner_friendly ? " Beginner-friendly." : ""}`,
               address: place.address
                 ? {
                     "@type": "PostalAddress",
@@ -991,6 +1064,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               url: place.website || undefined,
               image: place.top_photo_url || undefined,
               foundingDate: signals.foundingYear ? String(signals.foundingYear) : undefined,
+              sameAs: sameAs.length > 0 ? sameAs : undefined,
               priceRange:
                 place.price_min_thb > 0
                   ? `฿${place.price_min_thb}${place.price_max_thb > place.price_min_thb ? `–฿${place.price_max_thb}` : ""}`
@@ -1003,7 +1077,6 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                       reviewCount: place.review_count,
                     }
                   : undefined,
-              // Embed sample reviews for Google rich snippets (de-noised; drop empties)
               review: (place.reviews_sample || [])
                 .map((rv) => ({ rv, body: cleanReviewText(rv.text || "").slice(0, 200) }))
                 .filter((x) => x.body)
@@ -1012,16 +1085,24 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   "@type": "Review",
                   reviewBody: body,
                   author: { "@type": "Person", name: rv.reviewer || "Verified visitor" },
-                  ...(rv.rating
-                    ? {
-                        reviewRating: {
-                          "@type": "Rating",
-                          ratingValue: rv.rating,
-                          bestRating: 5,
-                        },
-                      }
-                    : {}),
+                  ...(rv.rating ? { reviewRating: { "@type": "Rating", ratingValue: rv.rating, bestRating: 5 } } : {}),
                 })),
+            }),
+          }}
+        />
+
+        {/* BreadcrumbList — SERP breadcrumb trail */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: SITE.name, item: `${SITE.origin}/${lang}/` },
+                { "@type": "ListItem", position: 2, name: nicheName(place.niche, lang), item: `${SITE.origin}/${lang}/c/${place.niche}/` },
+                { "@type": "ListItem", position: 3, name: place.name, item: `${SITE.origin}/${lang}/place/${place.slug}/` },
+              ],
             }),
           }}
         />
@@ -1037,10 +1118,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 mainEntity: faqs.map((f) => ({
                   "@type": "Question",
                   name: f.q,
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: f.a,
-                  },
+                  acceptedAnswer: { "@type": "Answer", text: f.a },
                 })),
               }),
             }}
