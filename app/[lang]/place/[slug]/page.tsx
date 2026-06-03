@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats, getReviewKo } from "@/lib/data";
+import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats, getReviewKo, getYoutubeSearch } from "@/lib/data";
 import { getPlaceSignals, emailProviderLabel, trustBreakdown, formatSubs } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
 import { isIndexablePlace, cleanReviewText } from "@/lib/reviews";
@@ -123,6 +123,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const place = getPlaceBySlug(slug);
   if (!place) notFound();
   const meta = NICHE_META[place.niche];
+  const ytVideos = getYoutubeSearch(place.id).slice(0, 4);
   const similar = getSimilarPlaces(place, 4);
   const mentions = getPlaceMentions(place.id);
   const klookData = getPlaceKlook(place.id);
@@ -920,6 +921,50 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             </section>
           );
         })()}
+
+        {/* YOUTUBE SEARCH — travel vlogs & reviews featuring this place */}
+        {ytVideos.length > 0 && (
+          <section className="mt-10">
+            <h2 className="mb-4 text-lg font-bold">▶ Featured on YouTube</h2>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {ytVideos.map((v) => (
+                <a
+                  key={v.video_id}
+                  href={v.url}
+                  target="_blank"
+                  rel="noopener nofollow"
+                  className="group flex gap-3 rounded-xl border border-ink-100 bg-white p-3 transition hover:border-red-300 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+                >
+                  <div className="relative shrink-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`https://i.ytimg.com/vi/${v.video_id}/mqdefault.jpg`}
+                      alt={v.title}
+                      width={120}
+                      height={68}
+                      loading="lazy"
+                      className="rounded-lg object-cover"
+                    />
+                    {v.duration && (
+                      <span className="absolute bottom-1 right-1 rounded bg-black/80 px-1 text-[10px] font-bold text-white">
+                        {v.duration}
+                      </span>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="line-clamp-2 text-sm font-semibold leading-snug group-hover:text-red-600 dark:group-hover:text-red-400">
+                      {v.title}
+                    </p>
+                    <p className="mt-1 text-xs text-ink-500 dark:text-ink-400">{v.channel}</p>
+                    <p className="mt-0.5 text-xs text-ink-400 dark:text-ink-500">
+                      {v.views_text}{v.published ? ` · ${v.published}` : ""}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* PER-PLACE PANTIP (Thai forum threads) */}
         {mentions.pantip.length > 0 && (

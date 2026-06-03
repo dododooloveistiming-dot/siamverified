@@ -331,6 +331,25 @@ export function getReviewKo(placeId: string): string | null {
   return reviewKoCache[placeId] ?? null;
 }
 
+export type YtSearchVideo = {
+  video_id: string;
+  url: string;
+  title: string;
+  channel: string;
+  views_text: string;
+  duration: string;
+  published: string;
+};
+let ytSearchCache: Record<string, YtSearchVideo[]> | null = null;
+export function getYoutubeSearch(placeId: string): YtSearchVideo[] {
+  if (ytSearchCache === null) {
+    ytSearchCache = loadJsonOrEmpty<Record<string, YtSearchVideo[]>>(
+      path.join(process.cwd(), "public", "data", "per_place_youtube_search.json"),
+    );
+  }
+  return ytSearchCache[placeId] ?? [];
+}
+
 export type BlogPost = {
   slug: string;
   lang: string;
