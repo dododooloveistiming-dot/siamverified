@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, DEFAULT_LANG, T, t } from "@/lib/i18n";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import StickyBookBar from "@/components/StickyBookBar";
@@ -31,7 +31,10 @@ export async function generateMetadata({ params }: { params: { lang: Lang; slug:
     description: `Trust Score ${place.trust_score}. ${place.review_count ?? 0} reviews on Google. ${t("sources_pitch", params.lang)}.`,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/place/${place.slug}/`])),
+      languages: {
+        ...Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/place/${place.slug}/`])),
+        "x-default": `${SITE.origin}/${DEFAULT_LANG}/place/${place.slug}/`,
+      },
     },
     openGraph: {
       title: place.name,

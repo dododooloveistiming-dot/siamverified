@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlacesByNiche, loadCommunity } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, DEFAULT_LANG, T, t, categoryMetaTitle, categoryMetaDesc } from "@/lib/i18n";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
@@ -27,20 +27,20 @@ export async function generateMetadata({ params }: { params: { lang: Lang; niche
   const { lang, niche } = params;
   if (!NICHES.includes(niche)) return {};
   const url = `${SITE.origin}/${lang}/c/${niche}/`;
-  const title = `${nicheName(niche, lang)} — ${SITE.name}`;
-  const description = `${nicheTagline(niche, lang)} · ${t("sources_pitch", lang)}`;
+  const count = getPlacesByNiche(niche).length;
+  const year = new Date().getFullYear(); // baked at build time (force-static)
+  const name = nicheName(niche, lang);
+  const title = categoryMetaTitle(name, count, year, lang);
+  const description = categoryMetaDesc(name, count, year, lang);
+  const languages: Record<string, string> = Object.fromEntries(
+    SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/c/${niche}/`])
+  );
+  languages["x-default"] = `${SITE.origin}/${DEFAULT_LANG}/c/${niche}/`;
   return {
-    title,
+    title: { absolute: title },
     description,
-    alternates: {
-      canonical: url,
-      languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/c/${niche}/`])),
-    },
-    openGraph: {
-      title,
-      description,
-      url,
-    },
+    alternates: { canonical: url, languages },
+    openGraph: { title, description, url },
   };
 }
 

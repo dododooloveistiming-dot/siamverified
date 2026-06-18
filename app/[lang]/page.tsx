@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadPlaces, getTopPlacesPerNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, DEFAULT_LANG, T, t } from "@/lib/i18n";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 
@@ -15,7 +15,10 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
     description: SITE.tagline[lang],
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/`])),
+      languages: {
+        ...Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/`])),
+        "x-default": `${SITE.origin}/${DEFAULT_LANG}/`,
+      },
     },
     openGraph: {
       title: `${SITE.name}`,

@@ -14,6 +14,11 @@ dev_stderr.log
 # Raw scraped CSVs (rebuilt by tools/community_scrapers/siamverified_harvest)
 external_data/
 
+# Generated at build time by scripts/gen-sitemap.mjs
+public/sitemap.xml
+public/sitemap-*.xml
+public/robots.txt
+
 # Python build artifacts
 scripts/__pycache__/
 **/__pycache__/

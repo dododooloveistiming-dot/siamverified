@@ -258,3 +258,30 @@ export function t<K extends keyof typeof T>(key: K, lang: Lang): string {
   const node = T[key] as Record<string, string>;
   return node[lang] ?? node[DEFAULT_LANG];
 }
+
+// SEO title/description for category pages — embeds the verified place count (N)
+// and the build-time year to lift CTR. Returned via { absolute } so the root
+// title template doesn't double-append the brand.
+export function categoryMetaTitle(name: string, count: number, year: number, lang: Lang): string {
+  const n = count.toLocaleString();
+  switch (lang) {
+    case "ko": return `${name} — ${n}곳 검증 · 6소스 신뢰점수 ${year} | ${SITE.name}`;
+    case "th": return `${name} — ตรวจสอบแล้ว ${n} แห่ง · คะแนนจาก 6 แหล่ง ${year} | ${SITE.name}`;
+    case "zh": return `${name} — ${n}家已验证 · 6来源信任评分 ${year} | ${SITE.name}`;
+    case "ja": return `${name} — ${n}件検証済み · 6ソース信頼スコア ${year} | ${SITE.name}`;
+    case "ar": return `${name} — ${n} مكان موثق · تقييم من 6 مصادر ${year} | ${SITE.name}`;
+    default:   return `${name} in Thailand — ${n} Verified · 6-Source Trust Scores ${year} | ${SITE.name}`;
+  }
+}
+
+export function categoryMetaDesc(name: string, count: number, year: number, lang: Lang): string {
+  const n = count.toLocaleString();
+  switch (lang) {
+    case "ko": return `태국 전역 ${name} ${n}곳을 6개 독립 소스(Google·Reddit·Naver·Pantip·YouTube·Bookimed)로 교차 검증한 광고 없는 신뢰 점수. ${year} 최신.`;
+    case "th": return `${name} ${n} แห่งทั่วไทย ตรวจสอบจาก 6 แหล่งอิสระ (Google·Reddit·Naver·Pantip·YouTube·Bookimed) คะแนนที่ไม่มีโฆษณา อัปเดต ${year}`;
+    case "zh": return `泰国 ${n} 家${name}，经 6 个独立来源（Google·Reddit·Naver·Pantip·YouTube·Bookimed）交叉验证。无广告信任评分，${year} 更新。`;
+    case "ja": return `タイ全土の${name} ${n}件を6つの独立情報源（Google·Reddit·Naver·Pantip·YouTube·Bookimed）で相互検証した広告なしの信頼スコア。${year}更新。`;
+    case "ar": return `${n} من ${name} في تايلاند، تم التحقق منها عبر 6 مصادر مستقلة (Google·Reddit·Naver·Pantip·YouTube·Bookimed). درجات ثقة بدون إعلانات، تحديث ${year}.`;
+    default:   return `Browse ${n} verified ${name.toLowerCase()} across Thailand, each cross-checked against 6 independent sources (Google, Reddit, Naver, Pantip, YouTube, Bookimed). Ad-free trust scores, updated ${year}.`;
+  }
+}

@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "node scripts/gen-sitemap.mjs && next build",
+    "sitemap": "node scripts/gen-sitemap.mjs",
     "dev": "next dev",
     "start": "next start",
     "data": "node scripts/build-data.mjs && python scripts/filter_community.py",
