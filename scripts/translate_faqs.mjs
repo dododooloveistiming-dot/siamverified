@@ -2,21 +2,21 @@
 // Batch-translate the curated FAQ corpus (lib/faqs.ts) into target languages and
 // write the result to public/data/faq_i18n.json — the sidecar that lib/faqs.ts
 // merges in (curated inline translations win over this; this wins over English).
-// Reads ANTHROPIC_API_KEY from .env.local (a secret — never committed).
+// Uses the OpenAI Chat Completions API. Reads OPENAI_API_KEY from .env.local
+// (a secret — never committed).
 //
 //   npx tsx scripts/translate_faqs.mjs                       # th, all FAQs
 //   npx tsx scripts/translate_faqs.mjs --langs th,vi,id      # multiple langs
 //   npx tsx scripts/translate_faqs.mjs --langs vi --limit 5  # small test batch
-//   npx tsx scripts/translate_faqs.mjs --model claude-sonnet-4-6
+//   npx tsx scripts/translate_faqs.mjs --model gpt-4.1-nano  # even cheaper
 //
 // Run via tsx so it can import the TypeScript corpus directly. Incremental and
 // resumable: skips (faq, lang) pairs already translated inline OR already in the
 // sidecar, so re-running only fills gaps. One API call translates all three
-// fields of one FAQ into one language.
+// fields of one FAQ into one language, using JSON mode for valid structured output.
 //
-// Model cost note: defaults to claude-opus-4-8 (highest quality). For a bulk run
-// of ~40 FAQs × N languages, claude-sonnet-4-6 (--model claude-sonnet-4-6) cuts
-// cost ~5× with translation quality that's still strong. Pick per your budget.
+// Default model gpt-4o-mini is OpenAI's cheap, reliable tier and handles JSON
+// mode well. gpt-4.1-nano is cheaper still if your account has it (--model).
 
 import fs from "node:fs";
 import path from "node:path";
@@ -33,7 +33,7 @@ function argVal(flag, def) {
 }
 const LANGS = argVal("--langs", "th").split(",").map((s) => s.trim()).filter(Boolean);
 const LIMIT = parseInt(argVal("--limit", "0"), 10) || Infinity;
-const MODEL = argVal("--model", "claude-opus-4-8");
+const MODEL = argVal("--model", "gpt-4o-mini");
 
 const LANG_NAMES = {
   ko: "Korean", th: "Thai", zh: "Simplified Chinese", ja: "Japanese",
@@ -44,10 +44,10 @@ const LANG_NAMES = {
 function loadKey() {
   const f = path.join(ROOT, ".env.local");
   if (!fs.existsSync(f)) throw new Error(".env.local not found");
-  const line = fs.readFileSync(f, "utf-8").split(/\r?\n/).find((l) => l.trim().startsWith("ANTHROPIC_API_KEY="));
-  if (!line) throw new Error("ANTHROPIC_API_KEY not in .env.local");
+  const line = fs.readFileSync(f, "utf-8").split(/\r?\n/).find((l) => l.trim().startsWith("OPENAI_API_KEY="));
+  if (!line) throw new Error("OPENAI_API_KEY not in .env.local");
   const v = line.slice(line.indexOf("=") + 1).trim().replace(/^["']|["']$/g, "");
-  if (!v.startsWith("sk-ant-")) throw new Error("ANTHROPIC_API_KEY looks invalid");
+  if (!v.startsWith("sk-")) throw new Error("OPENAI_API_KEY looks invalid (should start with sk-)");
   return v;
 }
 
@@ -67,7 +67,7 @@ const SYSTEM =
   "(1) Preserve Markdown exactly — **bold** markers, blank-line paragraph breaks, and lists. " +
   "(2) Keep ฿ baht amounts, numbers, dates, URLs, and proper nouns (place/brand names like Tiger Muay Thai, Klook, PADI, Koh Tao) unchanged. " +
   "(3) Natural, fluent register — not literal/word-for-word. " +
-  "(4) Output ONLY a JSON object with keys \"question\", \"shortAnswer\", \"longAnswer\" — no preamble, no code fences, no commentary.";
+  "(4) Output ONLY a JSON object with keys \"question\", \"shortAnswer\", \"longAnswer\".";
 
 async function translate(key, faq, lang, tries = 3) {
   const payload = {
@@ -77,30 +77,31 @@ async function translate(key, faq, lang, tries = 3) {
   };
   const user =
     `Target language: ${LANG_NAMES[lang] || lang}\n\n` +
-    `Translate these three fields. Return JSON with the same keys.\n\n` +
+    `Translate these three fields and return a JSON object with the same keys.\n\n` +
     JSON.stringify(payload);
 
   for (let attempt = 1; attempt <= tries; attempt++) {
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
-        headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+        headers: { Authorization: `Bearer ${key}`, "content-type": "application/json" },
         body: JSON.stringify({
           model: MODEL,
-          max_tokens: 4096,
-          system: SYSTEM,
-          messages: [{ role: "user", content: user }],
+          max_completion_tokens: 4096,
+          response_format: { type: "json_object" },
+          messages: [
+            { role: "system", content: SYSTEM },
+            { role: "user", content: user },
+          ],
         }),
       });
-      if (res.status === 429 || res.status === 529 || res.status >= 500) {
+      if (res.status === 429 || res.status >= 500) {
         await new Promise((s) => setTimeout(s, 2000 * attempt));
         continue;
       }
       const j = await res.json();
       if (j.error) throw new Error(j.error.message || JSON.stringify(j.error));
-      let text = j.content.map((b) => b.text || "").join("").trim();
-      // Strip accidental code fences just in case.
-      text = text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+      const text = (j.choices?.[0]?.message?.content || "").trim();
       const obj = JSON.parse(text);
       if (!obj.question || !obj.shortAnswer || !obj.longAnswer) throw new Error("missing fields in response");
       return { obj: { question: obj.question, shortAnswer: obj.shortAnswer, longAnswer: obj.longAnswer }, usage: j.usage };
@@ -143,7 +144,7 @@ async function worker(q) {
     try {
       const r = await translate(key, faq, lang);
       (out[faq.slug] ||= {})[lang] = r.obj;
-      inTok += r.usage.input_tokens; outTok += r.usage.output_tokens; ok++;
+      inTok += r.usage?.prompt_tokens || 0; outTok += r.usage?.completion_tokens || 0; ok++;
     } catch (e) {
       fail++;
       console.warn(`  fail ${faq.slug} [${lang}]: ${e.message}`);
@@ -157,9 +158,9 @@ const q = [...todo];
 await Promise.all(Array.from({ length: CONCURRENCY }, () => worker(q)));
 save();
 
-// Rough cost — Opus 4.8 $5/$25 per MTok; adjust if you change --model.
-const rate = MODEL.includes("haiku") ? [1, 5] : MODEL.includes("sonnet") ? [3, 15] : [5, 25];
+// Rough cost — gpt-4o-mini ~$0.15/$0.60 per MTok; nano cheaper. Adjust per --model.
+const rate = MODEL.includes("nano") ? [0.10, 0.40] : MODEL.includes("4o-mini") || MODEL.includes("mini") ? [0.15, 0.60] : [0.50, 1.50];
 const cost = (inTok / 1e6) * rate[0] + (outTok / 1e6) * rate[1];
 console.log(`[translate_faqs] DONE — ok ${ok}, fail ${fail}`);
-console.log(`[translate_faqs] tokens in ${inTok.toLocaleString()} / out ${outTok.toLocaleString()} → ~$${cost.toFixed(2)} (${MODEL})`);
+console.log(`[translate_faqs] tokens in ${inTok.toLocaleString()} / out ${outTok.toLocaleString()} → ~$${cost.toFixed(3)} (${MODEL})`);
 console.log(`[translate_faqs] wrote ${OUT}`);
