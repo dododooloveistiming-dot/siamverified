@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { loadPlaces, loadBlogPosts, getPlacesByNiche } from "@/lib/data";
 import { CITIES as CITY_DEFS, placesInCity } from "@/lib/cities";
-import { listFaqs } from "@/lib/faqs";
+import { listFaqs, isFaqTranslated, faqTranslatedLangs } from "@/lib/faqs";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import { isIndexablePlace } from "@/lib/reviews";
 import type { Niche } from "@/lib/types";
@@ -123,14 +123,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Trust methodology — authoritative single-page explainer
     out.push({ url: `${origin}/${lang}/trust/`, lastModified: now, priority: 0.85, changeFrequency: "monthly" });
 
-    // FAQ index + each FAQ
+    // FAQ index + each FAQ. Only emit a locale's FAQ URL when it's genuinely
+    // translated (en always) — untranslated locales serve an English fallback
+    // and would be duplicate content under a mismatched hreflang.
     out.push({ url: `${origin}/${lang}/faq/`, lastModified: now, priority: 0.75, changeFrequency: "monthly" });
     for (const f of listFaqs()) {
+      if (!isFaqTranslated(f, lang)) continue;
       out.push({
         url: `${origin}/${lang}/faq/${f.slug}/`,
         lastModified: now,
         priority: 0.7,
         changeFrequency: "monthly",
+        alternates: {
+          languages: Object.fromEntries(
+            faqTranslatedLangs(f, SUPPORTED_LANGS).map((l) => [l, `${origin}/${l}/faq/${f.slug}/`]),
+          ),
+        },
       });
     }
 

@@ -2,13 +2,30 @@
 // Each entry produces a long-tail SEO page with FAQPage Schema.org markup
 // so LLMs/search engines can quote it directly.
 
+import type { Lang } from "@/lib/types";
+
+// A field is either a plain string (English-only, the default) or a per-language
+// map. Untranslated entries stay as bare strings — zero rewrite, no regression.
+// Add a translation by turning the field into { en: "...", th: "...", vi: "..." }.
+export type Localized = string | Partial<Record<Lang, string>>;
+
 export type Faq = {
+  slug: string;
+  question: Localized;
+  shortAnswer: Localized;
+  longAnswer: Localized; // 2-4 paragraphs
+  topic: "muay-thai" | "yoga-pilates" | "wellness" | "cooking" | "diving" | "spa" | "coworking" | "general";
+  related: string[]; // slugs
+};
+
+// FAQ with all localized fields resolved to a single language (en fallback).
+export type ResolvedFaq = {
   slug: string;
   question: string;
   shortAnswer: string;
-  longAnswer: string; // 2-4 paragraphs
-  topic: "muay-thai" | "yoga-pilates" | "wellness" | "cooking" | "diving" | "spa" | "coworking" | "general";
-  related: string[]; // slugs
+  longAnswer: string;
+  topic: Faq["topic"];
+  related: string[];
 };
 
 export const FAQS: Faq[] = [
@@ -16,16 +33,30 @@ export const FAQS: Faq[] = [
   {
     slug: "how-much-does-muay-thai-cost-thailand",
     topic: "muay-thai",
-    question: "How much does Muay Thai training cost in Thailand?",
-    shortAnswer:
-      "Muay Thai training in Thailand typically ranges from ฿300 per drop-in class to ฿15,000–฿25,000 per month for full-time camp programs (with accommodation).",
-    longAnswer: `Daily drop-in classes at most Bangkok and Phuket gyms run ฿300–฿700, with single-session walk-ins common at tourist-friendly camps. Weekly packages often start around ฿2,500 and include 6–10 sessions.
+    question: {
+      en: "How much does Muay Thai training cost in Thailand?",
+      th: "ค่าเรียนมวยไทยในประเทศไทยราคาเท่าไหร่?",
+    },
+    shortAnswer: {
+      en: "Muay Thai training in Thailand typically ranges from ฿300 per drop-in class to ฿15,000–฿25,000 per month for full-time camp programs (with accommodation).",
+      th: "การเรียนมวยไทยในไทยโดยทั่วไปมีตั้งแต่ ฿300 ต่อคลาสแบบ drop-in ไปจนถึง ฿15,000–฿25,000 ต่อเดือนสำหรับโปรแกรมค่ายแบบเต็มเวลา (รวมที่พัก)",
+    },
+    longAnswer: {
+      en: `Daily drop-in classes at most Bangkok and Phuket gyms run ฿300–฿700, with single-session walk-ins common at tourist-friendly camps. Weekly packages often start around ฿2,500 and include 6–10 sessions.
 
 Full-time monthly camps with on-site accommodation are the typical "Thailand fight camp" experience. Mid-tier camps charge ฿15,000–฿25,000/month including basic dorm housing, 2 trainings per day, and pad work. Premium camps (Tiger Muay Thai, Sinbi, Petchyindee) can run ฿35,000–฿60,000/month.
 
 Phuket has the densest camp ecosystem (Tiger, Sinbi, AKA), Bangkok is best for short-term technical training at established gyms (Petchyindee, Yokkao, RSM), and Chiang Mai offers cheaper alternatives for beginners (Lanna Muay Thai, Sumalee).
 
 Most camps require no prior experience — beginner classes are standard. Bring your own hand wraps; gloves are usually provided or rentable for ฿50/day.`,
+      th: `คลาส drop-in รายวันที่ยิมส่วนใหญ่ในกรุงเทพฯ และภูเก็ตอยู่ที่ ฿300–฿700 โดยการเข้าเรียนแบบครั้งเดียว (walk-in) เป็นเรื่องปกติที่ค่ายซึ่งเป็นมิตรกับนักท่องเที่ยว แพ็กเกจรายสัปดาห์มักเริ่มต้นราว ฿2,500 และรวม 6–10 ครั้ง
+
+ค่ายแบบรายเดือนเต็มเวลาที่มีที่พักในสถานที่คือประสบการณ์ "ค่ายมวยไทย" แบบฉบับ ค่ายระดับกลางคิดราคา ฿15,000–฿25,000/เดือน รวมที่พักแบบดอร์มพื้นฐาน ฝึก 2 ครั้งต่อวัน และการต่อยเป้า ส่วนค่ายระดับพรีเมียม (Tiger Muay Thai, Sinbi, Petchyindee) อาจสูงถึง ฿35,000–฿60,000/เดือน
+
+ภูเก็ตมีระบบนิเวศค่ายที่หนาแน่นที่สุด (Tiger, Sinbi, AKA) กรุงเทพฯ เหมาะที่สุดสำหรับการฝึกเทคนิคระยะสั้นที่ยิมที่มีชื่อเสียง (Petchyindee, Yokkao, RSM) และเชียงใหม่มีทางเลือกที่ถูกกว่าสำหรับมือใหม่ (Lanna Muay Thai, Sumalee)
+
+ค่ายส่วนใหญ่ไม่ต้องมีประสบการณ์มาก่อน — มีคลาสสำหรับมือใหม่เป็นมาตรฐาน นำผ้าพันมือของคุณเองมา ส่วนนวมมักมีให้หรือเช่าได้ในราคา ฿50/วัน`,
+    },
     related: ["best-muay-thai-camps-thailand", "muay-thai-beginner-thailand"],
   },
   {
@@ -1227,4 +1258,53 @@ export function getFaq(slug: string): Faq | undefined {
 
 export function listFaqs(): Faq[] {
   return FAQS;
+}
+
+// Resolve a Localized field to one language, falling back to English (then to
+// whatever exists) so a missing translation degrades gracefully rather than blank.
+function pick(v: Localized, lang: Lang): string {
+  if (typeof v === "string") return v;
+  return v[lang] ?? v.en ?? Object.values(v)[0] ?? "";
+}
+
+export function localizeFaq(faq: Faq, lang: Lang): ResolvedFaq {
+  return {
+    slug: faq.slug,
+    question: pick(faq.question, lang),
+    shortAnswer: pick(faq.shortAnswer, lang),
+    longAnswer: pick(faq.longAnswer, lang),
+    topic: faq.topic,
+    related: faq.related,
+  };
+}
+
+export function getLocalizedFaq(slug: string, lang: Lang): ResolvedFaq | undefined {
+  const faq = getFaq(slug);
+  return faq ? localizeFaq(faq, lang) : undefined;
+}
+
+// A bare-string field is English-only; an object field carries a language iff
+// it has a non-empty value for it.
+function fieldHasLang(v: Localized, lang: Lang): boolean {
+  return typeof v === "string" ? lang === "en" : Boolean(v[lang]);
+}
+
+// True when this FAQ is genuinely authored in `lang` (en always qualifies).
+// Used to gate indexing: a locale page that only falls back to English must
+// NOT be indexed/sitemapped as that locale — that would be duplicate content
+// under a mismatched hreflang. Mirrors isIndexablePlace()'s "only index real
+// pages" principle.
+export function isFaqTranslated(faq: Faq, lang: Lang): boolean {
+  if (lang === "en") return true;
+  return (
+    fieldHasLang(faq.question, lang) &&
+    fieldHasLang(faq.shortAnswer, lang) &&
+    fieldHasLang(faq.longAnswer, lang)
+  );
+}
+
+// The subset of `langs` this FAQ is actually translated into — for emitting
+// hreflang/sitemap entries only to real translations.
+export function faqTranslatedLangs(faq: Faq, langs: readonly Lang[]): Lang[] {
+  return langs.filter((l) => isFaqTranslated(faq, l));
 }
