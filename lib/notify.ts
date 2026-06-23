@@ -8,6 +8,55 @@ const RESEND_KEY = process.env.AUTH_RESEND_KEY;
 const EMAIL_FROM = process.env.AUTH_EMAIL_FROM || "Verified Thai <no-reply@verifiedthai.com>";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://verifiedthai.com";
 
+// Operator Telegram routing — every inquiry (claimed or not) pings this chat.
+// Set TELEGRAM_BOT_TOKEN (from @BotFather) + TELEGRAM_CHAT_ID (your user/group
+// chat id) in env. Best-effort: a failure never blocks the inquiry.
+const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TG_CHAT = process.env.TELEGRAM_CHAT_ID;
+
+export async function notifyTelegram(args: {
+  placeId: string;
+  placeName: string;
+  kind: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string | null;
+  preferredDate?: string | null;
+  requestedService?: string | null;
+  partySize?: string | null;
+  language?: string | null;
+  message: string;
+}): Promise<void> {
+  if (!TG_TOKEN || !TG_CHAT) {
+    console.warn("[notify] TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID not set — skipping telegram");
+    return;
+  }
+  const lang = args.language || "en";
+  const text = [
+    `🔔 <b>New ${escapeHtml(args.kind)}</b> — ${escapeHtml(args.placeName)}`,
+    `👤 ${escapeHtml(args.customerName)}`,
+    `✉️ ${escapeHtml(args.customerEmail)}`,
+    args.customerPhone ? `📞 ${escapeHtml(args.customerPhone)}` : "",
+    args.requestedService ? `🧾 ${escapeHtml(args.requestedService)}` : "",
+    args.preferredDate ? `📅 ${escapeHtml(args.preferredDate)}` : "",
+    args.partySize ? `👥 ${escapeHtml(args.partySize)}` : "",
+    "",
+    escapeHtml(args.message),
+    "",
+    `${SITE_URL}/${lang}/place/${args.placeId}/`,
+  ].filter(Boolean).join("\n");
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: "HTML", disable_web_page_preview: true }),
+    });
+    if (!res.ok) console.error("[notify] telegram error", res.status, await res.text());
+  } catch (e) {
+    console.error("[notify] notifyTelegram failed", e);
+  }
+}
+
 async function sendEmail(to: string, subject: string, html: string): Promise<void> {
   if (!RESEND_KEY) {
     console.warn("[notify] AUTH_RESEND_KEY not set — skipping email");

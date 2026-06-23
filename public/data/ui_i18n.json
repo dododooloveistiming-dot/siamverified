@@ -44,8 +44,8 @@
     "vi": "Điểm tin cậy"
   },
   "filter_out_viral": {
-    "id": "Sembunyikan daftar iklan/viral yang dicurigai",
-    "vi": "Ẩn danh sách quảng cáo/nghi ngờ"
+    "id": "Sembunyikan daftar dengan koroborasi rendah",
+    "vi": "Ẩn các mục ít được đối chiếu"
   },
   "sort_by": {
     "id": "Urutkan berdasarkan",
@@ -256,8 +256,8 @@
     "vi": "Tất cả danh mục"
   },
   "low_signal_warn": {
-    "id": "Sinyal rendah: peringkat tinggi tetapi sedikit ulasan — bisa jadi promosi berbayar. Periksa dengan hati-hati.",
-    "vi": "Tín hiệu yếu: đánh giá cao nhưng ít bình luận — có thể là quảng cáo trả phí. Cần thận trọng."
+    "id": "Sinyal independen terbatas: rating tinggi dari relatif sedikit ulasan. Kami belum dapat memverifikasinya di sumber lain — sebaiknya periksa sendiri.",
+    "vi": "Tín hiệu độc lập hạn chế: điểm cao từ tương đối ít đánh giá. Chúng tôi chưa thể đối chiếu qua các nguồn khác — bạn nên tự kiểm tra."
   },
   "bookable_label": {
     "id": "Dapat dipesan",

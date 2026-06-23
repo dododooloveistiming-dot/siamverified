@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, inquiries } from "@/lib/db";
 import { checkInquiryQuota, bumpInquiryCount } from "@/lib/quota";
-import { notifyNewInquiry } from "@/lib/notify";
+import { notifyNewInquiry, notifyTelegram } from "@/lib/notify";
 import { getPlaceBySlug } from "@/lib/data";
 
 type Body = {
@@ -112,6 +112,20 @@ export async function POST(
       customerPhone: row.customerPhone,
       preferredDate: row.preferredDate,
       partySize: row.partySize,
+      message,
+    }),
+    // Operator Telegram — fires for EVERY inquiry, claimed or not.
+    notifyTelegram({
+      placeId: params.id,
+      placeName: place.name,
+      kind,
+      customerName,
+      customerEmail,
+      customerPhone: row.customerPhone,
+      preferredDate: row.preferredDate,
+      requestedService: row.requestedService,
+      partySize: row.partySize,
+      language: row.language,
       message,
     }),
   ]);
