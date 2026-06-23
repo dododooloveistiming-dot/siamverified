@@ -1,0 +1,449 @@
+{
+  "nav_explore": {
+    "id": "Jelajahi"
+  },
+  "nav_about": {
+    "id": "Tentang"
+  },
+  "hero_title": {
+    "id": "Thailand Terverifikasi. Tanpa Hype Berbayar."
+  },
+  "hero_subtitle": {
+    "id": "Kemping. Studio. Retret. Sekolah Memasak. Toko Selam. Spa. Ruang Kerja. Dinilai secara independen dari 6 sumber."
+  },
+  "for_audience": {
+    "id": "🧳 Wisatawan  ·  🏠 Ekspatriat  ·  🇹🇭 Penduduk"
+  },
+  "popular_picks": {
+    "id": "Pilihan Populer"
+  },
+  "sources_pitch": {
+    "id": "Setiap tempat diperiksa silang dengan Google · Reddit · Naver · Pantip · YouTube · Bookimed"
+  },
+  "browse_categories": {
+    "id": "Jelajahi kategori"
+  },
+  "see_all": {
+    "id": "Lihat semua"
+  },
+  "places_count": {
+    "id": "tempat"
+  },
+  "trust_score": {
+    "id": "Skor Kepercayaan"
+  },
+  "filter_out_viral": {
+    "id": "Sembunyikan daftar iklan/viral yang dicurigai"
+  },
+  "sort_by": {
+    "id": "Urutkan berdasarkan"
+  },
+  "sort_trust": {
+    "id": "Skor Kepercayaan"
+  },
+  "sort_reviews": {
+    "id": "Paling banyak diulas"
+  },
+  "sort_rating": {
+    "id": "Terbaik dinilai"
+  },
+  "search_ph": {
+    "id": "Cari tempat, kota, kategori..."
+  },
+  "filter_beginner": {
+    "id": "Ramah pemula"
+  },
+  "filter_korean_friendly": {
+    "id": "Ramah Korea"
+  },
+  "filter_24h": {
+    "id": "Buka 24 jam"
+  },
+  "filter_established": {
+    "id": "Dibentuk (5 tahun+)"
+  },
+  "filter_active": {
+    "id": "Aktif baru-baru ini"
+  },
+  "price_band": {
+    "id": "Harga"
+  },
+  "price_budget": {
+    "id": "Anggaran"
+  },
+  "price_mid": {
+    "id": "Menengah"
+  },
+  "price_premium": {
+    "id": "Premium"
+  },
+  "price_luxury": {
+    "id": "Mewah"
+  },
+  "patient_voices": {
+    "id": "Apa yang sebenarnya orang katakan"
+  },
+  "faq": {
+    "id": "Pertanyaan yang Sering Diajukan"
+  },
+  "hours": {
+    "id": "Jam"
+  },
+  "price_range": {
+    "id": "Rentang harga"
+  },
+  "cta_book_klook": {
+    "id": "Pesan di Klook"
+  },
+  "cta_book_viator": {
+    "id": "Pesan di Viator"
+  },
+  "cta_book_gyg": {
+    "id": "Pesan di GetYourGuide"
+  },
+  "cta_book_agoda": {
+    "id": "Cari di Agoda"
+  },
+  "cta_view_map": {
+    "id": "Lihat di Google Maps"
+  },
+  "source_google": {
+    "id": "Google"
+  },
+  "source_reddit": {
+    "id": "Reddit"
+  },
+  "source_naver": {
+    "id": "Naver"
+  },
+  "source_pantip": {
+    "id": "Pantip"
+  },
+  "source_youtube": {
+    "id": "YouTube"
+  },
+  "source_bookimed": {
+    "id": "Bookimed"
+  },
+  "source_website": {
+    "id": "Situs resmi"
+  },
+  "coming_soon": {
+    "id": "Segera hadir"
+  },
+  "coming_soon_msg": {
+    "id": "Kategori ini sedang diverifikasi di 6 sumber kami. Periksa kembali segera."
+  },
+  "no_matches": {
+    "id": "Tidak ada kecocokan"
+  },
+  "try_remove_filters": {
+    "id": "Coba hapus beberapa filter."
+  },
+  "reset": {
+    "id": "Atur ulang"
+  },
+  "all_label": {
+    "id": "Semua"
+  },
+  "top_picks": {
+    "id": "Pilihan utama"
+  },
+  "score_pitch_title": {
+    "id": "Cara kami memberi skor setiap tempat"
+  },
+  "score_pitch_blurb": {
+    "id": "Setiap Skor Kepercayaan menggabungkan sinyal independen. Tidak ada tempat yang bisa membeli peringkat lebih tinggi — rumusnya publik."
+  },
+  "book_or_inquire": {
+    "id": "Pesan / Tanyakan"
+  },
+  "affiliate_disclaimer": {
+    "id": "Tautan afiliasi — kami mungkin mendapatkan komisi. Skor Kepercayaan dihitung sebelum hubungan komersial."
+  },
+  "photos_label": {
+    "id": "Foto"
+  },
+  "community_discussions": {
+    "id": "Diskusi komunitas"
+  },
+  "community_blurb": {
+    "id": "Percakapan tidak terfilter dari Reddit, Pantip (TH), dan Naver (KR) — perspektif independen yang melengkapi ulasan Google."
+  },
+  "mentions_in_community": {
+    "id": "Sebutannya dalam diskusi komunitas"
+  },
+  "mentions_blurb": {
+    "id": "Thread di mana nama tempat ini muncul. Suara independen, bukan ulasan terkurasi."
+  },
+  "contact_links": {
+    "id": "Kontak & tautan"
+  },
+  "address_label": {
+    "id": "Alamat"
+  },
+  "phone_label": {
+    "id": "Telepon"
+  },
+  "website_label": {
+    "id": "Situs web"
+  },
+  "back_to_all": {
+    "id": "Semua kategori"
+  },
+  "low_signal_warn": {
+    "id": "Sinyal rendah: peringkat tinggi tetapi sedikit ulasan — bisa jadi promosi berbayar. Periksa dengan hati-hati."
+  },
+  "bookable_label": {
+    "id": "Dapat dipesan"
+  },
+  "threads_scanned": {
+    "id": "thread yang dipindai"
+  },
+  "matches_of": {
+    "id": "cocokan dari"
+  },
+  "footer_blurb": {
+    "id": "Verified Thai adalah direktori independen. Komisi afiliasi dari mitra pemesanan mendukung situs ini tetapi tidak mempengaruhi Skor Kepercayaan."
+  },
+  "hl_title": {
+    "id": "Sekilas"
+  },
+  "hl_since": {
+    "id": "Sejak {y}"
+  },
+  "hl_years": {
+    "id": "{n} tahun berjalan"
+  },
+  "hl_reviews": {
+    "id": "{n} ulasan"
+  },
+  "hl_lang_ok": {
+    "id": "Ramah bahasa Inggris"
+  },
+  "hl_price_from": {
+    "id": "dari ฿{n}"
+  },
+  "hl_price_on_inquiry": {
+    "id": "Harga berdasarkan permintaan"
+  },
+  "cta_check_booking": {
+    "id": "Periksa ketersediaan & harga"
+  },
+  "cta_inquiry_main": {
+    "id": "Kirim pertanyaan · balasan dalam 24 jam"
+  },
+  "cta_inquiry_short": {
+    "id": "Tanya"
+  },
+  "social_more": {
+    "id": "Lebih banyak ulasan & sebutan"
+  },
+  "faq_section": {
+    "id": "Pertanyaan yang sering diajukan"
+  },
+  "pf_loc_q": {
+    "id": "Di mana {name} berada?"
+  },
+  "pf_loc_a": {
+    "id": "{addr}."
+  },
+  "pf_loc_maps": {
+    "id": " Buka di Google Maps: {url}"
+  },
+  "pf_book_q": {
+    "id": "Bagaimana cara saya memesan atau menghubungi {name}?"
+  },
+  "pf_book_a": {
+    "id": "Gunakan formulir pertanyaan di halaman ini — itu langsung ke {name} tanpa komisi."
+  },
+  "pf_book_klook": {
+    "id": " Anda juga dapat memesan melalui Klook untuk konfirmasi instan."
+  },
+  "pf_book_phone": {
+    "id": " Atau hubungi {phone}."
+  },
+  "pf_lang_q": {
+    "id": "Bahasa apa yang mereka gunakan?"
+  },
+  "pf_lang_a": {
+    "id": "Berdasarkan penelitian kami, {name} melayani pelanggan dalam {langs}."
+  },
+  "pf_cost_q": {
+    "id": "Berapa biayanya?"
+  },
+  "pf_cost_a": {
+    "id": "Harga tipikal adalah {price} per {unit}. Harga dapat bervariasi tergantung musim dan layanan — konfirmasi dengan tempatnya."
+  },
+  "pf_pop_q": {
+    "id": "Apakah {name} populer / memiliki ulasan baik?"
+  },
+  "pf_pop_a": {
+    "id": "{name} memiliki {count} ulasan Google dengan rata-rata penilaian ★ {rating}/5."
+  },
+  "pf_pop_partner": {
+    "id": " Ini adalah mitra terverifikasi di platform kami."
+  },
+  "pf_beg_q": {
+    "id": "Apakah {name} baik untuk pemula?"
+  },
+  "pf_beg_a": {
+    "id": "Ya — {name} diwujudkan ramah pemula. Harapkan staf yang menyambut, sesi pengenalan, dan peralatan disediakan untuk pengunjung pertama kali."
+  },
+  "pf_24h_q": {
+    "id": "Apakah {name} buka 24 jam?"
+  },
+  "pf_24h_a": {
+    "id": "Ya, {name} beroperasi 24 jam. Konfirmasi jam layanan spesifik dengan bertanya."
+  },
+  "schema_place_desc": {
+    "id": "{niche} di {city}, Thailand. Skor Kepercayaan {score}/100."
+  },
+  "toc_services": {
+    "id": "Layanan"
+  },
+  "toc_location": {
+    "id": "Lokasi"
+  },
+  "toc_book": {
+    "id": "Pesan"
+  },
+  "trust_crosschecked": {
+    "id": "Diperiksa silang di:"
+  },
+  "verified_partner": {
+    "id": "Mitra Tervalidasi"
+  },
+  "ra_title": {
+    "id": "Aktivitas Ulasan"
+  },
+  "ra_30d": {
+    "id": "30 hari terakhir"
+  },
+  "ra_90d": {
+    "id": "90 hari terakhir"
+  },
+  "ra_year": {
+    "id": "Tahun ini"
+  },
+  "ra_lastreviewed": {
+    "id": "Terakhir ditinjau {ago}"
+  },
+  "rate_exceptional": {
+    "id": "Luar biasa"
+  },
+  "rate_excellent": {
+    "id": "Sangat Baik"
+  },
+  "rate_verygood": {
+    "id": "Baik Sekali"
+  },
+  "rate_good": {
+    "id": "Baik"
+  },
+  "review_anon": {
+    "id": "Anonim"
+  },
+  "book_direct_title": {
+    "id": "Pesan langsung dengan {name}"
+  },
+  "book_direct_sub": {
+    "id": "Tanpa komisi · Tanpa markup platform pemesanan · Bayar di tempat"
+  },
+  "fee_0": {
+    "id": "0% biaya"
+  },
+  "reply_in": {
+    "id": "Balasan dalam ~{t}"
+  },
+  "or_book_klook": {
+    "id": "Atau pesan melalui Klook"
+  },
+  "services_pricing": {
+    "id": "Layanan & harga"
+  },
+  "msg_directly": {
+    "id": "Kirim pesan langsung ke {name}"
+  },
+  "line_scan_title": {
+    "id": "Pindai untuk chat di LINE"
+  },
+  "line_scan_sub": {
+    "id": "Buka kamera LINE → pindai QR ini → pesan langsung"
+  },
+  "send_inquiry_title": {
+    "id": "Kirim pertanyaan langsung"
+  },
+  "inquiry_goes_to": {
+    "id": "Langsung ke {name}. Tidak ada markup platform pemesanan."
+  },
+  "or_book_partner": {
+    "id": "Atau pesan melalui platform mitra"
+  },
+  "own_q": {
+    "id": "Punya {name}?"
+  },
+  "claim_blurb": {
+    "id": "Klaim listing ini untuk mengelola jam, deskripsi, foto, dan menjangkau lebih banyak pelanggan."
+  },
+  "claim_cta": {
+    "id": "Klaim listing ini →"
+  },
+  "sec_korean_reviews": {
+    "id": "Ulasan dari Korea"
+  },
+  "sec_thai_disc": {
+    "id": "Diskusi lokal Thailand"
+  },
+  "sec_videos_about": {
+    "id": "Video tentang {name}"
+  },
+  "sec_featured_yt": {
+    "id": "Ditampilkan di YouTube"
+  },
+  "more_niche_in": {
+    "id": "Lebih banyak {niche} di {place}"
+  },
+  "country_thailand": {
+    "id": "Thailand"
+  },
+  "back_to_niche": {
+    "id": "← Kembali ke {niche}"
+  },
+  "faq_hero_title": {
+    "id": "FAQ wellness Thailand"
+  },
+  "faq_hero_sub": {
+    "id": "Jawaban jujur untuk pertanyaan yang paling umum tentang retret yoga, kamp muay thai, harga spa, menyelam, dan kehidupan digital nomad di Thailand."
+  },
+  "faq_curated_badge": {
+    "id": "{n} pertanyaan yang dikurasi · diperiksa silang dengan 6 sumber"
+  },
+  "faq_topic_general": {
+    "id": "Umum"
+  },
+  "faq_index_title": {
+    "id": "FAQ — yoga Thailand, spa, muay thai, menyelam"
+  },
+  "faq_index_desc": {
+    "id": "Pertanyaan umum tentang wellness Thailand, spa, muay thai, retret yoga, sertifikasi menyelam, dan coworking digital nomad. Data nyata dari {n} entri yang dikurasi."
+  },
+  "langname_en": {
+    "id": "Inggris"
+  },
+  "langname_ko": {
+    "id": "Korea"
+  },
+  "langname_th": {
+    "id": "Thai"
+  },
+  "langname_zh": {
+    "id": "Cina"
+  },
+  "langname_ja": {
+    "id": "Jepang"
+  },
+  "langname_ar": {
+    "id": "Arab"
+  }
+}

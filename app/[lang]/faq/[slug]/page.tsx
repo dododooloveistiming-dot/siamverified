@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getFaq, getLocalizedFaq, localizeFaq, isFaqTranslated, faqTranslatedLangs, listFaqs } from "@/lib/faqs";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 
@@ -77,11 +77,11 @@ export default function FaqDetailPage({
           <nav className="text-xs muted">
             <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
             <span className="mx-2">/</span>
-            <Link href={`/${lang}/faq/`} className="hover:underline">FAQ</Link>
+            <Link href={`/${lang}/faq/`} className="hover:underline">{t("nav_faq", lang)}</Link>
             {faq.topic !== "general" && meta && (
               <>
                 <span className="mx-2">/</span>
-                <span>{meta.name?.en ?? faq.topic}</span>
+                <span>{meta.name?.[lang] ?? meta.name?.en ?? faq.topic}</span>
               </>
             )}
           </nav>
@@ -124,7 +124,7 @@ export default function FaqDetailPage({
         {/* Related */}
         {relatedFaqs.length > 0 && (
           <section className="mt-12">
-            <h2 className="mb-4 text-lg font-bold tracking-tight">Related questions</h2>
+            <h2 className="mb-4 text-lg font-bold tracking-tight">{t("faq_related", lang)}</h2>
             <ul className="grid gap-2 sm:grid-cols-2">
               {relatedFaqs.map((r) => (
                 <li key={r.slug}>
@@ -142,7 +142,7 @@ export default function FaqDetailPage({
 
         <div className="mt-12 text-xs muted">
           <Link href={`/${lang}/faq/`} className="hover:underline">
-            ← All FAQs
+            ← {t("faq_all_link", lang)}
           </Link>
         </div>
       </div>

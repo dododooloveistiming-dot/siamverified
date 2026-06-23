@@ -45,7 +45,7 @@ export default function FaqIndexPage({ params }: { params: { lang: Lang } }) {
           <nav className="text-xs text-white/80">
             <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
             <span className="mx-2">/</span>
-            <span>FAQ</span>
+            <span>{t("nav_faq", lang)}</span>
           </nav>
           <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
             {t("faq_hero_title", lang)}
