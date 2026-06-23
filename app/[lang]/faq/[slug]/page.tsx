@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getFaq, listFaqs } from "@/lib/faqs";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { getFaq, getLocalizedFaq, localizeFaq, isFaqTranslated, faqTranslatedLangs, listFaqs } from "@/lib/faqs";
+import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 
@@ -23,16 +23,23 @@ export async function generateMetadata({
 }: {
   params: { lang: Lang; slug: string };
 }): Promise<Metadata> {
-  const faq = getFaq(params.slug);
-  if (!faq) return {};
+  const raw = getFaq(params.slug);
+  if (!raw) return {};
+  const faq = localizeFaq(raw, params.lang);
   const url = `${SITE.origin}/${params.lang}/faq/${params.slug}/`;
+  // Only index a locale page that is genuinely translated; otherwise it serves
+  // an English fallback and would be a duplicate under a mismatched hreflang.
+  const indexable = isFaqTranslated(raw, params.lang);
+  const translatedLangs = faqTranslatedLangs(raw, SUPPORTED_LANGS);
   return {
     title: `${faq.question} — ${SITE.name}`,
     description: faq.shortAnswer,
+    robots: indexable ? undefined : { index: false, follow: true },
     alternates: {
       canonical: url,
+      // hreflang points only to languages that actually have a translation.
       languages: Object.fromEntries(
-        SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/faq/${params.slug}/`]),
+        translatedLangs.map((l) => [l, `${SITE.origin}/${l}/faq/${params.slug}/`]),
       ),
     },
     openGraph: {
@@ -49,16 +56,16 @@ export default function FaqDetailPage({
 }: {
   params: { lang: Lang; slug: string };
 }) {
-  const faq = getFaq(params.slug);
-  if (!faq) notFound();
   const lang = params.lang;
+  const faq = getLocalizedFaq(params.slug, lang);
+  if (!faq) notFound();
   const meta =
     faq.topic !== "general"
       ? NICHE_META[faq.topic as keyof typeof NICHE_META]
       : undefined;
 
   const relatedFaqs = faq.related
-    .map((slug) => getFaq(slug))
+    .map((slug) => getLocalizedFaq(slug, lang))
     .filter((f): f is NonNullable<typeof f> => Boolean(f));
 
   const paragraphs = faq.longAnswer.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
@@ -70,11 +77,11 @@ export default function FaqDetailPage({
           <nav className="text-xs muted">
             <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
             <span className="mx-2">/</span>
-            <Link href={`/${lang}/faq/`} className="hover:underline">FAQ</Link>
+            <Link href={`/${lang}/faq/`} className="hover:underline">{t("nav_faq", lang)}</Link>
             {faq.topic !== "general" && meta && (
               <>
                 <span className="mx-2">/</span>
-                <span>{meta.name?.en ?? faq.topic}</span>
+                <span>{meta.name?.[lang] ?? meta.name?.en ?? faq.topic}</span>
               </>
             )}
           </nav>
@@ -117,7 +124,7 @@ export default function FaqDetailPage({
         {/* Related */}
         {relatedFaqs.length > 0 && (
           <section className="mt-12">
-            <h2 className="mb-4 text-lg font-bold tracking-tight">Related questions</h2>
+            <h2 className="mb-4 text-lg font-bold tracking-tight">{t("faq_related", lang)}</h2>
             <ul className="grid gap-2 sm:grid-cols-2">
               {relatedFaqs.map((r) => (
                 <li key={r.slug}>
@@ -135,7 +142,7 @@ export default function FaqDetailPage({
 
         <div className="mt-12 text-xs muted">
           <Link href={`/${lang}/faq/`} className="hover:underline">
-            ← All FAQs
+            ← {t("faq_all_link", lang)}
           </Link>
         </div>
       </div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlacesByNiche } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
-import type { Lang, Niche, Place } from "@/lib/types";
+import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 
@@ -26,11 +26,11 @@ type FilterSlug = "established" | "active";
 type FilterDef = {
   slug: FilterSlug;
   predicate: (p: Place) => boolean;
-  h1: Record<Lang, (niche: string) => string>;
-  metaTitle: Record<Lang, (niche: string) => string>;
-  metaDesc: Record<Lang, (niche: string) => string>;
-  intro: Record<Lang, string>;
-  emptyBack: Record<Lang, string>;
+  h1: Loc<(niche: string) => string>;
+  metaTitle: Loc<(niche: string) => string>;
+  metaDesc: Loc<(niche: string) => string>;
+  intro: Loc<string>;
+  emptyBack: Loc<string>;
 };
 
 const FILTERS: Record<FilterSlug, FilterDef> = {
@@ -158,9 +158,11 @@ export async function generateMetadata({
   if (!def || !NICHES.includes(niche)) return {};
   const nName = nicheName(niche, lang);
   const url = `${SITE.origin}/${lang}/c/${niche}/${filter}/`;
+  const mt = def.metaTitle[lang] ?? def.metaTitle.en;
+  const md = def.metaDesc[lang] ?? def.metaDesc.en;
   return {
-    title: def.metaTitle[lang](nName),
-    description: def.metaDesc[lang](nName),
+    title: mt(nName),
+    description: md(nName),
     alternates: {
       canonical: url,
       languages: Object.fromEntries(
@@ -168,8 +170,8 @@ export async function generateMetadata({
       ),
     },
     openGraph: {
-      title: def.metaTitle[lang](nName),
-      description: def.metaDesc[lang](nName),
+      title: mt(nName),
+      description: md(nName),
       url,
     },
   };
@@ -206,9 +208,9 @@ export default function FilteredNichePage({
           </nav>
           <div className="mt-4 text-3xl">{meta.emoji}</div>
           <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
-            {def.h1[lang](nName)}
+            {(def.h1[lang] ?? def.h1.en)(nName)}
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed muted">{def.intro[lang]}</p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed muted">{def.intro[lang] ?? def.intro.en}</p>
           <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
             {places.length} / {all.length} matched
           </div>
@@ -218,7 +220,7 @@ export default function FilteredNichePage({
       <div className="mx-auto max-w-5xl px-4">
         {places.length === 0 ? (
           <div className="mt-10 rounded-2xl border border-dashed border-ink-200 bg-white p-8 text-center dark:border-ink-700 dark:bg-ink-900">
-            <p className="text-base font-bold">{def.emptyBack[lang]}</p>
+            <p className="text-base font-bold">{def.emptyBack[lang] ?? def.emptyBack.en}</p>
             <Link href={`/${lang}/c/${niche}/`} className="mt-3 inline-block text-emerald-700 hover:underline dark:text-emerald-400">
               → {nName}
             </Link>

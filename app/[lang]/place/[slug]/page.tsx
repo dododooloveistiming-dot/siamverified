@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats, getReviewKo, getYoutubeSearch } from "@/lib/data";
 import { getPlaceSignals, emailProviderLabel, trustBreakdown, formatSubs } from "@/lib/signals";
-import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, T, t, tf } from "@/lib/i18n";
 import { isIndexablePlace, cleanReviewText } from "@/lib/reviews";
+import { buildPlaceFaqs } from "@/lib/place-faqs";
 import { placeHighlights } from "@/lib/highlights";
 import PlaceHighlights from "@/components/PlaceHighlights";
 import PrimaryCTA from "@/components/PrimaryCTA";
@@ -18,7 +19,6 @@ import KlookOffer from "@/components/KlookOffer";
 import YouTubeFacade from "@/components/YouTubeFacade";
 import PlaceFAQ from "@/components/PlaceFAQ";
 import BookingForm from "@/components/BookingForm";
-import type { FAQItem } from "@/components/PlaceFAQ";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
 import ShareButton from "@/components/ShareButton";
@@ -170,59 +170,9 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const sameAs: string[] = [];
   if (place.google_maps_url) sameAs.push(place.google_maps_url);
 
-  // Build FAQ items from data — drives both visible accordion + FAQPage JSON-LD
-  const faqs: FAQItem[] = [];
-  faqs.push({
-    q: `Where is ${place.name} located?`,
-    a: `${place.address || place.city || "Thailand"}.${
-      place.google_maps_url ? ` Open in Google Maps: ${place.google_maps_url}` : ""
-    }`,
-  });
-  faqs.push({
-    q: `How do I book or contact ${place.name}?`,
-    a: `Use the inquiry form on this page — it goes directly to ${place.name} with 0% commission. ${
-      place.bookable?.klook ? "You can also book through Klook for instant confirmation." : ""
-    }${place.phone ? ` Or call ${place.phone}.` : ""}`,
-  });
-  const langsSpoken = Object.entries(place.languages)
-    .filter(([, v]) => v)
-    .map(([k]) => ({ en: "English", ko: "Korean", th: "Thai", zh: "Chinese", ja: "Japanese", ar: "Arabic" }[k] || k));
-  if (langsSpoken.length > 0) {
-    faqs.push({
-      q: `What languages do they speak?`,
-      a: `Based on our research, ${place.name} serves customers in ${langsSpoken.join(", ")}.`,
-    });
-  }
-  if (place.price_min_thb > 0) {
-    faqs.push({
-      q: `How much does it cost?`,
-      a: `Typical price is ฿${place.price_min_thb.toLocaleString()}${
-        place.price_max_thb > place.price_min_thb
-          ? `–฿${place.price_max_thb.toLocaleString()}`
-          : ""
-      } per ${place.price_unit}. Prices may vary by season and service — confirm with the venue.`,
-    });
-  }
-  if (place.review_count && place.rating) {
-    faqs.push({
-      q: `Is ${place.name} popular / well-reviewed?`,
-      a: `${place.name} has ${place.review_count.toLocaleString()} Google reviews with an average rating of ★ ${place.rating.toFixed(
-        1,
-      )}/5.${place.is_partner ? " It's a verified partner on our platform." : ""}`,
-    });
-  }
-  if (place.is_beginner_friendly) {
-    faqs.push({
-      q: `Is ${place.name} good for beginners?`,
-      a: `Yes — ${place.name} is rated beginner-friendly. Expect welcoming staff, intro sessions, and equipment provided for first-time visitors.`,
-    });
-  }
-  if (place.is_open_24h) {
-    faqs.push({
-      q: `Is ${place.name} open 24 hours?`,
-      a: `Yes, ${place.name} operates 24 hours. Confirm specific service hours by inquiry.`,
-    });
-  }
+  // Localized per-place FAQ items — drive both the visible accordion and the
+  // FAQPage JSON-LD (the AEO payload). Built from structured data in one place.
+  const faqs = buildPlaceFaqs(place, lang);
 
   // Photos for the mosaic — owner uploads first, otherwise scraped
   const mosaicPhotos = displayPhotos.slice(0, 30);
@@ -254,7 +204,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               url={`${SITE.origin}/${lang}/place/${place.slug}/`}
               title={place.name}
               text={`${place.name} — ${nicheName(place.niche, lang)}${place.city ? ` (${place.city})` : ""} · Trust ${place.trust_score}/100 on ${SITE.name}`}
-              label={({ en: "Share", ko: "공유", ja: "シェア", zh: "分享", th: "แชร์", ar: "مشاركة" } as const)[lang]}
+              label={({ en: "Share", ko: "공유", ja: "シェア", zh: "分享", th: "แชร์", ar: "مشاركة", id: "Bagikan", vi: "Chia sẻ" } as const)[lang]}
             />
           </div>
 
@@ -271,7 +221,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             {place.is_partner && (
               <>
                 <span className="opacity-40">·</span>
-                <span className="font-semibold text-emerald-700 dark:text-emerald-400">✓ Verified Partner</span>
+                <span className="font-semibold text-emerald-700 dark:text-emerald-400">✓ {t("verified_partner", lang)}</span>
               </>
             )}
           </div>
@@ -380,9 +330,9 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           <ul className="flex flex-wrap gap-2 text-xs font-semibold">
             {[
               { href: "#reviews", label: `⭐ ${t("patient_voices", lang)}` },
-              { href: "#services", label: "💲 Services" },
-              { href: "#location", label: "📍 Location" },
-              { href: "#book", label: "📩 Book" },
+              { href: "#services", label: `💲 ${t("toc_services", lang)}` },
+              { href: "#location", label: `📍 ${t("toc_location", lang)}` },
+              { href: "#book", label: `📩 ${t("toc_book", lang)}` },
             ].map((a) => (
               <li key={a.href}>
                 <a href={a.href} className="inline-block rounded-full border border-ink-200 px-3 py-1 text-ink-700 transition hover:border-emerald-400 hover:text-emerald-700 dark:border-ink-700 dark:text-ink-300">
@@ -412,7 +362,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* TRUST STRIP — sources cross-checked */}
         <section className="border-y border-ink-100 bg-white py-4 dark:border-ink-800 dark:bg-ink-950">
           <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 text-xs">
-            <span className="muted">Cross-checked across:</span>
+            <span className="muted">{t("trust_crosschecked", lang)}</span>
             <div className="flex flex-wrap gap-1.5">
               {sources.map((s) => (
                 <span
@@ -475,9 +425,9 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* REVIEW ACTIVITY — recency bars (unique: TripAdvisor doesn't show this) */}
         {signals.reviews365d > 0 && (() => {
           const bars = [
-            { label: "Last 30 days", count: signals.reviews30d },
-            { label: "Last 90 days", count: signals.reviews90d },
-            { label: "This year",    count: signals.reviews365d },
+            { label: t("ra_30d", lang), count: signals.reviews30d },
+            { label: t("ra_90d", lang), count: signals.reviews90d },
+            { label: t("ra_year", lang), count: signals.reviews365d },
           ];
           const daysAgo = signals.recencyDaysSince;
           const lastLabel = daysAgo == null ? null
@@ -488,7 +438,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             : `${Math.round(daysAgo / 365)}y ago`;
           return (
             <div className="mt-6 rounded-2xl border border-ink-100 bg-white px-5 py-4 dark:border-ink-800 dark:bg-ink-900">
-              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-500 dark:text-ink-400">Review Activity</p>
+              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-500 dark:text-ink-400">{t("ra_title", lang)}</p>
               <div className="space-y-2">
                 {bars.map(({ label, count }) => (
                   <div key={label} className="flex items-center gap-3">
@@ -504,7 +454,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 ))}
               </div>
               {lastLabel && (
-                <p className="mt-3 text-xs text-ink-400 dark:text-ink-500">Last reviewed {lastLabel}</p>
+                <p className="mt-3 text-xs text-ink-400 dark:text-ink-500">{tf("ra_lastreviewed", lang, { ago: lastLabel })}</p>
               )}
             </div>
           );
@@ -523,7 +473,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   </div>
                   <div>
                     <div className="text-sm font-bold leading-tight">
-                      {place.rating >= 4.7 ? "Exceptional" : place.rating >= 4.3 ? "Excellent" : place.rating >= 3.8 ? "Very good" : "Good"}
+                      {place.rating >= 4.7 ? t("rate_exceptional", lang) : place.rating >= 4.3 ? t("rate_excellent", lang) : place.rating >= 3.8 ? t("rate_verygood", lang) : t("rate_good", lang)}
                     </div>
                     <div className="text-xs muted">
                       {(place.review_count ?? 0).toLocaleString()} reviews
@@ -583,7 +533,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   return (
                     <li key={i} className="rounded-xl border border-ink-100 bg-white p-3 text-sm dark:border-ink-800 dark:bg-ink-900">
                       <div className="text-xs muted">
-                        {rv.reviewer || "Anonymous"} {rv.rating ? `· ★ ${rv.rating}` : ""} {rv.date ? `· ${rv.date}` : ""}
+                        {rv.reviewer || t("review_anon", lang)} {rv.rating ? `· ★ ${rv.rating}` : ""} {rv.date ? `· ${rv.date}` : ""}
                       </div>
                       <p className="mt-1">{body}</p>
                     </li>
@@ -601,22 +551,22 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-base">💎</span>
-                  <h2 className="text-base font-black">Book directly with {place.name}</h2>
+                  <h2 className="text-base font-black">{tf("book_direct_title", lang, { name: place.name })}</h2>
                 </div>
                 <p className="mt-0.5 text-[11px] muted">
-                  No commission · No booking platform markup · Pay at the venue
+                  {t("book_direct_sub", lang)}
                 </p>
               </div>
               <div className="flex flex-col items-end gap-1">
                 <span className="rounded-full bg-emerald-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow">
-                  0% fee
+                  {t("fee_0", lang)}
                 </span>
                 {replyStats && (
                   <span
                     className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
                     title={`Average reply time across ${replyStats.sampleSize} inquiries`}
                   >
-                    ⏱ Replies in ~{replyStats.avgHours < 1 ? `${Math.round(replyStats.avgHours * 60)}min` : `${replyStats.avgHours}h`}
+                    ⏱ {tf("reply_in", lang, { t: replyStats.avgHours < 1 ? `${Math.round(replyStats.avgHours * 60)}min` : `${replyStats.avgHours}h` })}
                   </span>
                 )}
               </div>
@@ -655,7 +605,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {klookData && klookData.products.length > 0 && (
           <section className="mt-6">
             <div className="mb-2 text-[10px] font-black uppercase tracking-wider muted">
-              Or book via Klook
+              {t("or_book_klook", lang)}
             </div>
             <KlookOffer data={klookData} placeName={place.name} />
             <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
@@ -665,7 +615,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* OWNER-WRITTEN DESCRIPTION */}
         {displayDescription && (
           <section className="mt-8 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
-            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">About</h2>
+            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">{t("nav_about", lang)}</h2>
             <p className="whitespace-pre-wrap text-base leading-relaxed">{displayDescription}</p>
             {ownerProfile?.koreanStaffNote && (
               <p className="mt-3 inline-flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-800 dark:bg-rose-950/40 dark:text-rose-300">
@@ -678,7 +628,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* SERVICES & PRICING */}
         {services.length > 0 && (
           <section id="services" className="scroll-mt-20 mt-8 rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
-            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">Services & pricing</h2>
+            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">{t("services_pricing", lang)}</h2>
             <ul className="space-y-2">
               {services.map((s, i) => (
                 <li
@@ -710,7 +660,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           <section className="mt-8">
             {(whatsapp || lineId) && (
               <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
-                💬 Message {place.name} directly
+                💬 {tf("msg_directly", lang, { name: place.name })}
               </h2>
             )}
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -742,8 +692,8 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={signals.lineQrUrl} alt="LINE QR code" width={80} height={80} loading="lazy" className="shrink-0 rounded-lg" />
                 <div>
-                  <p className="text-sm font-bold">Scan to chat on LINE</p>
-                  <p className="mt-0.5 text-xs text-ink-500 dark:text-ink-400">Open LINE camera → scan this QR → book directly</p>
+                  <p className="text-sm font-bold">{t("line_scan_title", lang)}</p>
+                  <p className="mt-0.5 text-xs text-ink-500 dark:text-ink-400">{t("line_scan_sub", lang)}</p>
                 </div>
               </div>
             )}
@@ -753,13 +703,13 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* INQUIRY FORM — direct contact, 0% markup. Lead CTA. */}
         <section className="mt-8 rounded-2xl border-2 border-emerald-300 bg-emerald-50/30 p-4 dark:border-emerald-700 dark:bg-emerald-950/20">
           <div className="mb-3 flex items-baseline justify-between">
-            <h2 className="text-base font-black">📩 Send inquiry directly</h2>
+            <h2 className="text-base font-black">📩 {t("send_inquiry_title", lang)}</h2>
             <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white">
               0% commission
             </span>
           </div>
           <p className="mb-3 text-xs muted">
-            Goes straight to {place.name}. No booking platform markup.
+            {tf("inquiry_goes_to", lang, { name: place.name })}
           </p>
           <InquiryForm placeId={place.slug} placeName={place.name} lang={lang} />
         </section>
@@ -768,7 +718,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {!(klookData && klookData.products.length > 0) && (
           <section className="mt-6">
             <h2 className="mb-2 text-xs font-bold uppercase tracking-wide muted">
-              Or book through a partner platform
+              {t("or_book_partner", lang)}
             </h2>
             <AffiliateCTA place={place} lang={lang} />
             <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
@@ -780,17 +730,17 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="font-bold text-emerald-900 dark:text-emerald-200">
-                Own {place.name}?
+                {tf("own_q", lang, { name: place.name })}
               </div>
               <p className="mt-1 text-xs text-emerald-800 dark:text-emerald-300">
-                Claim this listing to manage hours, descriptions, photos, and reach Korean / English / Thai customers.
+                {t("claim_blurb", lang)}
               </p>
             </div>
             <a
               href={`/auth/signin?callbackUrl=/dashboard/claim/${place.slug}`}
               className="shrink-0 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-700"
             >
-              Claim this listing →
+              {t("claim_cta", lang)}
             </a>
           </div>
         </section>
@@ -823,7 +773,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {lang !== "ko" && (mentions.naver.length > 0 || mentions.cafe.length > 0) && (
           <details className="mt-10 group" open={expandKorean}>
             <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 text-lg font-bold">
-              <span>🇰🇷</span> Korean reviews
+              <span>🇰🇷</span> {t("sec_korean_reviews", lang)}
               <span className="text-xs font-normal muted">
                 ({mentions.naver.length + mentions.cafe.length})
               </span>
@@ -887,7 +837,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           return (
             <section className="mt-10">
               <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
-                <span>▶</span> Videos about {place.name}
+                <span>▶</span> {tf("sec_videos_about", lang, { name: place.name })}
                 <span className="text-xs font-normal muted">({mentions.youtube.length})</span>
                 {featuredIsKo && (
                   <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">
@@ -925,7 +875,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* YOUTUBE SEARCH — travel vlogs & reviews featuring this place */}
         {ytVideos.length > 0 && (
           <section className="mt-10">
-            <h2 className="mb-4 text-lg font-bold">▶ Featured on YouTube</h2>
+            <h2 className="mb-4 text-lg font-bold">▶ {t("sec_featured_yt", lang)}</h2>
             <div className="grid gap-3 sm:grid-cols-2">
               {ytVideos.map((v) => (
                 <a
@@ -970,7 +920,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {mentions.pantip.length > 0 && (
           <details className="mt-10 group" open={expandPantip}>
             <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 text-lg font-bold">
-              <span>🇹🇭</span> Local Thai discussions
+              <span>🇹🇭</span> {t("sec_thai_disc", lang)}
               <span className="text-xs font-normal muted">({mentions.pantip.length})</span>
               <span className="ml-auto text-xs font-normal muted group-open:hidden">{t("social_more", lang)} ▾</span>
             </summary>
@@ -1055,7 +1005,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {/* FAQ — accordion + FAQPage JSON-LD for SEO/AEO */}
         {faqs.length > 0 && (
           <section className="mt-12">
-            <h2 className="mb-4 text-lg font-bold">Frequently asked questions</h2>
+            <h2 className="mb-4 text-lg font-bold">{t("faq_section", lang)}</h2>
             <PlaceFAQ items={faqs} />
           </section>
         )}
@@ -1064,7 +1014,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         {similar.length > 0 && (
           <section className="mt-12">
             <h2 className="mb-4 text-lg font-bold">
-              More {nicheName(place.niche, lang)} {place.city ? `in ${place.city}` : "in Thailand"}
+              {tf("more_niche_in", lang, { niche: nicheName(place.niche, lang), place: place.city || t("country_thailand", lang) })}
             </h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {similar.map((p) => (
@@ -1096,7 +1046,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         <div className="mt-10 text-xs muted">
           <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">
-            ← Back to {nicheName(place.niche, lang)}
+            {tf("back_to_niche", lang, { niche: nicheName(place.niche, lang) })}
           </Link>
         </div>
 
@@ -1109,7 +1059,12 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               "@type": place.niche === "wellness" ? "HealthAndBeautyBusiness" : "LocalBusiness",
               "@id": `${SITE.origin}/${lang}/place/${place.slug}/`,
               name: place.name,
-              description: `${nicheName(place.niche, lang)} in ${place.city}, Thailand. Trust Score ${place.trust_score}/100.${place.is_beginner_friendly ? " Beginner-friendly." : ""}`,
+              description:
+                tf("schema_place_desc", lang, {
+                  niche: nicheName(place.niche, lang),
+                  city: place.city,
+                  score: place.trust_score,
+                }) + (place.is_beginner_friendly ? ` ${t("filter_beginner", lang)}.` : ""),
               address: place.address
                 ? {
                     "@type": "PostalAddress",

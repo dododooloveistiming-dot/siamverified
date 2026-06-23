@@ -1,0 +1,607 @@
+{
+  "nav_explore": {
+    "id": "Jelajahi",
+    "vi": "Khám phá"
+  },
+  "nav_about": {
+    "id": "Tentang",
+    "vi": "Về chúng tôi"
+  },
+  "hero_title": {
+    "id": "Thailand Terverifikasi. Tanpa Hype Berbayar.",
+    "vi": "Thái Lan đã xác minh. Không quảng cáo trả tiền."
+  },
+  "hero_subtitle": {
+    "id": "Kemping. Studio. Retret. Sekolah Memasak. Toko Selam. Spa. Ruang Kerja. Dinilai secara independen dari 6 sumber.",
+    "vi": "Trại. Studio. Không gian tĩnh dưỡng. Trường nấu ăn. Cửa hàng lặn. Spa. Không gian làm việc. Được chấm điểm độc lập từ 6 nguồn."
+  },
+  "for_audience": {
+    "id": "🧳 Wisatawan  ·  🏠 Ekspatriat  ·  🇹🇭 Penduduk",
+    "vi": "🧳 Khách du lịch  ·  🏠 Người nước ngoài  ·  🇹🇭 Cư dân"
+  },
+  "popular_picks": {
+    "id": "Pilihan Populer",
+    "vi": "Lựa chọn phổ biến"
+  },
+  "sources_pitch": {
+    "id": "Setiap tempat diperiksa silang dengan Google · Reddit · Naver · Pantip · YouTube · Bookimed",
+    "vi": "Mỗi địa điểm đều được kiểm tra đối chiếu với Google · Reddit · Naver · Pantip · YouTube · Bookimed"
+  },
+  "browse_categories": {
+    "id": "Jelajahi kategori",
+    "vi": "Duyệt danh mục"
+  },
+  "see_all": {
+    "id": "Lihat semua",
+    "vi": "Xem tất cả"
+  },
+  "places_count": {
+    "id": "tempat",
+    "vi": "địa điểm"
+  },
+  "trust_score": {
+    "id": "Skor Kepercayaan",
+    "vi": "Điểm tin cậy"
+  },
+  "filter_out_viral": {
+    "id": "Sembunyikan daftar iklan/viral yang dicurigai",
+    "vi": "Ẩn danh sách quảng cáo/nghi ngờ"
+  },
+  "sort_by": {
+    "id": "Urutkan berdasarkan",
+    "vi": "Sắp xếp theo"
+  },
+  "sort_trust": {
+    "id": "Skor Kepercayaan",
+    "vi": "Điểm tin cậy"
+  },
+  "sort_reviews": {
+    "id": "Paling banyak diulas",
+    "vi": "Được đánh giá nhiều nhất"
+  },
+  "sort_rating": {
+    "id": "Terbaik dinilai",
+    "vi": "Được chấm điểm cao nhất"
+  },
+  "search_ph": {
+    "id": "Cari tempat, kota, kategori...",
+    "vi": "Tìm kiếm địa điểm, thành phố, danh mục…"
+  },
+  "filter_beginner": {
+    "id": "Ramah pemula",
+    "vi": "Dễ dàng cho người mới"
+  },
+  "filter_korean_friendly": {
+    "id": "Ramah Korea",
+    "vi": "Thích hợp cho người Hàn Quốc"
+  },
+  "filter_24h": {
+    "id": "Buka 24 jam",
+    "vi": "Mở cửa 24h"
+  },
+  "filter_established": {
+    "id": "Dibentuk (5 tahun+)",
+    "vi": "Đã thành lập (trên 5 năm)"
+  },
+  "filter_active": {
+    "id": "Aktif baru-baru ini",
+    "vi": "Hoạt động gần đây"
+  },
+  "price_band": {
+    "id": "Harga",
+    "vi": "Giá"
+  },
+  "price_budget": {
+    "id": "Anggaran",
+    "vi": "Ngân sách"
+  },
+  "price_mid": {
+    "id": "Menengah",
+    "vi": "Trung bình"
+  },
+  "price_premium": {
+    "id": "Premium",
+    "vi": "Cao cấp"
+  },
+  "price_luxury": {
+    "id": "Mewah",
+    "vi": "Sang trọng"
+  },
+  "patient_voices": {
+    "id": "Apa yang sebenarnya orang katakan",
+    "vi": "Người dân thực sự đã nói gì"
+  },
+  "faq": {
+    "id": "Pertanyaan yang Sering Diajukan",
+    "vi": "Câu hỏi thường gặp"
+  },
+  "hours": {
+    "id": "Jam",
+    "vi": "Giờ mở cửa"
+  },
+  "price_range": {
+    "id": "Rentang harga",
+    "vi": "Khoảng giá"
+  },
+  "cta_book_klook": {
+    "id": "Pesan di Klook",
+    "vi": "Đặt trên Klook"
+  },
+  "cta_book_viator": {
+    "id": "Pesan di Viator",
+    "vi": "Đặt trên Viator"
+  },
+  "cta_book_gyg": {
+    "id": "Pesan di GetYourGuide",
+    "vi": "Đặt trên GetYourGuide"
+  },
+  "cta_book_agoda": {
+    "id": "Cari di Agoda",
+    "vi": "Tìm trên Agoda"
+  },
+  "cta_view_map": {
+    "id": "Lihat di Google Maps",
+    "vi": "Xem trên Google Maps"
+  },
+  "source_google": {
+    "id": "Google",
+    "vi": "Google"
+  },
+  "source_reddit": {
+    "id": "Reddit",
+    "vi": "Reddit"
+  },
+  "source_naver": {
+    "id": "Naver",
+    "vi": "Naver"
+  },
+  "source_pantip": {
+    "id": "Pantip",
+    "vi": "Pantip"
+  },
+  "source_youtube": {
+    "id": "YouTube",
+    "vi": "YouTube"
+  },
+  "source_bookimed": {
+    "id": "Bookimed",
+    "vi": "Bookimed"
+  },
+  "source_website": {
+    "id": "Situs resmi",
+    "vi": "Trang chính thức"
+  },
+  "coming_soon": {
+    "id": "Segera hadir",
+    "vi": "Sắp có"
+  },
+  "coming_soon_msg": {
+    "id": "Kategori ini sedang diverifikasi di 6 sumber kami. Periksa kembali segera.",
+    "vi": "Danh mục này hiện đang được xác minh từ 6 nguồn của chúng tôi. Hãy quay lại sớm."
+  },
+  "no_matches": {
+    "id": "Tidak ada kecocokan",
+    "vi": "Không tìm thấy kết quả"
+  },
+  "try_remove_filters": {
+    "id": "Coba hapus beberapa filter.",
+    "vi": "Hãy thử bỏ một số bộ lọc."
+  },
+  "reset": {
+    "id": "Atur ulang",
+    "vi": "Đặt lại"
+  },
+  "all_label": {
+    "id": "Semua",
+    "vi": "Tất cả"
+  },
+  "top_picks": {
+    "id": "Pilihan utama",
+    "vi": "Lựa chọn hàng đầu"
+  },
+  "score_pitch_title": {
+    "id": "Cara kami memberi skor setiap tempat",
+    "vi": "Cách chúng tôi chấm điểm từng địa điểm"
+  },
+  "score_pitch_blurb": {
+    "id": "Setiap Skor Kepercayaan menggabungkan sinyal independen. Tidak ada tempat yang bisa membeli peringkat lebih tinggi — rumusnya publik.",
+    "vi": "Mỗi Trust Score kết hợp tín hiệu độc lập. Không nơi nào có thể mua được xếp hạng cao hơn — công thức là công khai."
+  },
+  "book_or_inquire": {
+    "id": "Pesan / Tanyakan",
+    "vi": "Đặt / Hỏi"
+  },
+  "affiliate_disclaimer": {
+    "id": "Tautan afiliasi — kami mungkin mendapatkan komisi. Skor Kepercayaan dihitung sebelum hubungan komersial.",
+    "vi": "Liên kết liên kết — chúng tôi có thể kiếm hoa hồng. Trust Score được tính toán trước khi có bất kỳ mối quan hệ thương mại nào."
+  },
+  "photos_label": {
+    "id": "Foto",
+    "vi": "Hình ảnh"
+  },
+  "community_discussions": {
+    "id": "Diskusi komunitas",
+    "vi": "Thảo luận cộng đồng"
+  },
+  "community_blurb": {
+    "id": "Percakapan tidak terfilter dari Reddit, Pantip (TH), dan Naver (KR) — perspektif independen yang melengkapi ulasan Google.",
+    "vi": "Cuộc trò chuyện không biên tập từ Reddit, Pantip (TH) và Naver (KR) — những góc nhìn độc lập bổ sung cho các đánh giá của Google."
+  },
+  "mentions_in_community": {
+    "id": "Sebutannya dalam diskusi komunitas",
+    "vi": "Đề cập trong các cuộc thảo luận cộng đồng"
+  },
+  "mentions_blurb": {
+    "id": "Thread di mana nama tempat ini muncul. Suara independen, bukan ulasan terkurasi.",
+    "vi": "Các chủ đề nơi tên của địa điểm này xuất hiện. Tiếng nói độc lập, không phải là đánh giá được chọn lọc."
+  },
+  "contact_links": {
+    "id": "Kontak & tautan",
+    "vi": "Liên hệ & liên kết"
+  },
+  "address_label": {
+    "id": "Alamat",
+    "vi": "Địa chỉ"
+  },
+  "phone_label": {
+    "id": "Telepon",
+    "vi": "Điện thoại"
+  },
+  "website_label": {
+    "id": "Situs web",
+    "vi": "Trang web"
+  },
+  "back_to_all": {
+    "id": "Semua kategori",
+    "vi": "Tất cả danh mục"
+  },
+  "low_signal_warn": {
+    "id": "Sinyal rendah: peringkat tinggi tetapi sedikit ulasan — bisa jadi promosi berbayar. Periksa dengan hati-hati.",
+    "vi": "Tín hiệu yếu: đánh giá cao nhưng ít bình luận — có thể là quảng cáo trả phí. Cần thận trọng."
+  },
+  "bookable_label": {
+    "id": "Dapat dipesan",
+    "vi": "Có thể đặt"
+  },
+  "threads_scanned": {
+    "id": "thread yang dipindai",
+    "vi": "diễn đàn đã quét"
+  },
+  "matches_of": {
+    "id": "cocokan dari",
+    "vi": "trong số"
+  },
+  "footer_blurb": {
+    "id": "Verified Thai adalah direktori independen. Komisi afiliasi dari mitra pemesanan mendukung situs ini tetapi tidak mempengaruhi Skor Kepercayaan.",
+    "vi": "Verified Thai là một danh mục độc lập. Hoa hồng liên kết từ các đối tác đặt chỗ hỗ trợ trang web nhưng không bao giờ ảnh hưởng đến Trust Scores."
+  },
+  "hl_title": {
+    "id": "Sekilas",
+    "vi": "Tổng quan"
+  },
+  "hl_since": {
+    "id": "Sejak {y}",
+    "vi": "Kể từ {y}"
+  },
+  "hl_years": {
+    "id": "{n} tahun berjalan",
+    "vi": "{n} năm hoạt động"
+  },
+  "hl_reviews": {
+    "id": "{n} ulasan",
+    "vi": "{n} đánh giá"
+  },
+  "hl_lang_ok": {
+    "id": "Ramah bahasa Inggris",
+    "vi": "Thân thiện với tiếng Anh"
+  },
+  "hl_price_from": {
+    "id": "dari ฿{n}",
+    "vi": "từ ฿{n}"
+  },
+  "hl_price_on_inquiry": {
+    "id": "Harga berdasarkan permintaan",
+    "vi": "Giá theo yêu cầu"
+  },
+  "cta_check_booking": {
+    "id": "Periksa ketersediaan & harga",
+    "vi": "Kiểm tra khả năng & giá"
+  },
+  "cta_inquiry_main": {
+    "id": "Kirim pertanyaan · balasan dalam 24 jam",
+    "vi": "Gửi yêu cầu · phản hồi trong 24h"
+  },
+  "cta_inquiry_short": {
+    "id": "Tanya",
+    "vi": "Hỏi"
+  },
+  "social_more": {
+    "id": "Lebih banyak ulasan & sebutan",
+    "vi": "Nhiều đánh giá & đề cập hơn"
+  },
+  "faq_section": {
+    "id": "Pertanyaan yang sering diajukan",
+    "vi": "Câu hỏi thường gặp"
+  },
+  "pf_loc_q": {
+    "id": "Di mana {name} berada?",
+    "vi": "{name} nằm ở đâu?"
+  },
+  "pf_loc_a": {
+    "id": "{addr}.",
+    "vi": "{addr}."
+  },
+  "pf_loc_maps": {
+    "id": " Buka di Google Maps: {url}",
+    "vi": " Mở trong Google Maps: {url}"
+  },
+  "pf_book_q": {
+    "id": "Bagaimana cara saya memesan atau menghubungi {name}?",
+    "vi": "Làm thế nào tôi có thể đặt chỗ hoặc liên hệ với {name}?"
+  },
+  "pf_book_a": {
+    "id": "Gunakan formulir pertanyaan di halaman ini — itu langsung ke {name} tanpa komisi.",
+    "vi": "Sử dụng mẫu yêu cầu trên trang này — nó sẽ trực tiếp đến {name} với 0% hoa hồng."
+  },
+  "pf_book_klook": {
+    "id": " Anda juga dapat memesan melalui Klook untuk konfirmasi instan.",
+    "vi": " Bạn cũng có thể đặt qua Klook để nhận xác nhận ngay lập tức."
+  },
+  "pf_book_phone": {
+    "id": " Atau hubungi {phone}.",
+    "vi": " Hoặc gọi {phone}."
+  },
+  "pf_lang_q": {
+    "id": "Bahasa apa yang mereka gunakan?",
+    "vi": "Họ nói những ngôn ngữ gì?"
+  },
+  "pf_lang_a": {
+    "id": "Berdasarkan penelitian kami, {name} melayani pelanggan dalam {langs}.",
+    "vi": "Dựa trên nghiên cứu của chúng tôi, {name} phục vụ khách hàng bằng {langs}."
+  },
+  "pf_cost_q": {
+    "id": "Berapa biayanya?",
+    "vi": "Chi phí là bao nhiêu?"
+  },
+  "pf_cost_a": {
+    "id": "Harga tipikal adalah {price} per {unit}. Harga dapat bervariasi tergantung musim dan layanan — konfirmasi dengan tempatnya.",
+    "vi": "Giá tiêu biểu là {price} mỗi {unit}. Giá có thể thay đổi theo mùa và dịch vụ — xác nhận với địa điểm."
+  },
+  "pf_pop_q": {
+    "id": "Apakah {name} populer / memiliki ulasan baik?",
+    "vi": "{name} có phổ biến / được đánh giá tốt không?"
+  },
+  "pf_pop_a": {
+    "id": "{name} memiliki {count} ulasan Google dengan rata-rata penilaian ★ {rating}/5.",
+    "vi": "{name} có {count} đánh giá trên Google với đánh giá trung bình ★ {rating}/5."
+  },
+  "pf_pop_partner": {
+    "id": " Ini adalah mitra terverifikasi di platform kami.",
+    "vi": " Đó là đối tác đã được xác minh trên nền tảng của chúng tôi."
+  },
+  "pf_beg_q": {
+    "id": "Apakah {name} baik untuk pemula?",
+    "vi": "{name} có phù hợp với người mới bắt đầu không?"
+  },
+  "pf_beg_a": {
+    "id": "Ya — {name} diwujudkan ramah pemula. Harapkan staf yang menyambut, sesi pengenalan, dan peralatan disediakan untuk pengunjung pertama kali.",
+    "vi": "Có — {name} được đánh giá thân thiện với người mới. Mong đợi nhân viên chào đón, các buổi giới thiệu, và trang thiết bị được cung cấp cho khách lần đầu."
+  },
+  "pf_24h_q": {
+    "id": "Apakah {name} buka 24 jam?",
+    "vi": "{name} có mở cửa 24 giờ không?"
+  },
+  "pf_24h_a": {
+    "id": "Ya, {name} beroperasi 24 jam. Konfirmasi jam layanan spesifik dengan bertanya.",
+    "vi": "Có, {name} hoạt động 24 giờ. Xác nhận giờ dịch vụ cụ thể qua yêu cầu."
+  },
+  "schema_place_desc": {
+    "id": "{niche} di {city}, Thailand. Skor Kepercayaan {score}/100.",
+    "vi": "{niche} ở {city}, Thái Lan. Điểm tin cậy {score}/100."
+  },
+  "toc_services": {
+    "id": "Layanan",
+    "vi": "Dịch vụ"
+  },
+  "toc_location": {
+    "id": "Lokasi",
+    "vi": "Địa điểm"
+  },
+  "toc_book": {
+    "id": "Pesan",
+    "vi": "Đặt chỗ"
+  },
+  "trust_crosschecked": {
+    "id": "Diperiksa silang di:",
+    "vi": "Đã kiểm tra chéo qua:"
+  },
+  "verified_partner": {
+    "id": "Mitra Tervalidasi",
+    "vi": "Đối tác đã được xác minh"
+  },
+  "ra_title": {
+    "id": "Aktivitas Ulasan",
+    "vi": "Hoạt động đánh giá"
+  },
+  "ra_30d": {
+    "id": "30 hari terakhir",
+    "vi": "30 ngày qua"
+  },
+  "ra_90d": {
+    "id": "90 hari terakhir",
+    "vi": "90 ngày qua"
+  },
+  "ra_year": {
+    "id": "Tahun ini",
+    "vi": "Năm nay"
+  },
+  "ra_lastreviewed": {
+    "id": "Terakhir ditinjau {ago}",
+    "vi": "Cuối cùng đã đánh giá {ago}"
+  },
+  "rate_exceptional": {
+    "id": "Luar biasa",
+    "vi": "Xuất sắc"
+  },
+  "rate_excellent": {
+    "id": "Sangat Baik",
+    "vi": "Tuyệt vời"
+  },
+  "rate_verygood": {
+    "id": "Baik Sekali",
+    "vi": "Rất tốt"
+  },
+  "rate_good": {
+    "id": "Baik",
+    "vi": "Tốt"
+  },
+  "review_anon": {
+    "id": "Anonim",
+    "vi": "Ẩn danh"
+  },
+  "book_direct_title": {
+    "id": "Pesan langsung dengan {name}",
+    "vi": "Đặt chỗ trực tiếp với {name}"
+  },
+  "book_direct_sub": {
+    "id": "Tanpa komisi · Tanpa markup platform pemesanan · Bayar di tempat",
+    "vi": "Không hoa hồng · Không phí đặt chỗ · Trả tại địa điểm"
+  },
+  "fee_0": {
+    "id": "0% biaya",
+    "vi": "0% phí"
+  },
+  "reply_in": {
+    "id": "Balasan dalam ~{t}",
+    "vi": "Phản hồi trong ~{t}"
+  },
+  "or_book_klook": {
+    "id": "Atau pesan melalui Klook",
+    "vi": "Hoặc đặt qua Klook"
+  },
+  "services_pricing": {
+    "id": "Layanan & harga",
+    "vi": "Dịch vụ & giá cả"
+  },
+  "msg_directly": {
+    "id": "Kirim pesan langsung ke {name}",
+    "vi": "Nhắn tin trực tiếp cho {name}"
+  },
+  "line_scan_title": {
+    "id": "Pindai untuk chat di LINE",
+    "vi": "Quét để trò chuyện trên LINE"
+  },
+  "line_scan_sub": {
+    "id": "Buka kamera LINE → pindai QR ini → pesan langsung",
+    "vi": "Mở camera LINE → quét mã QR này → đặt trực tiếp"
+  },
+  "send_inquiry_title": {
+    "id": "Kirim pertanyaan langsung",
+    "vi": "Gửi yêu cầu trực tiếp"
+  },
+  "inquiry_goes_to": {
+    "id": "Langsung ke {name}. Tidak ada markup platform pemesanan.",
+    "vi": "Trực tiếp tới {name}. Không có phí từ nền tảng đặt chỗ."
+  },
+  "or_book_partner": {
+    "id": "Atau pesan melalui platform mitra",
+    "vi": "Hoặc đặt qua nền tảng đối tác"
+  },
+  "own_q": {
+    "id": "Punya {name}?",
+    "vi": "Có {name} không?"
+  },
+  "claim_blurb": {
+    "id": "Klaim listing ini untuk mengelola jam, deskripsi, foto, dan menjangkau lebih banyak pelanggan.",
+    "vi": "Xác nhận danh sách này để quản lý giờ làm việc, mô tả, ảnh và tiếp cận nhiều khách hàng hơn."
+  },
+  "claim_cta": {
+    "id": "Klaim listing ini →",
+    "vi": "Xác nhận danh sách này →"
+  },
+  "sec_korean_reviews": {
+    "id": "Ulasan dari Korea",
+    "vi": "Đánh giá từ Hàn Quốc"
+  },
+  "sec_thai_disc": {
+    "id": "Diskusi lokal Thailand",
+    "vi": "Thảo luận địa phương Thái Lan"
+  },
+  "sec_videos_about": {
+    "id": "Video tentang {name}",
+    "vi": "Video về {name}"
+  },
+  "sec_featured_yt": {
+    "id": "Ditampilkan di YouTube",
+    "vi": "Nổi bật trên YouTube"
+  },
+  "more_niche_in": {
+    "id": "Lebih banyak {niche} di {place}",
+    "vi": "Thêm {niche} tại {place}"
+  },
+  "country_thailand": {
+    "id": "Thailand",
+    "vi": "Thái Lan"
+  },
+  "back_to_niche": {
+    "id": "← Kembali ke {niche}",
+    "vi": "← Quay lại {niche}"
+  },
+  "faq_hero_title": {
+    "id": "FAQ wellness Thailand",
+    "vi": "Câu hỏi thường gặp về sức khỏe Thái Lan"
+  },
+  "faq_hero_sub": {
+    "id": "Jawaban jujur untuk pertanyaan yang paling umum tentang retret yoga, kamp muay thai, harga spa, menyelam, dan kehidupan digital nomad di Thailand.",
+    "vi": "Những câu trả lời chân thật cho những câu hỏi phổ biến nhất về khóa nghỉ yoga, trại muay thai, giá spa, lặn và cuộc sống của người du mục kỹ thuật số tại Thái Lan."
+  },
+  "faq_curated_badge": {
+    "id": "{n} pertanyaan yang dikurasi · diperiksa silang dengan 6 sumber",
+    "vi": "{n} câu hỏi đã chọn · đã kiểm tra qua 6 nguồn"
+  },
+  "faq_topic_general": {
+    "id": "Umum",
+    "vi": "Chung"
+  },
+  "faq_index_title": {
+    "id": "FAQ — yoga Thailand, spa, muay thai, menyelam",
+    "vi": "Câu hỏi thường gặp — Yoga, spa, muay thai, lặn ở Thái Lan"
+  },
+  "faq_index_desc": {
+    "id": "Pertanyaan umum tentang wellness Thailand, spa, muay thai, retret yoga, sertifikasi menyelam, dan coworking digital nomad. Data nyata dari {n} entri yang dikurasi.",
+    "vi": "Những câu hỏi phổ biến về sức khỏe Thái Lan, spa, muay thai, khóa nghỉ yoga, chứng chỉ lặn và không gian làm việc cho người du mục kỹ thuật số. Dữ liệu thực từ {n} mục đã chọn."
+  },
+  "langname_en": {
+    "id": "Inggris",
+    "vi": "Tiếng Anh"
+  },
+  "langname_ko": {
+    "id": "Korea",
+    "vi": "Tiếng Hàn"
+  },
+  "langname_th": {
+    "id": "Thai",
+    "vi": "Tiếng Thái"
+  },
+  "langname_zh": {
+    "id": "Cina",
+    "vi": "Tiếng Trung"
+  },
+  "langname_ja": {
+    "id": "Jepang",
+    "vi": "Tiếng Nhật"
+  },
+  "langname_ar": {
+    "id": "Arab",
+    "vi": "Tiếng Ả Rập"
+  },
+  "nav_faq": {
+    "vi": "Câu hỏi thường gặp"
+  },
+  "faq_related": {
+    "vi": "Câu hỏi liên quan"
+  },
+  "faq_all_link": {
+    "vi": "Tất cả Câu hỏi thường gặp"
+  }
+}

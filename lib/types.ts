@@ -1,4 +1,11 @@
-export type Lang = "en" | "ko" | "th" | "zh" | "ja" | "ar";
+export type Lang = "en" | "ko" | "th" | "zh" | "ja" | "ar" | "id" | "vi";
+
+// Localized value with English required and every other language optional.
+// Lets us add a locale (e.g. id, vi) without back-filling every Record<Lang,_>
+// literal — untranslated entries fall back to `en` at the call site (`?? .en`).
+// High-value surfaces (UI dictionary, FAQ corpus, place pages) are translated
+// natively; secondary copy degrades to English until translated.
+export type Loc<T> = Partial<Record<Lang, T>> & { en: T };
 
 export type Niche =
   | "muay-thai"
@@ -142,8 +149,8 @@ export interface PlacesBundle {
 
 export interface NicheMeta {
   emoji: string;
-  name: Record<Lang, string>;
-  tagline: Record<Lang, string>;
+  name: Loc<string>;
+  tagline: Loc<string>;
 }
 
 export const NICHE_META: Record<Niche, NicheMeta> = {

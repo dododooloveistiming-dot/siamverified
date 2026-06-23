@@ -3,7 +3,7 @@ import Link from "next/link";
 import { loadPlaces } from "@/lib/data";
 import { getPlaceSignals } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
-import type { Lang } from "@/lib/types";
+import type { Lang, Loc } from "@/lib/types";
 
 // /[lang]/trust/ — authoritative methodology page. This is bait for
 // "how does verifiedthai work / how is trust calculated" queries from
@@ -18,7 +18,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { lang: Lang } }): Promise<Metadata> {
   const url = `${SITE.origin}/${params.lang}/trust/`;
-  const T: Record<Lang, { title: string; desc: string }> = {
+  const T: Loc<{ title: string; desc: string }> = {
     en: {
       title: `Trust Score methodology — how we rank ${SITE.name} listings`,
       desc: `How Verified Thai computes its 0-100 trust score: cross-source verification (Google + Reddit + Naver + Pantip + YouTube + website) plus enrichment signals (archive.org age, DNS infrastructure, review recency).`,
@@ -44,16 +44,17 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
       desc: `كيف يحسب Verified Thai درجة الثقة 0-100: تحقق متعدد المصادر + عمر archive.org + بنية DNS التحتية + حداثة المراجعات`,
     },
   };
+  const tr = T[params.lang] ?? T.en;
   return {
-    title: T[params.lang].title,
-    description: T[params.lang].desc,
+    title: tr.title,
+    description: tr.desc,
     alternates: {
       canonical: url,
       languages: Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/trust/`]),
       ),
     },
-    openGraph: { title: T[params.lang].title, description: T[params.lang].desc, url, type: "article" },
+    openGraph: { title: tr.title, description: tr.desc, url, type: "article" },
   };
 }
 

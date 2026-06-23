@@ -172,6 +172,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           zh: ["", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
           th: ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
           ar: ["", "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
+          id: ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+          vi: ["", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
         } as const)[lang][season.month];
         return (
           <section className="mx-auto max-w-6xl px-4 pt-12">
@@ -180,7 +182,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{season.emoji}</span>
                   <h2 className="text-lg font-black tracking-tight sm:text-xl">
-                    {MONTH_NAME} · {season.headline[lang]}
+                    {MONTH_NAME} · {season.headline[lang] ?? season.headline.en}
                   </h2>
                 </div>
                 <span className="rounded-full bg-amber-200/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
@@ -188,7 +190,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                 </span>
               </div>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-700 dark:text-ink-300">
-                {season.context[lang]}
+                {season.context[lang] ?? season.context.en}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {season.niches.map((n) => (
@@ -220,7 +222,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       {/* TRIP-PURPOSE FUNNEL — lowest-friction entry for category-uncertain visitors */}
       <section className="mx-auto max-w-6xl px-4 pt-12">
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {({ en: "I want to…", ko: "나는…", ja: "やりたいこと…", zh: "我想…", th: "ฉันอยาก…", ar: "أريد أن…" } as const)[lang]}
+          {({ en: "I want to…", ko: "나는…", ja: "やりたいこと…", zh: "我想…", th: "ฉันอยาก…", ar: "أريد أن…", id: "Saya ingin…", vi: "Tôi muốn…" } as const)[lang]}
         </h2>
         <p className="mt-1 text-sm muted">
           {({
@@ -230,6 +232,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             zh: "不知道选哪个分类？按心情来选。",
             th: "ไม่แน่ใจว่าเลือกหมวดไหนดี? เลือกตามอารมณ์",
             ar: "غير متأكد من الفئة؟ اختر حسب الأجواء.",
+            id: "Tidak yakin kategori mana? Pilih berdasarkan suasana.",
+            vi: "Không chắc chọn danh mục nào? Chọn theo cảm hứng.",
           } as const)[lang]}
         </p>
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">

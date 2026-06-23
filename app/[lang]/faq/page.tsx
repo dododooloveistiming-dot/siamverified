@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listFaqs } from "@/lib/faqs";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { listFaqs, localizeFaq, type ResolvedFaq } from "@/lib/faqs";
+import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 
@@ -18,8 +18,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const url = `${SITE.origin}/${params.lang}/faq/`;
   return {
-    title: `FAQ — Thailand yoga, spa, muay thai, diving · ${SITE.name}`,
-    description: `Common questions about Thailand wellness, spa, muay thai, yoga retreats, diving certification, and digital nomad coworking. Real data from ${listFaqs().length} curated entries.`,
+    title: `${t("faq_index_title", params.lang)} · ${SITE.name}`,
+    description: tf("faq_index_desc", params.lang, { n: listFaqs().length }),
     alternates: {
       canonical: url,
       languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/faq/`])),
@@ -29,12 +29,12 @@ export async function generateMetadata({
 
 export default function FaqIndexPage({ params }: { params: { lang: Lang } }) {
   const { lang } = params;
-  const faqs = listFaqs();
+  const faqs = listFaqs().map((f) => localizeFaq(f, lang));
   const byTopic = faqs.reduce((acc, f) => {
     if (!acc[f.topic]) acc[f.topic] = [];
     acc[f.topic].push(f);
     return acc;
-  }, {} as Record<string, typeof faqs>);
+  }, {} as Record<string, ResolvedFaq[]>);
 
   return (
     <main className="pb-20">
@@ -45,17 +45,16 @@ export default function FaqIndexPage({ params }: { params: { lang: Lang } }) {
           <nav className="text-xs text-white/80">
             <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
             <span className="mx-2">/</span>
-            <span>FAQ</span>
+            <span>{t("nav_faq", lang)}</span>
           </nav>
           <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
-            Thailand wellness FAQ
+            {t("faq_hero_title", lang)}
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-white/90">
-            Honest answers to the most common questions about yoga retreats, muay thai camps,
-            spa pricing, diving, and digital nomad life in Thailand.
+            {t("faq_hero_sub", lang)}
           </p>
           <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium backdrop-blur-sm ring-1 ring-white/30">
-            {faqs.length} curated questions · cross-checked against 6 sources
+            {tf("faq_curated_badge", lang, { n: faqs.length })}
           </div>
         </div>
       </section>
@@ -66,7 +65,7 @@ export default function FaqIndexPage({ params }: { params: { lang: Lang } }) {
           const meta = !isGeneral
             ? NICHE_META[topic as keyof typeof NICHE_META]
             : undefined;
-          const topicLabel = isGeneral ? "General" : meta?.name?.en ?? topic;
+          const topicLabel = isGeneral ? t("faq_topic_general", lang) : meta?.name?.[lang] ?? meta?.name?.en ?? topic;
           return (
             <section key={topic} className="mb-10">
               <h2 className="mb-4 flex items-center gap-2 text-2xl font-bold tracking-tight">
