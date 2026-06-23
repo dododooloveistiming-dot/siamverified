@@ -41,7 +41,7 @@ export function placeHighlights(place: Place, lang: Lang, signals: PlaceSignals)
     out.push({ icon: "🟢", label: t("filter_beginner", lang), tone: "good" });
   }
 
-  if (lang !== "th" && place.languages[lang]) {
+  if (lang !== "th" && (place.languages as Record<string, boolean>)[lang]) {
     out.push({ icon: "💬", label: t("hl_lang_ok", lang), tone: "accent" });
   }
 

@@ -1,11 +1,11 @@
-import type { Niche, Place } from "./types";
+import type { Lang, Niche, Place } from "./types";
 
 export type CitySlug = {
   slug: string;
   label: string;
   matches: string[];
   emoji: string;
-  blurb: Partial<Record<"en" | "ko" | "th" | "zh" | "ja" | "ar", string>>;
+  blurb: Partial<Record<Lang, string>>;
 };
 
 export const CITIES: CitySlug[] = [
