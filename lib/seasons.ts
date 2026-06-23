@@ -1,4 +1,4 @@
-import type { Lang, Niche } from "./types";
+import type { Loc, Niche } from "./types";
 
 // Thailand has 3 functional seasons (cool / hot / wet) but local rhythms
 // vary by region — Phuket is wet Jun-Oct, the rest cool Nov-Feb. The picks
@@ -6,8 +6,8 @@ import type { Lang, Niche } from "./types";
 
 export type SeasonContext = {
   emoji: string;
-  headline: Record<Lang, string>;
-  context: Record<Lang, string>;
+  headline: Loc<string>;
+  context: Loc<string>;
   niches: Niche[];          // top 2 niches to surface this month
   cities: string[];         // suggested city slugs (matches CITIES in lib/cities)
 };

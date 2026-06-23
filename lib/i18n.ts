@@ -1,5 +1,10 @@
 import type { Lang } from "./types";
 
+// `id` (Indonesian) is defined in the Lang type and scaffolded throughout, but
+// not yet activated here — activating it (adding "id") turns on route generation,
+// sitemap, and hreflang. Do that only once the UI dictionary + FAQ chrome are
+// translated to id, so id pages launch genuinely native (no English-fallback
+// duplicate content under an id hreflang).
 export const SUPPORTED_LANGS: Lang[] = ["en", "ko", "th", "zh", "ja", "ar"];
 export const DEFAULT_LANG: Lang = "en";
 
@@ -13,6 +18,7 @@ export const SITE = {
     zh: "泰国独立商家指南 — 来自6个独立来源的验证，不含付费推广。",
     ja: "タイのビジネス独立ガイド — 6つの独立情報源で検証、有料宣伝なし。",
     ar: "الدليل المستقل لأعمال تايلاند — تم التحقق من 6 مصادر، بدون ترويج مدفوع.",
+    id: "Direktori bisnis independen Thailand. Diverifikasi dari 6 sumber. Tanpa promosi berbayar.",
   },
 } as const;
 

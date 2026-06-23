@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { loadPlaces, getPlacesByNiche } from "@/lib/data";
 import { CITIES, getCityBySlug, placesInCity } from "@/lib/cities";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
-import type { Lang, Niche, Place } from "@/lib/types";
+import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import PlaceFAQ, { type FAQItem } from "@/components/PlaceFAQ";
@@ -88,7 +88,7 @@ type Content = {
 };
 
 // Per-(kind, lang) content. Keeps the JSX small.
-const CONTENT: Record<Kind, Record<Lang, Content>> = {
+const CONTENT: Record<Kind, Loc<Content>> = {
   established: {
     en: {
       h1: (c, n) => `Most established ${n} in ${c} (5+ years operating)`,
@@ -241,7 +241,7 @@ export async function generateMetadata({
   const city = getCityBySlug(parsed.citySlug);
   if (!city) return {};
   const nName = nicheName(parsed.niche, params.lang);
-  const content = CONTENT[parsed.kind][params.lang];
+  const content = CONTENT[parsed.kind][params.lang] ?? CONTENT[parsed.kind].en;
   const url = `${SITE.origin}/${params.lang}/best/${params.slug}/`;
   const title = `${content.h1(city.label, nName)} | ${SITE.name}`;
   return {
@@ -267,7 +267,7 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
   const { niche, kind } = parsed;
   const nName = nicheName(niche, lang);
   const meta = NICHE_META[niche];
-  const content = CONTENT[kind][lang];
+  const content = CONTENT[kind][lang] ?? CONTENT[kind].en;
 
   const nichePlaces = getPlacesByNiche(niche);
   const places = placesInCity(nichePlaces, city)

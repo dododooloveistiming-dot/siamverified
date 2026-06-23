@@ -21,7 +21,7 @@ const HEADER_CITIES: Array<{ slug: string; label: string; emoji: string }> = [
 ];
 
 const LANG_LABEL: Record<Lang, string> = {
-  en: "English", ko: "한국어", th: "ไทย", zh: "中文", ja: "日本語", ar: "العربية",
+  en: "English", ko: "한국어", th: "ไทย", zh: "中文", ja: "日本語", ar: "العربية", id: "Bahasa Indonesia",
 };
 
 export default function Header({ lang }: { lang: Lang }) {
