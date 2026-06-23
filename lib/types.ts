@@ -1,4 +1,4 @@
-export type Lang = "en" | "ko" | "th" | "zh" | "ja" | "ar" | "id";
+export type Lang = "en" | "ko" | "th" | "zh" | "ja" | "ar" | "id" | "vi";
 
 // Localized value with English required and every other language optional.
 // Lets us add a locale (e.g. id, vi) without back-filling every Record<Lang,_>

@@ -204,7 +204,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               url={`${SITE.origin}/${lang}/place/${place.slug}/`}
               title={place.name}
               text={`${place.name} — ${nicheName(place.niche, lang)}${place.city ? ` (${place.city})` : ""} · Trust ${place.trust_score}/100 on ${SITE.name}`}
-              label={({ en: "Share", ko: "공유", ja: "シェア", zh: "分享", th: "แชร์", ar: "مشاركة", id: "Bagikan" } as const)[lang]}
+              label={({ en: "Share", ko: "공유", ja: "シェア", zh: "分享", th: "แชร์", ar: "مشاركة", id: "Bagikan", vi: "Chia sẻ" } as const)[lang]}
             />
           </div>
 

@@ -10,7 +10,7 @@ const UI_I18N = uiI18n as Record<string, Partial<Record<Lang, string>>>;
 // + FAQ corpus faq_i18n.json), so it's active: route generation, sitemap, and
 // hreflang now include it. The FAQ indexing gate (isFaqTranslated) keeps any
 // untranslated FAQ noindexed per locale.
-export const SUPPORTED_LANGS: Lang[] = ["en", "ko", "th", "zh", "ja", "ar", "id"];
+export const SUPPORTED_LANGS: Lang[] = ["en", "ko", "th", "zh", "ja", "ar", "id", "vi"];
 export const DEFAULT_LANG: Lang = "en";
 
 export const SITE = {
@@ -24,6 +24,7 @@ export const SITE = {
     ja: "タイのビジネス独立ガイド — 6つの独立情報源で検証、有料宣伝なし。",
     ar: "الدليل المستقل لأعمال تايلاند — تم التحقق من 6 مصادر، بدون ترويج مدفوع.",
     id: "Direktori bisnis independen Thailand. Diverifikasi dari 6 sumber. Tanpa promosi berbayar.",
+    vi: "Danh bạ doanh nghiệp độc lập của Thái Lan. Được xác minh từ 6 nguồn. Không quảng cáo trả phí.",
   },
 } as const;
 

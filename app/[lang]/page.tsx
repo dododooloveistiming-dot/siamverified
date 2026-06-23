@@ -173,6 +173,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           th: ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
           ar: ["", "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
           id: ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+          vi: ["", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
         } as const)[lang][season.month];
         return (
           <section className="mx-auto max-w-6xl px-4 pt-12">
@@ -221,7 +222,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       {/* TRIP-PURPOSE FUNNEL — lowest-friction entry for category-uncertain visitors */}
       <section className="mx-auto max-w-6xl px-4 pt-12">
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {({ en: "I want to…", ko: "나는…", ja: "やりたいこと…", zh: "我想…", th: "ฉันอยาก…", ar: "أريد أن…", id: "Saya ingin…" } as const)[lang]}
+          {({ en: "I want to…", ko: "나는…", ja: "やりたいこと…", zh: "我想…", th: "ฉันอยาก…", ar: "أريد أن…", id: "Saya ingin…", vi: "Tôi muốn…" } as const)[lang]}
         </h2>
         <p className="mt-1 text-sm muted">
           {({
@@ -232,6 +233,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             th: "ไม่แน่ใจว่าเลือกหมวดไหนดี? เลือกตามอารมณ์",
             ar: "غير متأكد من الفئة؟ اختر حسب الأجواء.",
             id: "Tidak yakin kategori mana? Pilih berdasarkan suasana.",
+            vi: "Không chắc chọn danh mục nào? Chọn theo cảm hứng.",
           } as const)[lang]}
         </p>
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
