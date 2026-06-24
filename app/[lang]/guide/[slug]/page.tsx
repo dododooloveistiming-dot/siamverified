@@ -164,6 +164,9 @@ export default function GuidePage({
               src={heroPlace.top_photo_url}
               alt={cityNicheLabel}
               className="h-full w-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           ) : (
             <PlacePlaceholder niche={niche} size="xl" />

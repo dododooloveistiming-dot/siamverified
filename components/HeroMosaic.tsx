@@ -68,6 +68,8 @@ export default function HeroMosaic({
             alt={`${alt} photo 1`}
             className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
             loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
         </button>
 

@@ -192,6 +192,9 @@ export default function CityHubPage({
               src={heroPlace.top_photo_url}
               alt={city.label}
               className="h-full w-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           ) : (
             <div className="h-full w-full bg-gradient-to-br from-emerald-300 to-amber-300" />
