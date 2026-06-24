@@ -431,6 +431,24 @@ export const T = {
   gf_paid_q: { en: "Does Verified Thai accept paid placements?" },
   gf_paid_a: { en: "No. Listings are ranked purely by our independent Trust Score — a composite of Google reviews, Reddit, Naver, Pantip, YouTube mentions, and official website verification." },
 
+  // ── compare page (/[lang]/compare/[slug]). en-only; translate_ui fills rest.
+  cmp_crumb: { en: "Compare" },
+  cmp_vs: { en: "vs" },
+  cmp_sub: { en: "Side-by-side comparison across wellness, spa, muay thai, yoga, diving, cooking, and digital nomad life." },
+  cmp_by_cat: { en: "By category" },
+  cmp_by_cat_sub: { en: "Number of verified places per niche in each city." },
+  cmp_niche: { en: "Niche" },
+  cmp_winner: { en: "Winner" },
+  cmp_total: { en: "Total verified places" },
+  cmp_tie: { en: "Tie" },
+  cmp_top3: { en: "Top 3 in {city}" },
+  cmp_other: { en: "Other comparisons" },
+  cmp_stat_trust: { en: "Avg Trust" },
+  cmp_stat_rating: { en: "Avg ★" },
+  cmp_home: { en: "← Home" },
+  cmp_meta_title: { en: "{a} vs {b} — Thailand comparison" },
+  cmp_meta_desc: { en: "Side-by-side comparison of {a} and {b} across yoga retreats, spa, muay thai, diving, cooking, and digital nomad life. Built from cross-checked listings, not paid placements." },
+
   // localized language names (for the "languages spoken" FAQ list)
   langname_en: { en: "English", ko: "영어", th: "อังกฤษ", zh: "英语", ja: "英語", ar: "الإنجليزية" },
   langname_ko: { en: "Korean", ko: "한국어", th: "เกาหลี", zh: "韩语", ja: "韓国語", ar: "الكورية" },

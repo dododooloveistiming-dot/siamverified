@@ -1170,5 +1170,149 @@
     "ar": "استكشاف {city} →",
     "id": "Jelajahi {city} →",
     "vi": "Khám phá {city} →"
+  },
+  "cmp_crumb": {
+    "ko": "비교",
+    "th": "เปรียบเทียบ",
+    "zh": "比较",
+    "ja": "比較",
+    "ar": "مقارنة",
+    "id": "Bandingkan",
+    "vi": "So sánh"
+  },
+  "cmp_vs": {
+    "ko": "대",
+    "th": "เทียบกับ",
+    "zh": "对比",
+    "ja": "対",
+    "ar": "مقابل",
+    "id": "vs",
+    "vi": "vs"
+  },
+  "cmp_sub": {
+    "ko": "웰니스, 스파, 무에타이, 요가, 다이빙, 요리 및 디지털 노마드 생활의 나란히 비교.",
+    "th": "การเปรียบเทียบแบบเคียงข้างในด้านสุขภาพ สปา มวยไทย โยคะ ดำน้ำ ทำอาหาร และชีวิตดิจิทัลโนแมด",
+    "zh": "在健康、SPA、泰拳、瑜伽、潜水、烹饪和数字游民生活之间的并排比较。",
+    "ja": "ウェルネス、スパ、ムエタイ、ヨガ、ダイビング、料理、デジタルノマドライフの横並び比較。",
+    "ar": "مقارنة جنبًا إلى جنب عبر العافية والسبا والمُوي Thai واليوغا والغوص والطهي وحياة الرحالة الرقمي.",
+    "id": "Perbandingan berdampingan dalam wellness, spa, muay thai, yoga, menyelam, memasak, dan kehidupan digital nomaden.",
+    "vi": "So sánh song song giữa wellness, spa, muay thai, yoga, lặn, nấu ăn, và cuộc sống du mục số."
+  },
+  "cmp_by_cat": {
+    "ko": "카테고리별",
+    "th": "ตามหมวดหมู่",
+    "zh": "按类别",
+    "ja": "カテゴリー別",
+    "ar": "حسب الفئة",
+    "id": "Menurut kategori",
+    "vi": "Theo danh mục"
+  },
+  "cmp_by_cat_sub": {
+    "ko": "각 도시에서 틈새 시장별 검증된 장소 수.",
+    "th": "จำนวนสถานที่ที่ได้รับการตรวจสอบตามแต่ละนิกซ์ในแต่ละเมือง",
+    "zh": "每个城市每个细分领域的认证地点数量。",
+    "ja": "各都市におけるニッチごとの確認済み場所の数。",
+    "ar": "عدد الأماكن المصدقة لكل نيش في كل مدينة.",
+    "id": "Jumlah tempat terverifikasi per niche di setiap kota.",
+    "vi": "Số lượng địa điểm đã xác minh mỗi ngách trong từng thành phố."
+  },
+  "cmp_niche": {
+    "ko": "틈새 시장",
+    "th": "นิกซ์",
+    "zh": "细分领域",
+    "ja": "ニッチ",
+    "ar": "نيش",
+    "id": "Niche",
+    "vi": "Ngách"
+  },
+  "cmp_winner": {
+    "ko": "우승자",
+    "th": "ผู้ชนะ",
+    "zh": "赢家",
+    "ja": "勝者",
+    "ar": "الفائز",
+    "id": "Pemenang",
+    "vi": "Người chiến thắng"
+  },
+  "cmp_total": {
+    "ko": "검증된 총 장소 수",
+    "th": "สถานที่ที่ได้รับการตรวจสอบทั้งหมด",
+    "zh": "认证地点总数",
+    "ja": "確認済み場所総数",
+    "ar": "إجمالي الأماكن المصدقة",
+    "id": "Total tempat terverifikasi",
+    "vi": "Tổng số địa điểm đã xác minh"
+  },
+  "cmp_tie": {
+    "ko": "무승부",
+    "th": "เสมอ",
+    "zh": "平局",
+    "ja": "引き分け",
+    "ar": "تعادل",
+    "id": "Seri",
+    "vi": "Hòa"
+  },
+  "cmp_top3": {
+    "ko": "{city}의 TOP 3",
+    "th": "อันดับ 3 ใน {city}",
+    "zh": "{city} 的前 3 名",
+    "ja": "{city} のトップ 3",
+    "ar": "أفضل 3 في {city}",
+    "id": "Top 3 di {city}",
+    "vi": "Top 3 ở {city}"
+  },
+  "cmp_other": {
+    "ko": "기타 비교",
+    "th": "การเปรียบเทียบอื่น ๆ",
+    "zh": "其他比较",
+    "ja": "その他の比較",
+    "ar": "مقارنات أخرى",
+    "id": "Perbandingan lain",
+    "vi": "So sánh khác"
+  },
+  "cmp_stat_trust": {
+    "ko": "평균 신뢰도",
+    "th": "ความเชื่อมั่นเฉลี่ย",
+    "zh": "平均信任度",
+    "ja": "平均信頼度",
+    "ar": "متوسط الثقة",
+    "id": "Rata-rata Kepercayaan",
+    "vi": "Độ tin cậy trung bình"
+  },
+  "cmp_stat_rating": {
+    "ko": "평균 ★",
+    "th": "เฉลี่ย ★",
+    "zh": "平均 ★",
+    "ja": "平均 ★",
+    "ar": "متوسط ★",
+    "id": "Rata-rata ★",
+    "vi": "Đánh giá trung bình ★"
+  },
+  "cmp_home": {
+    "ko": "← 홈",
+    "th": "← หน้าแรก",
+    "zh": "← 首页",
+    "ja": "← ホーム",
+    "ar": "← الصفحة الرئيسية",
+    "id": "← Beranda",
+    "vi": "← Trang chủ"
+  },
+  "cmp_meta_title": {
+    "ko": "{a} 대 {b} — 태국 비교",
+    "th": "{a} เทียบกับ {b} — การเปรียบเทียบในประเทศไทย",
+    "zh": "{a} 对比 {b} — 泰国比较",
+    "ja": "{a} 対 {b} — タイの比較",
+    "ar": "{a} مقابل {b} — مقارنة تايلاند",
+    "id": "{a} vs {b} — perbandingan Thailand",
+    "vi": "{a} vs {b} — so sánh Thái Lan"
+  },
+  "cmp_meta_desc": {
+    "ko": "{a}와 {b}의 요가 리트리트, 스파, 무에타이, 다이빙, 요리 및 디지털 노마드 생활에 대한 나란히 비교. 유료 게재물이 아닌 교차 검증된 목록으로 구축됨.",
+    "th": "การเปรียบเทียบแบบเคียงข้างของ {a} และ {b} ในด้านการพักผ่อนโยคะ สปา มวยไทย ดำน้ำ ทำอาหาร และชีวิตดิจิทัลโนแมด สร้างจากรายการที่ตรวจสอบข้ามกัน ไม่ใช่การวางตำแหน่งที่จ่ายเงิน.",
+    "zh": "对 {a} 和 {b} 在瑜伽静修、SPA、泰拳、潜水、烹饪和数字游民生活之间的并排比较。基于交叉检查的列表，而非付费展示。",
+    "ja": "{a} と {b} のヨガリトリート、スパ、ムエタイ、ダイビング、料理、デジタルノマドライフにおける横並び比較。チェック済みのリストから構築されており、有料掲載ではありません。",
+    "ar": "مقارنة جنبًا إلى جنب بين {a} و {b} عبر مراكز اليوغا والسبا والمُوي Thai والغوص والطهي وحياة الرحالة الرقمي. تم بناؤه من قوائم تم التحقق منها، وليست من مواقع مدفوعة.",
+    "id": "Perbandingan berdampingan {a} dan {b} dalam retret yoga, spa, muay thai, menyelam, memasak, dan kehidupan digital nomaden. Dibuat dari daftar yang diperiksa silang, bukan penempatan berbayar.",
+    "vi": "So sánh song song giữa {a} và {b} về các khóa retreat yoga, spa, muay thai, lặn, nấu ăn, và cuộc sống du mục số. Được xây dựng từ danh sách đã được kiểm tra, không phải là vị trí được trả phí."
   }
 }

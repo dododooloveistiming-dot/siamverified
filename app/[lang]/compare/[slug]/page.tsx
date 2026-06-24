@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
@@ -127,9 +127,10 @@ export async function generateMetadata({
   if (!parsed) return {};
   const { a, b } = parsed;
   const url = `${SITE.origin}/${params.lang}/compare/${params.slug}/`;
+  const md = tf("cmp_meta_desc", params.lang, { a: a.label, b: b.label });
   return {
-    title: `${a.label} vs ${b.label} — yoga, spa, diving, coworking compared · ${SITE.name}`,
-    description: `Side-by-side comparison of ${a.label} and ${b.label} across yoga retreats, spa, muay thai, diving, cooking, and digital nomad life. Built from cross-checked listings, not paid placements.`,
+    title: `${tf("cmp_meta_title", params.lang, { a: a.label, b: b.label })} · ${SITE.name}`,
+    description: md,
     alternates: {
       canonical: url,
       languages: Object.fromEntries(
@@ -137,8 +138,8 @@ export async function generateMetadata({
       ),
     },
     openGraph: {
-      title: `${a.label} vs ${b.label}`,
-      description: `Compare ${a.label} and ${b.label} for wellness, retreats, and digital nomad life.`,
+      title: tf("city_vs", params.lang, { a: a.label, b: b.label }),
+      description: md,
       url,
       type: "article",
     },
@@ -190,15 +191,15 @@ export default function ComparePage({
           <nav className="text-xs text-white/80">
             <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
             <span className="mx-2">/</span>
-            <span>Compare</span>
+            <span>{t("cmp_crumb", lang)}</span>
           </nav>
           <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
             <span>{a.emoji} {a.label}</span>
-            <span className="mx-2 text-white/60">vs</span>
+            <span className="mx-2 text-white/60">{t("cmp_vs", lang)}</span>
             <span>{b.emoji} {b.label}</span>
           </h1>
           <p className="mt-3 max-w-3xl text-base text-white/90 sm:text-lg">
-            Side-by-side comparison across wellness, spa, muay thai, yoga, diving, cooking, and digital nomad life.
+            {t("cmp_sub", lang)}
           </p>
         </div>
       </section>
@@ -206,24 +207,24 @@ export default function ComparePage({
       <div className="mx-auto max-w-5xl px-4 py-12">
         {/* CITY OVERVIEW */}
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <CityOverviewCard city={a} stats={aStats} />
-          <CityOverviewCard city={b} stats={bStats} />
+          <CityOverviewCard city={a} stats={aStats} lang={lang} />
+          <CityOverviewCard city={b} stats={bStats} lang={lang} />
         </section>
 
         {/* NICHE COMPARISON TABLE */}
         <section className="mt-10">
-          <h2 className="text-xl font-bold tracking-tight">By category</h2>
+          <h2 className="text-xl font-bold tracking-tight">{t("cmp_by_cat", lang)}</h2>
           <p className="mt-1 text-sm muted">
-            Number of verified places per niche in each city.
+            {t("cmp_by_cat_sub", lang)}
           </p>
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-ink-200 text-left dark:border-ink-700">
-                  <th className="px-3 py-2 font-semibold">Niche</th>
+                  <th className="px-3 py-2 font-semibold">{t("cmp_niche", lang)}</th>
                   <th className="px-3 py-2 font-semibold text-right">{a.emoji} {a.label}</th>
                   <th className="px-3 py-2 font-semibold text-right">{b.emoji} {b.label}</th>
-                  <th className="px-3 py-2 font-semibold text-right muted">Winner</th>
+                  <th className="px-3 py-2 font-semibold text-right muted">{t("cmp_winner", lang)}</th>
                 </tr>
               </thead>
               <tbody>
@@ -249,11 +250,11 @@ export default function ComparePage({
                   );
                 })}
                 <tr className="border-b-2 border-emerald-300 bg-emerald-50/40 dark:border-emerald-700 dark:bg-emerald-950/20">
-                  <td className="px-3 py-3 font-bold">Total verified places</td>
+                  <td className="px-3 py-3 font-bold">{t("cmp_total", lang)}</td>
                   <td className="px-3 py-3 text-right font-black tabular-nums">{aStats.count}</td>
                   <td className="px-3 py-3 text-right font-black tabular-nums">{bStats.count}</td>
                   <td className="px-3 py-3 text-right text-xs muted">
-                    {aStats.count > bStats.count ? a.label : aStats.count < bStats.count ? b.label : "Tie"}
+                    {aStats.count > bStats.count ? a.label : aStats.count < bStats.count ? b.label : t("cmp_tie", lang)}
                   </td>
                 </tr>
               </tbody>
@@ -265,7 +266,7 @@ export default function ComparePage({
         <section className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
             <h2 className="mb-3 text-lg font-bold">
-              {a.emoji} Top 3 in {a.label}
+              {a.emoji} {tf("cmp_top3", lang, { city: a.label })}
             </h2>
             <ul className="space-y-2">
               {aTop.map((p) => <PlaceMiniRow key={p.id} place={p} lang={lang} />)}
@@ -273,7 +274,7 @@ export default function ComparePage({
           </div>
           <div>
             <h2 className="mb-3 text-lg font-bold">
-              {b.emoji} Top 3 in {b.label}
+              {b.emoji} {tf("cmp_top3", lang, { city: b.label })}
             </h2>
             <ul className="space-y-2">
               {bTop.map((p) => <PlaceMiniRow key={p.id} place={p} lang={lang} />)}
@@ -283,7 +284,7 @@ export default function ComparePage({
 
         {/* RELATED COMPARISONS */}
         <section className="mt-12">
-          <h2 className="mb-3 text-lg font-bold">Other comparisons</h2>
+          <h2 className="mb-3 text-lg font-bold">{t("cmp_other", lang)}</h2>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {COMPARE_PAIRS.filter(([x, y]) => `${x}-vs-${y}` !== params.slug)
               .slice(0, 6)
@@ -304,7 +305,7 @@ export default function ComparePage({
         </section>
 
         <div className="mt-10 text-xs muted">
-          <Link href={`/${lang}/`} className="hover:underline">← Home</Link>
+          <Link href={`/${lang}/`} className="hover:underline">{t("cmp_home", lang)}</Link>
         </div>
       </div>
     </main>
@@ -320,17 +321,17 @@ type CityStats = {
   niches: Array<{ niche: Niche; count: number }>;
 };
 
-function CityOverviewCard({ city, stats }: { city: CityDef; stats: CityStats }) {
+function CityOverviewCard({ city, stats, lang }: { city: CityDef; stats: CityStats; lang: Lang }) {
   return (
     <div className="rounded-2xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
       <div className="text-4xl">{city.emoji}</div>
       <h2 className="mt-2 text-xl font-black tracking-tight">{city.label}</h2>
       <p className="mt-1 text-sm muted">{city.vibe}</p>
       <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
-        <Stat label="Verified places" value={stats.count} />
-        <Stat label="Avg Trust" value={Math.round(stats.avgTrust)} />
-        <Stat label="Avg ★" value={stats.avgRating.toFixed(1)} />
-        <Stat label="🇰🇷 Korean-friendly" value={stats.koCount} />
+        <Stat label={t("g_card_verified", lang)} value={stats.count} />
+        <Stat label={t("cmp_stat_trust", lang)} value={Math.round(stats.avgTrust)} />
+        <Stat label={t("cmp_stat_rating", lang)} value={stats.avgRating.toFixed(1)} />
+        <Stat label={`🇰🇷 ${t("filter_korean_friendly", lang)}`} value={stats.koCount} />
       </dl>
     </div>
   );
@@ -362,7 +363,7 @@ function PlaceMiniRow({ place, lang }: { place: Place; lang: Lang }) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-bold">{place.name}</div>
-          <div className="text-[11px] muted">{nicheName(place.niche, lang)} · Trust {place.trust_score}</div>
+          <div className="text-[11px] muted">{nicheName(place.niche, lang)} · {t("trust_score", lang)} {place.trust_score}</div>
         </div>
       </Link>
     </li>
