@@ -603,5 +603,329 @@
   },
   "faq_all_link": {
     "vi": "Tất cả Câu hỏi thường gặp"
+  },
+  "city_crumb": {
+    "ko": "도시",
+    "th": "เมือง",
+    "zh": "城市",
+    "ja": "都市",
+    "ar": "المدن",
+    "id": "Kota",
+    "vi": "Thành phố"
+  },
+  "city_title": {
+    "ko": "{city}, 태국",
+    "th": "{city}, ไทย",
+    "zh": "{city}, 泰国",
+    "ja": "{city}, タイ",
+    "ar": "{city}، تايلاند",
+    "id": "{city}, Thailand",
+    "vi": "{city}, Thái Lan"
+  },
+  "city_badge_verified": {
+    "ko": "{n} 검증된 장소",
+    "th": "{n} สถานที่ที่ได้รับการตรวจสอบ",
+    "zh": "{n} 个认证地点",
+    "ja": "{n} 確認済みの場所",
+    "ar": "{n} أماكن موثوقة",
+    "id": "{n} tempat terverifikasi",
+    "vi": "{n} địa điểm đã xác minh"
+  },
+  "city_badge_korean": {
+    "ko": "{n} 한국인 친화적",
+    "th": "{n} เป็นมิตรกับชาวเกาหลี",
+    "zh": "{n} 个韩语友好",
+    "ja": "{n} 韓国人向け",
+    "ar": "{n} مناسب للكوريين",
+    "id": "{n} ramah Korea",
+    "vi": "{n} thân thiện với người Hàn Quốc"
+  },
+  "city_badge_cats": {
+    "ko": "{n} 카테고리",
+    "th": "{n} หมวดหมู่",
+    "zh": "{n} 个类别",
+    "ja": "{n} カテゴリー",
+    "ar": "{n} فئات",
+    "id": "{n} kategori",
+    "vi": "{n} danh mục"
+  },
+  "city_map_title": {
+    "ko": "{city} 지도",
+    "th": "แผนที่ของ {city}",
+    "zh": "{city} 地图",
+    "ja": "{city}の地図",
+    "ar": "خريطة {city}",
+    "id": "Peta {city}",
+    "vi": "Bản đồ {city}"
+  },
+  "city_map_count": {
+    "ko": "{n} 등록된 장소",
+    "th": "{n} สถานที่ที่ทำแผนที่",
+    "zh": "{n} 个已标记场所",
+    "ja": "{n} のマッピングされた会場",
+    "ar": "{n} أماكن مميزة",
+    "id": "{n} tempat yang dipetakan",
+    "vi": "{n} địa điểm đã được lập bản đồ"
+  },
+  "city_browse_title": {
+    "ko": "{city} 카테고리별 탐색",
+    "th": "เรียกดู {city} ตามหมวดหมู่",
+    "zh": "按类别浏览 {city}",
+    "ja": "{city}のカテゴリー別ブラウズ",
+    "ar": "تصفح {city} حسب الفئة",
+    "id": "Jelajahi {city} menurut kategori",
+    "vi": "Duyệt {city} theo danh mục"
+  },
+  "city_browse_sub": {
+    "ko": "검증된 장소가 있는 {n} 카테고리 · 카드 탭을 눌러 랭크된 상위 10 가이드를 확인하세요.",
+    "th": "{n} หมวดหมู่ที่มีสถานที่ที่ได้รับการตรวจสอบ · แตะการ์ดเพื่อดูคู่มือ 10 อันดับแรกที่จัดอันดับ",
+    "zh": "有 {n} 个类别有认证地点 · 点击卡片查看排名前10的指南。",
+    "ja": "確認済みの場所を含む {n} カテゴリー · カードをタップしてランキングトップ10ガイドを表示します。",
+    "ar": "{n} فئات مع أماكن موثوقة · اضغط على بطاقة لمشاهدة دليل الأفضل-10.",
+    "id": "{n} kategori dengan tempat terverifikasi · Ketuk kartu untuk melihat panduan top-10 yang ter排",
+    "vi": "{n} danh mục với địa điểm đã xác minh · Nhấn vào thẻ để xem hướng dẫn top-10 xếp hạng."
+  },
+  "city_toppicks_title": {
+    "ko": "{city}의 추천",
+    "th": "ตัวเลือกที่ดีที่สุดใน {city}",
+    "zh": "{city} 热门推荐",
+    "ja": "{city}のおすすめ",
+    "ar": "أفضل الاختيارات في {city}",
+    "id": "Pilihan terbaik di {city}",
+    "vi": "Lựa chọn hàng đầu ở {city}"
+  },
+  "city_toppicks_sub": {
+    "ko": "모든 카테고리에서 가장 높은 교차 신뢰 점수.",
+    "th": "คะแนนความเชื่อถือข้ามแหล่งข้อมูลสูงสุดในทุกหมวดหมู่",
+    "zh": "各类别中最高的跨来源信任分数。",
+    "ja": "すべてのカテゴリーで最高の信頼スコア。",
+    "ar": "أعلى درجات الثقة عبر جميع الفئات.",
+    "id": "Skor kepercayaan lintas sumber tertinggi di semua kategori.",
+    "vi": "Điểm tin cậy cao nhất từ nhiều nguồn trên tất cả các danh mục."
+  },
+  "city_faq_title": {
+    "ko": "자주 묻는 질문 — {city}",
+    "th": "คำถามที่พบบ่อย — {city}",
+    "zh": "常见问题 — {city}",
+    "ja": "FAQ — {city}",
+    "ar": "الأسئلة الشائعة — {city}",
+    "id": "FAQ — {city}",
+    "vi": "Câu hỏi thường gặp — {city}"
+  },
+  "cf_count_q": {
+    "ko": "{city}에 등록된 검증된 장소는 몇 개인가요?",
+    "th": "มีสถานที่ที่ได้รับการตรวจสอบอยู่กี่แห่งใน {city}?",
+    "zh": "在 {city} 中有多少个认证地点？",
+    "ja": "{city}に確認済みの場所はいくつありますか？",
+    "ar": "كم عدد الأماكن الموثوقة المدرجة في {city}؟",
+    "id": "Berapa banyak tempat terverifikasi yang terdaftar di {city}?",
+    "vi": "Có bao nhiêu địa điểm đã xác minh được liệt kê ở {city}?"
+  },
+  "cf_count_a": {
+    "ko": "{city}에는 {cats} 카테고리에 걸쳐 {n}개의 교차 검증된 장소가 등록되어 있습니다. 각 장소는 6개의 출처(Google, Reddit, Naver, Pantip, YouTube, 공식 사이트)에서 독립적으로 평가되었습니다.",
+    "th": "Verified Thai มีรายชื่อสถานที่ที่ตรวจสอบแล้ว {n} แห่งใน {city} ซึ่งครอบคลุม {cats} หมวดหมู่ แต่ละแห่งถูกให้คะแนนอย่างเป็นอิสระจาก 6 แหล่งข้อมูล (Google, Reddit, Naver, Pantip, YouTube, เว็บไซต์ทางการ)",
+    "zh": "认证的泰国列出 {n} 个经过交叉验证的地点在 {city}，涵盖了 {cats} 个类别。每个地点在6个来源（Google、Reddit、Naver、Pantip、YouTube、官方网站）中独立评分。",
+    "ja": "{city}では、{n} のクロスチェックされたタイの場所がリストされています。{cats} カテゴリーにわたって、各場所は独立して6つの情報源（Google、Reddit、Naver、Pantip、YouTube、公式サイト）でスコア付けされています。",
+    "ar": "قائمة تايلندية موثوقة تضم {n} أماكن تحقق في {city}، تغطي {cats} فئات. كل منها يتم تقييمه بشكل مستقل عبر 6 مصادر (Google، Reddit، Naver، Pantip، YouTube، مواقع رسمية).",
+    "id": "Verified Thai mencantumkan {n} tempat yang diperiksa silang di {city}, mencakup {cats} kategori. Masing-masing dinilai secara independen di 6 sumber (Google, Reddit, Naver, Pantip, YouTube, situs resmi).",
+    "vi": "Verified Thai liệt kê {n} địa điểm đã được kiểm tra tại {city}, trải dài trên {cats} danh mục. Mỗi địa điểm được chấm điểm độc lập từ 6 nguồn (Google, Reddit, Naver, Pantip, YouTube, các trang chính thức)."
+  },
+  "cf_korean_q": {
+    "ko": "{city}에 한국인 친화적인 옵션이 있나요?",
+    "th": "มีตัวเลือกที่เป็นมิตรกับชาวเกาหลีใน {city} หรือไม่?",
+    "zh": "在 {city} 中有韩语友好的选项吗？",
+    "ja": "{city}に韓国人向けのオプションはありますか？",
+    "ar": "هل هناك خيارات مناسبة للكوريين في {city}؟",
+    "id": "Apakah ada opsi ramah Korea di {city}?",
+    "vi": "Có tùy chọn thân thiện với người Hàn Quốc nào ở {city} không?"
+  },
+  "cf_korean_a": {
+    "ko": "{total} {city} 목록 중 {n}개는 한국어 리뷰 또는 한국어를 구사하는 직원 신호가 있습니다 — Naver와 YouTube 언급에서 확인했습니다.",
+    "th": "{n} จาก {total} รายชื่อใน {city} มีรีวิวเป็นภาษาเกาหลีหรือมีสัญญาณพนักงานพูดภาษาเกาหลี — ว่าจากการกล่าวถึงของ Naver และ YouTube",
+    "zh": "{n} 个 {total} {city} 列表上有韩语评论或韩语工作人员信号——来自 Naver 和 YouTube 的提及。",
+    "ja": "{total} の {city} リストの {n} に韓国語のレビューまたは韓国語を話すスタッフのシグナルがあります — NaverとYouTubeの言及から抽出されました。",
+    "ar": "{n} من {total} قوائم {city} تحتوي على مراجعات باللغة الكورية أو إشارات لموظفين يتحدثون الكورية — تم استخراجها من إشارات Naver وYouTube.",
+    "id": "{n} dari {total} daftar {city} memiliki ulasan dalam bahasa Korea atau sinyal staf berbahasa Korea — diungkapkan dari sebutan Naver dan YouTube.",
+    "vi": "{n} trong số {total} danh sách {city} có đánh giá bằng tiếng Hàn hoặc tín hiệu nhân viên nói tiếng Hàn — được lấy từ đề cập trên Naver và YouTube."
+  },
+  "cf_beginner_q": {
+    "ko": "{city}에 초보자 친화적인 장소가 있나요?",
+    "th": "มีสถานที่ใดบ้างใน {city} ที่เป็นมิตรกับผู้เริ่มต้น?",
+    "zh": "在 {city} 中有适合初学者的地方吗？",
+    "ja": "{city}に初心者向けの場所はありますか？",
+    "ar": "هل هناك أماكن مناسبة للمبتدئين في {city}؟",
+    "id": "Apakah ada tempat di {city} yang ramah pemula?",
+    "vi": "Có địa điểm nào ở {city} thân thiện với người mới bắt đầu không?"
+  },
+  "cf_beginner_a": {
+    "ko": "{n} {city} 목록이 리뷰 집계에서 초보자 친화적인 것으로 표시되었습니다 — 개별 목록에서 초보자 배지를 확인하세요.",
+    "th": "{n} รายชื่อใน {city} ได้รับสัญญาณว่าเป็นมิตรกับผู้เริ่มต้นจากการรวบรวมรีวิวของเรา — ดูสัญลักษณ์ผู้เริ่มต้นในรายการแต่ละรายการ",
+    "zh": "{n} 个 {city} 列表被标记为适合初学者——在单独列表上查看初学者徽章。",
+    "ja": "私たちのレビュー集計で {n} の {city} リストが初心者向けとしてフラグ付けされています — 個々のリストに初心者バッジがあります。",
+    "ar": "{n} قوائم {city} تم تحديدها على أنها مناسبة للمبتدئين عبر تجميع مراجعاتنا — تحقق من شارة المبتدئين على القوائم الفردية.",
+    "id": "{n} daftar {city} ditandai sebagai ramah pemula di agregasi ulasan kami — lihat lencana pemula di daftar individu.",
+    "vi": "{n} danh sách {city} được đánh dấu là thân thiện với người mới bắt đầu trong tổng hợp đánh giá của chúng tôi — xem huy hiệu người mới bắt đầu trên từng danh sách."
+  },
+  "cf_best_q": {
+    "ko": "{city}의 최고의 카테고리는 무엇인가요?",
+    "th": "หมวดหมู่ที่ดีที่สุดใน {city} คืออะไร?",
+    "zh": "在 {city} 中最好的类别是什么？",
+    "ja": "{city}で一番のカテゴリーは何ですか？",
+    "ar": "ما هي أفضل فئة في {city}؟",
+    "id": "Kategori terbaik di {city} apa?",
+    "vi": "Danh mục nào tốt nhất ở {city}?"
+  },
+  "cf_best_a": {
+    "ko": "{city}에는 {list}가 가장 많이 밀집해 있습니다. 아래에 카테고리별 가이드를 확인하여 랭크된 상위 10 목록을 확인하세요.",
+    "th": "{city} มีความหนาแน่นที่สุดใน {list} ดูคู่มือแต่ละหมวดหมู่ด้านล่างสำหรับรายการ 10 อันดับที่จัดอันดับ",
+    "zh": "{city} 在 {list} 上密集。见下面每个类别的指南，获取排名前10的列表。",
+    "ja": "{city}は {list} で最も密度が高いです。カテゴリー別ガイドを以下にご覧ください、ランキングトップ10リストがあります。",
+    "ar": "{city} هي الأكثر كثافة في {list}. راجع أدلة الفئات أدناه للقوائم الأفضل-10 مرتبة.",
+    "id": "{city} adalah yang terpadat di {list}. Lihat panduan per kategori di bawah untuk daftar top-10 yang ter排.",
+    "vi": "{city} có mật độ cao nhất trong {list}. Xem hướng dẫn theo từng danh mục bên dưới cho danh sách top-10 xếp hạng."
+  },
+  "cf_paid_q": {
+    "ko": "Verified Thai는 {city}에서 유료 배치를 허용하나요?",
+    "th": "Verified Thai ยอมรับการวางตำแหน่งที่เสียค่าใช้จ่ายใน {city} หรือไม่?",
+    "zh": "认证的泰国接受在 {city} 中的付费展示吗？",
+    "ja": "Verified Thaiは{city}で有料掲載を受け入れますか？",
+    "ar": "هل تقبل Verified Thai الدفع للترويج في {city}؟",
+    "id": "Apakah Verified Thai menerima penempatan berbayar di {city}?",
+    "vi": "Verified Thai có chấp nhận quảng cáo trả phí ở {city} không?"
+  },
+  "cf_paid_a": {
+    "ko": "아니요. 목록은 Google 리뷰, Reddit, Naver, Pantip, YouTube 언급 및 공식 웹사이트 신호를 결합한 독립적인 신뢰 점수에 따라 순위가 매겨집니다. 비즈니스를 순위 매기기 위해 어떤 대가도 받지 않습니다.",
+    "th": "ไม่ รายชื่อถูกจัดอันดับโดยไม่มีต้นทุนโดยการรวมคะแนนความเชื่อถือที่เป็นอิสระซึ่งรวมถึงรีวิวจาก Google, Reddit, Naver, Pantip, การกล่าวถึง YouTube และสัญญาณจากเว็บไซต์ทางการ เราไม่รับการชำระเงินใดๆ เพื่อจัดอันดับธุรกิจ",
+    "zh": "不。列表纯粹按独立信任分数排名，结合 Google 评论、Reddit、Naver、Pantip、YouTube 提及和官方网站信号。我们不接受任何付费排名业务。",
+    "ja": "いいえ。リストは、Googleのレビュー、Reddit、Naver、Pantip、YouTubeの言及、公式ウェブサイトのシグナルを組み合わせた独立した信頼スコアによって純粋にランキングされています。ビジネスをランキングするための支払いは受け入れていません。",
+    "ar": "لا. يتم ترتيب القوائم بحتة بناءً على درجة الثقة المستقلة التي تجمع بين مراجعات Google، Reddit، Naver، إشارات Pantip وYouTube، ومواقع الويب الرسمية. لا نقبل أي مدفوعات لترتيب عمل تجاري.",
+    "id": "Tidak. Daftar diurutkan murni berdasarkan Skor Kepercayaan independen yang menggabungkan ulasan Google, Reddit, Naver, Pantip, sebutan YouTube, dan sinyal situs resmi. Kami tidak menerima biaya apa pun untuk meranking bisnis.",
+    "vi": "Không. Các danh sách được xếp hạng hoàn toàn theo Điểm Tin cậy độc lập kết hợp đánh giá Google, Reddit, Naver, Pantip, đề cập YouTube, và tín hiệu từ trang web chính thức. Chúng tôi không chấp nhận bất kỳ khoản thanh toán nào để xếp hạng một doanh nghiệp."
+  },
+  "cf_estab_q": {
+    "ko": "{city}에 5년 이상 운영된 장소는 몇 개인가요?",
+    "th": "มีสถานที่ใน {city} ที่ดำเนินการมากกว่า 5 ปีหรือไม่?",
+    "zh": "在 {city} 中有多少个场所经营超过5年？",
+    "ja": "{city}の会場で5年以上運営している場所はいくつありますか？",
+    "ar": "كم عدد الأماكن في {city} التي تعمل منذ 5 سنوات أو أكثر؟",
+    "id": "Berapa banyak tempat di {city} yang telah beroperasi lebih dari 5 tahun?",
+    "vi": "Có bao nhiêu địa điểm ở {city} đã hoạt động hơn 5 năm?"
+  },
+  "cf_estab_a": {
+    "ko": "{total} {city} 장소 중 {n}개는 archive.org에서 최소 5년 이상 된 기록이 있습니다{vet}. 긴 운영 기간은 위조할 수 없는 몇 가지 신호 중 하나입니다.",
+    "th": "{n} จาก {total} สถานที่ใน {city} ที่เรารวบรวมมีรอยเท้าจาก archive.org แสดงให้เห็นย้อนหลังไปอย่างน้อย 5 ปี{vet} ระยะเวลานานเป็นหนึ่งในไม่กี่สัญญาณที่ไม่สามารถปลอมแปลงได้",
+    "zh": "{n} 个我们列出的 {total} {city} 场所在 archive.org 上的足迹至少追溯到 5 年前{vet}。长时间经营是少数不能伪造的信号之一。",
+    "ja": "私たちがリストしている {total} の {city} 会場のうち、{n} は少なくとも5年前に遡るarchive.orgの足跡があります{vet}。長期運営は偽造できない数少ないシグナルの一つです。",
+    "ar": "{n} من {total} الأماكن في {city} التي ندرجها لديها آثار على archive.org تعود إلى 5 سنوات على الأقل{vet}. يعتبر طول المدة واحدة من العلامات القليلة التي لا يمكن تزويرها.",
+    "id": "{n} dari {total} tempat {city} yang kami listing memiliki jejak archive.org yang kembali setidaknya 5 tahun{vet}. Lama masa operasi adalah salah satu sinyal yang tidak bisa dipalsukan.",
+    "vi": "{n} trong số {total} địa điểm {city} mà chúng tôi liệt kê có dấu chân trên archive.org trở lại ít nhất 5 năm{vet}. Thời gian hoạt động lâu dài là một trong số ít tín hiệu không thể giả mạo."
+  },
+  "cf_estab_vet": {
+    "ko": " — 그 중 {n}개는 10년 이상입니다",
+    "th": " — {n} จากนั้นย้อนหลังไปมากกว่า 10 ปี",
+    "zh": " — {n} 个追溯到10年以上",
+    "ja": " — そのうち {n} は10年以上前のものです",
+    "ar": " — {n} من تلك تعود إلى 10 سنوات أو أكثر",
+    "id": " — {n} dari tempat tersebut telah beroperasi lebih dari 10 tahun",
+    "vi": " — {n} trong số đó tồn tại hơn 10 năm"
+  },
+  "cf_oldest_q": {
+    "ko": "Verified Thai에서 {city}의 가장 오래된 장소는 무엇인가요?",
+    "th": "สถานที่ที่เก่าแก่ที่สุดใน {city} บน Verified Thai คืออะไร?",
+    "zh": "在认证的泰国中，{city} 中最古老的场所是什么？",
+    "ja": "Verified Thaiでの{city}の最も古い会場は何ですか？",
+    "ar": "ما هو أقدم مكان في {city} على Verified Thai؟",
+    "id": "Apa tempat tertua di {city} di Verified Thai?",
+    "vi": "Địa điểm nào là địa điểm lâu đời nhất ở {city} trên Verified Thai?"
+  },
+  "cf_oldest_a": {
+    "ko": "{name} ({niche})는 {city} 목록 중 가장 빠른 archive.org 기록을 가지고 있습니다 — {year}에 처음 아카이브 되었으며, {years}년 전입니다.",
+    "th": "{name} ({niche}) มีการเก็บข้อมูลจาก archive.org ที่เร็วที่สุดจากรายชื่อใน {city} — ถูกเก็บข้อมูลครั้งแรกใน {year} ที่ผ่านมาแล้วกว่า {years} ปี",
+    "zh": "{name} ({niche}) 在 {city} 列表中拥有最早的 archive.org 抓取——首次存档于 {year}，距今已有 {years} 年。",
+    "ja": "{name} ({niche})が{city} リストの中で最も早くarchive.orgにキャプチャされたもので、{year}に最初にアーカイブされ、{years}年以上前です。",
+    "ar": "{name} ({niche}) لديه أول توثيق على archive.org بين قوائم {city} — تم توثيقه للمرة الأولى في {year}، منذ أكثر من {years} سنة.",
+    "id": "{name} ({niche}) memiliki tangkapan archive.org terawal di antara daftar {city} — pertama kali diarsipkan pada {year}, lebih dari {years} tahun yang lalu.",
+    "vi": "{name} ({niche}) có lưu trữ archive.org sớm nhất trong các danh sách {city} — được lưu trữ lần đầu vào {year}, hơn {years} năm trước."
+  },
+  "cf_active_q": {
+    "ko": "{city}의 어떤 장소가 실제로 아직 열려 있나요?",
+    "th": "สถานที่ใดใน {city} ที่ยังเปิดให้บริการอยู่?",
+    "zh": "哪些 {city} 场所目前仍然开放？",
+    "ja": "{city}の会場は実際にまだ営業していますか？",
+    "ar": "أي أماكن في {city} لا تزال مفتوحة فعليًا؟",
+    "id": "Tempat mana di {city} yang masih buka?",
+    "vi": "Có địa điểm nào ở {city} thực sự vẫn mở cửa không?"
+  },
+  "cf_active_a": {
+    "ko": "{total} {city} 장소 중 {n}개가 지난 90일 동안 적어도 하나의 Google 리뷰를 받았습니다{recent} — 우리가 공개 데이터를 통해 확인한 가장 강력한 '지금도 운영 중' 신호입니다.",
+    "th": "{n} จาก {total} สถานที่ใน {city} มีอย่างน้อยหนึ่งรีวิวจาก Google ในช่วง 90 วันที่ผ่านมา{recent} — เป็นสัญญาณที่ชัดเจนว่า \"ยังคงทำธุรกิจอยู่ตอนนี้\" ที่เราได้จากข้อมูลสาธารณะ",
+    "zh": "{n} 个 {total} {city} 场所在过去90天内至少有一次 Google 评论{recent}——我们从公共数据中提取的最强“现在仍在交易”的信号。",
+    "ja": "{total} の {city} 会場のうち、{n} は過去90日間に少なくとも1件のGoogleレビューがありました{recent} — 公共データからの「現在も取引中」の強力なシグナルです。",
+    "ar": "{n} من {total} الأماكن في {city} حصلت على مراجعة واحدة على الأقل من Google في آخر 90 يومًا{recent} — أقوى إشارة\" لا تزال تعمل الآن\" التي نستخرجها من البيانات العامة.",
+    "id": "{n} dari {total} tempat {city} memiliki setidaknya satu ulasan Google dalam 90 hari terakhir{recent} — sinyal \"masih beroperasi sekarang\" terkuat yang kami temukan dari data publik.",
+    "vi": "{n} trong số {total} địa điểm {city} đã có ít nhất một đánh giá trên Google trong 90 ngày qua{recent} — tín hiệu \"vẫn kinh doanh ngay bây giờ\" mạnh mẽ nhất mà chúng tôi lấy từ dữ liệu công khai."
+  },
+  "cf_active_recent": {
+    "ko": ", {n}개는 지난 30일 이내입니다",
+    "th": ", {n} ในจำนวนนี้อยู่ในช่วง 30 วันที่ผ่านมา",
+    "zh": ", {n} 个在过去30天内",
+    "ja": "、{n} は過去30日間にそれがありました",
+    "ar": ", {n} من تلك في آخر 30 يومًا",
+    "id": ", {n} dari tempat tersebut dalam 30 hari terakhir",
+    "vi": ", {n} trong số đó trong 30 ngày qua"
+  },
+  "cf_toptrust_q": {
+    "ko": "{city}에서 현재 가장 신뢰할 수 있는 장소는 어디인가요?",
+    "th": "สถานที่ที่มีความเชื่อถือสูงสุดใน {city} ขณะนี้คืออะไร?",
+    "zh": "现在在{city}有哪些最高信任度的地方？",
+    "ja": "{city}で現在最も信頼されている場所はどこですか？",
+    "ar": "ما هي الأماكن الأكثر موثوقية في {city} الآن؟",
+    "id": "Tempat dengan tingkat kepercayaan tertinggi di {city} saat ini?",
+    "vi": "Những địa điểm đáng tin cậy nhất ở {city} hiện nay là gì?"
+  },
+  "cf_toptrust_a": {
+    "ko": "우리의 크로스 소스 신뢰 점수에 따르면, {city}에서 상위 3곳은: {list}. 순위는 각각의 스크랩에 따라 업데이트됩니다 — 유료 광고가 없습니다.",
+    "th": "ตามคะแนนความเชื่อถือข้ามแหล่งข้อมูล สามอันดับแรกใน {city} คือ: {list}. การจัดอันดับจะอัปเดตเมื่อมีการค้นหาใหม่ — ไม่มีการจ่ายเงินเพื่อแสดงผล.",
+    "zh": "根据我们的跨源信任评分，{city}的前三名是：{list}。排名会随着每次抓取而更新——没有付费排名。",
+    "ja": "当社のクロスソース信頼スコアによると、{city}のトップ3は: {list}です。ランクは各スクレイプごとに更新されます — 有料掲載はありません。",
+    "ar": "حسب تقدير الثقة لدينا، الثلاثة الأوائل في {city} هم: {list}. يتم تحديث الترتيبات مع كل عملية مسح — لا يوجد وضع مدفوع.",
+    "id": "Berdasarkan skor kepercayaan lintas sumber kami, tiga teratas di {city} adalah: {list}. Peringkat diperbarui dengan setiap pengambilan data — tidak ada penempatan berbayar.",
+    "vi": "Theo điểm số độ tin cậy từ nhiều nguồn, ba địa điểm hàng đầu ở {city} là: {list}. Bảng xếp hạng sẽ được cập nhật với mỗi lần quét — không có vị trí trả phí."
+  },
+  "city_other_cities": {
+    "ko": "태국의 다른 도시들",
+    "th": "เมืองอื่น ๆ ในประเทศไทย",
+    "zh": "泰国其他城市",
+    "ja": "タイの他の都市",
+    "ar": "مدن أخرى في تايلاند",
+    "id": "Kota lain di Thailand",
+    "vi": "Các thành phố khác ở Thái Lan"
+  },
+  "city_compare": {
+    "ko": "비교:",
+    "th": "เปรียบเทียบ:",
+    "zh": "比较：",
+    "ja": "比較:",
+    "ar": "قارن:",
+    "id": "Bandingkan:",
+    "vi": "So sánh:"
+  },
+  "city_vs": {
+    "ko": "{a} 대 {b}",
+    "th": "{a} vs {b}",
+    "zh": "{a} 与 {b}",
+    "ja": "{a} 対 {b}",
+    "ar": "{a} مقابل {b}",
+    "id": "{a} vs {b}",
+    "vi": "{a} so với {b}"
+  },
+  "city_meta_title": {
+    "ko": "{city}, 태국 — {n} 검증된 장소",
+    "th": "{city}, ประเทศไทย — สถานที่ที่ได้รับการตรวจสอบ {n} แห่ง",
+    "zh": "{city}, 泰国 — {n} 个已验证的地方",
+    "ja": "{city}, タイ — {n} 認証済みの場所",
+    "ar": "{city}، تايلاند — {n} أماكن موثوقة",
+    "id": "{city}, Thailand — {n} Tempat Terverifikasi",
+    "vi": "{city}, Thái Lan — {n} Địa điểm đã xác minh"
   }
 }

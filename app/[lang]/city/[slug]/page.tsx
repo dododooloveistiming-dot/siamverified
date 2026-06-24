@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { CITIES, getCityBySlug, placesInCity, countNichesInCity } from "@/lib/cities";
@@ -35,7 +35,7 @@ export async function generateMetadata({
   const bundle = loadPlaces();
   const cityPlaces = placesInCity(bundle.places, city);
   const url = `${SITE.origin}/${params.lang}/city/${city.slug}/`;
-  const title = `${city.label}, Thailand — ${cityPlaces.length} Verified Places · ${SITE.name}`;
+  const title = `${tf("city_meta_title", params.lang, { city: city.label, n: cityPlaces.length })} · ${SITE.name}`;
   const description = (city.blurb[params.lang] || city.blurb.en) ?? "";
   return {
     title,
@@ -107,57 +107,74 @@ export default function CityHubPage({
     .sort((a, b) => (a.founding_year! - b.founding_year!))[0];
   const topByTrust = [...cityPlaces].sort((a, b) => b.trust_score - a.trust_score).slice(0, 3);
 
-  // FAQ data — answers from real data
+  // FAQ data — answers from real data, localized via tf() (placeholders keep
+  // the live counts/names; the surrounding prose is translated per locale).
+  const C = city.label;
+  const nicheList = nichesAvailable.slice(0, 3).map((n) => `${nicheName(n, lang)} (${nicheCounts[n]})`).join(", ");
+  const trustList = topByTrust.map((p, i) => `${i + 1}. ${p.name} (${nicheName(p.niche, lang)})`).join(", ");
   const faqs: Array<{ q: string; a: string }> = [
     {
-      q: `How many verified places are listed in ${city.label}?`,
-      a: `Verified Thai lists ${cityPlaces.length} cross-checked places in ${city.label}, spanning ${nichesAvailable.length} categories. Each is scored independently across 6 sources (Google, Reddit, Naver, Pantip, YouTube, official sites).`,
+      q: tf("cf_count_q", lang, { city: C }),
+      a: tf("cf_count_a", lang, { n: cityPlaces.length, city: C, cats: nichesAvailable.length }),
     },
     ...(koCount > 0
       ? [{
-          q: `Are there Korean-friendly options in ${city.label}?`,
-          a: `${koCount} of the ${cityPlaces.length} ${city.label} listings have Korean-language reviews or Korean-speaking staff signals — surfaced from Naver and YouTube mentions.`,
+          q: tf("cf_korean_q", lang, { city: C }),
+          a: tf("cf_korean_a", lang, { n: koCount, total: cityPlaces.length, city: C }),
         }]
       : []),
     ...(beginnerCount > 0
       ? [{
-          q: `Are any places in ${city.label} beginner-friendly?`,
-          a: `${beginnerCount} ${city.label} listings are flagged as beginner-friendly across our reviews aggregation — see the beginner badge on individual listings.`,
+          q: tf("cf_beginner_q", lang, { city: C }),
+          a: tf("cf_beginner_a", lang, { n: beginnerCount, city: C }),
         }]
       : []),
     {
-      q: `What's the best category in ${city.label}?`,
-      a: `${city.label} is densest in ${nichesAvailable
-        .slice(0, 3)
-        .map((n) => `${nicheName(n, lang)} (${nicheCounts[n]})`)
-        .join(", ")}. See per-category guides below for ranked top-10 lists.`,
+      q: tf("cf_best_q", lang, { city: C }),
+      a: tf("cf_best_a", lang, { city: C, list: nicheList }),
     },
     {
-      q: `Does Verified Thai accept paid placement in ${city.label}?`,
-      a: `No. Listings are ranked purely by an independent Trust Score combining Google reviews, Reddit, Naver, Pantip, YouTube mentions, and official website signals. We accept zero payment to rank a business.`,
+      q: tf("cf_paid_q", lang, { city: C }),
+      a: t("cf_paid_a", lang),
     },
     ...(establishedCount > 0
       ? [{
-          q: `How many venues in ${city.label} have been operating 5+ years?`,
-          a: `${establishedCount.toLocaleString()} of the ${cityPlaces.length.toLocaleString()} ${city.label} venues we list have an archive.org footprint going back at least 5 years${veteranCount > 0 ? ` — ${veteranCount.toLocaleString()} of those go back 10+ years` : ""}. Long-tenure is one of the few signals that can't be faked.`,
+          q: tf("cf_estab_q", lang, { city: C }),
+          a: tf("cf_estab_a", lang, {
+            n: establishedCount.toLocaleString(),
+            total: cityPlaces.length.toLocaleString(),
+            city: C,
+            vet: veteranCount > 0 ? tf("cf_estab_vet", lang, { n: veteranCount.toLocaleString() }) : "",
+          }),
         }]
       : []),
     ...(oldest && oldest.founding_year
       ? [{
-          q: `What's the oldest venue in ${city.label} on Verified Thai?`,
-          a: `${oldest.name} (${nicheName(oldest.niche, lang)}) has the earliest archive.org capture among ${city.label} listings — first archived in ${oldest.founding_year}, over ${new Date().getFullYear() - oldest.founding_year} years ago.`,
+          q: tf("cf_oldest_q", lang, { city: C }),
+          a: tf("cf_oldest_a", lang, {
+            name: oldest.name,
+            niche: nicheName(oldest.niche, lang),
+            city: C,
+            year: oldest.founding_year,
+            years: new Date().getFullYear() - oldest.founding_year,
+          }),
         }]
       : []),
     ...(activeCount > 0
       ? [{
-          q: `Which ${city.label} venues are actually still open?`,
-          a: `${activeCount.toLocaleString()} of the ${cityPlaces.length.toLocaleString()} ${city.label} venues had at least one Google review in the last 90 days${veryActiveCount > 0 ? `, ${veryActiveCount.toLocaleString()} of those within the last 30 days` : ""} — the strongest "still trading right now" signal we surface from public data.`,
+          q: tf("cf_active_q", lang, { city: C }),
+          a: tf("cf_active_a", lang, {
+            n: activeCount.toLocaleString(),
+            total: cityPlaces.length.toLocaleString(),
+            city: C,
+            recent: veryActiveCount > 0 ? tf("cf_active_recent", lang, { n: veryActiveCount.toLocaleString() }) : "",
+          }),
         }]
       : []),
     ...(topByTrust.length >= 3
       ? [{
-          q: `What are the highest-trust places in ${city.label} right now?`,
-          a: `By our cross-source trust score, the top three in ${city.label} are: ${topByTrust.map((p, i) => `${i + 1}. ${p.name} (${nicheName(p.niche, lang)})`).join(", ")}. Rankings update with each scrape — no paid placement.`,
+          q: tf("cf_toptrust_q", lang, { city: C }),
+          a: tf("cf_toptrust_a", lang, { city: C, list: trustList }),
         }]
       : []),
   ];
@@ -186,7 +203,7 @@ export default function CityHubPage({
           <nav className="text-xs text-white/80">
             <Link href={`/${lang}/`} className="hover:underline">{SITE.name}</Link>
             <span className="mx-2">/</span>
-            <span>Cities</span>
+            <span>{t("city_crumb", lang)}</span>
             <span className="mx-2">/</span>
             <span>{city.label}</span>
           </nav>
@@ -194,22 +211,22 @@ export default function CityHubPage({
           <div className="mt-16 sm:mt-24">
             <div className="text-5xl">{city.emoji}</div>
             <h1 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl md:text-6xl">
-              {city.label}, Thailand
+              {tf("city_title", lang, { city: city.label })}
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg">
               {blurb}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium text-white">
               <span className="rounded-full bg-white/15 px-3 py-1.5 ring-1 ring-white/30 backdrop-blur-sm">
-                📍 {cityPlaces.length} verified places
+                📍 {tf("city_badge_verified", lang, { n: cityPlaces.length })}
               </span>
               {koCount > 0 && (
                 <span className="rounded-full bg-white/15 px-3 py-1.5 ring-1 ring-white/30 backdrop-blur-sm">
-                  🇰🇷 {koCount} Korean-friendly
+                  🇰🇷 {tf("city_badge_korean", lang, { n: koCount })}
                 </span>
               )}
               <span className="rounded-full bg-white/15 px-3 py-1.5 ring-1 ring-white/30 backdrop-blur-sm">
-                🏷️ {nichesAvailable.length} categories
+                🏷️ {tf("city_badge_cats", lang, { n: nichesAvailable.length })}
               </span>
             </div>
           </div>
@@ -224,8 +241,8 @@ export default function CityHubPage({
           return (
             <section className="mt-10">
               <div className="mb-3 flex items-baseline justify-between">
-                <h2 className="text-2xl font-bold tracking-tight">Map of {city.label}</h2>
-                <span className="text-xs muted">{mapped.length} mapped venues</span>
+                <h2 className="text-2xl font-bold tracking-tight">{tf("city_map_title", lang, { city: city.label })}</h2>
+                <span className="text-xs muted">{tf("city_map_count", lang, { n: mapped.length })}</span>
               </div>
               <PlaceMap places={mapped.slice(0, 200)} lang={lang} height={500} />
             </section>
@@ -234,10 +251,10 @@ export default function CityHubPage({
 
         <section className="mt-10">
           <h2 className="text-2xl font-bold tracking-tight">
-            Browse {city.label} by category
+            {tf("city_browse_title", lang, { city: city.label })}
           </h2>
           <p className="mt-1 text-sm muted">
-            {nichesAvailable.length} categories with verified places · Tap a card to see the ranked top-10 guide.
+            {tf("city_browse_sub", lang, { n: nichesAvailable.length })}
           </p>
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {nichesAvailable.map((n) => {
@@ -288,10 +305,10 @@ export default function CityHubPage({
             <div className="flex items-end justify-between">
               <div>
                 <h2 className="text-2xl font-bold tracking-tight">
-                  Top picks in {city.label}
+                  {tf("city_toppicks_title", lang, { city: city.label })}
                 </h2>
                 <p className="mt-1 text-sm muted">
-                  Highest cross-source trust scores across all categories.
+                  {t("city_toppicks_sub", lang)}
                 </p>
               </div>
             </div>
@@ -338,7 +355,7 @@ export default function CityHubPage({
         {/* FAQ */}
         <section className="mt-14">
           <h2 className="text-2xl font-bold tracking-tight">
-            FAQ — {city.label}
+            {tf("city_faq_title", lang, { city: city.label })}
           </h2>
           <div className="mt-4 space-y-3">
             {faqs.map((f, i) => (
@@ -358,7 +375,7 @@ export default function CityHubPage({
 
         {/* OTHER CITIES */}
         <section className="mt-14">
-          <h2 className="text-2xl font-bold tracking-tight">Other cities in Thailand</h2>
+          <h2 className="text-2xl font-bold tracking-tight">{t("city_other_cities", lang)}</h2>
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
             {CITIES.filter((c) => c.slug !== city.slug).map((c) => (
               <Link
@@ -376,7 +393,7 @@ export default function CityHubPage({
         {/* COMPARE LINKS */}
         <section className="mt-10 text-center">
           <p className="text-xs muted">
-            Compare:{" "}
+            {t("city_compare", lang)}{" "}
             {CITIES.filter((c) => c.slug !== city.slug).slice(0, 3).map((c, i) => (
               <span key={c.slug}>
                 {i > 0 && " · "}
@@ -384,7 +401,7 @@ export default function CityHubPage({
                   href={`/${lang}/compare/${city.slug}-vs-${c.slug}/`}
                   className="text-emerald-700 hover:underline dark:text-emerald-400"
                 >
-                  {city.label} vs {c.label}
+                  {tf("city_vs", lang, { a: city.label, b: c.label })}
                 </Link>
               </span>
             ))}
