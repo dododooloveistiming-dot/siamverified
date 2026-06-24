@@ -14,6 +14,24 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://verifiedthai.com";
 const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TG_CHAT = process.env.TELEGRAM_CHAT_ID;
 
+// Lightweight (no-LLM) triage so the operator can tell a real customer from
+// SEO/marketing spam at a glance. Pure string heuristics — fast, free, runs
+// in the request path without an external call.
+const SPAM_RE = /\b(seo|backlink|back link|ranking|rank (?:your|higher)|marketing (?:service|agenc)|digital marketing|promote your|grow your (?:business|traffic)|guest post|web ?design|crypto|bitcoin|forex|invest(?:ment)?|loan|casino|gambling|viagra|cialis|escort|increase (?:your )?(?:sales|traffic|revenue)|we (?:offer|provide)|our (?:services|agency)|outreach|lead generation|推广|关键词|排名|代运营)\b/i;
+const URL_RE = /(https?:\/\/|www\.|t\.me\/|wa\.me\/|@[a-z0-9_]{4,}|\b[a-z0-9-]+\.(?:com|net|org|io|ru|cn|xyz|top|biz|info)\b)/i;
+
+function classifyInquiry(message: string, name: string, email: string): { tag: string; why: string } {
+  const hay = `${message} ${name} ${email}`;
+  const hasUrl = URL_RE.test(message) || URL_RE.test(name);
+  const spammy = SPAM_RE.test(hay);
+  const veryShort = message.trim().length < 12;
+  if (spammy && hasUrl) return { tag: "🛑 LIKELY SPAM / AD", why: "promo keywords + a link/handle — probably a marketing pitch, not a customer" };
+  if (spammy) return { tag: "⚠️ Possible promo/ad", why: "promotional wording — read before replying" };
+  if (hasUrl) return { tag: "⚠️ Contains a link/handle", why: "has a URL or @handle — verify it's genuine" };
+  if (veryShort) return { tag: "❓ Very short — low detail", why: "thin message; may be a test or low-intent" };
+  return { tag: "🟢 Looks like a genuine customer inquiry", why: "" };
+}
+
 export async function notifyTelegram(args: {
   placeId: string;
   placeName: string;
@@ -32,16 +50,22 @@ export async function notifyTelegram(args: {
     return;
   }
   const lang = args.language || "en";
+  // Human-readable type + spam/ad triage.
+  const kindLabel = args.kind === "booking" ? "📅 Booking request" : "💬 Customer inquiry";
+  const triage = classifyInquiry(args.message, args.customerName, args.customerEmail);
   const text = [
-    `🔔 <b>New ${escapeHtml(args.kind)}</b> — ${escapeHtml(args.placeName)}`,
+    `🔔 <b>${kindLabel}</b> — ${escapeHtml(args.placeName)}`,
+    `${triage.tag}${triage.why ? ` <i>(${escapeHtml(triage.why)})</i>` : ""}`,
+    "",
     `👤 ${escapeHtml(args.customerName)}`,
     `✉️ ${escapeHtml(args.customerEmail)}`,
     args.customerPhone ? `📞 ${escapeHtml(args.customerPhone)}` : "",
     args.requestedService ? `🧾 ${escapeHtml(args.requestedService)}` : "",
     args.preferredDate ? `📅 ${escapeHtml(args.preferredDate)}` : "",
     args.partySize ? `👥 ${escapeHtml(args.partySize)}` : "",
+    `🌐 ${escapeHtml(lang)}`,
     "",
-    escapeHtml(args.message),
+    `💬 ${escapeHtml(args.message)}`,
     "",
     `${SITE_URL}/${lang}/place/${args.placeId}/`,
   ].filter(Boolean).join("\n");
