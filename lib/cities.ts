@@ -99,6 +99,13 @@ export function getCityBySlug(slug: string): CitySlug | undefined {
   return CITIES.find((c) => c.slug === slug);
 }
 
+// The hub city a place belongs to (one of the 6 CITIES), or undefined if it
+// sits outside our city-hub set. Used to cross-link place → guide → city.
+export function cityForPlace(place: Place): CitySlug | undefined {
+  const c = (place.city || "").toLowerCase();
+  return CITIES.find((city) => city.matches.some((m) => c === m || c.includes(m)));
+}
+
 export function placesInCity(places: Place[], city: CitySlug): Place[] {
   return places.filter((p) => {
     const c = (p.city || "").toLowerCase();

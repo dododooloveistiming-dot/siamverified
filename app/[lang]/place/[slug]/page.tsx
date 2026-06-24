@@ -22,6 +22,7 @@ import BookingForm from "@/components/BookingForm";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
 import RecentlyViewed from "@/components/RecentlyViewed";
+import { cityForPlace } from "@/lib/cities";
 import ShareButton from "@/components/ShareButton";
 import PlaceMap from "@/components/PlaceMap";
 
@@ -126,6 +127,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const meta = NICHE_META[place.niche];
   const ytVideos = getYoutubeSearch(place.id).slice(0, 4);
   const similar = getSimilarPlaces(place, 4);
+  const hubCity = cityForPlace(place); // for place → guide → city cross-links
   const mentions = getPlaceMentions(place.id);
   const klookData = getPlaceKlook(place.id);
   const ownerProfile = await getOwnerProfile(place.id);
@@ -1041,6 +1043,28 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   </div>
                 </Link>
               ))}
+            </div>
+          </section>
+        )}
+
+        {/* EXPLORE MORE — place → city×niche guide + city hub (retention + internal SEO) */}
+        {hubCity && (
+          <section className="mt-12">
+            <h2 className="mb-3 text-lg font-bold">{t("pl_explore_more", lang)}</h2>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <Link
+                href={`/${lang}/guide/${hubCity.slug}-${place.niche}/`}
+                className="rounded-xl border border-ink-100 bg-white p-3 text-sm font-semibold transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+              >
+                {NICHE_META[place.niche].emoji}{" "}
+                {tf("pl_see_all", lang, { niche: nicheName(place.niche, lang), city: hubCity.label })}
+              </Link>
+              <Link
+                href={`/${lang}/city/${hubCity.slug}/`}
+                className="rounded-xl border border-ink-100 bg-white p-3 text-sm font-semibold transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+              >
+                {hubCity.emoji} {tf("pl_explore_city", lang, { city: hubCity.label })}
+              </Link>
             </div>
           </section>
         )}

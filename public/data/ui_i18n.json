@@ -1152,5 +1152,23 @@
     "ar": "لا. يتم ترتيب القوائم فقط بناءً على درجة الثقة المستقلة لدينا — وهي مركب من تقييمات Google، Reddit، Naver، Pantip، إشارات YouTube، والتحقق من المواقع الرسمية.",
     "id": "Tidak. Daftar diurutkan murni berdasarkan Skor Kepercayaan independen kami — komposit dari ulasan Google, Reddit, Naver, Pantip, sebutan YouTube, dan verifikasi situs web resmi.",
     "vi": "Không. Các danh sách được xếp hạng hoàn toàn theo Trust Score độc lập của chúng tôi — một tổng hợp của đánh giá từ Google, Reddit, Naver, Pantip, YouTube và xác minh từ trang web chính thức."
+  },
+  "pl_see_all": {
+    "ko": "모든 {niche} 보기 {city} →",
+    "th": "ดูทั้งหมด {niche} ใน {city} →",
+    "zh": "查看所有在{name}的{niche} →",
+    "ja": "{city}の{niche}をすべて見る →",
+    "ar": "شاهد جميع {niche} في {city} →",
+    "id": "Lihat semua {niche} di {city} →",
+    "vi": "Xem tất cả {niche} ở {city} →"
+  },
+  "pl_explore_city": {
+    "ko": "{city} 탐색하기 →",
+    "th": "สำรวจ {city} →",
+    "zh": "探索{city} →",
+    "ja": "{city}を探索する →",
+    "ar": "استكشاف {city} →",
+    "id": "Jelajahi {city} →",
+    "vi": "Khám phá {city} →"
   }
 }

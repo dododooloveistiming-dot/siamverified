@@ -280,6 +280,9 @@ export const T = {
   cta_inquiry_short: { en: "Inquire", ko: "문의하기", th: "สอบถาม", zh: "咨询", ja: "問い合わせ", ar: "استفسر" },
   social_more: { en: "More reviews & mentions", ko: "더 많은 후기·언급 보기", th: "ดูรีวิว/การกล่าวถึงเพิ่มเติม", zh: "更多评价与提及", ja: "他のレビュー・言及を見る", ar: "المزيد من التقييمات والإشارات" },
   recently_viewed: { en: "Recently viewed", ko: "최근 본 곳", th: "ดูล่าสุด", zh: "最近浏览", ja: "最近見た場所", ar: "شوهدت مؤخرًا", id: "Baru dilihat", vi: "Đã xem gần đây" },
+  pl_explore_more: { en: "Explore more", ko: "더 둘러보기", th: "สำรวจเพิ่มเติม", zh: "探索更多", ja: "もっと見る", ar: "استكشف المزيد", id: "Jelajahi lebih banyak", vi: "Khám phá thêm" },
+  pl_see_all: { en: "See all {niche} in {city} →" },
+  pl_explore_city: { en: "Explore {city} →" },
 
   // ── place-detail dynamic FAQ (drives visible accordion + FAQPage/QAPage JSON-LD).
   // These are the AEO payload — they must be native, not English shells. {name},
