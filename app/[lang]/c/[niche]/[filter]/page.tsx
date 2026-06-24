@@ -44,6 +44,8 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
       zh: (n) => `经营 5 年以上的${n}`,
       ja: (n) => `5年以上の老舗${n}`,
       ar: (n) => `${n} قائم منذ 5 سنوات أو أكثر`,
+      id: (n) => `${n} mapan (5+ tahun online)`,
+      vi: (n) => `${n} lâu đời (5+ năm trực tuyến)`,
     },
     metaTitle: {
       en: (n) => `Established ${n} in Thailand — 5+ years operating | Verified Thai`,
@@ -52,6 +54,8 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
       zh: (n) => `泰国营业 5 年以上的${n} | Verified Thai`,
       ja: (n) => `5年以上の老舗${n}（タイ） | Verified Thai`,
       ar: (n) => `${n} في تايلاند قائم منذ أكثر من 5 سنوات | Verified Thai`,
+      id: (n) => `${n} mapan di Thailand — beroperasi 5+ tahun | Verified Thai`,
+      vi: (n) => `${n} lâu đời ở Thái Lan — hoạt động 5+ năm | Verified Thai`,
     },
     metaDesc: {
       en: (n) =>
@@ -62,6 +66,8 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
       zh: (n) => `泰国营业 5 年以上的${n}，由 archive.org 印记佐证`,
       ja: (n) => `archive.org の記録で5年以上の運営が確認できるタイの${n}`,
       ar: (n) => `${n} في تايلاند موثّق وجوده على archive.org منذ 5 سنوات أو أكثر`,
+      id: (n) => `Tempat ${n} lama di Thailand, diverifikasi via jejak archive.org 5+ tahun. Diperiksa silang Google + Reddit + Naver + Pantip.`,
+      vi: (n) => `Các địa điểm ${n} lâu đời ở Thái Lan, xác minh qua dấu vết archive.org 5+ năm. Đối chiếu Google + Reddit + Naver + Pantip.`,
     },
     intro: {
       en:
@@ -76,11 +82,16 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
         "archive.orgに5年以上前から記録が残っている店舗。多くの旅行ディレクトリが取り上げる前から運営されていた証拠です。",
       ar:
         "هذه الأماكن لها أثر على archive.org يعود لـ 5 سنوات على الأقل، إشارة قوية يصعب تزويرها.",
+      id:
+        "Tempat-tempat ini punya jejak archive.org 5+ tahun — sudah online jauh sebelum kebanyakan direktori wisata peduli. Usia domain lama adalah salah satu sinyal yang tak bisa dipalsukan.",
+      vi:
+        "Các địa điểm này có dấu vết archive.org từ 5+ năm — đã trực tuyến từ lâu trước khi hầu hết danh bạ du lịch quan tâm. Tuổi tên miền lâu đời là một trong số ít tín hiệu không thể làm giả.",
     },
     emptyBack: {
       en: "No established venues match this filter yet — see all", ko: "조건에 맞는 곳 없음 — 전체 보기",
       th: "ยังไม่มีรายการที่ตรงเงื่อนไข — ดูทั้งหมด", zh: "暂无符合条件的场所 — 查看全部",
       ja: "条件に合う店舗なし — すべて見る", ar: "لا توجد نتائج بعد — عرض الكل",
+      id: "Belum ada tempat mapan yang cocok — lihat semua", vi: "Chưa có địa điểm phù hợp — xem tất cả",
     },
   },
   active: {
@@ -93,6 +104,8 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
       zh: (n) => `近期活跃的${n}（90 天内有评价）`,
       ja: (n) => `直近で営業中の${n}（90日以内にレビューあり）`,
       ar: (n) => `${n} نشط مؤخراً (مراجعات خلال 90 يوماً)`,
+      id: (n) => `${n} yang sedang aktif (ulasan terbaru)`,
+      vi: (n) => `${n} đang hoạt động (đánh giá gần đây)`,
     },
     metaTitle: {
       en: (n) => `Currently active ${n} in Thailand — recent reviews | Verified Thai`,
@@ -101,6 +114,8 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
       zh: (n) => `泰国近期活跃${n} — 最新评价 | Verified Thai`,
       ja: (n) => `現在営業中のタイの${n} — 最新レビュー | Verified Thai`,
       ar: (n) => `${n} نشط الآن في تايلاند — مراجعات حديثة | Verified Thai`,
+      id: (n) => `${n} yang sedang aktif di Thailand — ulasan terbaru | Verified Thai`,
+      vi: (n) => `${n} đang hoạt động ở Thái Lan — đánh giá gần đây | Verified Thai`,
     },
     metaDesc: {
       en: (n) =>
@@ -111,6 +126,8 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
       zh: (n) => `90 天内有 Google 评论的泰国${n}，证明在营业，不只是挂着名字`,
       ja: (n) => `直近90日以内にGoogleレビューがあるタイの${n}。実際に営業している証拠です。`,
       ar: (n) => `${n} في تايلاند مع مراجعات Google خلال 90 يوماً — دليل التشغيل الفعلي`,
+      id: (n) => `${n} di Thailand dengan setidaknya satu ulasan Google dalam 90 hari terakhir — bukti aktif beroperasi, bukan sekadar tercantum. Diurutkan berdasarkan skor kepercayaan.`,
+      vi: (n) => `${n} ở Thái Lan có ít nhất một đánh giá Google trong 90 ngày qua — bằng chứng đang hoạt động, không chỉ được liệt kê. Sắp xếp theo điểm tin cậy.`,
     },
     intro: {
       en:
@@ -125,11 +142,16 @@ const FILTERS: Record<FilterSlug, FilterDef> = {
         "直近90日以内にGoogleレビューが1件以上ある店舗。多くのディレクトリは閉店した店も載せたままです。",
       ar:
         "هذه الأماكن لها مراجعة Google واحدة على الأقل خلال 90 يوماً، بينما تستمر معظم الأدلة في إدراج أماكن مغلقة.",
+      id:
+        "Tempat-tempat ini punya setidaknya satu ulasan Google dalam 90 hari terakhir. Kebanyakan direktori tidak pernah memeriksa — mereka tetap mencantumkan tempat yang sudah lama tutup. Kami menyaringnya.",
+      vi:
+        "Các địa điểm này có ít nhất một đánh giá Google trong 90 ngày qua. Hầu hết danh bạ không bao giờ kiểm tra — họ vẫn liệt kê những nơi đã đóng cửa từ lâu. Chúng tôi lọc bỏ chúng.",
     },
     emptyBack: {
       en: "No active venues match this filter yet — see all", ko: "조건에 맞는 곳 없음 — 전체 보기",
       th: "ยังไม่มีรายการที่ตรงเงื่อนไข — ดูทั้งหมด", zh: "暂无符合条件的场所 — 查看全部",
       ja: "条件に合う店舗なし — すべて見る", ar: "لا توجد نتائج بعد — عرض الكل",
+      id: "Belum ada tempat aktif yang cocok — lihat semua", vi: "Chưa có địa điểm phù hợp — xem tất cả",
     },
   },
 };
