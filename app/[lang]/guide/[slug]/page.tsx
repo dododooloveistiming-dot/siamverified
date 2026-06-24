@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
@@ -67,12 +67,9 @@ export async function generateMetadata({
   const url = `${SITE.origin}/${params.lang}/guide/${params.slug}/`;
   const placesAll = getPlacesByNiche(niche);
   const cityPlaces = placesInCity(placesAll, city);
-  const cityNicheLabel = `${city.label} ${nicheName(niche, params.lang)}`;
-  const title = `${cityNicheLabel} — Top ${Math.min(cityPlaces.length, 10)} Verified · ${SITE.name}`;
-  const description = `Independent guide to the top ${nicheName(
-    niche,
-    params.lang,
-  )} in ${city.label}, Thailand. Cross-checked across 6 sources. No paid promotion. Real Korean / Thai / English reviews.`;
+  const nLabel = nicheName(niche, params.lang);
+  const title = `${tf("g_meta_title", params.lang, { n: Math.min(cityPlaces.length, 10), niche: nLabel, city: city.label })} · ${SITE.name}`;
+  const description = tf("g_meta_desc", params.lang, { niche: nLabel, city: city.label });
   return {
     title,
     description,
@@ -116,39 +113,43 @@ export default function GuidePage({
   const cityNicheLabel = `${city.label} ${nicheName(niche, lang)}`;
   const url = `${SITE.origin}/${lang}/guide/${params.slug}/`;
 
-  // FAQ — answered from the actual data
+  // FAQ — answered from the actual data, localized via tf() (placeholders keep
+  // live counts/names; surrounding prose is translated per locale).
+  const N = nicheName(niche, lang);
+  const C = city.label;
+  const inCity = placesInCity(all, city).length;
   const faqs: Array<{ q: string; a: string }> = [
     {
-      q: `How many verified ${nicheName(niche, lang)} places are there in ${city.label}?`,
-      a: `Verified Thai lists ${all.length} ${nicheName(niche, lang)} places across Thailand and ${placesInCity(all, city).length} specifically in ${city.label}, each cross-checked across Google, Reddit, Naver, Pantip, YouTube, and official websites.`,
+      q: tf("gf_count_q", lang, { niche: N, city: C }),
+      a: tf("gf_count_a", lang, { all: all.length, niche: N, n: inCity, city: C }),
     },
     ...(priceLo
       ? [{
-          q: `How much does ${nicheName(niche, lang)} cost in ${city.label}?`,
-          a: `Based on our data, prices range from about ฿${priceLo.toLocaleString()} to ฿${(priceHi ?? priceLo).toLocaleString()}. Exact pricing varies by studio — check each listing for current rates.`,
+          q: tf("gf_price_q", lang, { niche: N, city: C }),
+          a: tf("gf_price_a", lang, { lo: priceLo.toLocaleString(), hi: (priceHi ?? priceLo).toLocaleString() }),
         }]
       : []),
     ...(koFriendlyCount > 0
       ? [{
-          q: `Are there Korean-friendly ${nicheName(niche, lang)} options in ${city.label}?`,
-          a: `Yes — ${koFriendlyCount} of our top ${places.length} ${city.label} ${nicheName(niche, lang)} listings have Korean-language reviews or Korean-speaking staff signals.`,
+          q: tf("gf_korean_q", lang, { niche: N, city: C }),
+          a: tf("gf_korean_a", lang, { n: koFriendlyCount, top: places.length, city: C, niche: N }),
         }]
       : []),
     ...(beginnerCount > 0
       ? [{
-          q: `Are there beginner-friendly options?`,
-          a: `${beginnerCount} of the top ${places.length} ${city.label} ${nicheName(niche, lang)} places are flagged as beginner-friendly in our reviews aggregation.`,
+          q: t("gf_beginner_q", lang),
+          a: tf("gf_beginner_a", lang, { n: beginnerCount, top: places.length, city: C, niche: N }),
         }]
       : []),
     ...(has24h
       ? [{
-          q: `Are any places open 24 hours?`,
-          a: `Yes — at least one of our top ${city.label} ${nicheName(niche, lang)} listings operates 24 hours. Check individual listing hours for confirmation.`,
+          q: t("gf_24h_q", lang),
+          a: tf("gf_24h_a", lang, { city: C, niche: N }),
         }]
       : []),
     {
-      q: `Does Verified Thai accept paid placements?`,
-      a: `No. Listings are ranked purely by our independent Trust Score — a composite of Google reviews, Reddit, Naver, Pantip, YouTube mentions, and official website verification.`,
+      q: t("gf_paid_q", lang),
+      a: t("gf_paid_a", lang),
     },
   ];
 
@@ -184,13 +185,13 @@ export default function GuidePage({
           <div className="mt-20 sm:mt-24">
             <div className="text-5xl">{meta.emoji}</div>
             <h1 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl md:text-6xl">
-              Top {places.length} {nicheName(niche, lang)} in {city.label}
+              {tf("g_title", lang, { n: places.length, niche: N, city: C })}
             </h1>
             <p className="mt-3 max-w-2xl text-base text-white/90 sm:text-lg">
-              Independently scored across 6 sources. No paid placement. Updated continuously.
+              {t("g_sub", lang)}
             </p>
             <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm ring-1 ring-white/30">
-              {koFriendlyCount > 0 && <span>🇰🇷 {koFriendlyCount} Korean-friendly</span>}
+              {koFriendlyCount > 0 && <span>🇰🇷 {tf("city_badge_korean", lang, { n: koFriendlyCount })}</span>}
               {koFriendlyCount > 0 && <span>·</span>}
               <span>📍 {city.label}</span>
             </div>
@@ -201,23 +202,23 @@ export default function GuidePage({
       <div className="mx-auto max-w-5xl px-4">
         {/* SUMMARY */}
         <section className="mt-8">
-          <h2 className="text-xl font-bold tracking-tight">Quick summary</h2>
+          <h2 className="text-xl font-bold tracking-tight">{t("g_summary", lang)}</h2>
           <dl className="mt-3 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-            <SummaryCard label="Verified places" value={places.length} />
+            <SummaryCard label={t("g_card_verified", lang)} value={places.length} />
             <SummaryCard
-              label="Korean-friendly"
+              label={t("filter_korean_friendly", lang)}
               value={koFriendlyCount}
-              sub={`of top ${places.length}`}
+              sub={tf("g_of_top", lang, { n: places.length })}
             />
             <SummaryCard
-              label="Beginner-friendly"
+              label={t("filter_beginner", lang)}
               value={beginnerCount}
-              sub={`of top ${places.length}`}
+              sub={tf("g_of_top", lang, { n: places.length })}
             />
             <SummaryCard
-              label="Price (THB)"
+              label={t("g_card_price", lang)}
               value={priceLo ? `฿${priceLo.toLocaleString()}+` : "—"}
-              sub={priceHi && priceLo ? `to ฿${priceHi.toLocaleString()}` : ""}
+              sub={priceHi && priceLo ? tf("g_to_price", lang, { n: priceHi.toLocaleString() }) : ""}
             />
           </dl>
         </section>
@@ -225,11 +226,10 @@ export default function GuidePage({
         {/* RANKED LIST */}
         <section className="mt-10">
           <h2 className="text-xl font-bold tracking-tight">
-            The list — top {places.length} ranked by Trust Score
+            {tf("g_list_title", lang, { n: places.length })}
           </h2>
           <p className="mt-1 text-sm muted">
-            Trust Score combines Google reviews, Reddit / Pantip mentions, Naver blog posts,
-            YouTube videos, and official website signals.
+            {t("g_list_sub", lang)}
           </p>
           <ol className="mt-5 space-y-3">
             {places.map((p, i) => (
@@ -278,7 +278,7 @@ export default function GuidePage({
                         </span>
                       )}
                       {p.languages.ko && <span>🇰🇷</span>}
-                      {p.is_beginner_friendly && <span>🐣 Beginner-friendly</span>}
+                      {p.is_beginner_friendly && <span>🐣 {t("filter_beginner", lang)}</span>}
                     </div>
                     {p.top_review_text && (
                       <p className="mt-2 line-clamp-2 text-xs leading-snug muted italic">
@@ -295,7 +295,7 @@ export default function GuidePage({
         {/* FAQ */}
         <section className="mt-12">
           <h2 className="text-xl font-bold tracking-tight">
-            Frequently asked questions
+            {t("faq_section", lang)}
           </h2>
           <div className="mt-4 space-y-3">
             {faqs.map((f, i) => (
@@ -315,7 +315,7 @@ export default function GuidePage({
 
         {/* RELATED LINKS */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold tracking-tight">Related guides</h2>
+          <h2 className="text-xl font-bold tracking-tight">{t("g_related", lang)}</h2>
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {NICHE_SLUGS.filter((n) => n !== niche).slice(0, 4).map((n) => (
               <Link
@@ -342,7 +342,7 @@ export default function GuidePage({
 
         <div className="mt-12 text-xs muted">
           <Link href={`/${lang}/c/${niche}/`} className="hover:underline">
-            ← All {nicheName(niche, lang)} in Thailand
+            {tf("g_back", lang, { niche: nicheName(niche, lang) })}
           </Link>
         </div>
       </div>

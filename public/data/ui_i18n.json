@@ -927,5 +927,230 @@
     "ar": "{city}، تايلاند — {n} أماكن موثوقة",
     "id": "{city}, Thailand — {n} Tempat Terverifikasi",
     "vi": "{city}, Thái Lan — {n} Địa điểm đã xác minh"
+  },
+  "g_title": {
+    "ko": "{city}에서의 상위 {n} {niche}",
+    "th": "อันดับ {n} {niche} ใน {city}",
+    "zh": "泰国{city}的前{n}个{name}",
+    "ja": "{city}のトップ{n} {niche}",
+    "ar": "أفضل {n} {niche} في {city}",
+    "id": "Top {n} {niche} di {city}",
+    "vi": "Top {n} {niche} tại {city}"
+  },
+  "g_sub": {
+    "ko": "6개의 출처에서 독립적으로 평가되었습니다. 유료 배치 없음. 지속적으로 업데이트됩니다.",
+    "th": "คะแนนจาก 6 แหล่งข้อมูล ไม่ได้มีการจ่ายเงินเพื่อการโปรโมท อัปเดตอย่างต่อเนื่อง",
+    "zh": "独立评分，基于6个来源。没有付费置顶。持续更新。",
+    "ja": "6つのソースから独立した評価。報酬の掲載はありません。継続的に更新中。",
+    "ar": "تم التقييم بشكل مستقل عبر 6 مصادر. لا يوجد ترتيب مدفوع. يتم تحديثه باستمرار.",
+    "id": "Dinilai secara independen dari 6 sumber. Tidak ada penempatan berbayar. Diperbarui terus-menerus.",
+    "vi": "Được đánh giá độc lập trên 6 nguồn. Không có vị trí trả phí. Cập nhật liên tục."
+  },
+  "g_summary": {
+    "ko": "간단한 요약",
+    "th": "สรุปอย่างรวดเร็ว",
+    "zh": "快速总结",
+    "ja": "簡単な概要",
+    "ar": "ملخص سريع",
+    "id": "Ringkasan cepat",
+    "vi": "Tóm tắt nhanh"
+  },
+  "g_card_verified": {
+    "ko": "인증된 장소",
+    "th": "สถานที่ที่ตรวจสอบแล้ว",
+    "zh": "已验证的场所",
+    "ja": "確認済みの場所",
+    "ar": "أماكن موثوقة",
+    "id": "Tempat yang terverifikasi",
+    "vi": "Địa điểm đã xác minh"
+  },
+  "g_card_price": {
+    "ko": "가격 (THB)",
+    "th": "ราคา (฿)",
+    "zh": "价格 (THB)",
+    "ja": "価格 (THB)",
+    "ar": "السعر (THB)",
+    "id": "Harga (THB)",
+    "vi": "Giá (THB)"
+  },
+  "g_of_top": {
+    "ko": "상위 {n} 중",
+    "th": "จากอันดับ {n}",
+    "zh": "前{n}中的{n}",
+    "ja": "トップ{n}のうち",
+    "ar": "من أفضل {n}",
+    "id": "dari {n} teratas",
+    "vi": "trong số {n} hàng đầu"
+  },
+  "g_to_price": {
+    "ko": "₩{n}",
+    "th": "ถึง ฿{n}",
+    "zh": "至฿{n}",
+    "ja": "฿{n}まで",
+    "ar": "إلى ฿{n}",
+    "id": "ke ฿{n}",
+    "vi": "đến ฿{n}"
+  },
+  "g_list_title": {
+    "ko": "목록 — 신뢰 점수에 따라 상위 {n} 순위",
+    "th": "รายการ — {n} อันดับแรกตามคะแนนความน่าเชื่อถือ",
+    "zh": "列表 — 按信任评分排名的前{n}名",
+    "ja": "リスト — トラストスコアでランキングされたトップ{n}",
+    "ar": "القائمة — أفضل {n} مرتبة حسب درجة الثقة",
+    "id": "Daftar — {n} teratas diurutkan berdasarkan Skor Kepercayaan",
+    "vi": "Danh sách — {n} hàng đầu được xếp hạng theo Trust Score"
+  },
+  "g_list_sub": {
+    "ko": "신뢰 점수는 Google 리뷰, Reddit / Pantip 언급, Naver 블로그 게시물, YouTube 비디오 및 공식 웹사이트 신호를 조합한 것입니다.",
+    "th": "คะแนนความน่าเชื่อถือรวมรีวิวจาก Google, การกล่าวถึงใน Reddit / Pantip, บทความบล็อก Naver, วิดีโอ YouTube, และสัญญาณจากเว็บไซต์ทางการ",
+    "zh": "信任评分结合了Google评论、Reddit/Pantip提及、Naver博客文章、YouTube视频和官方网站信号。",
+    "ja": "トラストスコアはGoogleレビュー、Reddit / Pantipの言及、Naverブログ投稿、YouTube動画、公式ウェブサイトのシグナルを組み合わせています。",
+    "ar": "تجمع درجة الثقة بين تقييمات Google، والمشاركات في Reddit / Pantip، ومقالات المدونة في Naver، ومقاطع فيديو YouTube، وإشارات المواقع الرسمية.",
+    "id": "Skor Kepercayaan menggabungkan ulasan Google, sebutan Reddit / Pantip, pos blog Naver, video YouTube, dan sinyal situs web resmi.",
+    "vi": "Trust Score kết hợp đánh giá từ Google, đề cập trên Reddit / Pantip, bài blog Naver, video YouTube và tín hiệu từ trang web chính thức."
+  },
+  "g_related": {
+    "ko": "관련 가이드",
+    "th": "คู่มือที่เกี่ยวข้อง",
+    "zh": "相关指南",
+    "ja": "関連ガイド",
+    "ar": "أدلة ذات صلة",
+    "id": "Panduan terkait",
+    "vi": "Hướng dẫn liên quan"
+  },
+  "g_back": {
+    "ko": "← 태국의 모든 {niche}",
+    "th": "← ทั้งหมด {niche} ในประเทศไทย",
+    "zh": "← 所有泰国的{niche}",
+    "ja": "← タイの全{niche}",
+    "ar": "← جميع {niche} في تايلاند",
+    "id": "← Semua {niche} di Thailand",
+    "vi": "← Tất cả {niche} tại Thái Lan"
+  },
+  "g_meta_title": {
+    "ko": "{city}, 태국의 상위 {n} {niche}",
+    "th": "อันดับ {n} {niche} ใน {city}, ประเทศไทย",
+    "zh": "泰国{city}的前{n}个{name}",
+    "ja": "{city}, タイのトップ{n} {niche}",
+    "ar": "أفضل {n} {niche} في {city}، تايلاند",
+    "id": "Top {n} {niche} di {city}, Thailand",
+    "vi": "Top {n} {niche} tại {city}, Thái Lan"
+  },
+  "g_meta_desc": {
+    "ko": "{city}, 태국의 상위 {niche}에 대한 독립 가이드. 6개 출처를 교차 확인했습니다. 유료 프로모션 없음. 실제 한국어 / 태국어 / 영어 리뷰.",
+    "th": "คู่มืออิสระเกี่ยวกับ {niche} ที่ดีที่สุดใน {city}, ประเทศไทย ตรวจสอบจาก 6 แหล่งข้อมูล ไม่ได้มีการโปรโมทแบบจ่ายเงิน รีวิวจริงจากคนเกาหลี / ไทย / อังกฤษ",
+    "zh": "关于泰国{city}的顶级{niche}的独立指南。经过6个来源交叉检查。没有付费推广。真实的韩国/泰国/英语评论。",
+    "ja": "{city}, タイのトップ{niche}に関する独立したガイド。6つのソースでクロスチェック済み。報酬のプロモーションはありません。実際の韓国語 / タイ語 / 英語のレビュー。",
+    "ar": "دليل مستقل لأفضل {niche} في {city}، تايلاند. تم التحقق منها عبر 6 مصادر. لا ترويج مدفوع. تقييمات حقيقية باللغة الكورية / التايلاندية / الإنجليزية.",
+    "id": "Panduan independen untuk {niche} teratas di {city}, Thailand. Diperiksa dari 6 sumber. Tidak ada promosi berbayar. Ulasan nyata dalam Bahasa Korea / Thai / Inggris.",
+    "vi": "Hướng dẫn độc lập đến {niche} hàng đầu tại {city}, Thái Lan. Đã kiểm tra từ 6 nguồn. Không có quảng cáo trả phí. Đánh giá thật từ Hàn Quốc / Thái Lan / Anh."
+  },
+  "gf_count_q": {
+    "ko": "{city}에 인증된 {niche} 장소가 몇 개나 있나요?",
+    "th": "มีสถานที่ {niche} ที่ตรวจสอบแล้วใน {city} กี่แห่ง?",
+    "zh": "在{city}有多少个经过验证的{niche}场所？",
+    "ja": "{city}には確認済みの{niche}場所はいくつありますか？",
+    "ar": "كم عدد الأماكن الموثوقة {niche} في {city}؟",
+    "id": "Ada berapa banyak tempat {niche} yang terverifikasi di {city}?",
+    "vi": "Có bao nhiêu địa điểm {niche} đã được xác minh tại {city}?"
+  },
+  "gf_count_a": {
+    "ko": "인증된 태국 목록에는 태국 전역의 {all} {niche} 장소가 있으며, {city}에서 {n}개가 있습니다. 각 장소는 Google, Reddit, Naver, Pantip, YouTube 및 공식 웹사이트에서 교차 확인되었습니다.",
+    "th": "รายชื่อไทยที่ตรวจสอบแล้วมี {all} สถานที่ {niche} ทั่วประเทศไทย และ {n} โดยเฉพาะใน {city} ที่ได้รับการตรวจสอบจาก Google, Reddit, Naver, Pantip, YouTube, และเว็บไซต์ทางการ",
+    "zh": "已验证的泰国列表中有{all}个{niche}场所，分布在泰国及{city}的{n}个，均经过Google、Reddit、Naver、Pantip、YouTube和官方网站交叉检查。",
+    "ja": "確認済みのタイのリストには、タイ全体の{all} {niche}場所が含まれており、そのうち{n}は{city}で、Google、Reddit、Naver、Pantip、YouTube、公式ウェブサイトを使ってクロスチェックされています。",
+    "ar": "تقوم المواقع الموثوقة في تايلاند بتسرد {all} أماكن {niche} عبر تايلاند و {n} بشكل محدد في {city}، كل منها تم التحقق منها عبر Google، Reddit، Naver، Pantip، YouTube، والمواقع الرسمية.",
+    "id": "Daftar Thai terverifikasi {all} tempat {niche} di seluruh Thailand dan {n} khususnya di {city}, masing-masing diperiksa ulang di Google, Reddit, Naver, Pantip, YouTube, dan situs web resmi.",
+    "vi": "Danh sách đã xác minh của Thái Lan có {all} địa điểm {niche} trên toàn Thái Lan và {n} cụ thể tại {city}, mỗi địa điểm được kiểm tra lại qua Google, Reddit, Naver, Pantip, YouTube và các trang web chính thức."
+  },
+  "gf_price_q": {
+    "ko": "{city}에서 {niche}의 가격은 얼마인가요?",
+    "th": "ค่าใช้จ่าย {niche} ใน {city} เท่าไหร่?",
+    "zh": "{city}的{niche}价格多少？",
+    "ja": "{city}の{niche}はどのくらいの費用ですか？",
+    "ar": "كم تكلفة {niche} في {city}؟",
+    "id": "Berapa biaya {niche} di {city}?",
+    "vi": "Giá {niche} tại {city} là bao nhiêu?"
+  },
+  "gf_price_a": {
+    "ko": "우리 데이터에 따르면, 가격은 약 ₩{lo}에서 ₩{hi}까지 다양합니다. 정확한 가격은 스튜디오별로 다르므로 각 목록에서 현재 요금을 확인하세요.",
+    "th": "ตามข้อมูลของเรา ราคาจะอยู่ในช่วงประมาณ ฿{lo} ถึง ฿{hi} ราคาที่แน่นอนจะแตกต่างกันไปตามสตูดิโอ — ตรวจสอบในแต่ละรายการเพื่อดูอัตราปัจจุบัน",
+    "zh": "根据我们的数据，价格范围大约从฿{lo}到฿{hi}。具体价格因工作室而异 — 请查看每个列表以获取当前费率。",
+    "ja": "私たちのデータに基づくと、価格は約฿{lo}から฿{hi}の範囲です。正確な価格はスタジオによって異なるため、各リスティングで現在の料金を確認してください。",
+    "ar": "استنادًا إلى بياناتنا، تتراوح الأسعار من حوالي ฿{lo} إلى ฿{hi}. تختلف الأسعار الدقيقة حسب الاستوديو — تحقق من كل قائمة للحصول على أسعار الحالية.",
+    "id": "Berdasarkan data kami, harga berkisar dari sekitar ฿{lo} hingga ฿{hi}. Harga yang tepat bervariasi menurut studio — periksa setiap daftar untuk tarif saat ini.",
+    "vi": "Dựa trên dữ liệu của chúng tôi, giá dao động từ khoảng ฿{lo} đến ฿{hi}. Giá cụ thể khác nhau theo từng studio — kiểm tra từng danh sách để biết giá hiện tại."
+  },
+  "gf_korean_q": {
+    "ko": "{city}에 한국어에 친숙한 {niche} 옵션이 있나요?",
+    "th": "มีตัวเลือก {niche} ที่เป็นมิตรกับชาวเกาหลีใน {city} หรือไม่?",
+    "zh": "在{city}有适合韩国人的{niche}选项吗？",
+    "ja": "{city}には韓国人に優しい{niche}のオプションがありますか？",
+    "ar": "هل هناك خيارات {niche} صديقة للكوريين في {city}؟",
+    "id": "Apakah ada opsi {niche} yang ramah Korea di {city}?",
+    "vi": "Có những lựa chọn {niche} thân thiện với người Hàn Quốc tại {city} không?"
+  },
+  "gf_korean_a": {
+    "ko": "네 — 우리 상위 {top} {city} {niche} 목록 중 {n}개는 한국어 리뷰 또는 한국어를 구사하는 직원 신호가 있습니다.",
+    "th": "ใช่ — {n} ของรายการ {top} {niche} ใน {city} ของเรามีรีวิวภาษาเกาหลีหรือสัญญาณจากพนักงานที่พูดภาษาเกาหลี",
+    "zh": "是的 — 我们在{city}的{top}个{niche}列表中，有{n}个有韩国语评论或韩国语工作人员信号。",
+    "ja": "はい — 私たちのトップ{top} {city} {niche}リストの{n}は韓国語のレビューまたは韓国語を話すスタッフのシグナルがあります。",
+    "ar": "نعم — {n} من قوائم {top} {city} {niche} لدينا تحتوي على تقييمات باللغة الكورية أو إشارات عن موظفين يتحدثون الكورية.",
+    "id": "Ya — {n} dari {top} daftar {niche} {city} teratas kami memiliki ulasan berbahasa Korea atau sinyal staf berbahasa Korea.",
+    "vi": "Có — {n} trong số các danh sách {top} {city} {niche} hàng đầu của chúng tôi có đánh giá bằng tiếng Hàn hoặc tín hiệu từ nhân viên nói tiếng Hàn."
+  },
+  "gf_beginner_q": {
+    "ko": "초보자 친화적인 옵션이 있나요?",
+    "th": "มีตัวเลือกที่เหมาะสำหรับผู้เริ่มต้นหรือไม่?",
+    "zh": "有适合初学者的选项吗？",
+    "ja": "初心者向けのオプションはありますか？",
+    "ar": "هل هناك خيارات مناسبة للمبتدئين؟",
+    "id": "Apakah ada opsi yang ramah pemula?",
+    "vi": "Có những lựa chọn thân thiện với người mới bắt đầu không?"
+  },
+  "gf_beginner_a": {
+    "ko": "우리 리뷰 집계에서 상위 {top} {city} {niche} 장소 중 {n}개가 초보자 친화적으로 표시되어 있습니다.",
+    "th": "{n} ของสถานที่ {top} {city} {niche} ที่ดีที่สุดถูกระบุว่าเหมาะสำหรับผู้เริ่มต้นในข้อมูลรีวิวของเรา",
+    "zh": "在我们的评论汇总中，{n}个{city}的顶级{niche}场所被标记为适合初学者。",
+    "ja": "トップ{top} {city} {niche}の{n}は、私たちのレビュー集計で初心者向けとしてフラグ付けされています。",
+    "ar": "{n} من أفضل {top} أماكن {city} {niche} تم وضع علامة عليها كمناسبة للمبتدئين في تجميع تقييماتنا.",
+    "id": "{n} dari {top} tempat {niche} di {city} yang teratas ditandai sebagai ramah pemula dalam agregasi ulasan kami.",
+    "vi": "{n} trong số các địa điểm {top} {city} {niche} hàng đầu được đánh dấu là thân thiện với người mới bắt đầu trong tổng hợp đánh giá của chúng tôi."
+  },
+  "gf_24h_q": {
+    "ko": "24시간 운영되는 장소가 있나요?",
+    "th": "มีสถานที่เปิด 24 ชั่วโมงหรือไม่?",
+    "zh": "有24小时营业的场所吗？",
+    "ja": "24時間営業の場所はありますか？",
+    "ar": "هل هناك أماكن مفتوحة على مدار 24 ساعة؟",
+    "id": "Apakah ada tempat yang buka 24 jam?",
+    "vi": "Có địa điểm nào mở cửa 24 giờ không?"
+  },
+  "gf_24h_a": {
+    "ko": "네 — 상위 {city} {niche} 목록 중 최소 한 곳은 24시간 운영됩니다. 개별 목록의 운영 시간을 확인하세요.",
+    "th": "ใช่ — อย่างน้อยหนึ่งในรายการ {niche} ที่ดีที่สุดใน {city} ของเราเปิด 24 ชั่วโมง ตรวจสอบเวลาทำการของแต่ละรายการเพื่อการยืนยัน",
+    "zh": "是的 — 我们在{city}的顶级{niche}列表中至少有一个场所24小时营业。请查看每个列表的营业时间以确认。",
+    "ja": "はい — 私たちのトップ{city} {niche}リストの少なくとも1つは24時間営業です。個別リスティングの営業時間を確認してください。",
+    "ar": "نعم — على الأقل واحدة من قوائم {city} {niche} لدينا تعمل على مدار 24 ساعة. تحقق من ساعات كل قائمة للتأكيد.",
+    "id": "Ya — setidaknya salah satu dari daftar {niche} {city} teratas kami beroperasi 24 jam. Periksa jam buka setiap daftar untuk konfirmasi.",
+    "vi": "Có — ít nhất một trong số các danh sách {city} {niche} hàng đầu của chúng tôi hoạt động 24 giờ. Kiểm tra giờ mở cửa của từng danh sách để xác nhận."
+  },
+  "gf_paid_q": {
+    "ko": "Verified Thai는 유료 게재를 수락하나요?",
+    "th": "Verified Thai ยอมรับการจ่ายเงินเพื่อการโปรโมทหรือไม่?",
+    "zh": "Verified Thai接受付费置顶吗？",
+    "ja": "Verified Thaiは報酬の掲載を受け入れますか？",
+    "ar": "هل تقبل المواقع الموثوقة الترتيبات المدفوعة؟",
+    "id": "Apakah Verified Thai menerima penempatan berbayar?",
+    "vi": "Có phải Verified Thai chấp nhận vị trí trả phí không?"
+  },
+  "gf_paid_a": {
+    "ko": "아니요. 목록은 순전히 우리 독립적인 신뢰 점수에 따라 순위가 매겨집니다 — Google 리뷰, Reddit, Naver, Pantip, YouTube 언급 및 공식 웹사이트 확인의 복합체입니다.",
+    "th": "ไม่ สถานที่ต่าง ๆ ถูกจัดอันดับอย่างบริสุทธิ์ใจโดยคะแนนความน่าเชื่อถือของเรา — ซึ่งเป็นการผสมผสานจากรีวิว Google, Reddit, Naver, Pantip, YouTube, และการตรวจสอบเว็บไซต์ทางการ",
+    "zh": "不接受。列表纯粹按照我们的独立信任评分排序 — 该评分由Google评论、Reddit、Naver、Pantip、YouTube提及和官方网站验证组成。",
+    "ja": "いいえ。リスティングは私たちの独立したトラストスコアに基づいて純粋にランキングされています — Googleレビュー、Reddit、Naver、Pantip、YouTubeの言及、公式ウェブサイトの確認の複合体です。",
+    "ar": "لا. يتم ترتيب القوائم فقط بناءً على درجة الثقة المستقلة لدينا — وهي مركب من تقييمات Google، Reddit، Naver، Pantip، إشارات YouTube، والتحقق من المواقع الرسمية.",
+    "id": "Tidak. Daftar diurutkan murni berdasarkan Skor Kepercayaan independen kami — komposit dari ulasan Google, Reddit, Naver, Pantip, sebutan YouTube, dan verifikasi situs web resmi.",
+    "vi": "Không. Các danh sách được xếp hạng hoàn toàn theo Trust Score độc lập của chúng tôi — một tổng hợp của đánh giá từ Google, Reddit, Naver, Pantip, YouTube và xác minh từ trang web chính thức."
   }
 }
