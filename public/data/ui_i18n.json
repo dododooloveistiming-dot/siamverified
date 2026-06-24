@@ -1512,5 +1512,644 @@
     "ar": "تستند معظم قوائم \"الأفضل\" إلى مصدر واحد (مراجعات Google، الترويجات المدفوعة، رأي محرر واحد). نحن نطلب دليلًا: إشارة يمكن التحقق منها والتحقق عبر مصادر متعددة عبر Google وReddit وNaver وPantip وYouTube وموقع المكان نفسه. لا توجد أماكن مدفوعة - الترتيب يعتمد على درجة ثقتنا.",
     "id": "Sebagian besar daftar \"terbaik\" menarik dari satu sumber (ulasan Google, promosi berbayar, pendapat satu editor). Kami membutuhkan bukti: sinyal yang dapat diverifikasi DAN verifikasi lintas sumber di Google, Reddit, Naver, Pantip, YouTube, dan situs web tempat itu sendiri. Tidak ada penempatan berbayar — urutan berdasarkan skor kepercayaan kami.",
     "vi": "Hầu hết các danh sách \"tốt nhất\" đều lấy từ một nguồn duy nhất (đánh giá Google, quảng cáo trả tiền, ý kiến của một biên tập viên). Chúng tôi yêu cầu bằng chứng: một tín hiệu có thể xác minh VÀ xác minh từ nhiều nguồn trên Google, Reddit, Naver, Pantip, YouTube và trang web của địa điểm. Không có vị trí trả tiền — thứ tự dựa trên điểm số uy tín của chúng tôi."
+  },
+  "ab_meta_title": {
+    "ko": "정보 및 연락처",
+    "th": "เกี่ยวกับ & ติดต่อ",
+    "zh": "关于与联系",
+    "ja": "お問い合わせ & について",
+    "ar": "حول & اتصال",
+    "id": "Tentang & Kontak",
+    "vi": "Giới thiệu & Liên hệ"
+  },
+  "ab_meta_desc": {
+    "ko": "신윤민이 만든 독립적인 태국 디렉토리. 유료 프로모션 없음, 인플루언서 리뷰 없음 — 6개의 교차 검증된 출처의 데이터만 제공합니다.",
+    "th": "ดัชนีประเทศไทยอิสระสร้างโดยชิน ยุนมิน ไม่มีการโปรโมตแบบชำระเงิน ไม่มีรีวิวของผู้มีอิทธิพล — มีแต่ข้อมูลจาก 6 แหล่งข้อมูลที่ตรวจสอบแล้ว.",
+    "zh": "由申允敏建立的独立泰国目录。没有付费推广，没有影响者评论——只有来自6个交叉验证源的数据。",
+    "ja": "Shin Yunminが構築した独立したタイディレクトリ。広告プロモーションなし、インフルエンサーのレビューなし — 6つのクロス検証済みソースからのデータのみ。",
+    "ar": "دليل تايلاند المستقل الذي أنشأه شين يونمين. بدون ترويج مدفوع، بدون مراجعات المؤثرين - فقط بيانات من 6 مصادر مستقلة.",
+    "id": "Direktori Thailand independen yang dibangun oleh Shin Yunmin. Tanpa promosi berbayar, tanpa ulasan influencer — hanya data dari 6 sumber yang terverifikasi silang.",
+    "vi": "Danh bạ Thái Lan độc lập được xây dựng bởi Shin Yunmin. Không quảng cáo trả phí, không đánh giá của người ảnh hưởng — chỉ có dữ liệu từ 6 nguồn đã được xác minh chéo."
+  },
+  "ab_crumb": {
+    "ko": "정보",
+    "th": "เกี่ยวกับ",
+    "zh": "关于",
+    "ja": "について",
+    "ar": "حول",
+    "id": "Tentang",
+    "vi": "Giới thiệu"
+  },
+  "ab_h1": {
+    "ko": "정보 및 연락처",
+    "th": "เกี่ยวกับ & ติดต่อ",
+    "zh": "关于与联系",
+    "ja": "お問い合わせ & について",
+    "ar": "حول & اتصال",
+    "id": "Tentang & Kontak",
+    "vi": "Giới thiệu & Liên hệ"
+  },
+  "ab_founder": {
+    "ko": "창립자",
+    "th": "ผู้ก่อตั้ง",
+    "zh": "创始人",
+    "ja": "創設者",
+    "ar": "المؤسس",
+    "id": "Pendiri",
+    "vi": "Người sáng lập"
+  },
+  "ab_bio": {
+    "ko": "데이터 아키텍트, 12년 이상 경력. 방콕에 거주하는 한국인 창립자로 태국 시장을 위한 제품을 개발하고 있습니다.",
+    "th": "นักออกแบบข้อมูล, มากกว่า 12 ปี. ผู้ก่อตั้งชาวเกาหลีที่ตั้งอยู่ในกรุงเทพฯ สร้างผลิตภัณฑ์สำหรับตลาดไทย.",
+    "zh": "数据架构师，超过12年经验。驻曼谷的韩国创始人，为泰国市场开发产品。",
+    "ja": "データアーキテクト、12年以上。バンコクを拠点とする韓国の創設者で、タイ市場向けの製品を構築しています。",
+    "ar": "مهندس بيانات، أكثر من 12 عامًا. مؤسس كوري مقيم في بانكوك، يبني منتجات لسوق التايلاندي.",
+    "id": "Arsitek data, 12+ tahun. Pendiri Korea yang berbasis di Bangkok, membangun produk untuk pasar Thailand.",
+    "vi": "Kiến trúc sư dữ liệu, hơn 12 năm kinh nghiệm. Người sáng lập Hàn Quốc sống tại Bangkok, xây dựng sản phẩm cho thị trường Thái."
+  },
+  "ab_why_label": {
+    "ko": "왜 검증된 태국이 존재하는가:",
+    "th": "ทำไม Verified Thai ถึงมีอยู่:",
+    "zh": "为何存在Verified Thai:",
+    "ja": "Verified Thaiが存在する理由：",
+    "ar": "لماذا يوجد Verified Thai:",
+    "id": "Mengapa Verified Thai ada:",
+    "vi": "Tại sao Verified Thai tồn tại:"
+  },
+  "ab_why": {
+    "ko": "인스타그램이나 틱톡을 열고 태국의 요가 스튜디오, 스파 또는 무에타이 체육관을 검색해 보세요 — \"방콕에서의 10대 명소\" 비디오를 찍기 위해 돈을 지불한 인플루언서들이 추천한 동일한 장소들만 나올 것입니다. 실제 최고의 장소는 마케팅 예산을 가진 사람들에 의해 가려져 버립니다. 그래서 저는 6개의 독립적인 출처 — 구글, 레딧, 네이버, 팬픽, 유튜브, 북이미드, 공식 사이트 — 에 맞추어 모든 목록을 교차 확인하고 실제 고객의 의견에 따라 순위를 매겼습니다. 유료 결제 없음. \"대사\" 거래 없음. 필터링된 비디오 없음.",
+    "th": "เปิด Instagram หรือ TikTok และค้นหาสตูดิโอโยคะ สปา หรือยิมมวยไทยในประเทศไทย — คุณจะพบสถานที่เดียวกันไม่กี่แห่งที่มีผู้มีอิทธิพลชำระเงินให้ถ่ายทำวิดีโอ \"10 อันดับที่ดีที่สุดในกรุงเทพฯ\" สถานที่ที่ดีที่สุดจริงๆ จะถูกกลบโดยผู้ที่มีงบประมาณการตลาด ดังนั้นฉันจึงตรวจสอบทุกรายการกับ 6 แหล่งข้อมูลอิสระ — Google, Reddit, Naver, Pantip, YouTube, Bookimed, เว็บไซต์ทางการ — และจัดอันดับตามสิ่งที่ลูกค้าจริงพูด ไม่มีการชำระเงิน ไม่มีดีล \"เอกอัครราชทูต\" ไม่มีรายการที่ทำกรอง.",
+    "zh": "在Instagram或TikTok上搜索泰国的瑜伽工作室、水疗中心或拳击健身房——你会看到一 handful 同样的地方，这些地方付费的影响者拍摄了\"曼谷十大最佳\"短视频。真正最好的地方被拥有营销预算的人掩盖。因此，我将每个列表与6个独立来源进行交叉验证——Google、Reddit、Naver、Pantip、YouTube、Bookimed、官方网站——并根据真实客户的反馈进行排名。没有支付。没有\"大使\"交易。没有经过筛选的短视频。",
+    "ja": "InstagramやTikTokを開いて、タイのヨガスタジオ、スパ、またはムエタイジムを検索してみてください — \"バンコクのベスト10\"のリールを撮影したインフルエンサーが支払った同じ数の場所が表示されます。実際の優れた場所は、マーケティング予算を持つ者に埋もれてしまいます。そこで、私は6つの独立したソース — Google、Reddit、Naver、Pantip、YouTube、Bookimed、公式サイト — との照合を行い、実際の顧客の声に基づいてランキングしました。支払いなし。\"アンバサダー\"契約なし。フィルターされたリールなし。",
+    "ar": "افتح إنستغرام أو تيك توك وابحث عن استوديو يوغا، سبا، أو صالة موياي تاي في تايلاند - ستحصل على نفس handful من الأماكن التي دفعت للمؤثرين لتصوير مقاطع \"أفضل 10 في بانكوك\". الأماكن الأفضل فعليًا تُغمر من قبل من لديهم ميزانية تسويقية. لذا قمت بفحص كل قائمة مقابل 6 مصادر مستقلة - جوجل، رديت، نافر، بانتيب، يوتيوب، بوكيميد، المواقع الرسمية - وقمت بتصنيفها بناءً على ما يقوله العملاء الحقيقيون. لا مدفوعات. لا صفقات \"سفير\". لا مقاطع مصفاة.",
+    "id": "Buka Instagram atau TikTok dan cari studio yoga, spa, atau gym muay thai di Thailand — Anda akan mendapatkan tempat yang sama yang membayar influencer untuk merekam \"10 terbaik di Bangkok\". Tempat terbaik sebenarnya akan tenggelam oleh siapa pun yang memiliki anggaran pemasaran. Jadi saya memeriksa setiap daftar dengan 6 sumber independen — Google, Reddit, Naver, Pantip, YouTube, Bookimed, situs resmi — dan memberi peringkat berdasarkan apa yang dikatakan pelanggan sebenarnya. Tidak ada pembayaran. Tidak ada kesepakatan \"duta\". Tidak ada reel yang difilter.",
+    "vi": "Mở Instagram hoặc TikTok và tìm một studio yoga, spa, hoặc phòng gym muay thái ở Thái Lan — bạn sẽ nhận được cùng một vài địa điểm đã trả tiền cho những người ảnh hưởng để quay các video \"10 địa điểm tốt nhất ở Bangkok\". Những địa điểm thực sự tốt bị lấn át bởi bất kỳ ai có ngân sách tiếp thị. Vì vậy, tôi đã kiểm tra chéo mỗi danh sách với 6 nguồn độc lập — Google, Reddit, Naver, Pantip, YouTube, Bookimed, các trang chính thức — và xếp hạng chúng dựa trên những gì khách hàng thực sự nói. Không thanh toán. Không có thỏa thuận \"đại sứ\". Không video đã lọc."
+  },
+  "ab_contact": {
+    "ko": "연락처",
+    "th": "ติดต่อ",
+    "zh": "联系",
+    "ja": "お問い合わせ",
+    "ar": "اتصل",
+    "id": "Kontak",
+    "vi": "Liên hệ"
+  },
+  "ab_email_label": {
+    "ko": "이메일",
+    "th": "อีเมล",
+    "zh": "电子邮件",
+    "ja": "メール",
+    "ar": "البريد الإلكتروني",
+    "id": "Email",
+    "vi": "Email"
+  },
+  "ab_email_sub": {
+    "ko": "24시간 이내 답변",
+    "th": "ตอบกลับภายใน 24 ชั่วโมง",
+    "zh": "24小时内回复",
+    "ja": "24時間以内に返信",
+    "ar": "ردود خلال 24 ساعة",
+    "id": "Balasan dalam 24 jam",
+    "vi": "Phản hồi trong vòng 24 giờ"
+  },
+  "ab_line_sub": {
+    "ko": "빠른 질문에 가장 빠름",
+    "th": "รวดเร็วสำหรับคำถามด่วน",
+    "zh": "快速回答快速问题",
+    "ja": "迅速な質問には最適",
+    "ar": "الأسرع للأسئلة السريعة",
+    "id": "Paling cepat untuk pertanyaan cepat",
+    "vi": "Nhanh nhất cho các câu hỏi nhanh"
+  },
+  "ab_wa_label": {
+    "ko": "WhatsApp / 전화",
+    "th": "WhatsApp / โทรศัพท์",
+    "zh": "WhatsApp / 电话",
+    "ja": "WhatsApp / 電話",
+    "ar": "واتساب / هاتف",
+    "id": "WhatsApp / Telepon",
+    "vi": "WhatsApp / Điện thoại"
+  },
+  "ab_office": {
+    "ko": "방콕 사무소",
+    "th": "สำนักงานกรุงเทพฯ",
+    "zh": "曼谷办公室",
+    "ja": "バンコクオフィス",
+    "ar": "مكتب بانكوك",
+    "id": "Kantor Bangkok",
+    "vi": "Văn phòng Bangkok"
+  },
+  "tr_crumb": {
+    "ko": "신뢰 방법론",
+    "th": "วิธีการไว้ใจ",
+    "zh": "信任方法论",
+    "ja": "信頼の方法論",
+    "ar": "منهجية الثقة",
+    "id": "Metodologi kepercayaan",
+    "vi": "Phương pháp tin cậy"
+  },
+  "tr_h1": {
+    "ko": "{site} 신뢰 점수는 어떻게 작동하나요",
+    "th": "วิธีการทำงานของคะแนนความไว้วางใจ {site}",
+    "zh": "{site} 信任评分如何运作",
+    "ja": "{site}の信頼スコアの仕組み",
+    "ar": "كيف يعمل مؤشر الثقة {site}",
+    "id": "Cara kerja skor kepercayaan {site}",
+    "vi": "Cách thức hoạt động của điểm tin cậy {site}"
+  },
+  "tr_sub": {
+    "ko": "6개의 공개 출처를 통해 모든 장소를 교차 검증하고, 가짜로 만들 수 없는 신뢰 신호 — archive.org 나이, DNS 인프라, 실시간 리뷰 활동 — 를 추가하여 0-100 점수를 만듭니다. 유료 배치 없음. 아래에 전체 방법론이 있습니다.",
+    "th": "เราตรวจสอบทุกสถานที่ทั่วหกแหล่งข้อมูลสาธารณะ จากนั้นเพิ่มสัญญาณที่ไม่สามารถทำเป็นปลอมหรือเห็นได้ชัด — อายุจาก archive.org, โครงสร้างพื้นฐาน DNS, กิจกรรมรีวิวแบบเรียลไทม์ — เพื่อให้ได้คะแนนเดียวในช่วง 0-100 ไม่มีการวางเงินแบบชำระ. รายละเอียดวิธีการทั้งหมดด้านล่าง.",
+    "zh": "我们对每个场所在六个公共来源中进行交叉检查，然后叠加你无法伪造的丰富信号——archive.org 年龄、DNS基础设施、实时评论活动——以生成单一的0-100评分。没有付费位置。完整的方法论在下面。",
+    "ja": "6つの公的ソースにわたってすべての施設をクロスチェックし、その後、偽物を作ることができない強化信号 — archive.orgの年齢、DNSインフラ、リアルタイムのレビューアクティビティ — を重ねて0-100のスコアを生成します。広告掲載なし。完全な方法論は以下。",
+    "ar": "نقوم بفحص كل موقع عبر ستة مصادر عامة، ثم نضيف إشارات تجديد لا يمكن تزويرها - عمر archive.org، بنية DNS، نشاط المراجعة في الوقت الحقيقي - لإنتاج نقطة واحدة من 0-100. لا مش placements مدفوعة. المنهجية الكاملة أدناه.",
+    "id": "Kami memeriksa setiap tempat di enam sumber publik, kemudian menambahkan sinyal pengayaan yang tidak bisa dipalsukan — usia archive.org, infrastruktur DNS, aktivitas ulasan waktu nyata — untuk menghasilkan skor tunggal 0-100. Tanpa penempatan berbayar. Metodologi lengkap di bawah.",
+    "vi": "Chúng tôi kiểm tra chéo mỗi địa điểm qua sáu nguồn công khai, sau đó thêm các tín hiệu làm phong phú mà bạn không thể giả mạo — tuổi archive.org, hạ tầng DNS, hoạt động đánh giá theo thời gian thực — để tạo ra một điểm số duy nhất từ 0-100. Không có vị trí trả phí. Phương pháp đầy đủ bên dưới."
+  },
+  "tr_coverage": {
+    "ko": "현재 범위",
+    "th": "การครอบคลุมในขณะนี้",
+    "zh": "目前的覆盖范围",
+    "ja": "現在のカバレッジ",
+    "ar": "التغطية الحالية",
+    "id": "Cakupan saat ini",
+    "vi": "Phạm vi hiện tại"
+  },
+  "tr_coverage_sub": {
+    "ko": "최신 빌드의 실시간 숫자.",
+    "th": "ตัวเลขสดจากการสร้างล่าสุดของเรา.",
+    "zh": "来自我们最新构建的实时数据。",
+    "ja": "最新のビルドからのライブデータ。",
+    "ar": "أرقام حية من أحدث إصدار لدينا.",
+    "id": "Angka langsung dari pembuatan terbaru kami.",
+    "vi": "Số liệu trực tiếp từ bản xây dựng mới nhất của chúng tôi."
+  },
+  "tr_stat_venues": {
+    "ko": "검증된 장소",
+    "th": "สถานที่ที่ตรวจสอบ",
+    "zh": "验证场所",
+    "ja": "検証済み施設",
+    "ar": "الأماكن المعتمدة",
+    "id": "Tempat terverifikasi",
+    "vi": "Địa điểm đã xác minh"
+  },
+  "tr_stat_estab": {
+    "ko": "설립된 (5년 이상 전)",
+    "th": "ก่อตั้ง (ย้อนหลัง 5 ปี+)",
+    "zh": "成立（5年以上）",
+    "ja": "設立済み (5年以上前)",
+    "ar": "تأسيس (5 سنوات أو أكثر)",
+    "id": "Didirikan (5y+ waktu lalu)",
+    "vi": "Thành lập (từ 5 năm trở lên)"
+  },
+  "tr_stat_vet": {
+    "ko": "베테랑 (10년 이상 전)",
+    "th": "ผู้มีประสบการณ์ (ย้อนหลัง 10 ปี+)",
+    "zh": "资深（10年以上）",
+    "ja": "ベテラン (10年以上前)",
+    "ar": "محترفون (10 سنوات أو أكثر)",
+    "id": "Veteran (10y+ waktu lalu)",
+    "vi": "Cựu binh (từ 10 năm trở lên)"
+  },
+  "tr_stat_act90": {
+    "ko": "최근 90일간 활동",
+    "th": "กิจกรรมใน 90 วันที่ผ่านมา",
+    "zh": "过去90天活跃",
+    "ja": "過去90日間にアクティブ",
+    "ar": "نشط في آخر 90 يومًا",
+    "id": "Aktif dalam 90 hari terakhir",
+    "vi": "Hoạt động trong 90 ngày qua"
+  },
+  "tr_stat_act30": {
+    "ko": "최근 30일간 활동",
+    "th": "กิจกรรมใน 30 วันที่ผ่านมา",
+    "zh": "过去30天活跃",
+    "ja": "過去30日間にアクティブ",
+    "ar": "نشط في آخر 30 يومًا",
+    "id": "Aktif dalam 30 hari terakhir",
+    "vi": "Hoạt động trong 30 ngày qua"
+  },
+  "tr_stat_email": {
+    "ko": "전문 이메일 인프라",
+    "th": "โครงสร้างพื้นฐานอีเมลระดับมืออาชีพ",
+    "zh": "专业电子邮件基础设施",
+    "ja": "プロのメールインフラ",
+    "ar": "بنية تحتية احترافية للبريد الإلكتروني",
+    "id": "Infrastruktur email profesional",
+    "vi": "Hạ tầng email chuyên nghiệp"
+  },
+  "tr_sources": {
+    "ko": "여섯 개의 기본 출처",
+    "th": "แหล่งข้อมูลพื้นฐานทั้งหก",
+    "zh": "六个基础来源",
+    "ja": "6つの基本ソース",
+    "ar": "المصادر الأساسية الستة",
+    "id": "Enam sumber dasar",
+    "vi": "Sáu nguồn cơ bản"
+  },
+  "tr_src1_n": {
+    "ko": "구글 맵 리뷰",
+    "th": "รีวิว Google Maps",
+    "zh": "Google Maps 评论",
+    "ja": "Google マップレビュー",
+    "ar": "مراجعات خرائط جوجل",
+    "id": "Ulasan Google Maps",
+    "vi": "Đánh giá Google Maps"
+  },
+  "tr_src1_d": {
+    "ko": "리뷰 수, 평균 평점, 사진 수. 가장 신호 밀도가 높지만 가장 쉽게 부풀릴 수 있어, 장소당 최대한 제한됩니다.",
+    "th": "จำนวนรีวิว, คะแนนเฉลี่ย, จำนวนภาพ. มีความหนาแน่นของสัญญาณมากที่สุดแต่ก็ง่ายที่สุดที่จะทำให้เพิ่มขึ้น, ดังนั้นจึงมีการจำกัดจำนวนต่อสถานที่.",
+    "zh": "评论数量、平均评分、照片数量。信号密度最大，但最容易膨胀，因此每个场所有上限。",
+    "ja": "レビュー数、平均評価、写真数。信号密度が最も高いですが、膨らませやすいため、施設ごとに上限があります。",
+    "ar": "عدد المراجعات، متوسط التقييم، عدد الصور. كثافة الإشارة الأعلى ولكن الأسهل في التلاعب، لذا محدود لكل موقع.",
+    "id": "Jumlah ulasan, rating rata-rata, jumlah foto. Kepadatan sinyal paling tinggi tapi paling mudah untuk diperbesar, jadi dibatasi per tempat.",
+    "vi": "Số lượng đánh giá, xếp hạng trung bình, số lượng hình ảnh. Tín hiệu dày đặc nhất nhưng dễ bị thổi phồng nhất, vì vậy bị giới hạn theo địa điểm."
+  },
+  "tr_src2_n": {
+    "ko": "레딧 스레드",
+    "th": "หัวข้อ Reddit",
+    "zh": "Reddit 线程",
+    "ja": "Redditスレッド",
+    "ar": "مواضيع ريديت",
+    "id": "Thread Reddit",
+    "vi": "Diễn đàn Reddit"
+  },
+  "tr_src2_d": {
+    "ko": "r/Thailand, r/ThailandTourism 및 r/MuayThai와 같은 틈새 서브에서 언급된 내용. 명백한 조작 없이는 가짜로 만들기 어렵습니다.",
+    "th": "การกล่าวถึงใน r/Thailand, r/ThailandTourism และซับที่เฉพาะอย่างเช่น r/MuayThai. ยากที่จะปลอมโดยไม่มีการจัดการที่ชัดเจน.",
+    "zh": "在 r/Thailand、r/ThailandTourism 和 r/MuayThai 等细分小组中的提及。没有明显操控的情况下，难以伪造。",
+    "ja": "r/Thailand、r/ThailandTourism、r/MuayThaiのようなニッチなサブでの言及。明らかな操作なしでは偽造が難しい。",
+    "ar": "الذكر عبر r/Thailand، r/ThailandTourism، ونقاط فرعية كـ r/MuayThai. من الصعب تزييفها دون تلاعب واضح.",
+    "id": "Sebutkan di r/Thailand, r/ThailandTourism, dan sub niche seperti r/MuayThai. Sulit dipalsukan tanpa manipulasi yang jelas.",
+    "vi": "Đề cập qua r/Thailand, r/ThailandTourism, và các subs theo ngách như r/MuayThai. Khó giả mạo nếu không có sự thao túng rõ ràng."
+  },
+  "tr_src3_n": {
+    "ko": "네이버 블로그 게시물",
+    "th": "โพสต์บล็อก Naver",
+    "zh": "Naver 博客文章",
+    "ja": "Naverブログ投稿",
+    "ar": "مقالات مدونة Naver",
+    "id": "Postingan Blog Naver",
+    "vi": "Bài viết Blog Naver"
+  },
+  "tr_src3_d": {
+    "ko": "한국 블로거 리뷰 — 한국 친화적인 장소에 대한 높은 신뢰도. 장소 페이지에 특정 게시물을 노출합니다.",
+    "th": "รีวิวจากบล็อกเกอร์เกาหลี — สัญญาณที่มีคุณภาพสำหรับสถานที่ที่เป็นมิตรกับเกาหลี เราจะแสดงโพสต์เฉพาะบนหน้าเวที",
+    "zh": "韩国博主评论 — 对于KR友好的场所高度信号。我们在场所页面上展示特定帖子。",
+    "ja": "韓国のブロガーのレビュー — 韓国に優しい場所の重要なシグナル。特定の投稿を施設ページに表示します。",
+    "ar": "مراجعات المدونين الكوريين — إشارات قوية للأماكن المناسبة للأصدقاء الكوريين. نبرز منشورات محددة على صفحة المكان.",
+    "id": "Ulasan blogger Korea — sinyal tinggi untuk tempat yang ramah KR. Kami menampilkan pos tertentu di halaman tempat.",
+    "vi": "Đánh giá của blogger Hàn Quốc — tín hiệu cao cho các địa điểm thân thiện với KR. Chúng tôi làm nổi bật các bài viết cụ thể trên trang địa điểm."
+  },
+  "tr_src4_n": {
+    "ko": "판팁 토론",
+    "th": "การสนทนาใน Pantip",
+    "zh": "Pantip 讨论",
+    "ja": "Pantipディスカッション",
+    "ar": "مناقشات Pantip",
+    "id": "Diskusi Pantip",
+    "vi": "Thảo luận trên Pantip"
+  },
+  "tr_src4_d": {
+    "ko": "태국어 포럼 언급. 지역의 의견, 비태국 기업이 조작하기 어렵습니다.",
+    "th": "การพูดคุยในฟอรัมภาษาไทย ความคิดเห็นท้องถิ่น, ยากสำหรับธุรกิจที่ไม่ใช่ไทยที่จะจัดการ",
+    "zh": "泰语论坛提及。当地意见，非泰国企业更难操控。",
+    "ja": "タイ語フォーラムの言及。地元の意見で、非タイ企業が操作するのは難しい。",
+    "ar": "إشارات في منتدى باللغة التايلاندية. آراء محلية، أصعب على الشركات غير التايلاندية التلاعب بها.",
+    "id": "Sebutkan di forum berbahasa Thai. Pendapat lokal, lebih sulit untuk bisnis non-Thai untuk dimanipulasi.",
+    "vi": "Đề cập trên diễn đàn ngôn ngữ Thái. Ý kiến địa phương, khó điều khiển hơn cho các doanh nghiệp không phải Thái."
+  },
+  "tr_src5_n": {
+    "ko": "유튜브 비디오",
+    "th": "วิดีโอ YouTube",
+    "zh": "YouTube 视频",
+    "ja": "YouTube動画",
+    "ar": "مقاطع فيديو YouTube",
+    "id": "Video YouTube",
+    "vi": "Video YouTube"
+  },
+  "tr_src5_d": {
+    "ko": "리뷰, 브이로그 및 체육관/스파 체험기. 장소가 운영하는 채널이 있다면 추가 가점 (/about 페이지 메타데이터를 통해 검증됨).",
+    "th": "รีวิว, บล็อกวิดีโอ, และการเดินชมยิม/สปา คะแนนพิเศษถ้าสถานที่ดำเนินช่องของตัวเอง (ตรวจสอบผ่านข้อมูลเมตาบนหน้า /about)",
+    "zh": "评论、视频博客以及健身房/水疗中心的导览。如果场所运营自己的频道（通过/about页面元数据验证），则加分。",
+    "ja": "レビュー、ブログ、ジム/スパのウォークスルー。施設が独自のチャンネルを運営している場合はボーナスが増加します（/aboutページのメタデータによって確認）。",
+    "ar": "مراجعات، مدونات فيديو، وجولات في الصالات الرياضية/المنتجعات. وزن إضافي إذا كانت المنشأة تدير قناة مملوكة (تم التحقق منها عبر بيانات الصفحة /about).",
+    "id": "Ulasan, vlog, dan tur gym/spa. Bonus berat jika tempat menjalankan saluran milik (dibuktikan melalui metadata halaman /about).",
+    "vi": "Đánh giá, vlog và hướng dẫn phòng tập/spa. Cộng thêm trọng số nếu địa điểm chạy kênh riêng (được xác minh qua metadata trang /about)."
+  },
+  "tr_src6_n": {
+    "ko": "장소의 공식 웹사이트",
+    "th": "เว็บไซต์ของสถานที่",
+    "zh": "场所自有网站",
+    "ja": "施設の公式ウェブサイト",
+    "ar": "الموقع الإلكتروني الخاص بالمنشأة",
+    "id": "Situs web resmi tempat",
+    "vi": "Website của địa điểm"
+  },
+  "tr_src6_d": {
+    "ko": "작동하는 홈페이지가 필요합니다. 사이트는 응답해야 하며, 색인 가능해야 하며, 주차된 도메인이 아니어야 합니다 — 스크랩 시점에 확인됩니다.",
+    "th": "เราต้องการให้มีหน้าแรกที่ทำงานได้ เว็บไซต์ต้องตอบสนอง สามารถจัดทำดัชนี และไม่ใช่โดเมนที่จอด — ตรวจสอบในช่วงเวลารวบรวมข้อมูล",
+    "zh": "我们需要一个有效的主页。网站必须响应、可索引，并且不能是停放域名 — 在抓取时检查。",
+    "ja": "動作するホームページを必要とします。サイトは応答し、インデックス可能で、駐車ドメインであってはなりません — スクレイプ時に確認。",
+    "ar": "نحتاج إلى صفحة رئيسية تعمل. يجب أن تستجيب المواقع، تكون قابلة للفهرسة، ولا تكون نطاقات محجوزة — يتم التحقق منها عند وقت التجريف.",
+    "id": "Kami memerlukan beranda yang berfungsi. Situs harus merespons, dapat diindeks, dan bukan domain yang diparkir — diperiksa saat pengambilan.",
+    "vi": "Chúng tôi yêu cầu một trang chính hoạt động. Các trang phải phản hồi, có thể lập chỉ mục, và không phải là miền đỗ — được kiểm tra vào thời điểm thu thập."
+  },
+  "tr_enrich": {
+    "ko": "강화 신호 (부스트 레이어)",
+    "th": "สัญญาณการเสริมความเข้มข้น (ชั้นเพิ่ม)",
+    "zh": "增强信号（提升层）",
+    "ja": "エンリッチメントシグナル（ブーストレイヤー）",
+    "ar": "إشارات تعزيز (طبقة تعزيز)",
+    "id": "Sinyal Peningkatan (lapisan tambahan)",
+    "vi": "Tín hiệu làm phong phú (tầng tăng cường)"
+  },
+  "tr_enrich_sub": {
+    "ko": "조작에 저항하는 신호에 대해 기본 점수에 최대 +25 추가.",
+    "th": "เพิ่มคะแนนได้สูงสุด +25 สำหรับสัญญาณที่ต้านทานการจัดการ",
+    "zh": "针对抗操控信号，基础分数可增加最多+25。",
+    "ja": "操作に抵抗するシグナルに対して、基礎スコアに最大+25を追加します。",
+    "ar": "حتى +25 نقطة تضاف إلى النقطة الأساسية لإشارات تصمد أمام التلاعب.",
+    "id": "Sampai +25 poin tambahan pada skor dasar untuk sinyal yang sulit untuk dimanipulasi.",
+    "vi": "Tối đa +25 điểm bổ sung vào điểm số cơ bản cho các tín hiệu kháng lại thao túng."
+  },
+  "tr_b1_n": {
+    "ko": "베테랑 (10년 이상)",
+    "th": "Veteran (10 ปีขึ้นไป)",
+    "zh": "老字号（10年以上）",
+    "ja": "ベテラン (10年以上)",
+    "ar": "قديم (10 سنوات +)",
+    "id": "Veteran (10y+)",
+    "vi": "Có thâm niên (trên 10 năm)"
+  },
+  "tr_b1_d": {
+    "ko": "archive.org 첫 캡처 ≥10년 전 — 해당 장소는 10년 전에 실제 웹사이트를 가졌습니다.",
+    "th": "การจับภาพครั้งแรกที่ archive.org ≥10 ปีที่แล้ว — สถานที่นั้นมีเว็บไซต์จริงเมื่อสิบปีก่อน",
+    "zh": "archive.org首次抓取≥10年前 — 场所在十年前有真正的网站",
+    "ja": "archive.org の最初のキャプチャが10年以上前 — 施設は10年前に実際のウェブサイトを持っていました",
+    "ar": "أول تسجيل على archive.org ≥10 سنوات مضت — كانت المنشأة تمتلك موقعًا حقيقيًا منذ عقد مضى",
+    "id": "tangkapan pertama archive.org ≥10 tahun yang lalu — tempat memiliki situs web nyata satu dekade yang lalu",
+    "vi": "Lần đầu tiên capture trên archive.org ≥10 năm trước — địa điểm đã có một trang web thực sự một thập kỷ trước"
+  },
+  "tr_b2_n": {
+    "ko": "활동 중 (30일)",
+    "th": "ใช้งาน 30 วัน",
+    "zh": "最近30天活跃",
+    "ja": "最近30日間アクティブ",
+    "ar": "نشط خلال 30 يومًا",
+    "id": "Aktif 30d",
+    "vi": "Hoạt động 30 ngày"
+  },
+  "tr_b2_d": {
+    "ko": "최근 30일 이내에 ≥1구글 리뷰 — 장소가 분명히 여전히 영업 중입니다.",
+    "th": "≥1 รีวิว Google ในช่วง 30 วันที่ผ่านมา — สถานที่ยังคงดำเนินการอยู่",
+    "zh": "最近30天内≥1条Google评论 — 场所显然仍在交易",
+    "ja": "過去30日間に1件以上のGoogleレビューがある — 施設は明らかにまだ営業中です",
+    "ar": "≥1 مراجعة على Google في آخر 30 يومًا — من الواضح أن المنشأة لا تزال تعمل",
+    "id": "≥1 ulasan Google dalam 30 hari terakhir — tempat jelas masih beroperasi",
+    "vi": "≥1 đánh giá Google trong 30 ngày qua — địa điểm rõ ràng vẫn đang hoạt động"
+  },
+  "tr_b3_n": {
+    "ko": "정부 인증",
+    "th": "ได้รับการรับรองจากรัฐบาล",
+    "zh": "政府认证",
+    "ja": "政府認証",
+    "ar": "معتمد حكومي",
+    "id": "Disertifikasi pemerintah",
+    "vi": "Chứng nhận từ chính phủ"
+  },
+  "tr_b3_d": {
+    "ko": "태국 SHA (안전 및 건강 관리국) 또는 TAT (태국 관광청) 공식 등록 — 정부에서 확인, 자가 보고 아님",
+    "th": "การลงทะเบียนอย่างเป็นทางการจาก Thailand SHA (Safety & Health Administration) หรือ TAT (Tourism Authority of Thailand) — ได้รับการตรวจสอบโดยรัฐบาล ไม่ได้ถูกรายงานด้วยตนเอง",
+    "zh": "泰国SHA（安全与健康管理局）或TAT（泰国旅游局）正式注册 — 政府认证，而非自我报告",
+    "ja": "タイSHA（安全保健管理局）またはTAT（タイ観光庁）の公式登録 — 政府による確認、自己報告ではない",
+    "ar": "تسجيل رسمي من Thailand SHA (إدارة السلامة والصحة) أو TAT (السلطة السياحية في تايلاند) — موثق من الحكومة، وليس مُبلغ ذاتيًا",
+    "id": "SHA Thailand (Administrasi Keamanan & Kesehatan) atau TAT (Otoritas Pariwisata Thailand) pendaftaran resmi — diverifikasi pemerintah, bukan dilaporkan sendiri",
+    "vi": "Chứng nhận chính thức Thailand SHA (Quản lý An toàn & Sức khỏe) hoặc TAT (Cơ quan Du lịch Thái Lan) — được chính phủ xác minh, không tự báo cáo"
+  },
+  "tr_b4_n": {
+    "ko": "설립 (5년 이상)",
+    "th": "ก่อตั้ง (5 ปีขึ้นไป)",
+    "zh": "成立（5年以上）",
+    "ja": "設立済み (5年以上)",
+    "ar": "مؤسسة (5 سنوات +)",
+    "id": "Terkenal (5y+)",
+    "vi": "Thành lập (trên 5 năm)"
+  },
+  "tr_b4_d": {
+    "ko": "archive.org 첫 캡처 ≥5년 전",
+    "th": "การจับภาพครั้งแรกที่ archive.org ≥5 ปีที่แล้ว",
+    "zh": "archive.org首次抓取≥5年前",
+    "ja": "archive.org の最初のキャプチャが5年以上前",
+    "ar": "أول تسجيل على archive.org ≥5 سنوات مضت",
+    "id": "tangkapan pertama archive.org ≥5 tahun yang lalu",
+    "vi": "Lần đầu tiên capture trên archive.org ≥5 năm trước"
+  },
+  "tr_b5_n": {
+    "ko": "전문 이메일 인프라",
+    "th": "โครงสร้างพื้นฐานอีเมลระดับมืออาชีพ",
+    "zh": "专业邮件基础设施",
+    "ja": "プロのメールインフラ",
+    "ar": "بنية تحتية للبريد الاحترافي",
+    "id": "Infrastruktur email profesional",
+    "vi": "Cơ sở hạ tầng email chuyên nghiệp"
+  },
+  "tr_b5_d": {
+    "ko": "구글 워크스페이스 / 마이크로소프트 365 / 조호 / 프로톤 / 패스트메일로 향하는 DNS MX 레코드",
+    "th": "ระเบียน DNS MX ที่ชี้ไปยัง Google Workspace / Microsoft 365 / Zoho / Proton / Fastmail",
+    "zh": "DNS MX记录指向Google Workspace / Microsoft 365 / Zoho / Proton / Fastmail",
+    "ja": "DNS MXレコードがGoogle Workspace / Microsoft 365 / Zoho / Proton / Fastmailを指している",
+    "ar": "سجلات DNS MX تشير إلى Google Workspace / Microsoft 365 / Zoho / Proton / Fastmail",
+    "id": "Rekam DNS MX menunjuk ke Google Workspace / Microsoft 365 / Zoho / Proton / Fastmail",
+    "vi": "Bản ghi DNS MX chỉ đến Google Workspace / Microsoft 365 / Zoho / Proton / Fastmail"
+  },
+  "tr_b6_n": {
+    "ko": "유튜브 채널 ≥5k 구독자",
+    "th": "ช่อง YouTube ≥5k ผู้ติดตาม",
+    "zh": "YouTube频道≥5k订阅",
+    "ja": "YouTubeチャンネル ≥5k人の登録者",
+    "ar": "قناة YouTube تضم ≥5 آلاف مشترك",
+    "id": "Saluran YouTube ≥5k subs",
+    "vi": "Kênh YouTube ≥5k người đăng ký"
+  },
+  "tr_b6_d": {
+    "ko": "장소가 운영하는 청중 검증된 채널 (/about 페이지를 통해 검증됨)",
+    "th": "สถานที่ดำเนินช่องที่เป็นเจ้าของและได้รับการตรวจสอบจากผู้ชม (ตรวจสอบผ่านข้อมูลเมตาบนหน้า /about)",
+    "zh": "场所运营一个所有者验证的频道（通过/about页面验证）",
+    "ja": "施設が運営する、オーディエンスに認証されたチャンネルを持っている（/aboutページを通じて確認）",
+    "ar": "تدير المنشأة قناة مملوكة، موثوقة للجمهور (تم التحقق منها عبر صفحة /about)",
+    "id": "Tempat menjalankan saluran milik, divalidasi oleh audiens (diverifikasi melalui halaman /about)",
+    "vi": "Địa điểm chạy một kênh riêng, đã được xác nhận từ khán giả (được xác minh qua trang /about)"
+  },
+  "tr_back": {
+    "ko": "← {site}로 돌아가기",
+    "th": "← กลับไปที่ {site}",
+    "zh": "← 返回 {site}",
+    "ja": "← {site}に戻る",
+    "ar": "← العودة إلى {site}",
+    "id": "← Kembali ke {site}",
+    "vi": "← Quay lại {site}"
+  },
+  "tr_q1": {
+    "ko": "검증된 태국 신뢰 점수는 어떻게 계산되나요?",
+    "th": "คะแนนความเชื่อถือที่ได้รับการรับรองจากไทยคำนวณอย่างไร?",
+    "zh": "如何计算经过验证的泰国信任分数？",
+    "ja": "Verified Thai信頼スコアはどのように計算されますか？",
+    "ar": "كيف يتم حساب درجة الثقة التايلاندية الموثوقة؟",
+    "id": "Bagaimana cara menghitung skor kepercayaan Verified Thai?",
+    "vi": "Điểm tin cậy Thái được xác minh được tính như thế nào?"
+  },
+  "tr_a1": {
+    "ko": "각 장소의 0-100 점수는 두 가지 레이어를 결합합니다. 기본 레이어: 6개의 공개 출처 (구글 리뷰, 레딧 스레드, 네이버 블로그, 판팁 토론, 유튜브 비디오, 장소의 공식 웹사이트)에서의 고유 언급 수. 각 출처는 최대점수까지 기여하기 때문에 어떤 특정 플랫폼이 지배하지 않도록 합니다. 부스트 레이어: 강화 신호 — archive.org 연령, DNS 이메일 인프라, 최근 구글 리뷰 활동, 운영 중인 유튜브 채널 — 최대 25점을 추가하며, 100점으로 제한됩니다.",
+    "th": "คะแนน 0-100 ของแต่ละสถานที่จะรวมสองชั้น ชั้นพื้นฐาน: จำนวนการกล่าวถึงที่ไม่ซ้ำกันจากแหล่งที่สาธารณะ 6 แห่ง (รีวิวจาก Google, กระทู้ Reddit, บล็อก Naver, การสนทนาใน Pantip, วิดีโอ YouTube, เว็บไซต์ของสถานที่) แหล่งแต่ละแห่งมีส่วนช่วยคะแนนสูงสุดเพื่อไม่ให้แพลตฟอร์มใดแพลตฟอร์มหนึ่งครอบงำ ชั้นเพิ่ม: สัญญาณการเสริม — อายุของ archive.org, โครงสร้างพื้นฐานอีเมล DNS, กิจกรรมรีวิว Google ล่าสุด, ช่อง YouTube ที่เป็นเจ้าของ — เพิ่มคะแนนสูงสุด 25 คะแนน จำกัดไว้ที่ 100",
+    "zh": "每个场所的0-100评分结合了两个层次。基础层：在6个公共来源（Google评论、Reddit帖子、Naver博客、Pantip讨论、YouTube视频、场所自有网站）中独特提及的次数。每个来源贡献的分数上限，任何单个平台都无法占主导。提升层：增强信号 — archive.org年龄、DNS邮件基础设施、最近的Google评论活动、拥有的YouTube频道 — 再加最多25个额外分数，最高限于100。",
+    "ja": "各施設の0-100スコアは2つのレイヤーを組み合わせています。基本レイヤー：6つの公開ソース（Googleレビュー、Redditスレッド、Naverブログ、Pantipディスカッション、YouTube動画、施設の公式ウェブサイト）全体でのユニークな言及のカウント。各ソースはポイントを寄与し、特定の上限に達するようにしますので、単一のプラットフォームが支配することはありません。ブーストレイヤー：エンリッチメントシグナル — archive.orgの年齢、DNSメールインフラ、最近のGoogleレビュー活動、運営するYouTubeチャンネル — 最大25ポイント追加され、100ポイントに制限されます。",
+    "ar": "تجمع درجة كل منشأة من 0-100 بين طبقتين. الطبقة الأساسية: عدد الإشارات الفريدة عبر 6 مصادر عامة (مراجعات Google، خيوط Reddit، مدونات Naver، مناقشات Pantip، مقاطع فيديو YouTube، الموقع الخاص بالمنشأة). تساهم كل مصدر بنقاط تصل إلى حد معين حتى لا يمكن أن هيمن منصة واحدة. طبقة التعزيز: إشارات إثراء — عمر archive.org، بنية البريد الإلكتروني DNS، النشاط الحديث لمراجعات Google، قناة YouTube مملوكة — تضيف حتى 25 نقطة إضافية، بحد أقصى 100.",
+    "id": "Skor 0-100 setiap tempat menggabungkan dua lapisan. Lapisan dasar: jumlah sebutan unik di 6 sumber publik (ulasan Google, utas Reddit, blog Naver, diskusi Pantip, video YouTube, situs web resmi tempat). Setiap sumber memberikan poin hingga batas sehingga tidak ada satu platform yang dapat mendominasi. Lapisan tambahan: sinyal peningkatan — usia archive.org, infrastruktur email DNS, aktivitas ulasan Google terbaru, saluran YouTube milik — menambah hingga 25 poin ekstra, dibatasi pada 100.",
+    "vi": "Điểm số từ 0-100 của mỗi địa điểm kết hợp hai lớp. Lớp cơ bản: số lượng đề cập duy nhất từ 6 nguồn công khai (đánh giá Google, chủ đề Reddit, blog Naver, thảo luận Pantip, video YouTube, website của địa điểm). Mỗi nguồn đóng góp điểm đến một giới hạn để không một nền tảng nào có thể thống trị. Lớp tăng cường: tín hiệu làm phong phú — tuổi archive.org, cơ sở hạ tầng email DNS, hoạt động đánh giá Google gần đây, kênh YouTube sở hữu — cộng thêm tối đa 25 điểm, giới hạn ở 100."
+  },
+  "tr_q2": {
+    "ko": "왜 archive.org 연령을 신뢰 신호로 사용하는가요?",
+    "th": "ทำไมต้องใช้อายุของ archive.org เป็นสัญญาณความเชื่อถือ?",
+    "zh": "为什么将archive.org年龄作为信任信号？",
+    "ja": "なぜarchive.orgの年齢を信頼シグナルとして使用するのですか？",
+    "ar": "لماذا يتم استخدام عمر archive.org كإشارة ثقة؟",
+    "id": "Mengapa menggunakan usia archive.org sebagai sinyal kepercayaan?",
+    "vi": "Tại sao lại sử dụng tuổi archive.org như một tín hiệu tin cậy?"
+  },
+  "tr_a2": {
+    "ko": "10년의 archive.org 발자국은 10년 전에 실제로 색인화 가능한 웹사이트를 가졌음을 요구합니다. 그건 리뷰를 구매하거나 광고 캠페인을 운영하여 대체할 수 없습니다. 팝업 장소, 간헐 기업, 단기 사업은 오래된 스냅샷에 나타나지 않습니다. {total} 목록 중 {wayback}는 문서화된 캡처 날짜가 있으며; {vet}는 10년 이상 거슬러 올라갑니다.",
+    "th": "รอยเท้า archive.org 10 ปีจำเป็นต้องมีเว็บไซต์จริงที่สามารถจัดทำดัชนีได้เมื่อ 10 ปีที่แล้ว ซึ่งไม่สามารถเติมเต็มได้ด้วยการซื้อรีวิวหรือลงโฆษณา สถานที่ที่เปิดและธุรกิจที่มีช่องว่างและโครงการที่มีอายุสั้นจะไม่ปรากฏในภาพถ่ายเก่า จาก {total} รายการ, {wayback} มีวันที่จับภาพที่บันทึกไว้; {vet} ย้อนไป 10 ปีขึ้นไป",
+    "zh": "10年的archive.org痕迹要求在10年前有一个真实的、可索引的网站。这无法通过购买评论或进行广告活动来填补。弹出场所、空档业务和短期项目不会出现在旧快照中。在{total}个列表中，{wayback}有文档抓取日期；{vet}可追溯10年以上。",
+    "ja": "10年のarchive.orgの足跡は、10年前に実際にインデックス可能なウェブサイトを持っている必要があります。これは、レビューを購入したり広告キャンペーンを実施したりしても埋めることはできません。ポップアップ施設、ギャップビジネス、短命の事業は、古いスナップショットには表示されません。{total}のリスティングのうち、{wayback}は文書化されたキャプチャ日があります；{vet}は10年以上前に遡ります。",
+    "ar": "يتطلب بصمة archive.org لمدة 10 سنوات أن يكون هناك موقع إلكتروني حقيقي وقابل للفهرسة منذ 10 سنوات. لا يمكن تعويض ذلك عن طريق شراء المراجعات أو تشغيل حملة إعلانية. الأماكن المؤقتة، والأعمال المؤقتة، والمشاريع قصيرة الأمد لا تظهر في اللقطات القديمة. من {total} القوائم، {wayback} لديها تاريخ توثيق؛ {vet} يعودون لأكثر من 10 سنوات.",
+    "id": "Jejak archive.org 10 tahun memerlukan situs web nyata yang dapat diindeks 10 tahun yang lalu. Itu tidak bisa diisi kembali dengan membeli ulasan atau menjalankan kampanye iklan. Tempat pop-up, bisnis sementara, dan usaha jangka pendek tidak muncul dalam snapshot lama. Dari {total} daftar, {wayback} memiliki tanggal tangkapan yang terdokumentasi; {vet} kembali 10+ tahun.",
+    "vi": "Một dấu chân archive.org 10 năm đòi hỏi phải có một trang web thực sự, có thể lập chỉ mục 10 năm trước. Điều đó không thể được điều chỉnh bằng cách mua đánh giá hoặc chạy chiến dịch quảng cáo. Các địa điểm pop-up, doanh nghiệp tạm thời, và các dự án ngắn hạn không xuất hiện trong các bức ảnh cũ. Trong số {total} danh sách, {wayback} có ngày được ghi lại; {vet} có từ 10 năm trở lên."
+  },
+  "tr_q3": {
+    "ko": "\"최근 90일 내 활동\"은 실제로 무엇을 의미하나요?",
+    "th": "คำว่า \"ใช้งานในช่วง 90 วันที่ผ่านมา\" หมายความว่าอย่างไร?",
+    "zh": "“最近90天活跃”实际上是什么意思？",
+    "ja": "「過去90日間アクティブ」とは実際に何を意味しますか？",
+    "ar": "ماذا تعني عبارة \"نشط في آخر 90 يومًا\" بالفعل؟",
+    "id": "Apa arti sebenarnya \"aktif dalam 90 hari terakhir\"?",
+    "vi": "Thực sự thì \"hoạt động trong 90 ngày qua\" có nghĩa là gì?"
+  },
+  "tr_a3": {
+    "ko": "이는 최근 90일 이내의 날짜로 기재된 최소 1개의 구글 리뷰를 해당 장소에서 발견했음을 의미합니다. 구글이 각 리뷰에 첨부하는 타임스탬프를 사용합니다. {act90} 장소가 적격이며; {act30}은 최근 30일 내에 리뷰가 있었습니다. 대부분의 디렉터리는 결코 확인하지 않으며 — 수년 전에 폐쇄된 장소들을 계속 나열하는데, 이는 사람들이 인식하는 것보다 더 큰 신뢰 손상 요인입니다.",
+    "th": "หมายความว่าเราพบรีวิว Google อย่างน้อยหนึ่งรายการสำหรับสถานที่ที่มีวันที่ภายใน 90 วันที่ผ่านมา โดยใช้เวลาเซ็นชื่อที่ Google แนบมากับแต่ละรีวิว สถานที่ {act90} ผ่านการตรวจสอบ; {act30} มีรีวิวในช่วง 30 วันที่ผ่านมา แทบไม่มีไดเร็กทอรีไหนเช็ค — พวกเขายังคงรายชื่อสถานที่ที่ปิดตัวไปเมื่อหลายปีที่แล้ว ซึ่งเป็นการทำลายความเชื่อถือที่มากกว่าที่ผู้คนตระหนัก",
+    "zh": "这意味着我们找到至少一条日期在最近90天内的场所Google评论，使用Google附加到每个评论的时间戳。{act90}个场所符合条件；{act30}在最近30天内有评论。大多数目录从未检查 — 它们仍在列出几年前已关闭的地方，这比人们意识到的更容易导致信任危机。",
+    "ja": "それは、過去90日間に日付が付けられた施設のGoogleレビューを少なくとも1つ見つけたことを意味します。Googleが各レビューに添付するタイムスタンプを使用しています。{act90}の施設が資格を持ち；{act30}は過去30日間にレビューがありました。ほとんどのディレクトリは決して確認しません — 何年も前に閉鎖された場所を掲載し続けており、これは人々が認識するよりも大きな信頼の殺し屋です。",
+    "ar": "هذا يعني أننا وجدنا على الأقل مراجعة واحدة على Google للمنشأة مؤرخة خلال آخر 90 يومًا، باستخدام الطابع الزمني الذي تعلقه Google على كل مراجعة. تتأهل {act90} منشأة؛ {act30} كانت لديها مراجعة في آخر 30 يومًا. لا تتحقق معظم الدلائل أبدًا — تستمر في إدراج أماكن أغلقت منذ سنوات، وهو ما يعد قاتل ثقة أكبر مما يدركه الناس.",
+    "id": "Itu berarti kami menemukan setidaknya satu ulasan Google untuk tempat yang bertanggal dalam 90 hari terakhir, menggunakan stempel waktu yang dilampirkan Google pada setiap ulasan. {act90} tempat memenuhi syarat; {act30} memiliki ulasan dalam 30 hari terakhir. Kebanyakan direktori tidak pernah memeriksa — mereka terus mencantumkan tempat yang tutup bertahun-tahun yang lalu, yang lebih merusak kepercayaan daripada yang orang sadari.",
+    "vi": "Điều đó có nghĩa là chúng tôi đã tìm thấy ít nhất một đánh giá Google cho địa điểm có ngày trong 90 ngày qua, sử dụng dấu thời gian Google đính kèm với mỗi đánh giá. {act90} địa điểm đủ điều kiện; {act30} có một đánh giá trong 30 ngày qua. Hầu hết các danh bạ không bao giờ kiểm tra — họ vẫn liệt kê những nơi đã đóng cửa từ nhiều năm trước, điều này gây ảnh hưởng lớn đến lòng tin mà mọi người không nhận ra."
+  },
+  "tr_q4": {
+    "ko": "왜 이메일 인프라 (구글 워크스페이스, M365)가 중요한가요?",
+    "th": "ทำไมโครงสร้างพื้นฐานอีเมล (Google Workspace, M365) ถึงสำคัญ?",
+    "zh": "为什么邮件基础设施（Google Workspace、M365）重要？",
+    "ja": "なぜメールインフラ（Google Workspace、M365）が重要なのですか？",
+    "ar": "لماذا تهم بنية البريد الإلكتروني (Google Workspace، M365)؟",
+    "id": "Mengapa infrastruktur email (Google Workspace, M365) itu penting?",
+    "vi": "Tại sao cơ sở hạ tầng email (Google Workspace, M365) lại quan trọng?"
+  },
+  "tr_a4": {
+    "ko": "MX DNS 레코드를 보면 비즈니스가 실제로 사용하는 이메일 호스트를 확인할 수 있습니다. contact@theirdomain.com를 Google Workspace 또는 Microsoft 365를 통해 운영하는 소규모 스파는 실제 비즈니스 세팅에 투자한 표시가 있습니다. 이는 작지만 제로가 아닌 \"이는 실제 운영입니다\" 신호입니다. {email}의 {total} 장소가 전문 인프라에서 운영되고 있습니다.",
+    "th": "การดู MX DNS records แสดงให้เห็นว่าอีเมลโฮสต์ที่ธุรกิจใช้งานจริงคืออะไร สปาขนาดเล็กที่ใช้ contact@theirdomain.com ผ่าน Google Workspace หรือ Microsoft 365 แสดงให้เห็นว่าลงทุนในโครงสร้างธุรกิจจริง — เป็นสัญญาณเล็กๆ แต่ไม่เป็นศูนย์ว่า \"นี่คือการดำเนินการจริง\". {email} ของสถานที่ {total} แห่งที่ดำเนินการบนโครงสร้างพื้นฐานมืออาชีพ.",
+    "zh": "查看 MX DNS 记录可以揭示企业实际使用的电子邮件主机。一个小型水疗中心通过 Google Workspace 或 Microsoft 365 使用 contact@theirdomain.com，显然已经在真正的商业设置上进行了投资——这是一个微小但不为零的“这是一项真实操作”的信号。{email} 来自 {total} 家在专业基础设施上运行的场所。",
+    "ja": "MX DNSレコードを見ることで、実際にビジネスが使用しているメールホストを明らかにします。contact@theirdomain.comでGoogle WorkspaceやMicrosoft 365を利用している小さなスパは、実際のビジネスのセットアップに投資していることが示されています — それは「これは本物の運営です」という微小ではあるがゼロではない信号です。{email}の{total}の施設が専門的なインフラ上で運営されています。",
+    "ar": "تظهر سجلات MX DNS ما هو موفر البريد الإلكتروني الذي تستخدمه الشركة بالفعل. منتجع صغير يستخدم contact@theirdomain.com عبر Google Workspace أو Microsoft 365 قد استثمر بشكل واضح في إعدادات أعمال حقيقية - إنها إشارة صغيرة ولكنها غير معدومة \"هذه عملية حقيقية\". {email} من {total} أماكن تعمل على بنية تحتية احترافية.",
+    "id": "Melihat catatan MX DNS mengungkapkan penyedia email yang sebenarnya digunakan bisnis. Sebuah spa kecil yang menjalankan contact@theirdomain.com melalui Google Workspace atau Microsoft 365 jelas telah berinvestasi dalam pengaturan bisnis yang nyata — ini adalah sinyal kecil namun bukan nol \"ini adalah operasi nyata\". {email} dari {total} tempat yang menggunakan infrastruktur profesional.",
+    "vi": "Nhìn vào bản ghi MX DNS tiết lộ nhà cung cấp email mà doanh nghiệp thực sự sử dụng. Một spa nhỏ chạy contact@theirdomain.com thông qua Google Workspace hoặc Microsoft 365 đã đầu tư vào một thiết lập kinh doanh thực — đó là một tín hiệu nhỏ nhưng không bằng không \"đây là một hoạt động thực sự\". {email} của {total} cơ sở chạy trên hạ tầng chuyên nghiệp."
+  },
+  "tr_q5": {
+    "ko": "Verified Thai는 유료 배치나 후원 순위를 수용하나요?",
+    "th": "Verified Thai ยอมรับการจัดอันดับแบบจ่ายเงินหรือไม่?",
+    "zh": "Verified Thai 是否接受付费推广或赞助排名？",
+    "ja": "Verified Thaiは有料の掲載やスポンサー付きランキングを受け入れますか？",
+    "ar": "هل تقبل Verified Thai الإعلانات المدفوعة أو التصنيفات المدفوعة؟",
+    "id": "Apakah Verified Thai menerima penempatan berbayar atau peringkat bersponsor?",
+    "vi": "Verified Thai có chấp nhận vị trí trả phí hoặc xếp hạng tài trợ không?"
+  },
+  "tr_a5": {
+    "ko": "아니요. 목록은 순수하게 신뢰 점수에 따라 순위가 매겨집니다. Klook은 일부 장소 페이지에서 제휴 예약 옵션으로 표시되며(수수료 공개), \"편집자 추천\" 특집 자리는 후원 비용이 아닌 신뢰 점수에 따라 선택됩니다. 어떤 장소도 다른 장소를 초과할 수 있도록 비용을 지불할 수 없습니다.",
+    "th": "ไม่. รายชื่อจะถูกจัดอันดับโดยพื้นฐานจากคะแนนความน่าเชื่อถือ Klook จะแสดงอยู่ในบางหน้าเวทีในฐานะตัวเลือกการจองในเครือ (พร้อมค่าคอมมิชชั่นที่เปิดเผย) และมีช่อง \"Editor's Pick\" ที่มีอยู่ในหน้าที่เฉพาะแต่จะถูกเลือกโดยคะแนนความน่าเชื่อถือ ไม่สามารถจ่ายเงินให้เราเพื่อให้สถานที่ใดสูงกว่าสถานที่อื่น.",
+    "zh": "不接受。列表仅根据信任评分进行排名。Klook 在某些场所页面上作为合作伙伴预订选项展示（并披露佣金），而且在细分页面上存在“编辑推荐”特色位置，但也是根据信任评分选择，而非支付。没有任何场所可以支付我们以超越其他场所。",
+    "ja": "いいえ。掲載は信頼スコアに基づいて純粋にランク付けされます。Klookは、手数料を開示してアフィリエイト予約オプションとして一部の施設ページに表示されており、ニッチページには「編集者のおすすめ」スロットも存在しますが、これも支払いではなく信頼スコアによって選ばれます。他の施設を上回るために支払うことはできません。",
+    "ar": "لا. يتم ترتيب القوائم بناءً على درجة الثقة فقط. يظهر Klook في بعض صفحات الأماكن كخيار حجز تابع (مع الإفصاح عن العمولة)، وهناك مكان مميز \"اختيار المحرر\" على الصفحات المتخصصة ولكنه يتم اختياره أيضًا وفقًا لدرجة الثقة، وليس الدفع. لا يمكن لأي مكان أن يدفع لنا لتجاوز مكان آخر.",
+    "id": "Tidak. Daftar diurutkan murni berdasarkan skor kepercayaan. Klook ditampilkan di beberapa halaman tempat sebagai opsi pemesanan afiliasi (dengan komisi yang diungkapkan), dan slot \"Pilihan Editor\" yang ditampilkan ada di halaman niche tetapi juga dipilih berdasarkan skor kepercayaan, bukan pembayaran. Tidak ada tempat yang bisa membayar kami untuk mengalahkan tempat lain.",
+    "vi": "Không. Danh sách được xếp hạng hoàn toàn dựa trên điểm tin cậy. Klook được hiển thị trên một số trang cơ sở như một tùy chọn đặt phòng liên kết (với hoa hồng được công bố), và một vị trí \"Chọn của Biên tập viên\" xuất hiện trên các trang ngách nhưng cũng được chọn bởi điểm tin cậy, không phải thanh toán. Không có cơ sở nào có thể trả tiền cho chúng tôi để xếp hạng cao hơn một cơ sở khác."
+  },
+  "tr_q6": {
+    "ko": "Verified Thai는 Google Maps, Klook 또는 Tripadvisor와 어떻게 다른가요?",
+    "th": "Verified Thai แตกต่างจาก Google Maps, Klook, หรือ Tripadvisor อย่างไร?",
+    "zh": "Verified Thai 与 Google Maps、Klook 或 Tripadvisor 有什么不同？",
+    "ja": "Verified ThaiはGoogle Maps、Klook、またはTripadvisorとどのように異なりますか？",
+    "ar": "كيف تختلف Verified Thai عن Google Maps أو Klook أو Tripadvisor؟",
+    "id": "Apa perbedaan Verified Thai dengan Google Maps, Klook, atau Tripadvisor?",
+    "vi": "Verified Thai khác gì so với Google Maps, Klook hoặc Tripadvisor?"
+  },
+  "tr_a6": {
+    "ko": "Google Maps는 가짜 리뷰를 중복 제거하지 않고 평점을 표시하며, 운영 중인 장소인지 확인하지 않습니다. Klook은 Klook에 나열되는 장소에 비용을 지불한 곳을 목록에 올리며(~20-25% 수수료 적용). Tripadvisor는 사용자 리뷰와 후원 콘텐츠를 혼합합니다. 우리는 배치 비용을 받지 않으며, 목록을 작성하기 전에 6가지 출처를 교차 확인하고, \"설립 5년 이상\" 및 \"최근 90일 활동\" 필터를 제시하여 죽은 목록이 시간을 낭비하지 않도록 합니다. 선택의 대가는: 더 작은 데이터 세트, 더 어려운 검증 기준.",
+    "th": "Google Maps แสดงคะแนนโดยไม่มีการตรวจสอบความคิดเห็นปลอม หรือว่าที่นั่นยังเปิดทำการอยู่ Klook รายชื่อสถานที่ที่จ่ายเงินเพื่อให้ติดอยู่ใน Klook (พร้อมค่าคอมมิชชั่น ~20-25%). Tripadvisor ผสมความคิดเห็นของผู้ใช้กับเนื้อหาที่สนับสนุน. เราไม่รับเงินจากการจัดอันดับ, เราตรวจสอบข้าม 6 แหล่งก่อนการระบุ และเราแสดงฟิลเตอร์ \"ก่อตั้ง 5 ปี+\" และ \"เปิดทำการ 90 วัน\" เพื่อไม่ให้รายชื่อที่ตายแล้วทำให้คุณเสียเวลา. แลกเปลี่ยน: ชุดข้อมูลเล็กลง, การตรวจสอบยากขึ้น.",
+    "zh": "Google Maps 显示评级而不去重假评论或检查某个地方是否仍在运营。Klook 列出支付费用进行推广的场所（佣金约为 20-25%）。Tripadvisor 将用户评论与赞助内容混合。我们不接受推广费用，会在列出之前交叉检查六个来源，并且我们会提供“成立 5 年以上”和“活动 90 天”过滤器，以免过期列表浪费您的时间。权衡：数据集更小，验证门槛更高。",
+    "ja": "Google Mapsは、偽のレビューを排除せず、場所がまだ営業しているかどうかを確認せずに評価を表示します。Klookは、Klookに掲載するために支払った場所をリストします（手数料は約20-25%）。Tripadvisorはユーザーレビューをスポンサーコンテンツと混在させています。私たちは掲載金を受け取らず、リスト前に6つのソースをクロスチェックし、「設立5年以上」および「90日間活動中」フィルターを表示して、死んだリストがあなたの時間を無駄にしないようにします。トレードオフ：小規模なデータセット、より困難な検証基準。",
+    "ar": "تظهر Google Maps التقييمات دون التخلص من المراجعات المزيفة أو التحقق مما إذا كان المكان لا يزال يعمل. يسرد Klook الأماكن التي دفعت لتكون على Klook (مع عمولة تبلغ حوالي 20-25%). يمزج Tripadvisor مراجعات المستخدمين مع المحتوى المدعوم. لا نقوم بقبول أموال الإعلانات، نحن نقوم بالتحقق عبر 6 مصادر قبل الإدراج، ونجعل \"تأسست منذ 5 سنوات أو أكثر\" و\"نشط منذ 90 يومًا\" مرشحات حتى لا تضيع قوائم الموت وقتك. المقايضة: مجموعة بيانات أصغر، أرضية تحقق أصعب.",
+    "id": "Google Maps menunjukkan penilaian tanpa menghapus ulasan palsu atau memeriksa apakah sebuah tempat masih beroperasi. Klook mencantumkan tempat yang membayar untuk ada di Klook (dengan komisi ~20-25%). Tripadvisor mencampur ulasan pengguna dengan konten bersponsor. Kami tidak mengambil uang penempatan, kami memeriksa silang dari 6 sumber sebelum mencantumkan, dan kami menampilkan filter \"didirikan 5y+\" dan \"aktif 90d\" sehingga daftar mati tidak membuang waktu Anda. Trade-off: dataset lebih kecil, lantai verifikasi lebih sulit.",
+    "vi": "Google Maps hiển thị xếp hạng mà không loại bỏ đánh giá giả mạo hoặc kiểm tra xem một địa điểm còn hoạt động hay không. Klook liệt kê những địa điểm đã trả tiền để có mặt trên Klook (với ~20-25% hoa hồng). Tripadvisor trộn lẫn đánh giá của người dùng với nội dung tài trợ. Chúng tôi không nhận tiền đặt chỗ, chúng tôi kiểm tra chéo qua 6 nguồn trước khi liệt kê, và chúng tôi xuất những bộ lọc \"thành lập từ 5 năm trở lên\" và \"hoạt động trong 90 ngày\" để các danh sách chết không lãng phí thời gian của bạn. Đổi lại: tập dữ liệu nhỏ hơn, khó xác minh hơn."
+  },
+  "tr_q7": {
+    "ko": "장소가 조작할 수 없는 신호는 무엇인가요?",
+    "th": "สถานที่ไม่สามารถจัดการสัญญาณใดได้?",
+    "zh": "场所可以无法操作哪些信号？",
+    "ja": "施設が操作できない信号は何ですか？",
+    "ar": "ما هي الإشارات التي لا يمكن للمكان التلاعب بها؟",
+    "id": "Sinyal apa yang tidak dapat dimanipulasi oleh sebuah tempat?",
+    "vi": "Cơ sở không thể thao tác những tín hiệu nào?"
+  },
+  "tr_a7": {
+    "ko": "몇 년 전의 Archive.org 스냅샷(2014년에 사이트가 있었던 것으로 소급하여 만들 수 없음). 교차 출처 일관성(Reddit 사용자들은 스파 언급을 위해 돈을 받지 않음). 2011년에 등록된 도메인의 DNS MX 레코드(10년간의 이메일 호스트 연속성을 위한 지름길 없음). 조작할 수 있는 것: 리뷰 수, 평점, 최근성의 어느 정도. 그래서 우리의 점수는 조작 가능한 + 조작할 수 없는 신호를 혼합합니다.",
+    "th": "Archive.org snapshots จากหลายปีก่อน (ไม่สามารถทำให้เว็บไซต์มีอยู่ในปี 2014 ได้ย้อนหลัง). ความสม่ำเสมอจากแหล่งที่มา (ผู้ใช้ Reddit ไม่ได้รับค่าจ้างให้พูดถึงสปา). DNS MX records บนโดเมนที่ลงทะเบียนในปี 2011 (ไม่มีทางลัดไปยังความต่อเนื่องของอีเมลในทศวรรษ). สิ่งที่สามารถจัดการได้: จำนวนรีวิว, คะแนน, ความใกล้เคียงในบางประเด็น. นั่นคือเหตุผลที่คะแนนของเราผสมผสานสัญญาณที่สามารถจัดการได้ + สัญญาณที่ไม่สามารถจัดการได้.",
+    "zh": "来自多年前的 Archive.org 快照（无法追溯使网站在 2014 年存在）。跨源一致性（Reddit 用户不会为提到水疗中心而获得报酬）。在 2011 年注册的域名上的 DNS MX 记录（没有捷径可以达到十年的电子邮件主机连续性）。可以操作的信号包括：评论数量、评级、近期性等。因此，我们的评分融合了可操控与不可操控的信号。",
+    "ja": "数年前のArchive.orgのスナップショット（2014年にサイトを存在させることはできません）。クロスソースの一貫性（Redditユーザーはスパに言及するために報酬を受けていません）。2011年に登録されたドメインのDNS MXレコード（10年間のメールホストの継続性には近道はありません）。操作可能なもの：レビュー数、評価、ある程度の最近性。それが私たちのスコアが操作可能な信号と操作不可能な信号をブレンドする理由です。",
+    "ar": "لقطات Archive.org من سنوات مضت (لا يمكن جعل الموقع موجودًا بأثر رجعي في عام 2014). الاتساق عبر المصادر (لا يحصل مستخدمو Reddit على تعويض لذكر منتجع). سجلات DNS MX على نطاق تم تسجيله في عام 2011 (لا اختصار إلى عقد من استمرارية استضافة البريد الإلكتروني). ما يمكن التلاعب به: حسابات المراجعات، التقييمات، والحداثة إلى حد ما. لهذا السبب يجمع تقييمنا بين إشارات قابلة للتلاعب + إشارات غير قابلة للتلاعب.",
+    "id": "Snapshot Archive.org dari tahun-tahun lalu (tidak bisa retroaktif membuat situs ada di 2014). Konsistensi lintas sumber (pengguna Reddit tidak dibayar untuk menyebutkan spa). Catatan MX DNS pada domain yang terdaftar pada 2011 (tidak ada jalan pintas untuk kontinuitas penyedia email selama satu dekade). Apa yang DAPAT dimanipulasi: jumlah ulasan, penilaian, kekinian sampai batas tertentu. Itulah mengapa skor kami menggabungkan sinyal yang dapat dimanipulasi + yang tidak dapat dimanipulasi.",
+    "vi": "Các bức ảnh lưu trữ từ nhiều năm trước (không thể làm cho một trang web tồn tại từ 2014 một cách ngược lại). Độ nhất quán giữa các nguồn (người dùng Reddit không được trả tiền để đề cập đến một spa). Các bản ghi MX DNS trên một miền đã đăng ký từ năm 2011 (không có đường tắt để có một thập kỷ liên tục về nhà cung cấp email). Những gì CÓ thể được thao tác: số lượng đánh giá, xếp hạng, gần đây tới một mức độ nào đó. Đó là lý do điểm số của chúng tôi hòa trộn tín hiệu có thể thao tác + tín hiệu không thể thao tác."
+  },
+  "tr_q8": {
+    "ko": "장소가 자신의 목록을 주장하거나 수정할 수 있나요?",
+    "th": "สถานที่สามารถเรียกร้องหรือแก้ไขรายชื่อของตนได้หรือไม่?",
+    "zh": "场所可以声明或修复他们的列表吗？",
+    "ja": "施設は自分のリストを主張したり修正したりできますか？",
+    "ar": "هل يمكن للمكان المطالبة أو إصلاح قائمته؟",
+    "id": "Bisakah sebuah tempat mengklaim atau memperbaiki daftar mereka?",
+    "vi": "Một cơ sở có thể yêu cầu hoặc sửa chữa danh sách của họ không?"
+  },
+  "tr_a8": {
+    "ko": "네 — 소유자는 무료로 목록을 주장하고 운영 시간, 사진, 서비스 및 한국어/영어/태국어 노트를 수정할 수 있습니다. 신뢰 점수는 외부 신호에서 계산되며, 주장은 순위를 변경하지 않습니다. 주장된 목록을 통한 직접 문의는 0% 수수료로 해당 장소로 이동합니다.",
+    "th": "ใช่ — เจ้าของสามารถเรียกร้องรายชื่อได้ฟรีและแก้ไขเวลา, รูปภาพ, บริการ, และบันทึกภาษาเกาหลี/อังกฤษ/ไทย. คะแนนความน่าเชื่อถือคำนวณจากสัญญาณภายนอก; การเรียกร้องไม่ได้เปลี่ยนการจัดอันดับ. การสอบถามโดยตรงผ่านรายชื่อที่เรียกร้องจะไปที่สถานที่ด้วยค่าคอมมิชชั่น 0%.",
+    "zh": "可以——业主可以免费声明列表并编辑营业时间、照片、服务以及韩语/英语/泰语备注。信任评分是根据外部信号计算的；声明不会改变排名。通过声明的列表进行的直接查询将以 0% 佣金转发给场所。",
+    "ja": "はい — オーナーは無料でリストを主張し、営業時間、写真、サービス、および韓国語/英語/タイ語のノートを編集できます。信頼スコアは外部信号から計算されるため、主張してもランキングは変更されません。主張されたリストを通じての直接の問い合わせは、0%のコミッションで施設に届きます。",
+    "ar": "نعم - يمكن للمالكين المطالبة بقائمة مجانًا وتحرير الساعات، الصور، الخدمات، والملاحظات باللغة الكورية/الإنجليزية/التايلاندية. يتم حساب درجة الثقة من الإشارات الخارجية؛ المطالبة لا تغير الترتيب. الاستفسارات المباشرة من خلال قائمة مطلوبة تذهب إلى المكان بعمولة 0%.",
+    "id": "Ya — pemilik dapat mengklaim daftar secara gratis dan mengedit jam, foto, layanan, dan catatan dalam bahasa Korea/Inggris/Thai. Skor kepercayaan dihitung dari sinyal eksternal; klaim tidak mengubah peringkat. Pertanyaan langsung melalui daftar yang diklaim akan menuju ke tempat tersebut dengan komisi 0%.",
+    "vi": "Có — chủ sở hữu có thể yêu cầu một danh sách miễn phí và chỉnh sửa giờ mở cửa, hình ảnh, dịch vụ và ghi chú bằng tiếng Hàn/Anh/Thái. Điểm tin cậy được tính toán từ các tín hiệu bên ngoài; việc yêu cầu không thay đổi thứ hạng. Các yêu cầu trực tiếp thông qua một danh sách đã được yêu cầu sẽ đến cơ sở với 0% hoa hồng."
+  },
+  "tr_q9": {
+    "ko": "신뢰 점수는 얼마나 자주 업데이트되나요?",
+    "th": "คะแนนความน่าเชื่อถือจะอัปเดตบ่อยแค่ไหน?",
+    "zh": "信任评分多久更新一次？",
+    "ja": "信頼スコアはどのくらいの頻度で更新されますか？",
+    "ar": "كم مرة يتم تحديث درجة الثقة؟",
+    "id": "Seberapa sering skor kepercayaan diperbarui?",
+    "vi": "Tần suất cập nhật điểm tin cậy là bao lâu?"
+  },
+  "tr_a9": {
+    "ko": "출처 신호(리뷰, 언급)는 매주 새로 고쳐집니다. Wayback 연령은 매월 새로 고쳐집니다. DNS 인프라는 분기별로 새로 고쳐집니다. 소유자가 편집한 콘텐츠는 10분 이내에 퍼집니다(ISR). 장소가 닫히면, 다음 스크래프가 Google 리뷰에서의 침묵을 포착하고 \"최근 90일 활동\" 배지가 사라집니다 — 그러나 우리는 또한 연락 양식을 통해 이를 보고할 수 있어야 합니다.",
+    "th": "สัญญาณจากแหล่งที่มา (รีวิว, การกล่าวถึง) จะรีเฟรชรายสัปดาห์. อายุของ Wayback จะรีเฟรชรายเดือน. โครงสร้างพื้นฐาน DNS จะรีเฟรชรายไตรมาส. เนื้อหาที่เจ้าของแก้ไขจะแพร่กระจายภายใน 10 นาที (ISR). หากสถานที่ปิดตัวลง การเก็บข้อมูลครั้งถัดไปจะจับความเงียบในรีวิวของ Google และตรา \"เปิดทำการ 90 วัน\" จะตกลง — แต่คุณก็ควรจะสามารถรายงานให้เราผ่านฟอร์มติดต่อได้.",
+    "zh": "源信号（评论、提及）每周刷新一次。Wayback 年龄每月刷新一次。DNS 基础设施每季度刷新一次。业主编辑的内容在 10 分钟内传播（ISR）。如果场所关闭，则下次抓取会在 Google 评论中捕捉到静默状态，并且“活动 90 天”徽章会消失——但您也应该能够通过联系表单向我们举报。",
+    "ja": "ソース信号（レビュー、言及）は週に一度リフレッシュされます。Wayback年齢は月に一度リフレッシュされます。DNSインフラは四半期ごとにリフレッシュされます。オーナーが編集したコンテンツは10分以内に伝播します（ISR）。施設が閉まると、次のスクレイプでGoogleレビューの沈黙がキャッチされ、「90日間活動中」バッジが外れます — ただし、私たちに連絡フォームを通じて報告することもできるはずです。",
+    "ar": "تتجدد إشارات المصدر (المراجعات، الذكر) أسبوعيًا. تتجدد أعمار Wayback شهريًا. تتجدد بنية DNS ربع سنويًا. يت propagates المحتوى الذي تم تحريره بواسطة المالك خلال 10 دقائق (ISR). إذا أغلق مكان، فإن التجريف التالي يلتقط الصمت في مراجعات Google وتختفي شارة \"نشط منذ 90 يومًا\" - ولكن يجب أن تكون قادرًا أيضًا على الإبلاغ لنا عبر نموذج الاتصال.",
+    "id": "Sinyal sumber (ulasan, penyebutan) segar setiap minggu. Usia Wayback diperbarui setiap bulan. Infrastruktur DNS diperbarui setiap kuartal. Konten yang diedit pemilik disebarkan dalam waktu 10 menit (ISR). Jika sebuah tempat tutup, pengambilan berikutnya menangkap keheningan dalam ulasan Google dan lencana \"aktif 90d\" jatuh — tetapi Anda juga harus dapat melaporkannya kepada kami melalui formulir kontak.",
+    "vi": "Các tín hiệu nguồn (đánh giá, đề cập) được làm mới hàng tuần. Tuổi của Wayback được làm mới hàng tháng. Hạ tầng DNS được làm mới hàng quý. Nội dung do chủ sở hữu chỉnh sửa được lan truyền trong vòng 10 phút (ISR). Nếu một cơ sở đóng cửa, lần thu thập tiếp theo sẽ bắt gặp sự im lặng trong đánh giá của Google và huy hiệu \"hoạt động trong 90 ngày\" sẽ biến mất — nhưng bạn cũng nên có thể báo cáo cho chúng tôi qua mẫu liên hệ."
   }
 }
