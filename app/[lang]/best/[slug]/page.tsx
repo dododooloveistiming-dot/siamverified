@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlacesByNiche } from "@/lib/data";
 import { CITIES, getCityBySlug, placesInCity } from "@/lib/cities";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
@@ -138,6 +138,22 @@ const CONTENT: Record<Kind, Loc<Content>> = {
       heroBgLight: "from-amber-50/60",
       heroBgDark: "dark:from-amber-950/20",
     },
+    id: {
+      h1: (c, n) => `${n} paling mapan di ${c} (beroperasi 5+ tahun)`,
+      intro: (c, n, k) => `${k} tempat ${n} di ${c} punya jejak archive.org setidaknya 5 tahun ke belakang. Masa operasi yang panjang adalah salah satu sinyal kepercayaan yang tak bisa dipalsukan dalam semalam — dan kebanyakan direktori wisata tidak memeriksanya.`,
+      desc: (c, n) => `Tempat ${n} lama di ${c}, diverifikasi via jejak archive.org. Diperiksa silang di Google · Reddit · Naver · Pantip · YouTube. Tanpa promosi berbayar.`,
+      crumbLabel: "Mapan",
+      heroBgLight: "from-amber-50/60",
+      heroBgDark: "dark:from-amber-950/20",
+    },
+    vi: {
+      h1: (c, n) => `${n} lâu đời nhất ở ${c} (hoạt động 5+ năm)`,
+      intro: (c, n, k) => `${k} địa điểm ${n} ở ${c} có dấu vết trên archive.org ít nhất 5 năm. Thời gian hoạt động lâu dài là một trong số ít tín hiệu tin cậy không thể làm giả — và hầu hết các danh bạ du lịch không kiểm tra điều này.`,
+      desc: (c, n) => `Các địa điểm ${n} lâu đời ở ${c}, xác minh qua archive.org. Đối chiếu qua Google · Reddit · Naver · Pantip · YouTube. Không quảng cáo trả phí.`,
+      crumbLabel: "Lâu đời",
+      heroBgLight: "from-amber-50/60",
+      heroBgDark: "dark:from-amber-950/20",
+    },
   },
   active: {
     en: {
@@ -188,46 +204,47 @@ const CONTENT: Record<Kind, Loc<Content>> = {
       heroBgLight: "from-emerald-50/60",
       heroBgDark: "dark:from-emerald-950/20",
     },
+    id: {
+      h1: (c, n) => `${n} yang sedang aktif di ${c} (ulasan terbaru)`,
+      intro: (c, n, k) => `${k} tempat ${n} di ${c} punya setidaknya satu ulasan Google dalam 90 hari terakhir — bukti mereka aktif melayani pelanggan, bukan sekadar tercantum. Kami menyaring tempat yang sudah lama tutup.`,
+      desc: (c, n) => `${n} di ${c} dengan ulasan Google dalam 90 hari terakhir — terverifikasi aktif beroperasi.`,
+      crumbLabel: "Aktif",
+      heroBgLight: "from-emerald-50/60",
+      heroBgDark: "dark:from-emerald-950/20",
+    },
+    vi: {
+      h1: (c, n) => `${n} đang hoạt động ở ${c} (đánh giá gần đây)`,
+      intro: (c, n, k) => `${k} địa điểm ${n} ở ${c} có ít nhất một đánh giá Google trong 90 ngày qua — bằng chứng họ đang phục vụ khách, không chỉ nằm trong danh bạ. Chúng tôi lọc bỏ những nơi đã đóng cửa.`,
+      desc: (c, n) => `${n} ở ${c} có đánh giá Google trong 90 ngày qua — xác minh đang hoạt động.`,
+      crumbLabel: "Đang hoạt động",
+      heroBgLight: "from-emerald-50/60",
+      heroBgDark: "dark:from-emerald-950/20",
+    },
   },
 };
 
-function buildFAQs(city: string, niche: string, kind: Kind, extra: { oldestYear: number | null; veryActiveCount: number; total: number }): FAQItem[] {
+function buildFAQs(lang: Lang, city: string, niche: string, kind: Kind, extra: { oldestYear: number | null; veryActiveCount: number; total: number }): FAQItem[] {
   const out: FAQItem[] = [];
   if (kind === "established") {
-    out.push({
-      q: `What makes a ${niche} venue in ${city} "established"?`,
-      a: `We define established as having an archive.org snapshot going back at least 5 years. That means a real website was live and being crawled long before today's traveler directories listed the place. It's one of the few signals that can't be backfilled — pop-ups and short-lived ventures won't appear in old archives.`,
-    });
+    out.push({ q: tf("bf_est_q1", lang, { niche, city }), a: t("bf_est_a1", lang) });
     if (extra.oldestYear) {
       out.push({
-        q: `What's the oldest ${niche} venue in ${city} on this list?`,
-        a: `The venue with the earliest archive.org capture goes back to ${extra.oldestYear} — over ${new Date().getFullYear() - extra.oldestYear} years of online presence. See the badges on each card for individual years.`,
+        q: tf("bf_est_q2", lang, { niche, city }),
+        a: tf("bf_est_a2", lang, { year: extra.oldestYear, years: new Date().getFullYear() - extra.oldestYear }),
       });
     }
-    out.push({
-      q: `Are these venues still operating today?`,
-      a: `This list filters for established (5+ year history). For current activity, see our companion list: ${city} ${niche} active in the last 90 days. Combine both signals for the strongest picks.`,
-    });
+    out.push({ q: t("bf_est_q3", lang), a: tf("bf_est_a3", lang, { city, niche }) });
   } else {
-    out.push({
-      q: `What counts as "active" on this list?`,
-      a: `At least one Google review in the last 90 days. It sounds basic, but most travel directories never check — they keep listing venues that closed years ago. Active = real customers walked in and left a review recently.`,
-    });
+    out.push({ q: t("bf_act_q1", lang), a: t("bf_act_a1", lang) });
     if (extra.veryActiveCount > 0) {
       out.push({
-        q: `How many had reviews in the last 30 days?`,
-        a: `${extra.veryActiveCount} of the ${extra.total} venues on this list had at least one Google review in the last 30 days — the strongest "still trading right now" signal we can detect from public data.`,
+        q: t("bf_act_q2", lang),
+        a: tf("bf_act_a2", lang, { n: extra.veryActiveCount, total: extra.total }),
       });
     }
-    out.push({
-      q: `Are these venues established or new?`,
-      a: `This list filters for recent activity only. For long-tenure venues (5+ year archive.org history), see our companion list: established ${niche} in ${city}. Many appear on both — those are the strongest combined picks.`,
-    });
+    out.push({ q: t("bf_act_q3", lang), a: tf("bf_act_a3", lang, { niche, city }) });
   }
-  out.push({
-    q: `How is this different from a regular "best of ${city}" list?`,
-    a: `Most "best of" lists pull from a single source (Google reviews, paid promotions, one editor's opinion). We require evidence: a verifiable signal AND cross-source verification across Google, Reddit, Naver, Pantip, YouTube, and the venue's own website. No paid placement — order is based on our trust score.`,
-  });
+  out.push({ q: tf("bf_diff_q", lang, { city }), a: t("bf_diff_a", lang) });
   return out;
 }
 
@@ -281,7 +298,7 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
     .reduce<number | null>((acc, y) => (acc === null || y < acc ? y : acc), null);
   const veryActiveCount = places.filter((p) => p.is_very_active).length;
 
-  const faqs = buildFAQs(city.label, nName, kind, { oldestYear, veryActiveCount, total: places.length });
+  const faqs = buildFAQs(lang, city.label, nName, kind, { oldestYear, veryActiveCount, total: places.length });
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
@@ -300,8 +317,8 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
   const companionKind: Kind = kind === "established" ? "active" : "established";
   const companionSlug = `${city.slug}-${niche}-${companionKind}`;
   const companionLabel = companionKind === "established"
-    ? `See established ${nName} (5y+) →`
-    : `See currently active ${nName} →`;
+    ? tf("bp_companion_est", lang, { niche: nName })
+    : tf("bp_companion_act", lang, { niche: nName });
 
   return (
     <>
@@ -332,28 +349,28 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
               {kind === "established" ? (
                 <>
                   <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 font-bold text-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
-                    🏛 {places.length} established
+                    🏛 {tf("bp_established", lang, { n: places.length })}
                   </span>
                   {oldestYear && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-ink-100 px-3 py-1 font-semibold dark:bg-ink-800">
-                      Earliest: {oldestYear}
+                      {tf("bp_earliest", lang, { year: oldestYear })}
                     </span>
                   )}
                 </>
               ) : (
                 <>
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
-                    🟢 {places.length} active 90d
+                    🟢 {tf("bp_active90", lang, { n: places.length })}
                   </span>
                   {veryActiveCount > 0 && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-ink-100 px-3 py-1 font-semibold dark:bg-ink-800">
-                      {veryActiveCount} active in last 30d
+                      {tf("bp_active30", lang, { n: veryActiveCount })}
                     </span>
                   )}
                 </>
               )}
               <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-3 py-1 font-semibold text-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
-                ✓ No paid placement
+                ✓ {t("bp_nopaid", lang)}
               </span>
             </div>
           </div>
@@ -366,7 +383,7 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
             return (
               <section className="mt-8">
                 <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
-                  Map view · {mapped.length} mapped
+                  {tf("bp_map", lang, { n: mapped.length })}
                 </h2>
                 <PlaceMap places={mapped} lang={lang} height={400} />
               </section>
@@ -420,13 +437,13 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
           </ol>
 
           <section className="mt-12">
-            <h2 className="mb-4 text-lg font-bold">Frequently asked questions</h2>
+            <h2 className="mb-4 text-lg font-bold">{t("faq_section", lang)}</h2>
             <PlaceFAQ items={faqs} />
           </section>
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-6 text-sm dark:border-ink-800">
             <Link href={`/${lang}/c/${niche}/`} className="font-bold text-emerald-700 hover:underline dark:text-emerald-400">
-              ← All {nName}
+              {tf("g_back", lang, { niche: nName })}
             </Link>
             <Link href={`/${lang}/best/${companionSlug}/`} className="text-emerald-700 hover:underline dark:text-emerald-400">
               {companionLabel}

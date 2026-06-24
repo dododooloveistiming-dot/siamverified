@@ -1314,5 +1314,203 @@
     "ar": "مقارنة جنبًا إلى جنب بين {a} و {b} عبر مراكز اليوغا والسبا والمُوي Thai والغوص والطهي وحياة الرحالة الرقمي. تم بناؤه من قوائم تم التحقق منها، وليست من مواقع مدفوعة.",
     "id": "Perbandingan berdampingan {a} dan {b} dalam retret yoga, spa, muay thai, menyelam, memasak, dan kehidupan digital nomaden. Dibuat dari daftar yang diperiksa silang, bukan penempatan berbayar.",
     "vi": "So sánh song song giữa {a} và {b} về các khóa retreat yoga, spa, muay thai, lặn, nấu ăn, và cuộc sống du mục số. Được xây dựng từ danh sách đã được kiểm tra, không phải là vị trí được trả phí."
+  },
+  "bp_companion_est": {
+    "ko": "설립된 {niche} (5년 이상) 보기 →",
+    "th": "ดู {niche} ที่ก่อตั้งแล้ว (5 ปีขึ้นไป) →",
+    "zh": "查看已建立的 {niche} (5年+) →",
+    "ja": "確立された {niche} (5年以上) →",
+    "ar": "عرض {niche} المتاحة منذ فترة (5 سنوات فأكثر) →",
+    "id": "Lihat {niche} yang sudah mapan (5y+) →",
+    "vi": "Xem {niche} đã được thiết lập (5y+) →"
+  },
+  "bp_companion_act": {
+    "ko": "현재 활동 중인 {niche} 보기 →",
+    "th": "ดู {niche} ที่ยังดำเนินการอยู่ →",
+    "zh": "查看当前活跃的 {niche} →",
+    "ja": "現在アクティブな {niche} →",
+    "ar": "عرض {niche} النشطة حالياً →",
+    "id": "Lihat {niche} yang aktif saat ini →",
+    "vi": "Xem {niche} đang hoạt động hiện tại →"
+  },
+  "bp_map": {
+    "ko": "지도 보기 · {n}개 매핑됨",
+    "th": "มุมมองแผนที่ · {n} แห่งที่ทำเครื่องหมาย",
+    "zh": "地图视图 · {n} 个已标记",
+    "ja": "マップ表示 · {n} 件マッピング済み",
+    "ar": "عرض الخريطة · {n} محددة",
+    "id": "Tampilan peta · {n} yang dipetakan",
+    "vi": "Chế độ xem bản đồ · {n} đã được lập bản đồ"
+  },
+  "bp_established": {
+    "ko": "{n}개 설립됨",
+    "th": "{n} ที่ก่อตั้งแล้ว",
+    "zh": "{n} 个已建立",
+    "ja": "{n} 設立済み",
+    "ar": "{n} مؤسس",
+    "id": "{n} yang sudah mapan",
+    "vi": "{n} đã được thiết lập"
+  },
+  "bp_earliest": {
+    "ko": "가장 이른: {year}",
+    "th": "เก่าที่สุด: {year}",
+    "zh": "最早: {year}",
+    "ja": "最も古い: {year}",
+    "ar": "الأقدم: {year}",
+    "id": "Paling awal: {year}",
+    "vi": "Sớm nhất: {year}"
+  },
+  "bp_active90": {
+    "ko": "최근 90일간 {n}개 활동 중",
+    "th": "{n} ที่ยังดำเนินการใน 90 วัน",
+    "zh": "{n} 个活跃 90天",
+    "ja": "{n} 過去90日間アクティブ",
+    "ar": "{n} نشطة في آخر 90 يومًا",
+    "id": "{n} aktif 90 hari",
+    "vi": "{n} đang hoạt động 90d"
+  },
+  "bp_active30": {
+    "ko": "최근 30일간 {n}개 활동 중",
+    "th": "{n} ที่ยังดำเนินการใน 30 วันที่ผ่านมา",
+    "zh": "{n} 个在过去 30天活跃",
+    "ja": "{n} 過去30日間アクティブ",
+    "ar": "{n} نشطة في آخر 30 يومًا",
+    "id": "{n} aktif dalam 30 hari terakhir",
+    "vi": "{n} đang hoạt động trong 30d qua"
+  },
+  "bp_nopaid": {
+    "ko": "유료 게재 없음",
+    "th": "ไม่มีการวางตำแหน่งที่ชำระเงิน",
+    "zh": "无付费展示",
+    "ja": "有料掲載なし",
+    "ar": "لا توجد أماكن مدفوعة",
+    "id": "Tidak ada penempatan berbayar",
+    "vi": "Không có vị trí trả tiền"
+  },
+  "bf_est_q1": {
+    "ko": "{city}에서 {niche} 장소가 \"설립됨\"으로 간주되는 기준은 무엇인가요?",
+    "th": "อะไรทำให้สถานที่ {niche} ใน {city} \"ก่อตั้งแล้ว\"?",
+    "zh": "{city} 的 {niche} 场所如何被认为是\"已建立\"？",
+    "ja": "{city}の {niche}会場が「確立」されているとはどういう意味ですか？",
+    "ar": "ماذا يجعل مكان {niche} في {city} \"مؤسس\"؟",
+    "id": "Apa yang membuat tempat {niche} di {city} \"mapan\"?",
+    "vi": "Điều gì làm cho một địa điểm {niche} ở {city} trở nên \"được thiết lập\"?"
+  },
+  "bf_est_a1": {
+    "ko": "우리는 최소 5년 전으로 거슬러 올라가는 archive.org 스냅샷을 기준으로 설립됨을 정의합니다. 즉, 진짜 웹사이트가 활성화되어 현재 여행자 디렉토리에 장소가 등록되기 오래 전에 크롤링되고 있었던 것입니다. 이는 다시 채워질 수 없는 몇 가지 신호 중 하나입니다 — 팝업과 단기 프로젝트는 오래된 아카이브에서 나타나지 않을 것입니다.",
+    "th": "เรากำหนดว่าก่อตั้งแล้วคือมีสแนปช็อต archive.org กลับไปอย่างน้อย 5 ปี นั่นหมายความว่าเว็บไซต์จริงเคยเปิดใช้งานและถูกเก็บข้อมูลก่อนที่รายการของนักท่องเที่ยวในวันนี้จะรวมสถานที่นี้ มันเป็นหนึ่งในสัญญาณไม่กี่อย่างที่ไม่สามารถเติมเต็มย้อนกลับได้ — ป๊อปอัพและธุรกิจระยะสั้นจะไม่ปรากฏในคลังเก็บเก่า",
+    "zh": "我们将已建立的定义为在 archive.org 上有快照至少可追溯到 5 年之前。这意味着在今天的旅行者目录列出该地点之前，就已经有真实的网站在线并被爬取。这是少数几个无法回填的信号之一 — 弹出式和短期经营的项目不会出现在旧档案中。",
+    "ja": "確立されたというのは、少なくとも5年前にarchive.orgのスナップショットがあることを指します。これは、実際のウェブサイトが存在し、今日の旅行者ディレクトリがその場所を掲載するずっと前からクローリングされていたことを意味します。これは、古いアーカイブに戻すことができない少数のシグナルの一つです — ポップアップや短命の事業は古いアーカイブに現れません。",
+    "ar": "نحن نعرّف المؤسس بأنه المكان الذي يحتوي على لقطات في archive.org تعود إلى 5 سنوات على الأقل. مما يعني أن هناك موقعًا حقيقيًا كان موجودًا ويجري الزحف إليه قبل أن تسجل أدلة المسافرين اليوم المكان. إنها واحدة من القلائل التي لا يمكن استرجاعها - والنوافذ المنبثقة والمشاريع القصيرة لن تظهر في الأرشيفات القديمة.",
+    "id": "Kami mendefinisikan mapan sebagai memiliki snapshot archive.org yang kembali setidaknya 5 tahun. Itu berarti situs web nyata sudah aktif dan dijelajahi jauh sebelum direktori perjalanan saat ini mencantumkan tempat tersebut. Ini adalah salah satu sinyal yang tidak bisa dipenuhi kembali — pop-up dan usaha yang bertahan singkat tidak akan muncul di arsip lama.",
+    "vi": "Chúng tôi định nghĩa 'được thiết lập' là có một bản chụp archive.org kéo dài ít nhất 5 năm. Điều đó có nghĩa là một trang web thực tế đã hoạt động và được thu thập từ lâu trước khi các danh bạ du lịch hôm nay liệt kê địa điểm này. Đây là một trong những tín hiệu hiếm hoi không thể được lấp đầy — các pop-up và dự án ngắn hạn sẽ không xuất hiện trong các bản lưu trữ cũ."
+  },
+  "bf_est_q2": {
+    "ko": "이 목록에서 {city}의 가장 오래된 {niche} 장소는 무엇인가요?",
+    "th": "สถานที่ {niche} ที่เก่าที่สุดใน {city} ในรายการนี้คืออะไร?",
+    "zh": "这个列表中最古老的 {niche} 场所是什么？",
+    "ja": "このリストで最も古い {niche} 会場は何ですか？",
+    "ar": "ما هو أقدم مكان {niche} في {city} في هذه القائمة؟",
+    "id": "Apa tempat {niche} tertua di {city} dalam daftar ini?",
+    "vi": "Địa điểm {niche} cổ nhất ở {city} trong danh sách này là gì?"
+  },
+  "bf_est_a2": {
+    "ko": "가장 이른 archive.org 캡처는 {year}로 거슬러 올라가며 — 온라인 존재가 {years}년 이상입니다. 각 카드에서 개별 연도의 배지를 확인하세요.",
+    "th": "สถานที่ที่มีการจับภาพ archive.org ที่เก่าที่สุดเริ่มต้นตั้งแต่ {year} — มากกว่า {years} ปีแห่งการมีตัวตนออนไลน์ ดูป้ายบนการ์ดแต่ละใบสำหรับปีที่ระบุ",
+    "zh": "最早的 archive.org 捕获的场所可以追溯到 {year} — 超过 {years} 年的在线存在。请查看每张卡片上的徽章以了解各年的信息。",
+    "ja": "最も早いarchive.orgのキャプチャが{year}に遡り — オンラインの存在が{years}年以上あります。各カードのバッジで個別の年を確認できます。",
+    "ar": "المكان الذي يعود تاريخه إلى أقدم لقطة في archive.org يعود إلى {year} - أكثر من {years} سنوات من الوجود عبر الإنترنت. انظر الشارات على كل بطاقة للسنوات الفردية.",
+    "id": "Tempat dengan tangkapan archive.org paling awal kembali ke {year} — lebih dari {years} tahun kehadiran daring. Lihat lencana di setiap kartu untuk tahun-tahun individu.",
+    "vi": "Địa điểm với bản chụp archive.org sớm nhất quay lại {year} — hơn {years} năm có mặt trực tuyến. Xem các huy hiệu trên mỗi thẻ cho từng năm."
+  },
+  "bf_est_q3": {
+    "ko": "이 장소들은 오늘날에도 운영 중인가요?",
+    "th": "สถานที่เหล่านี้ยังดำเนินการอยู่วันนี้หรือไม่?",
+    "zh": "这些场所今天仍在经营吗？",
+    "ja": "これらの会場は現在も運営されていますか？",
+    "ar": "هل هذه الأماكن لا تزال تعمل اليوم؟",
+    "id": "Apakah tempat-tempat ini masih beroperasi hari ini?",
+    "vi": "Những địa điểm này có còn hoạt động hôm nay không?"
+  },
+  "bf_est_a3": {
+    "ko": "이 목록은 설립된 (5년 이상의 역사) 장소로 필터링됩니다. 현재 활동을 보려면 우리의 파트너 목록을 확인하세요: {city} {niche} 최근 90일간 활동 중인 것. 가장 강력한 선택을 위해 두 신호를 결합하세요.",
+    "th": "รายการนี้กรองสำหรับสถานที่ที่ก่อตั้งแล้ว (มีประวัติ 5 ปีขึ้นไป) สำหรับกิจกรรมปัจจุบัน ดูรายชื่อคู่มือของเรา: {city} {niche} ที่ยังดำเนินการใน 90 วันที่ผ่านมา รวมทั้งสองสัญญาณเพื่อการเลือกที่แข็งแกร่งที่สุด",
+    "zh": "该列表筛选了已建立的（超过 5 年的历史）。有关当前活动的信息，请查看我们的伴随列表：{city} 最近 90 天的 {niche} 活动。结合这两个信号以获得最佳选择。",
+    "ja": "このリストは確立された（5年以上の歴史）会場をフィルタリングしています。現在の活動については、私たちのサブリストを参照してください：{city} {niche} 過去90日間のアクティブなもの。両方のシグナルを組み合わせて最も強い選択肢を得ることができます。",
+    "ar": "تقوم هذه القائمة بالتصفية للأماكن المؤسسة (تاريخ 5+ سنوات). لنشاط الحالي، يرجى مراجعة قائمتنا المساعدة: {city} {niche} النشطة في آخر 90 يومًا. اجمع بين كلا الإشارتين لأفضل الاختيارات.",
+    "id": "Daftar ini menyaring untuk yang mapan (riwayat 5+ tahun). Untuk aktivitas saat ini, lihat daftar pendamping kami: {city} {niche} aktif dalam 90 hari terakhir. Gabungkan kedua sinyal ini untuk pilihan terbaik.",
+    "vi": "Danh sách này chỉ lọc cho các địa điểm đã được thiết lập (lịch sử 5+ năm). Để biết hoạt động hiện tại, xem danh sách đi kèm của chúng tôi: {city} {niche} đang hoạt động trong 90 ngày qua. Kết hợp cả hai tín hiệu để có những lựa chọn tốt nhất."
+  },
+  "bf_act_q1": {
+    "ko": "이 목록에서 \"활동 중\"으로 간주되는 기준은 무엇인가요?",
+    "th": "อะไรถือว่ามี \"กิจกรรม\" ในรายการนี้?",
+    "zh": "在这个列表中，什么算作\"活跃\"？",
+    "ja": "このリストで「アクティブ」とは何を指しますか？",
+    "ar": "ماذا يعتبر \"نشطًا\" في هذه القائمة؟",
+    "id": "Apa yang dihitung sebagai \"aktif\" dalam daftar ini?",
+    "vi": "Điều gì được coi là \"đang hoạt động\" trong danh sách này?"
+  },
+  "bf_act_a1": {
+    "ko": "최근 90일간 최소 하나의 Google 리뷰가 있어야 합니다. 기본적으로 들리지만, 대부분의 여행 디렉토리는 이를 확인하지 않고 — 몇 년 전에 폐쇄된 장소도 계속 나열합니다. 활동 중 = 실제 고객이 방문하여 최근에 리뷰를 남겼습니다.",
+    "th": "รีวิว Google อย่างน้อยหนึ่งรายการใน 90 วันที่ผ่านมา มันฟังดูพื้นฐาน แต่ไดเร็กทอรีการท่องเที่ยวส่วนใหญ่ไม่เคยตรวจสอบ — พวกเขายังคงแสดงสถานที่ที่ปิดไปแล้วเมื่อหลายปีก่อน กิจกรรม = ลูกค้าจริงเข้าไปและทิ้งรีวิวเมื่อเร็ว ๆ นี้",
+    "zh": "在过去 90 天内至少有一条 Google 评论。这听起来很基础，但大多数旅行目录从未检查 — 他们继续列出多年前关闭的场所。活跃 = 真实客户最近走进并留下了评论。",
+    "ja": "過去90日間に少なくとも1件のGoogleレビューが必要です。それは基本的なことのように聞こえますが、ほとんどの旅行ディレクトリは確認しません — 彼らは何年も前に閉店した会場を掲載し続けます。アクティブ = 実際の顧客が最近訪れ、レビューを残したことを意味します。",
+    "ar": "على الأقل مراجعة واحدة من Google في آخر 90 يومًا. يبدو أنه أمر أساسي، ولكن معظم أدلة السفر لا تتحقق أبداً - يستمرون في إدراج أماكن أغلقت منذ سنوات. نشط = عملاء حقيقيون دخلوا وتركوا مراجعة حديثة.",
+    "id": "Setidaknya satu ulasan Google dalam 90 hari terakhir. Ini terdengar dasar, tetapi sebagian besar direktori perjalanan tidak pernah memeriksa — mereka terus mencantumkan tempat yang sudah tutup bertahun-tahun yang lalu. Aktif = pelanggan nyata masuk dan meninggalkan ulasan baru-baru ini.",
+    "vi": "Ít nhất một đánh giá Google trong 90 ngày qua. Nghe có vẻ cơ bản, nhưng hầu hết các danh bạ du lịch không bao giờ kiểm tra — họ tiếp tục liệt kê các địa điểm đã đóng cửa nhiều năm trước. Đang hoạt động = khách hàng thực sự đã đến và để lại đánh giá gần đây."
+  },
+  "bf_act_q2": {
+    "ko": "최근 30일간 몇 개가 리뷰를 받았나요?",
+    "th": "มีกี่รายที่มีรีวิวใน 30 วันที่ผ่านมา?",
+    "zh": "在过去 30 天内，有多少个场所有评论？",
+    "ja": "過去30日間にレビューがあったのは何件ですか？",
+    "ar": "كم عددها التي لديها مراجعات في آخر 30 يومًا؟",
+    "id": "Berapa banyak yang memiliki ulasan dalam 30 hari terakhir?",
+    "vi": "Có bao nhiêu địa điểm có đánh giá trong 30 ngày qua?"
+  },
+  "bf_act_a2": {
+    "ko": "이 목록의 {total}개 장소 중 {n}개가 최근 30일간 최소 하나의 Google 리뷰를 받았습니다 — 우리가 공공 데이터에서 감지할 수 있는 가장 강력한 \"현재 거래 중\" 신호입니다.",
+    "th": "{n} ของสถานที่ {total} ในรายการนี้มีรีวิว Google อย่างน้อยหนึ่งรายการใน 30 วันที่ผ่านมา — สัญญาณที่แข็งแกร่งที่สุดว่า \"ยังเปิดทำการอยู่ตอนนี้\" ที่เราสามารถตรวจจับได้จากข้อมูลสาธารณะ",
+    "zh": "{n} 个在这个列表中的 {total} 个场所最近 30 天内至少有一条 Google 评论 — 这是我们能从公共数据中检测到的最强\"仍在营业\"信号。",
+    "ja": "{n} 件の {total} 会場が過去30日間に少なくとも1件のGoogleレビューがありました — これは「今も取引中」の最も強いシグナルです。",
+    "ar": "{n} من {total} الأماكن في هذه القائمة كانت لديها على الأقل مراجعة واحدة من Google في آخر 30 يومًا - أقوى إشارة \"لا تزال تتداول الآن\" يمكننا اكتشافها من البيانات العامة.",
+    "id": "{n} dari {total} tempat dalam daftar ini memiliki setidaknya satu ulasan Google dalam 30 hari terakhir — sinyal \"masih berdagang sekarang\" terbaik yang bisa kami deteksi dari data publik.",
+    "vi": "{n} trong số {total} địa điểm trong danh sách này đã có ít nhất một đánh giá Google trong 30 ngày qua — tín hiệu mạnh nhất về \"vẫn đang giao dịch ngay bây giờ\" mà chúng tôi có thể phát hiện từ dữ liệu công khai."
+  },
+  "bf_act_q3": {
+    "ko": "이 장소들은 설립된 것인가요, 아니면 새로운 것인가요?",
+    "th": "สถานที่เหล่านี้ก่อตั้งแล้วหรือใหม่?",
+    "zh": "这些场所是已建立的还是新的？",
+    "ja": "これらの会場は確立されたものですか、それとも新しいものですか？",
+    "ar": "هل هذه الأماكن مؤسسة أم جديدة؟",
+    "id": "Apakah tempat-tempat ini mapan atau baru?",
+    "vi": "Những địa điểm này đã được thiết lập hay mới?"
+  },
+  "bf_act_a3": {
+    "ko": "이 목록은 최근 활동만 필터링됩니다. 장기 운영 장소(5년 이상의 archive.org 역사)에 대해서는 우리의 파트너 목록을 확인하세요: {city}의 설립된 {niche}. 둘 다에서 나타나는 경우가 많은데 — 그것들은 가장 강력한 조합 선택입니다.",
+    "th": "รายการนี้กรองเฉพาะสำหรับกิจกรรมล่าสุดเท่านั้น สำหรับสถานที่ที่มีอายุยืนยาว (มีประวัติ archive.org 5 ปีขึ้นไป) ดูรายชื่อคู่มือของเรา: {niche} ที่ก่อตั้งแล้วใน {city} หลายแห่งปรากฏทั้งสองรายการ — นั่นคือการเลือกที่แข็งแกร่งที่สุดรวมกัน",
+    "zh": "该列表仅筛选最近的活动。有关长期场所（超过 5 年的 archive.org 历史），请查看我们的伴随列表：在 {city} 已建立的 {niche}。许多场所同时出现在两者中 — 那些是最强的组合选择。",
+    "ja": "このリストは最近の活動のみをフィルタリングしています。長期にわたる会場（5年以上のarchive.orgの歴史）が必要な場合は、私たちのサブリストを参照してください：{city}の確立された {niche}。両方に多くの会場が現れる — それらは最も強い組み合わせの選択肢です。",
+    "ar": "تقوم هذه القائمة بالتصفية للنشاط الحديث فقط. لأماكن ذات تاريخ طويل (تاريخ 5+ سنوات في archive.org)، راجع قائمتنا المساعدة: {niche} المؤسسة في {city}. العديد منها يظهر في كلا القائمتين - هذه هي أفضل الخيارات المجتمعة.",
+    "id": "Daftar ini menyaring hanya untuk aktivitas terbaru. Untuk tempat dengan masa lama (riwayat archive.org 5+ tahun), lihat daftar pendamping kami: {niche} yang mapan di {city}. Banyak yang muncul di kedua daftar — itu adalah pilihan terbaik yang kuat.",
+    "vi": "Danh sách này chỉ lọc cho các hoạt động gần đây. Đối với các địa điểm có thâm niên dài (lịch sử archive.org 5+ năm), xem danh sách đi kèm của chúng tôi: {niche} được thiết lập ở {city}. Nhiều địa điểm xuất hiện trên cả hai — đó là những lựa chọn kết hợp tốt nhất."
+  },
+  "bf_diff_q": {
+    "ko": "이 목록은 일반 \"최고의 {city}\" 목록과 어떻게 다른가요?",
+    "th": "สิ่งนี้แตกต่างจากรายการ \"ดีที่สุดใน {city}\" ทั่วไปอย่างไร?",
+    "zh": "这和常规的 \"最佳 {city}\" 列表有什么不同？",
+    "ja": "これは通常の「{city}のベスト」リストとどう違いますか？",
+    "ar": "كيف يختلف هذا عن قائمة \"أفضل ما في {city}\" العادية؟",
+    "id": "Apa perbedaan ini dari daftar \"terbaik di {city}\" biasa?",
+    "vi": "Điều này khác gì so với danh sách \"tốt nhất của {city}\" thông thường?"
+  },
+  "bf_diff_a": {
+    "ko": "대부분의 \"최고의\" 목록은 단일 출처(Google 리뷰, 유료 프로모션, 편집자의 의견)에서 가져옵니다. 우리는 증거를 요구합니다: 검증 가능한 신호 AND Google, Reddit, Naver, Pantip, YouTube 및 해당 장소의 웹사이트 간의 크로스 소스 검증. 유료 게재 없음 — 순서는 우리의 신뢰 점수를 기반으로 합니다.",
+    "th": "รายการ \"ดีที่สุด\" ส่วนใหญ่ดึงข้อมูลจากแหล่งเดียว (รีวิว Google, การส่งเสริมการชำระเงิน, ความคิดเห็นของบรรณาธิการคนเดียว) เราต้องการหลักฐาน: สัญญาณที่ตรวจสอบได้และการตรวจสอบข้ามแหล่งข้อมูลจาก Google, Reddit, Naver, Pantip, YouTube และเว็บไซต์ของสถานที่นั้น ไม่มีการวางตำแหน่งที่ชำระเงิน — ลำดับจัดอันดับขึ้นอยู่กับคะแนนความเชื่อถือของเรา",
+    "zh": "大多数\"最佳\"列表来自单一来源（Google 评论、付费推广、一个编辑的观点）。我们需要证据：可验证的信号以及跨来源的验证，涵盖 Google、Reddit、Naver、Pantip、YouTube 和场所自己的网站。无付费展示 — 排序基于我们的信任评分。",
+    "ja": "ほとんどの「ベスト」リストは一つのソース（Googleレビュー、有料プロモーション、一人の編集者の意見）から引き出します。私たちは証拠を要求します：検証可能なシグナルとGoogle、Reddit、Naver、Pantip、YouTube、会場のウェブサイト間のクロスソース検証。有料掲載なし — 順序は私たちの信頼スコアに基づいています。",
+    "ar": "تستند معظم قوائم \"الأفضل\" إلى مصدر واحد (مراجعات Google، الترويجات المدفوعة، رأي محرر واحد). نحن نطلب دليلًا: إشارة يمكن التحقق منها والتحقق عبر مصادر متعددة عبر Google وReddit وNaver وPantip وYouTube وموقع المكان نفسه. لا توجد أماكن مدفوعة - الترتيب يعتمد على درجة ثقتنا.",
+    "id": "Sebagian besar daftar \"terbaik\" menarik dari satu sumber (ulasan Google, promosi berbayar, pendapat satu editor). Kami membutuhkan bukti: sinyal yang dapat diverifikasi DAN verifikasi lintas sumber di Google, Reddit, Naver, Pantip, YouTube, dan situs web tempat itu sendiri. Tidak ada penempatan berbayar — urutan berdasarkan skor kepercayaan kami.",
+    "vi": "Hầu hết các danh sách \"tốt nhất\" đều lấy từ một nguồn duy nhất (đánh giá Google, quảng cáo trả tiền, ý kiến của một biên tập viên). Chúng tôi yêu cầu bằng chứng: một tín hiệu có thể xác minh VÀ xác minh từ nhiều nguồn trên Google, Reddit, Naver, Pantip, YouTube và trang web của địa điểm. Không có vị trí trả tiền — thứ tự dựa trên điểm số uy tín của chúng tôi."
   }
 }
