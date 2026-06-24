@@ -135,6 +135,10 @@ export const T = {
   cta_book_agoda: { en: "Find on Agoda", ko: "Agoda 검색", th: "หาบน Agoda", zh: "Agoda 查找", ja: "Agodaで探す", ar: "ابحث على Agoda" },
   cta_view_map: { en: "View on Google Maps", ko: "구글 맵에서 보기", th: "ดูบน Google Maps", zh: "Google 地图查看", ja: "Google マップで見る", ar: "عرض على خرائط جوجل" },
 
+  cta_get_quote: { en: "Get Free Quote", ko: "무료 견적 받기", th: "ขอใบเสนอราคาฟรี", zh: "获取免费报价", ja: "無料見積もり", ar: "احصل على عرض سعر مجاني", id: "Dapatkan Penawaran Gratis", vi: "Nhận Báo Giá Miễn Phí" },
+  cta_see_details: { en: "↑ See details above", ko: "↑ 위에서 상세 보기", th: "↑ ดูรายละเอียดด้านบน", zh: "↑ 查看上方详情", ja: "↑ 上記の詳細を見る", ar: "↑ انظر التفاصيل أعلاه", id: "↑ Lihat detail di atas", vi: "↑ Xem chi tiết ở trên" },
+  cta_call: { en: "Call", ko: "전화", th: "โทร", zh: "拨打电话", ja: "電話", ar: "اتصل", id: "Telepon", vi: "Gọi" },
+
   // sources (badges)
   source_google: { en: "Google", ko: "구글", th: "Google", zh: "Google", ja: "Google", ar: "جوجل" },
   source_reddit: { en: "Reddit", ko: "Reddit", th: "Reddit", zh: "Reddit", ja: "Reddit", ar: "Reddit" },

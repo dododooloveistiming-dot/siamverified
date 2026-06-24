@@ -14,7 +14,7 @@ function pickPrimary(place: Place, lang: Lang): Primary | null {
   if (place.affiliate.agoda)
     return { label: t("cta_book_agoda", lang), href: place.affiliate.agoda, tone: "bg-sky-600 hover:bg-sky-700" };
   if (place.affiliate.bookimed)
-    return { label: "Get Free Quote", href: place.affiliate.bookimed, tone: "bg-blue-600 hover:bg-blue-700" };
+    return { label: t("cta_get_quote", lang), href: place.affiliate.bookimed, tone: "bg-blue-600 hover:bg-blue-700" };
   return null;
 }
 
@@ -32,7 +32,7 @@ export default function StickyBookBar({ place, lang }: { place: Place; lang: Lan
           <a
             href={`tel:${place.phone}`}
             className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-ink-200 text-emerald-700 transition active:scale-95 dark:border-ink-700 dark:text-emerald-400"
-            aria-label="Call"
+            aria-label={t("cta_call", lang)}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.91.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -65,7 +65,7 @@ export default function StickyBookBar({ place, lang }: { place: Place; lang: Lan
           </a>
         ) : (
           <div className="flex h-12 flex-1 items-center justify-center rounded-xl bg-ink-100 text-sm font-medium muted dark:bg-ink-800">
-            ↑ See details above
+            {t("cta_see_details", lang)}
           </div>
         )}
       </div>
