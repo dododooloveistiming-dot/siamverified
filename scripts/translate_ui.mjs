@@ -27,6 +27,9 @@ const LANGS = argVal("--langs", "id").split(",").map((s) => s.trim()).filter(Boo
 const LIMIT = parseInt(argVal("--limit", "0"), 10) || Infinity;
 const MODEL = argVal("--model", "gpt-4o-mini");
 
+// Sorted set of {placeholder} tokens in a string — for translation validation.
+const ph = (s) => (String(s).match(/\{[a-zA-Z]+\}/g) || []).sort().join(",");
+
 const LANG_NAMES = {
   ko: "Korean", th: "Thai", zh: "Simplified Chinese", ja: "Japanese",
   ar: "Arabic", vi: "Vietnamese", id: "Indonesian", ms: "Malay",
@@ -95,8 +98,11 @@ for (const lang of LANGS) {
       const r = await translateBatch(key, lang, batch);
       for (const k of slice) {
         const v = r.obj[k];
-        if (typeof v === "string" && v) { (out[k] ||= {})[lang] = v; okKeys++; }
-        else fail++;
+        // Reject translations that dropped/renamed/duplicated a {placeholder} —
+        // those render broken (literal {x} or missing data). Skip → en fallback.
+        const want = ph(T[k].en);
+        if (typeof v === "string" && v && ph(v) === want) { (out[k] ||= {})[lang] = v; okKeys++; }
+        else { fail++; if (typeof v === "string" && ph(v) !== want) console.warn(`  drop ${k} [${lang}] — placeholder mismatch (en:[${want}] got:[${ph(v)}])`); }
       }
       inTok += r.usage?.prompt_tokens || 0; outTok += r.usage?.completion_tokens || 0;
     } catch (e) {

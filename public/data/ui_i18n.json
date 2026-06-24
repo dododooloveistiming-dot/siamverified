@@ -931,7 +931,7 @@
   "g_title": {
     "ko": "{city}에서의 상위 {n} {niche}",
     "th": "อันดับ {n} {niche} ใน {city}",
-    "zh": "泰国{city}的前{n}个{name}",
+    "zh": "泰国{city}的前{n}个{niche}",
     "ja": "{city}のトップ{n} {niche}",
     "ar": "أفضل {n} {niche} في {city}",
     "id": "Top {n} {niche} di {city}",
@@ -976,7 +976,7 @@
   "g_of_top": {
     "ko": "상위 {n} 중",
     "th": "จากอันดับ {n}",
-    "zh": "前{n}中的{n}",
+    "zh": "前{n}名中",
     "ja": "トップ{n}のうち",
     "ar": "من أفضل {n}",
     "id": "dari {n} teratas",
@@ -1030,7 +1030,7 @@
   "g_meta_title": {
     "ko": "{city}, 태국의 상위 {n} {niche}",
     "th": "อันดับ {n} {niche} ใน {city}, ประเทศไทย",
-    "zh": "泰国{city}的前{n}个{name}",
+    "zh": "泰国{city}的前{n}个{niche}",
     "ja": "{city}, タイのトップ{n} {niche}",
     "ar": "أفضل {n} {niche} في {city}، تايلاند",
     "id": "Top {n} {niche} di {city}, Thailand",
@@ -1111,7 +1111,7 @@
   "gf_beginner_a": {
     "ko": "우리 리뷰 집계에서 상위 {top} {city} {niche} 장소 중 {n}개가 초보자 친화적으로 표시되어 있습니다.",
     "th": "{n} ของสถานที่ {top} {city} {niche} ที่ดีที่สุดถูกระบุว่าเหมาะสำหรับผู้เริ่มต้นในข้อมูลรีวิวของเรา",
-    "zh": "在我们的评论汇总中，{n}个{city}的顶级{niche}场所被标记为适合初学者。",
+    "zh": "在我们的评论汇总中，{n}个{city}的前{top}名{niche}场所被标记为适合初学者。",
     "ja": "トップ{top} {city} {niche}の{n}は、私たちのレビュー集計で初心者向けとしてフラグ付けされています。",
     "ar": "{n} من أفضل {top} أماكن {city} {niche} تم وضع علامة عليها كمناسبة للمبتدئين في تجميع تقييماتنا.",
     "id": "{n} dari {top} tempat {niche} di {city} yang teratas ditandai sebagai ramah pemula dalam agregasi ulasan kami.",
@@ -1156,7 +1156,7 @@
   "pl_see_all": {
     "ko": "모든 {niche} 보기 {city} →",
     "th": "ดูทั้งหมด {niche} ใน {city} →",
-    "zh": "查看所有在{name}的{niche} →",
+    "zh": "查看所有在{city}的{niche} →",
     "ja": "{city}の{niche}をすべて見る →",
     "ar": "شاهد جميع {niche} في {city} →",
     "id": "Lihat semua {niche} di {city} →",
@@ -1408,8 +1408,8 @@
   "bf_est_q2": {
     "ko": "이 목록에서 {city}의 가장 오래된 {niche} 장소는 무엇인가요?",
     "th": "สถานที่ {niche} ที่เก่าที่สุดใน {city} ในรายการนี้คืออะไร?",
-    "zh": "这个列表中最古老的 {niche} 场所是什么？",
-    "ja": "このリストで最も古い {niche} 会場は何ですか？",
+    "zh": "这个列表中{city}最古老的{niche}场所是什么？",
+    "ja": "このリストで最も古い{city}の{niche}会場は何ですか？",
     "ar": "ما هو أقدم مكان {niche} في {city} في هذه القائمة؟",
     "id": "Apa tempat {niche} tertua di {city} dalam daftar ini?",
     "vi": "Địa điểm {niche} cổ nhất ở {city} trong danh sách này là gì?"
@@ -2200,7 +2200,7 @@
   "hp_trending": {
     "ko": "{city}에서 인기",
     "th": "ที่กำลังมาแรงใน {city}",
-    "zh": "在{name} trending",
+    "zh": "{city}的热门",
     "ja": "{city}でのトレンド",
     "ar": "الرائج في {city}",
     "id": "Trending di {city}",
