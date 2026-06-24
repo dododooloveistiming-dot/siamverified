@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
 import DarkModeToggle from "./DarkModeToggle";
+import WishlistNavLink from "./WishlistNavLink";
 
 // Top 4 in desktop nav — rest live in the "More" dropdown to declutter.
 const NAV_NICHES_PRIMARY: Niche[] = ["spa", "yoga-pilates", "muay-thai", "diving"];
@@ -216,8 +217,9 @@ export default function Header({ lang }: { lang: Lang }) {
             className="hidden rounded-md border border-emerald-500 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 lg:inline-flex"
             title="For business owners"
           >
-            For Business →
+            {t("nav_for_business", lang)}
           </Link>
+          <WishlistNavLink lang={lang} label={t("nav_saved", lang)} />
           <select
             value={lang}
             onChange={(e) => { window.location.href = `/${e.target.value}/`; }}

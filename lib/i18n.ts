@@ -32,6 +32,8 @@ export const T = {
   // navigation
   nav_explore: { en: "Explore", ko: "탐색", th: "สำรวจ", zh: "探索", ja: "探索", ar: "استكشف" },
   nav_about: { en: "About", ko: "소개", th: "เกี่ยวกับ", zh: "关于", ja: "概要", ar: "حول" },
+  nav_saved: { en: "Saved", ko: "저장됨", th: "บันทึกไว้", zh: "收藏", ja: "保存済み", ar: "المحفوظة", id: "Tersimpan", vi: "Đã lưu" },
+  nav_for_business: { en: "For Business →", ko: "사장님용 →", th: "สำหรับธุรกิจ →", zh: "商家入口 →", ja: "事業者の方 →", ar: "للأعمال ←", id: "Untuk Bisnis →", vi: "Cho Doanh nghiệp →" },
 
   // landing hero
   hero_title: {
