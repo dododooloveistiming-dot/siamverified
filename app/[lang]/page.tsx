@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadPlaces, getTopPlacesPerNiche, getTopPlaces, getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { orderedNiches, isKoreanPopular } from "@/lib/niches";
@@ -149,10 +149,10 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       <section className="bg-white py-7 dark:bg-ink-950">
         <div className="mx-auto max-w-5xl px-4">
           <div className="grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
-            <BannerStat value={bundle.total.toLocaleString()} label="Verified places" />
-            <BannerStat value={establishedCount.toLocaleString()} label="Established 5y+" />
-            <BannerStat value={activeCount.toLocaleString()} label="Active last 90d" />
-            <BannerStat value={koCount.toLocaleString()} label="🇰🇷 Korean-friendly" />
+            <BannerStat value={bundle.total.toLocaleString()} label={t("g_card_verified", lang)} />
+            <BannerStat value={establishedCount.toLocaleString()} label={t("filter_established", lang)} />
+            <BannerStat value={activeCount.toLocaleString()} label={t("hp_stat_active90", lang)} />
+            <BannerStat value={koCount.toLocaleString()} label={`🇰🇷 ${t("filter_korean_friendly", lang)}`} />
           </div>
           <div className="mt-4 text-center text-[11px] muted">
             6 cross-source verification · No paid placement ·{" "}
@@ -187,7 +187,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                   </h2>
                 </div>
                 <span className="rounded-full bg-amber-200/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
-                  This month in Thailand
+                  {t("hp_this_month", lang)}
                 </span>
               </div>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-700 dark:text-ink-300">
@@ -308,7 +308,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
               {t("browse_categories", lang)}
             </h2>
-            <p className="mt-1 text-sm muted">7 niches · curated, multilingual, verified</p>
+            <p className="mt-1 text-sm muted">{t("hp_niches_sub", lang)}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -382,8 +382,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
         <section className="mx-auto max-w-6xl px-4 py-12">
           <div className="mb-6 flex items-end justify-between">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">⭐ Editor&apos;s picks</h2>
-              <p className="mt-1 text-sm muted">Highest cross-source trust scores</p>
+              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">⭐ {t("hp_editor", lang)}</h2>
+              <p className="mt-1 text-sm muted">{t("hp_editor_sub", lang)}</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -400,14 +400,14 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-6 flex items-end justify-between">
               <div>
-                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">🏙️ Trending in Bangkok</h2>
-                <p className="mt-1 text-sm muted">Top-rated across all categories</p>
+                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">🏙️ {tf("hp_trending", lang, { city: "Bangkok" })}</h2>
+                <p className="mt-1 text-sm muted">{t("hp_trending_sub", lang)}</p>
               </div>
               <Link
                 href={`/${lang}/`}
                 className="text-xs font-semibold text-emerald-700 hover:underline dark:text-emerald-300"
               >
-                Browse all cities →
+                {t("hp_browse_all_cities", lang)}
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -422,8 +422,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       {/* CITY QUICK PICKS */}
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Browse by city</h2>
-          <p className="mt-1 text-sm muted">Tap a city to see all categories with verified picks</p>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("hp_browse_city", lang)}</h2>
+          <p className="mt-1 text-sm muted">{t("hp_browse_city_sub", lang)}</p>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {FEATURED_CITIES.map((c) => (
@@ -435,7 +435,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
               <div className="text-3xl">{c.emoji}</div>
               <div>
                 <div className="text-sm font-bold">{c.label}</div>
-                <div className="text-[10px] muted sm:hidden">View hub →</div>
+                <div className="text-[10px] muted sm:hidden">{t("hp_view_hub", lang)}</div>
               </div>
             </Link>
           ))}
@@ -445,8 +445,8 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       {/* WHY US vs KLOOK / TRIPADVISOR — clear differentiation */}
       <section className="mx-auto max-w-5xl px-4 py-14">
         <div className="text-center">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Why book through Verified Thai?</h2>
-          <p className="mt-2 text-sm muted">Direct contact with the business. No 15% Klook markup. Honest scoring.</p>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("hp_why", lang)}</h2>
+          <p className="mt-2 text-sm muted">{t("hp_why_sub", lang)}</p>
         </div>
         <div className="mt-8 overflow-x-auto">
           <table className="mx-auto min-w-[640px] text-sm">
@@ -462,41 +462,41 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             </thead>
             <tbody>
               <CompareRow
-                label="Direct contact"
-                us="Inquiry → business directly"
-                others={["Through platform", "Phone only"]}
+                label={t("hp_cmp_direct", lang)}
+                us={t("hp_cmp_direct_us", lang)}
+                others={[t("hp_cmp_direct_o1", lang), t("hp_cmp_direct_o2", lang)]}
               />
               <CompareRow
-                label="Booking commission"
-                us="0% — no markup"
-                others={["10–15% added", "0%"]}
+                label={t("hp_cmp_comm", lang)}
+                us={t("hp_cmp_comm_us", lang)}
+                others={[t("hp_cmp_comm_o1", lang), "0%"]}
               />
               <CompareRow
-                label="Ranking algorithm"
-                us="Trust Score from 6 sources"
-                others={["Paid placements", "Maps algorithm"]}
+                label={t("hp_cmp_rank", lang)}
+                us={t("hp_cmp_rank_us", lang)}
+                others={[t("hp_cmp_rank_o1", lang), t("hp_cmp_rank_o2", lang)]}
               />
               <CompareRow
-                label="Korean / Thai reviews"
-                us="Surfaced per place"
-                others={["English only", "Google reviews only"]}
+                label={t("hp_cmp_rev", lang)}
+                us={t("hp_cmp_rev_us", lang)}
+                others={[t("hp_cmp_rev_o1", lang), t("hp_cmp_rev_o2", lang)]}
               />
               <CompareRow
-                label="Multilingual SEO"
-                us="6 languages, native pages"
-                others={["English primary", "Auto-translate"]}
+                label={t("hp_cmp_seo", lang)}
+                us={t("hp_cmp_seo_us", lang)}
+                others={[t("hp_cmp_seo_o1", lang), t("hp_cmp_seo_o2", lang)]}
               />
               <CompareRow
-                label="Verification independence"
-                us="No paid promotion"
-                others={["Pay-to-rank", "Owner-controlled"]}
+                label={t("hp_cmp_indep", lang)}
+                us={t("hp_cmp_indep_us", lang)}
+                others={[t("hp_cmp_indep_o1", lang), t("hp_cmp_indep_o2", lang)]}
               />
             </tbody>
           </table>
         </div>
         <p className="mt-6 text-center text-xs muted">
-          We aggregate the same Klook/Viator URLs so you can compare —{" "}
-          <span className="font-semibold">but the customer-business connection is yours, not the platform&apos;s.</span>
+          {t("hp_why_foot1", lang)}
+          <span className="font-semibold">{t("hp_why_foot2", lang)}</span>
         </p>
       </section>
 
@@ -504,24 +504,24 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       <section className="bg-ink-50 py-14 dark:bg-ink-900/40">
         <div className="mx-auto max-w-5xl px-4">
           <div className="text-center">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">How we verify</h2>
-            <p className="mt-2 text-sm muted">Every place is cross-checked across 6 independent sources</p>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("hp_howverify", lang)}</h2>
+            <p className="mt-2 text-sm muted">{t("hp_howverify_sub", lang)}</p>
           </div>
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
             <TrustCard
               icon="🔍"
-              title="6 sources cross-checked"
-              body="Google reviews, YouTube, Naver (KR), Pantip (TH), Bookimed, official websites."
+              title={t("hp_tc1_t", lang)}
+              body={t("hp_tc1_b", lang)}
             />
             <TrustCard
               icon="🚫"
-              title="No paid placement"
-              body="Trust scores reflect actual sentiment, not who paid. We never accept money to rank a business."
+              title={t("hp_tc2_t", lang)}
+              body={t("hp_tc2_b", lang)}
             />
             <TrustCard
               icon="🌍"
-              title="6 languages"
-              body="English, 한국어, ภาษาไทย, 中文, 日本語, العربية. Real Korean & Thai posts surface for tourists."
+              title={t("hp_tc3_t", lang)}
+              body={t("hp_tc3_b", lang)}
             />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs muted">
@@ -542,16 +542,16 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
         <div className="rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-amber-50 p-8 sm:p-12 dark:border-emerald-800 dark:from-emerald-950/40 dark:to-amber-950/30">
           <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Own a business in Thailand?</h2>
+              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("hp_own", lang)}</h2>
               <p className="mt-2 max-w-xl text-sm leading-relaxed muted">
-                Claim your listing, manage hours and photos, and reach Korean / Chinese / Japanese / English tourists with multilingual SEO pages — free for the first 10 inquiries each month.
+                {t("hp_own_sub", lang)}
               </p>
             </div>
             <Link
               href="/dashboard"
               className="shrink-0 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-xl"
             >
-              Claim your listing →
+              {t("hp_claim", lang)}
             </Link>
           </div>
         </div>

@@ -2151,5 +2151,446 @@
     "ar": "تتجدد إشارات المصدر (المراجعات، الذكر) أسبوعيًا. تتجدد أعمار Wayback شهريًا. تتجدد بنية DNS ربع سنويًا. يت propagates المحتوى الذي تم تحريره بواسطة المالك خلال 10 دقائق (ISR). إذا أغلق مكان، فإن التجريف التالي يلتقط الصمت في مراجعات Google وتختفي شارة \"نشط منذ 90 يومًا\" - ولكن يجب أن تكون قادرًا أيضًا على الإبلاغ لنا عبر نموذج الاتصال.",
     "id": "Sinyal sumber (ulasan, penyebutan) segar setiap minggu. Usia Wayback diperbarui setiap bulan. Infrastruktur DNS diperbarui setiap kuartal. Konten yang diedit pemilik disebarkan dalam waktu 10 menit (ISR). Jika sebuah tempat tutup, pengambilan berikutnya menangkap keheningan dalam ulasan Google dan lencana \"aktif 90d\" jatuh — tetapi Anda juga harus dapat melaporkannya kepada kami melalui formulir kontak.",
     "vi": "Các tín hiệu nguồn (đánh giá, đề cập) được làm mới hàng tuần. Tuổi của Wayback được làm mới hàng tháng. Hạ tầng DNS được làm mới hàng quý. Nội dung do chủ sở hữu chỉnh sửa được lan truyền trong vòng 10 phút (ISR). Nếu một cơ sở đóng cửa, lần thu thập tiếp theo sẽ bắt gặp sự im lặng trong đánh giá của Google và huy hiệu \"hoạt động trong 90 ngày\" sẽ biến mất — nhưng bạn cũng nên có thể báo cáo cho chúng tôi qua mẫu liên hệ."
+  },
+  "hp_this_month": {
+    "ko": "이번 달 태국에서",
+    "th": "เดือนนี้ในประเทศไทย",
+    "zh": "本月在泰国",
+    "ja": "今月のタイ",
+    "ar": "هذا الشهر في تايلند",
+    "id": "Bulan ini di Thailand",
+    "vi": "Tháng này ở Thái Lan"
+  },
+  "hp_stat_active90": {
+    "ko": "최근 90일 활성",
+    "th": "กิจกรรมใน 90 วันที่ผ่านมา",
+    "zh": "过去90天活跃",
+    "ja": "過去90日間のアクティブ",
+    "ar": "نشط في آخر 90 يوماً",
+    "id": "Aktif 90 hari terakhir",
+    "vi": "Hoạt động 90 ngày qua"
+  },
+  "hp_niches_sub": {
+    "ko": "7개 틈새 · 선별된, 다국어, 검증된",
+    "th": "7 หมวดหมู่ · คัดสรร, หลายภาษา, รับรอง",
+    "zh": "7个细分领域 · 精选，多语言，验证过的",
+    "ja": "7つのニッチ · キュレーション済み、多言語、検証済み",
+    "ar": "7 مجالات · منتقاة، متعددة اللغات، موثقة",
+    "id": "7 niche · kurasi, multibahasa, terverifikasi",
+    "vi": "7 lĩnh vực · được tuyển chọn, đa ngôn ngữ, đã xác minh"
+  },
+  "hp_editor": {
+    "ko": "편집자의 선택",
+    "th": "คำแนะนำของบรรณาธิการ",
+    "zh": "编辑推荐",
+    "ja": "編集者のおすすめ",
+    "ar": "اختيارات المحرر",
+    "id": "Pilihan editor",
+    "vi": "Lựa chọn của biên tập viên"
+  },
+  "hp_editor_sub": {
+    "ko": "가장 높은 신뢰 점수",
+    "th": "คะแนนความเชื่อถือข้ามแหล่งที่สูงที่สุด",
+    "zh": "最高的跨源信任分数",
+    "ja": "最高のクロスソース信頼スコア",
+    "ar": "أعلى درجات الثقة المزودة من مصادر متعددة",
+    "id": "Skor kepercayaan lintas sumber tertinggi",
+    "vi": "Điểm tin cậy cao nhất từ nhiều nguồn"
+  },
+  "hp_trending": {
+    "ko": "{city}에서 인기",
+    "th": "ที่กำลังมาแรงใน {city}",
+    "zh": "在{name} trending",
+    "ja": "{city}でのトレンド",
+    "ar": "الرائج في {city}",
+    "id": "Trending di {city}",
+    "vi": "Xu hướng ở {city}"
+  },
+  "hp_trending_sub": {
+    "ko": "모든 카테고리에서 최고 평가",
+    "th": "คะแนนสูงสุดในทุกหมวดหมู่",
+    "zh": "所有类别中的顶级评价",
+    "ja": "全カテゴリでのトップ評価",
+    "ar": "الأعلى تصنيفاً في جميع الفئات",
+    "id": "Terfavorit di semua kategori",
+    "vi": "Được đánh giá cao nhất trong tất cả các danh mục"
+  },
+  "hp_browse_all_cities": {
+    "ko": "모든 도시 보기 →",
+    "th": "เรียกดูทุกเมือง →",
+    "zh": "浏览所有城市 →",
+    "ja": "全都市をブラウズ →",
+    "ar": "استعرض جميع المدن →",
+    "id": "Jelajahi semua kota →",
+    "vi": "Duyệt tất cả các thành phố →"
+  },
+  "hp_browse_city": {
+    "ko": "도시별 탐색",
+    "th": "เรียกดูตามเมือง",
+    "zh": "按城市浏览",
+    "ja": "都市でブラウズ",
+    "ar": "استعرض حسب المدينة",
+    "id": "Jelajahi berdasarkan kota",
+    "vi": "Duyệt theo thành phố"
+  },
+  "hp_browse_city_sub": {
+    "ko": "도시를 눌러 검증된 선택이 있는 모든 카테고리를 확인하세요",
+    "th": "แตะที่เมืองเพื่อดูหมวดหมู่ทั้งหมดที่มีการคัดสรร",
+    "zh": "点击城市查看所有带有验证推荐的类别",
+    "ja": "都市をタップして、検証済みの選択肢をすべてのカテゴリで見る",
+    "ar": "اضغط على مدينة لرؤية جميع الفئات مع الاختيارات الموثقة",
+    "id": "Ketuk sebuah kota untuk melihat semua kategori dengan pilihan terverifikasi",
+    "vi": "Chạm vào một thành phố để xem tất cả các danh mục với lựa chọn đã xác minh"
+  },
+  "hp_view_hub": {
+    "ko": "허브 보기 →",
+    "th": "ดูศูนย์กลาง →",
+    "zh": "查看中心 →",
+    "ja": "ハブを表示 →",
+    "ar": "عرض المركز →",
+    "id": "Lihat pusat →",
+    "vi": "Xem trung tâm →"
+  },
+  "hp_why": {
+    "ko": "Verified Thai를 통해 예약해야 하는 이유는?",
+    "th": "ทำไมต้องจองผ่าน Verified Thai?",
+    "zh": "为什么通过Verified Thai预订？",
+    "ja": "認証済みタイを通して予約する理由",
+    "ar": "لماذا تحجز عبر Verified Thai؟",
+    "id": "Mengapa memesan melalui Verified Thai?",
+    "vi": "Tại sao nên đặt qua Verified Thai?"
+  },
+  "hp_why_sub": {
+    "ko": "업체와 직접 연결. 15% Klook 추가 요금 없음. 신뢰할 수 있는 점수.",
+    "th": "การติดต่อโดยตรงกับธุรกิจ ไม่มีการขึ้นราคา Klook 15% คะแนนที่ซื่อสัตย์",
+    "zh": "直接联系商家。没有15%的Klook加价。诚实评分。",
+    "ja": "ビジネスとの直接連絡。15%のKlookマークアップなし。正直なスコアリング。",
+    "ar": "اتصال مباشر مع العمل. لا رسوم إضافية بنسبة 15% من Klook. تقييمات أمينة.",
+    "id": "Kontak langsung dengan bisnis. Tidak ada markup Klook 15%. Penilaian yang jujur.",
+    "vi": "Liên lạc trực tiếp với doanh nghiệp. Không có phí tăng 15% của Klook. Điểm số trung thực."
+  },
+  "hp_why_foot1": {
+    "ko": "같은 Klook/Viator URL을 집계하여 비교할 수 있습니다 — ",
+    "th": "เรารวบรวม URL ของ Klook/Viator เหมือนกันเพื่อให้คุณเปรียบเทียบ — ",
+    "zh": "我们聚合相同的Klook/Viator链接，让您可以比较 — ",
+    "ja": "同じKlook/ViatorのURLを集約して比較できます — ",
+    "ar": "نقوم بتجميع روابط Klook/Viator نفسها حتى تتمكن من المقارنة — ",
+    "id": "Kami menggabungkan URL Klook/Viator yang sama sehingga Anda bisa membandingkan — ",
+    "vi": "Chúng tôi tổng hợp các URL Klook/Viator giống nhau để bạn có thể so sánh — "
+  },
+  "hp_why_foot2": {
+    "ko": "하지만 고객과 사업체의 연결은 당신의 것입니다, 플랫폼의 것이 아닙니다.",
+    "th": "แต่การเชื่อมต่อลูกค้ากับธุรกิจนั้นเป็นของคุณ ไม่ใช่ของแพลตฟอร์ม",
+    "zh": "但客户与商家的连接属于您，而不是平台。",
+    "ja": "ただし、顧客とビジネスの接続はプラットフォームではなくあなたのものです。",
+    "ar": "لكن الاتصال بالعميل-العمل لديك، وليس للمنصة.",
+    "id": "tapi koneksi pelanggan-bisnis adalah milik Anda, bukan platform.",
+    "vi": "nhưng kết nối khách hàng-doanh nghiệp là của bạn, không phải của nền tảng."
+  },
+  "hp_cmp_direct": {
+    "ko": "직접 연락",
+    "th": "การติดต่อโดยตรง",
+    "zh": "直接联系",
+    "ja": "直接連絡",
+    "ar": "اتصال مباشر",
+    "id": "Kontak langsung",
+    "vi": "Liên lạc trực tiếp"
+  },
+  "hp_cmp_direct_us": {
+    "ko": "비즈니스에 직접 문의 →",
+    "th": "สอบถาม → ติดต่อธุรกิจโดยตรง",
+    "zh": "询问 → 直接与商家",
+    "ja": "問い合わせ → ビジネスに直接",
+    "ar": "استعلام → مباشرة إلى العمل",
+    "id": "Pertanyaan → langsung ke bisnis",
+    "vi": "Yêu cầu → doanh nghiệp trực tiếp"
+  },
+  "hp_cmp_direct_o1": {
+    "ko": "플랫폼을 통해",
+    "th": "ผ่านแพลตฟอร์ม",
+    "zh": "通过平台",
+    "ja": "プラットフォーム経由",
+    "ar": "من خلال المنصة",
+    "id": "Melalui platform",
+    "vi": "Thông qua nền tảng"
+  },
+  "hp_cmp_direct_o2": {
+    "ko": "전화 전용",
+    "th": "โทรเท่านั้น",
+    "zh": "仅电话",
+    "ja": "電話のみ",
+    "ar": "الهاتف فقط",
+    "id": "Hanya telepon",
+    "vi": "Chỉ qua điện thoại"
+  },
+  "hp_cmp_comm": {
+    "ko": "예약 수수료",
+    "th": "ค่าคอมมิชชั่นการจอง",
+    "zh": "预订佣金",
+    "ja": "予約手数料",
+    "ar": "عمولة الحجز",
+    "id": "Komisi pemesanan",
+    "vi": "Phí đặt chỗ"
+  },
+  "hp_cmp_comm_us": {
+    "ko": "0% — 추가 요금 없음",
+    "th": "0% — ไม่มีการขึ้นราคา",
+    "zh": "0% — 没有加价",
+    "ja": "0% — マークアップなし",
+    "ar": "0% — لا رسوم إضافية",
+    "id": "0% — tidak ada markup",
+    "vi": "0% — không tăng giá"
+  },
+  "hp_cmp_comm_o1": {
+    "ko": "10–15% 추가됨",
+    "th": "เพิ่ม 10–15%",
+    "zh": "增加10–15%",
+    "ja": "10–15%追加",
+    "ar": "10–15% إضافية",
+    "id": "10–15% ditambahkan",
+    "vi": "Thêm 10–15%"
+  },
+  "hp_cmp_rank": {
+    "ko": "랭킹 알고리즘",
+    "th": "อัลกอริธึมการจัดอันดับ",
+    "zh": "排名算法",
+    "ja": "ランキングアルゴリズム",
+    "ar": "خوارزمية الترتيب",
+    "id": "Algoritma peringkat",
+    "vi": "Thuật toán xếp hạng"
+  },
+  "hp_cmp_rank_us": {
+    "ko": "6개 출처의 신뢰 점수",
+    "th": "คะแนนความเชื่อถือจาก 6 แหล่ง",
+    "zh": "来自6个来源的信任分数",
+    "ja": "6つのソースからの信頼スコア",
+    "ar": "درجة الثقة من 6 مصادر",
+    "id": "Skor Kepercayaan dari 6 sumber",
+    "vi": "Điểm tin cậy từ 6 nguồn"
+  },
+  "hp_cmp_rank_o1": {
+    "ko": "유료 배치",
+    "th": "การวางจ่าย",
+    "zh": "付费展示",
+    "ja": "有料掲載",
+    "ar": "مواضع مدفوعة",
+    "id": "Penempatan berbayar",
+    "vi": "Vị trí trả phí"
+  },
+  "hp_cmp_rank_o2": {
+    "ko": "지도 알고리즘",
+    "th": "อัลกอริธึมแผนที่",
+    "zh": "地图算法",
+    "ja": "マップアルゴリズム",
+    "ar": "خوارزمية الخرائط",
+    "id": "Algoritma peta",
+    "vi": "Thuật toán bản đồ"
+  },
+  "hp_cmp_rev": {
+    "ko": "한국어 / 태국어 리뷰",
+    "th": "รีวิวจากเกาหลี / ไทย",
+    "zh": "韩国 / 泰国评论",
+    "ja": "韓国語 / タイ語レビュー",
+    "ar": "تقييمات كورية / تايلندية",
+    "id": "Ulasan Korea / Thai",
+    "vi": "Đánh giá Hàn Quốc / Thái Lan"
+  },
+  "hp_cmp_rev_us": {
+    "ko": "장소별로 표시됨",
+    "th": "แสดงตามสถานที่",
+    "zh": "按地点显示",
+    "ja": "場所ごとに抽出",
+    "ar": "معروضة حسب المكان",
+    "id": "Ditampilkan per tempat",
+    "vi": "Xuất hiện theo địa điểm"
+  },
+  "hp_cmp_rev_o1": {
+    "ko": "영어만",
+    "th": "เฉพาะภาษาอังกฤษ",
+    "zh": "仅英语",
+    "ja": "英語のみ",
+    "ar": "بالإنجليزية فقط",
+    "id": "Hanya bahasa Inggris",
+    "vi": "Chỉ tiếng Anh"
+  },
+  "hp_cmp_rev_o2": {
+    "ko": "구글 리뷰만",
+    "th": "เฉพาะรีวิวจาก Google",
+    "zh": "仅谷歌评论",
+    "ja": "Googleレビューのみ",
+    "ar": "تقييمات Google فقط",
+    "id": "Hanya ulasan Google",
+    "vi": "Chỉ đánh giá từ Google"
+  },
+  "hp_cmp_seo": {
+    "ko": "다국어 SEO",
+    "th": "SEO หลายภาษา",
+    "zh": "多语言SEO",
+    "ja": "多言語SEO",
+    "ar": "تحسين محركات البحث متعدد اللغات",
+    "id": "SEO Multibahasa",
+    "vi": "SEO Đa Ngôn Ngữ"
+  },
+  "hp_cmp_seo_us": {
+    "ko": "8개 언어, 네이티브 페이지",
+    "th": "8 ภาษา, หน้าเว็บเจ้าของภาษา",
+    "zh": "8种语言，母语页面",
+    "ja": "8言語、ネイティブページ",
+    "ar": "8 لغات، صفحات أصلية",
+    "id": "8 bahasa, halaman asli",
+    "vi": "8 ngôn ngữ, trang gốc"
+  },
+  "hp_cmp_seo_o1": {
+    "ko": "주 언어: 영어",
+    "th": "ภาษาอังกฤษหลัก",
+    "zh": "英语为主",
+    "ja": "英語が主要",
+    "ar": "الإنجليزية رئيسية",
+    "id": "Bahasa Inggris utama",
+    "vi": "Tiếng Anh chính"
+  },
+  "hp_cmp_seo_o2": {
+    "ko": "자동 번역",
+    "th": "แปลอัตโนมัติ",
+    "zh": "自动翻译",
+    "ja": "自動翻訳",
+    "ar": "ترجمة تلقائية",
+    "id": "Terjemahan otomatis",
+    "vi": "Dịch tự động"
+  },
+  "hp_cmp_indep": {
+    "ko": "검증 독립성",
+    "th": "ความเป็นอิสระในการตรวจสอบ",
+    "zh": "验证独立性",
+    "ja": "検証の独立性",
+    "ar": "استقلالية التحقق",
+    "id": "Independensi verifikasi",
+    "vi": "Độc lập xác thực"
+  },
+  "hp_cmp_indep_us": {
+    "ko": "유료 홍보 없음",
+    "th": "ไม่มีการโปรโมตที่ต้องชำระเงิน",
+    "zh": "无付费推广",
+    "ja": "有料プロモーションなし",
+    "ar": "لا ترويج مدفوع",
+    "id": "Tanpa promosi berbayar",
+    "vi": "Không quảng cáo trả tiền"
+  },
+  "hp_cmp_indep_o1": {
+    "ko": "유료 순위",
+    "th": "จ่ายเพื่อจัดอันดับ",
+    "zh": "付费排名",
+    "ja": "払って順位を上げる",
+    "ar": "الدفع للتصنيف",
+    "id": "Bayar untuk peringkat",
+    "vi": "Trả tiền để xếp hạng"
+  },
+  "hp_cmp_indep_o2": {
+    "ko": "소유자 제어",
+    "th": "ควบคุมโดยเจ้าของ",
+    "zh": "业主控制",
+    "ja": "オーナー管理",
+    "ar": "مسيطر عليها من قبل المالك",
+    "id": "Dikendalikan oleh pemilik",
+    "vi": "Kiểm soát bởi chủ sở hữu"
+  },
+  "hp_howverify": {
+    "ko": "우리가 검증하는 방법",
+    "th": "เราตรวจสอบอย่างไร",
+    "zh": "我们如何验证",
+    "ja": "私たちの検証方法",
+    "ar": "كيف نتحقق",
+    "id": "Cara kami memverifikasi",
+    "vi": "Chúng tôi xác minh như thế nào"
+  },
+  "hp_howverify_sub": {
+    "ko": "모든 장소는 6개의 독립 출처에서 교차 확인됩니다.",
+    "th": "ทุกสถานที่ได้รับการตรวจสอบจากแหล่งที่มาอิสระ 6 แห่ง",
+    "zh": "每个地方都经过6个独立来源交叉检查",
+    "ja": "すべての場所は6つの独立したソースで照合されています",
+    "ar": "يتم التحقق من كل مكان عبر 6 مصادر مستقلة",
+    "id": "Setiap tempat diperiksa silang di 6 sumber independen",
+    "vi": "Mỗi địa điểm được kiểm tra chéo qua 6 nguồn độc lập"
+  },
+  "hp_tc1_t": {
+    "ko": "6개 출처 교차 확인",
+    "th": "ตรวจสอบจาก 6 แหล่ง",
+    "zh": "6个来源交叉检查",
+    "ja": "6つのソースを照合",
+    "ar": "6 مصادر تم التحقق منها",
+    "id": "6 sumber diperiksa silang",
+    "vi": "6 nguồn kiểm tra chéo"
+  },
+  "hp_tc1_b": {
+    "ko": "구글 리뷰, 유튜브, 네이버 (KR), 판팁 (TH), 북이메드, 공식 웹사이트.",
+    "th": "รีวิวจาก Google, YouTube, Naver (KR), Pantip (TH), Bookimed, เว็บไซต์ทางการ.",
+    "zh": "Google评论，YouTube，Naver（KR），Pantip（TH），Bookimed，官方网页。",
+    "ja": "Googleレビュー、YouTube、Naver (KR)、Pantip (TH)、Bookimed、公式ウェブサイト。",
+    "ar": "تقييمات جوجل، يوتيوب، نافير (كوريا)، بانتيب (تايلاند)، بوكيميد، المواقع الرسمية.",
+    "id": "Ulasan Google, YouTube, Naver (KR), Pantip (TH), Bookimed, situs resmi.",
+    "vi": "Đánh giá Google, YouTube, Naver (KR), Pantip (TH), Bookimed, trang web chính thức."
+  },
+  "hp_tc2_t": {
+    "ko": "유료 배치 없음",
+    "th": "ไม่มีการวางตำแหน่งที่ต้องชำระเงิน",
+    "zh": "无付费投放",
+    "ja": "有料配置なし",
+    "ar": "لا يوجد مكان مدفوع",
+    "id": "Tanpa penempatan berbayar",
+    "vi": "Không đặt chỗ trả tiền"
+  },
+  "hp_tc2_b": {
+    "ko": "신뢰 점수는 실제 감정을 반영하며, 누가 돈을 냈는지는 반영하지 않습니다. 우리는 비즈니스 순위를 매기기 위해 돈을 받아들이지 않습니다.",
+    "th": "คะแนนความเชื่อถือสะท้อนอารมณ์จริง ไม่ใช่จากการจ่ายเงิน เราไม่เคยรับเงินเพื่อจัดอันดับธุรกิจ.",
+    "zh": "信任评分反映实际情感，而不是谁付了钱。我们从不接受付费排名业务。",
+    "ja": "信頼スコアは実際の感情を反映し、誰が支払ったかに基づいていません。私たちはビジネスの順位を上げるためにお金を受け入れません。",
+    "ar": "تعكس درجات الثقة المشاعر الحقيقية، وليس من دفع. نحن لا نقبل المال أبداً لتصنيف الأعمال.",
+    "id": "Skor kepercayaan mencerminkan sentimen sebenarnya, bukan siapa yang membayar. Kami tidak pernah menerima uang untuk meranking bisnis.",
+    "vi": "Điểm tin cậy phản ánh cảm xúc thực, không phải ai đã trả tiền. Chúng tôi không bao giờ nhận tiền để xếp hạng doanh nghiệp."
+  },
+  "hp_tc3_t": {
+    "ko": "8개 언어",
+    "th": "8 ภาษา",
+    "zh": "8种语言",
+    "ja": "8言語",
+    "ar": "8 لغات",
+    "id": "8 bahasa",
+    "vi": "8 ngôn ngữ"
+  },
+  "hp_tc3_b": {
+    "ko": "영어, 한국어, ภาษาไทย, 中文, 日本語, العربية, Bahasa Indonesia, Tiếng Việt. 관광객을 위한 실제 지역 게시물.",
+    "th": "ภาษาอังกฤษ, 한국어, ภาษาไทย, 中文, 日本語, العربية, Bahasa Indonesia, Tiếng Việt. โพสต์ท้องถิ่นจริงที่ปรากฏสำหรับนักท่องเที่ยว.",
+    "zh": "英语，한국어，ภาษาไทย，中文，日本语，العربية，Bahasa Indonesia，Tiếng Việt。真正的当地帖子为游客展示。",
+    "ja": "英語、한국어、ภาษาไทย、中文、日本語、 العربية، Bahasa Indonesia、Tiếng Việt。観光客向けに実際の地元の投稿が掲載されます。",
+    "ar": "الإنجليزية، 한국어، ภาษาไทย، 中文، 日本語، العربية، Bahasa Indonesia، Tiếng Việt. تظهر المشاركات المحلية الحقيقية للسياح.",
+    "id": "Bahasa Inggris, 한국어, ภาษาไทย, 中文, 日本語, العربية, Bahasa Indonesia, Tiếng Việt. Posting lokal nyata muncul untuk wisatawan.",
+    "vi": "Tiếng Anh, 한국어, ภาษาไทย, 中文, 日本語, العربية, Bahasa Indonesia, Tiếng Việt. Các bài viết thực tế từ địa phương nổi bật cho khách du lịch."
+  },
+  "hp_own": {
+    "ko": "태국에서 사업 운영 중?",
+    "th": "เป็นเจ้าของธุรกิจในประเทศไทยหรือไม่?",
+    "zh": "在泰国拥有一家企业？",
+    "ja": "タイでビジネスを所有していますか？",
+    "ar": "هل تمتلك عملاً في تايلاند؟",
+    "id": "Memiliki bisnis di Thailand?",
+    "vi": "Có doanh nghiệp ở Thái Lan?"
+  },
+  "hp_own_sub": {
+    "ko": "리스트를 청구하고, 시간과 사진을 관리하며, 한국어 / 중국어 / 일본어 / 영어 관광객에게 다국어 SEO 페이지로 도달하세요 — 매달 처음 10건의 문의는 무료입니다.",
+    "th": "เรียกร้องรายการของคุณ, จัดการเวลาและภาพถ่าย, และเข้าถึงนักท่องเที่ยวเกาหลี / จีน / ญี่ปุ่น / อังกฤษ ด้วยหน้า SEO หลายภาษา — ฟรีสำหรับข้อสอบถาม 10 รายการแรกในแต่ละเดือน.",
+    "zh": "申领您的列表，管理营业时间和照片，并通过多语言SEO页面吸引韩国 / 中文 / 日语 / 英语游客——前10个查询每月免费。",
+    "ja": "リスティングを請求し、営業時間や写真を管理し、多言語SEOページで韓国語/中国語/日本語/英語の観光客にアプローチしましょう — 毎月の最初の10件のお問い合わせは無料です。",
+    "ar": "اطلب إدراجك، إدارة الساعات والصور، والوصول إلى السياح الكوريين / الصينيين / اليابانيين / الإنجليز مع صفحات تحسين محركات البحث متعددة اللغات — مجانًا لأول 10 استفسارات كل شهر.",
+    "id": "Klaim daftar Anda, kelola jam dan foto, dan jangkau wisatawan Korea / Cina / Jepang / Inggris dengan halaman SEO multibahasa — gratis untuk 10 pertanyaan pertama setiap bulan.",
+    "vi": "Khẳng định danh sách của bạn, quản lý giờ làm việc và hình ảnh, và tiếp cận khách du lịch Hàn Quốc / Trung Quốc / Nhật Bản / Anh với các trang SEO đa ngôn ngữ — miễn phí cho 10 yêu cầu đầu tiên mỗi tháng."
+  },
+  "hp_claim": {
+    "ko": "리스트 청구하기 →",
+    "th": "เรียกร้องรายการของคุณ →",
+    "zh": "申领您的列表 →",
+    "ja": "リスティングを請求する →",
+    "ar": "اطلب إدراجك →",
+    "id": "Klaim daftar Anda →",
+    "vi": "Khẳng định danh sách của bạn →"
   }
 }
