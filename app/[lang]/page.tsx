@@ -6,6 +6,7 @@ import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { orderedNiches, isKoreanPopular } from "@/lib/niches";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
+import RecentlyViewed from "@/components/RecentlyViewed";
 import { currentSeason } from "@/lib/seasons";
 
 export const dynamic = "force-static";
@@ -218,6 +219,11 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           </section>
         );
       })()}
+
+      {/* RECENTLY VIEWED — returning visitors land back on what they browsed */}
+      <div className="mx-auto max-w-6xl px-4">
+        <RecentlyViewed lang={lang} title={t("recently_viewed", lang)} />
+      </div>
 
       {/* TRIP-PURPOSE FUNNEL — lowest-friction entry for category-uncertain visitors */}
       <section className="mx-auto max-w-6xl px-4 pt-12">

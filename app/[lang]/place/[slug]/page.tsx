@@ -21,6 +21,7 @@ import PlaceFAQ from "@/components/PlaceFAQ";
 import BookingForm from "@/components/BookingForm";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
 import ViewPing from "@/components/ViewPing";
+import RecentlyViewed from "@/components/RecentlyViewed";
 import ShareButton from "@/components/ShareButton";
 import PlaceMap from "@/components/PlaceMap";
 
@@ -1043,6 +1044,19 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             </div>
           </section>
         )}
+
+        {/* RECENTLY VIEWED — records this place + surfaces prior ones (retention) */}
+        <RecentlyViewed
+          lang={lang}
+          title={t("recently_viewed", lang)}
+          record={{
+            slug: place.slug,
+            name: place.name,
+            photo: place.top_photo_url || undefined,
+            city: place.city || undefined,
+            trust: place.trust_score,
+          }}
+        />
 
         <div className="mt-10 text-xs muted">
           <Link href={`/${lang}/c/${place.niche}/`} className="hover:underline">

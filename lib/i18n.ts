@@ -279,6 +279,7 @@ export const T = {
   cta_inquiry_main: { en: "Send inquiry · reply within 24h", ko: "지금 문의 · 보통 24시간 내 답변", th: "ส่งคำถาม · ตอบใน 24 ชม.", zh: "立即咨询 · 24小时内回复", ja: "問い合わせ · 24時間以内に返信", ar: "أرسل استفسارًا · رد خلال 24 ساعة" },
   cta_inquiry_short: { en: "Inquire", ko: "문의하기", th: "สอบถาม", zh: "咨询", ja: "問い合わせ", ar: "استفسر" },
   social_more: { en: "More reviews & mentions", ko: "더 많은 후기·언급 보기", th: "ดูรีวิว/การกล่าวถึงเพิ่มเติม", zh: "更多评价与提及", ja: "他のレビュー・言及を見る", ar: "المزيد من التقييمات والإشارات" },
+  recently_viewed: { en: "Recently viewed", ko: "최근 본 곳", th: "ดูล่าสุด", zh: "最近浏览", ja: "最近見た場所", ar: "شوهدت مؤخرًا", id: "Baru dilihat", vi: "Đã xem gần đây" },
 
   // ── place-detail dynamic FAQ (drives visible accordion + FAQPage/QAPage JSON-LD).
   // These are the AEO payload — they must be native, not English shells. {name},
