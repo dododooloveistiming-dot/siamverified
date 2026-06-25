@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { SITE } from "@/lib/i18n";
+
+// Google Analytics 4 measurement ID. Override via env in Vercel if needed.
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-BMPFKJMKJT";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.origin),
@@ -47,7 +51,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Same for streetview / maps photo URLs that occasionally appear */}
         <link rel="dns-prefetch" href="https://maps.googleapis.com" />
       </head>
-      <body>{children}</body>
+      <body>
+        {/* Google Analytics (gtag.js) — loads after the page is interactive */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
+        {children}
+      </body>
     </html>
   );
 }
