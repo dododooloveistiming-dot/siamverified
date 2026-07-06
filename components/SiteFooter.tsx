@@ -1,4 +1,4 @@
-import { SITE, t } from "@/lib/i18n";
+import { SITE, TRUST_SOURCES, t } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 
 export default function SiteFooter({ lang }: { lang: Lang }) {
@@ -103,7 +103,7 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
           </p>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
             <div>© {new Date().getFullYear()} {SITE.name}</div>
-            <div>Sources: Google · Reddit · Naver · Pantip · YouTube · Bookimed · Official sites</div>
+            <div>Sources: {TRUST_SOURCES.join(" · ")}</div>
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadPlaces, getTopPlacesPerNiche, getTopPlaces, getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, TRUST_SOURCES, t, tf } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { orderedNiches, isKoreanPopular } from "@/lib/niches";
-import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { currentSeason } from "@/lib/seasons";
 
@@ -89,10 +89,10 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
           {heroPlace?.top_photo_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <SafeImg
               src={heroPlace.top_photo_url}
               alt="Thailand"
+              fallbackClassName="h-full w-full"
               className="h-full w-full object-cover"
             />
           ) : (
@@ -326,19 +326,15 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                   isReady ? "hover:-translate-y-0.5 hover:shadow-2xl" : "opacity-70"
                 }`}
               >
-                {heroPhoto ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={heroPhoto}
-                    alt={nicheName(n, lang)}
-                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="absolute inset-0">
-                    <PlacePlaceholder niche={n} size="lg" />
-                  </div>
-                )}
+                <SafeImg
+                  src={heroPhoto}
+                  alt={nicheName(n, lang)}
+                  niche={n}
+                  size="lg"
+                  fallbackClassName="absolute inset-0"
+                  className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+                  loading="lazy"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
                 {/* Count chip */}
@@ -525,7 +521,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs muted">
-            {["Google", "YouTube", "Reddit", "Naver", "Pantip", "Bookimed"].map((s) => (
+            {TRUST_SOURCES.map((s) => (
               <span
                 key={s}
                 className="rounded-full border border-ink-200 bg-white px-3 py-1 font-medium dark:border-ink-700 dark:bg-ink-900"
@@ -608,17 +604,13 @@ function PlaceCardMini({ place, lang }: { place: Place; lang: Lang }) {
       className="group block overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900"
     >
       <div className="relative aspect-square overflow-hidden bg-ink-50 dark:bg-ink-800">
-        {place.top_photo_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={place.top_photo_url}
-            alt={place.name}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.05]"
-            loading="lazy"
-          />
-        ) : (
-          <PlacePlaceholder niche={place.niche} size="md" />
-        )}
+        <SafeImg
+          src={place.top_photo_url}
+          alt={place.name}
+          niche={place.niche}
+          className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.05]"
+          loading="lazy"
+        />
         <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
           {place.trust_score}
         </div>

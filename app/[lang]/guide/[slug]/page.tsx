@@ -5,7 +5,7 @@ import { getPlacesByNiche } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 
 export const dynamic = "force-static";
 
@@ -158,19 +158,16 @@ export default function GuidePage({
       {/* HERO */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
-          {heroPlace?.top_photo_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={heroPlace.top_photo_url}
-              alt={cityNicheLabel}
-              className="h-full w-full object-cover"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-            />
-          ) : (
-            <PlacePlaceholder niche={niche} size="xl" />
-          )}
+          <SafeImg
+            src={heroPlace?.top_photo_url}
+            alt={cityNicheLabel}
+            niche={niche}
+            size="xl"
+            className="h-full w-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
         </div>
 
@@ -248,17 +245,14 @@ export default function GuidePage({
                   className="grid flex-1 grid-cols-[80px_1fr] gap-3 sm:grid-cols-[140px_1fr]"
                 >
                   <div className="aspect-square overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
-                    {p.top_photo_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={p.top_photo_url}
-                        alt={p.name}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <PlacePlaceholder niche={p.niche} size="sm" />
-                    )}
+                    <SafeImg
+                      src={p.top_photo_url}
+                      alt={p.name}
+                      niche={p.niche}
+                      size="sm"
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
                   </div>
                   <div>
                     <div className="flex flex-wrap items-baseline gap-x-2">

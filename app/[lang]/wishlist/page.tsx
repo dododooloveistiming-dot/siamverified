@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { loadWishlist, type WishlistItem } from "@/components/WishlistButton";
+import SafeImg from "@/components/SafeImg";
+import type { Niche } from "@/lib/types";
 
 // Client page — wishlist lives in localStorage, no SSR data needed.
 // Stored items carry a snapshot of the venue's display fields so the
@@ -95,12 +97,7 @@ export default function WishlistPage() {
                       className="group flex gap-4 rounded-2xl border border-ink-100 bg-white p-3 transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900"
                     >
                       <div className="relative aspect-square w-28 shrink-0 overflow-hidden rounded-xl bg-ink-50 dark:bg-ink-800">
-                        {it.top_photo_url ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={it.top_photo_url} alt={it.name} className="h-full w-full object-cover transition group-hover:scale-105" />
-                        ) : (
-                          <div className="grid h-full w-full place-items-center text-2xl muted">📍</div>
-                        )}
+                        <SafeImg src={it.top_photo_url} alt={it.name} niche={it.niche as Niche} className="h-full w-full object-cover transition group-hover:scale-105" />
                         <div className="absolute right-1 top-1 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
                           {it.trust_score}
                         </div>

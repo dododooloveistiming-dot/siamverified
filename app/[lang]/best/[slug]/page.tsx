@@ -6,7 +6,7 @@ import { CITIES, getCityBySlug, placesInCity } from "@/lib/cities";
 import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 import PlaceFAQ, { type FAQItem } from "@/components/PlaceFAQ";
 import PlaceMap from "@/components/PlaceMap";
 
@@ -398,12 +398,7 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
                   className="group flex h-full gap-3 overflow-hidden rounded-xl border border-ink-100 bg-white p-3 transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900"
                 >
                   <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
-                    {p.top_photo_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.top_photo_url} alt={p.name} loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
-                    ) : (
-                      <PlacePlaceholder niche={p.niche} size="sm" />
-                    )}
+                    <SafeImg src={p.top_photo_url} alt={p.name} niche={p.niche} size="sm" loading="lazy" className="h-full w-full object-cover transition group-hover:scale-105" />
                     <div className="absolute right-1 top-1 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
                       {p.trust_score}
                     </div>

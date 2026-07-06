@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 
 /**
  * Discovery sections that sit ABOVE the filterable grid on category pages.
@@ -99,19 +99,15 @@ export default function CategoryDiscovery({
                   href={`/${lang}/c/${niche}/?city=${encodeURIComponent(c.city)}`}
                   className="group relative block aspect-[4/5] overflow-hidden rounded-2xl border border-ink-100 dark:border-ink-800"
                 >
-                  {c.hero.top_photo_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={c.hero.top_photo_url}
-                      alt={c.city}
-                      className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="absolute inset-0">
-                      <PlacePlaceholder niche={niche} size="lg" />
-                    </div>
-                  )}
+                  <SafeImg
+                    src={c.hero.top_photo_url}
+                    alt={c.city}
+                    niche={niche}
+                    size="lg"
+                    fallbackClassName="absolute inset-0"
+                    className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                    loading="lazy"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
                     <div className="text-lg font-black leading-tight">{c.city}</div>
@@ -214,17 +210,14 @@ function FeaturedCard({
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink-100 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-xl dark:border-ink-800 dark:bg-ink-900"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink-50 dark:bg-ink-800">
-        {p.top_photo_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={p.top_photo_url}
-            alt={p.name}
-            className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            loading="lazy"
-          />
-        ) : (
-          <PlacePlaceholder niche={p.niche} size="xl" />
-        )}
+        <SafeImg
+          src={p.top_photo_url}
+          alt={p.name}
+          niche={p.niche}
+          size="xl"
+          className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
         <div className="absolute left-3 top-3 grid h-9 w-9 place-items-center rounded-xl bg-white text-base font-black text-emerald-600 shadow-md">
           #{rank}
         </div>
@@ -295,17 +288,13 @@ function ScrollRow({
                 className={`group block overflow-hidden rounded-2xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:shadow-lg hover:ring-2 ${accentRing} dark:border-ink-800 dark:bg-ink-900`}
               >
                 <div className="relative aspect-[4/3] bg-ink-50 dark:bg-ink-800">
-                  {p.top_photo_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={p.top_photo_url}
-                      alt={p.name}
-                      className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <PlacePlaceholder niche={p.niche} size="md" />
-                  )}
+                  <SafeImg
+                    src={p.top_photo_url}
+                    alt={p.name}
+                    niche={p.niche}
+                    className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
                   {p.bookable?.klook && (
                     <span className="absolute right-2 top-2 rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-black text-white shadow">
                       ⚡ Klook

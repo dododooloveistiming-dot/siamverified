@@ -4,6 +4,8 @@ import { loadBlogPosts, getPlaceBySlug } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
+import type { Niche } from "@/lib/types";
+import SafeImg from "@/components/SafeImg";
 
 export const dynamic = "force-static";
 
@@ -73,19 +75,13 @@ export default function BlogIndex({ params }: { params: { lang: Lang } }) {
                         className="group block overflow-hidden rounded-2xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
                       >
                         <div className="relative aspect-video bg-ink-100 dark:bg-ink-800">
-                          {heroPlace?.top_photo_url ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={heroPlace.top_photo_url}
-                              alt={post.title}
-                              className="h-full w-full object-cover transition group-hover:scale-[1.03]"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <div className="grid h-full place-items-center text-4xl">
-                              {meta?.emoji}
-                            </div>
-                          )}
+                          <SafeImg
+                            src={heroPlace?.top_photo_url}
+                            alt={post.title}
+                            niche={post.niche as Niche}
+                            className="h-full w-full object-cover transition group-hover:scale-[1.03]"
+                            loading="lazy"
+                          />
                           <div className="absolute left-2 top-2 rounded-md bg-white/95 px-2 py-0.5 text-[10px] font-black text-ink-900 backdrop-blur dark:bg-ink-900/95 dark:text-ink-50">
                             {post.city_ko}
                           </div>

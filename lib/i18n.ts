@@ -13,6 +13,11 @@ const UI_I18N = uiI18n as Record<string, Partial<Record<Lang, string>>>;
 export const SUPPORTED_LANGS: Lang[] = ["en", "ko", "th", "zh", "ja", "ar", "id", "vi"];
 export const DEFAULT_LANG: Lang = "en";
 
+// Single source of truth for the "N sources" trust claim — matches the
+// Trust Score methodology (see tr_a1/tr_a6 below). Bookimed is a booking
+// affiliate, not a verification source, so it's deliberately excluded here.
+export const TRUST_SOURCES = ["Google", "Reddit", "Naver", "Pantip", "YouTube", "Official sites"] as const;
+
 export const SITE = {
   origin: "https://verifiedthai.com",
   name: "Verified Thai",
@@ -74,12 +79,12 @@ export const T = {
 
   // multi-source pitch
   sources_pitch: {
-    en: "Each place is cross-checked against Google · Reddit · Naver · Pantip · YouTube · Bookimed",
-    ko: "각 장소는 구글 · Reddit · 네이버 · Pantip · 유튜브 · Bookimed에서 교차 검증",
-    th: "แต่ละสถานที่ตรวจสอบจาก Google · Reddit · Naver · Pantip · YouTube · Bookimed",
-    zh: "每个地点都经过 Google · Reddit · Naver · Pantip · YouTube · Bookimed 交叉验证",
-    ja: "各スポットは Google · Reddit · Naver · Pantip · YouTube · Bookimed で相互検証",
-    ar: "كل مكان تم التحقق منه عبر Google و Reddit و Naver و Pantip و YouTube و Bookimed",
+    en: "Each place is cross-checked against Google · Reddit · Naver · Pantip · YouTube · Official sites",
+    ko: "각 장소는 구글 · Reddit · 네이버 · Pantip · 유튜브 · 공식 웹사이트에서 교차 검증",
+    th: "แต่ละสถานที่ตรวจสอบจาก Google · Reddit · Naver · Pantip · YouTube · เว็บไซต์ทางการ",
+    zh: "每个地点都经过 Google · Reddit · Naver · Pantip · YouTube · 官方网站 交叉验证",
+    ja: "各スポットは Google · Reddit · Naver · Pantip · YouTube · 公式サイト で相互検証",
+    ar: "كل مكان تم التحقق منه عبر Google و Reddit و Naver و Pantip و YouTube والمواقع الرسمية",
   },
 
   // category section
@@ -336,6 +341,7 @@ export const T = {
   rate_verygood: { en: "Very good", ko: "매우 좋음", th: "ดีมาก", zh: "很好", ja: "とても良い", ar: "جيد جدًا" },
   rate_good: { en: "Good", ko: "좋음", th: "ดี", zh: "好", ja: "良い", ar: "جيد" },
   review_anon: { en: "Anonymous", ko: "익명", th: "ไม่ระบุชื่อ", zh: "匿名", ja: "匿名", ar: "مجهول" },
+  review_orig_thai: { en: "Original in Thai", ko: "태국어 원문", th: "ต้นฉบับภาษาไทย", zh: "泰语原文", ja: "タイ語原文", ar: "النص الأصلي بالتايلاندية" },
   book_direct_title: { en: "Book directly with {name}", ko: "{name}에 직접 예약", th: "จองโดยตรงกับ {name}", zh: "直接预订 {name}", ja: "{name}に直接予約", ar: "احجز مباشرة مع {name}" },
   book_direct_sub: { en: "No commission · No booking platform markup · Pay at the venue", ko: "수수료 없음 · 예약 플랫폼 마크업 없음 · 현장 결제", th: "ไม่มีค่าคอมมิชชั่น · ไม่มีส่วนต่างแพลตฟอร์ม · จ่ายที่ร้าน", zh: "无佣金 · 无平台加价 · 到店付款", ja: "手数料なし · プラットフォーム上乗せなし · 現地払い", ar: "بدون عمولة · بدون رسوم المنصة · ادفع في المكان" },
   fee_0: { en: "0% fee", ko: "수수료 0%", th: "ค่าธรรมเนียม 0%", zh: "0% 费用", ja: "手数料0%", ar: "رسوم 0%" },
@@ -479,7 +485,7 @@ export const T = {
   hp_howverify: { en: "How we verify" },
   hp_howverify_sub: { en: "Every place is cross-checked across 6 independent sources" },
   hp_tc1_t: { en: "6 sources cross-checked" },
-  hp_tc1_b: { en: "Google reviews, YouTube, Naver (KR), Pantip (TH), Bookimed, official websites." },
+  hp_tc1_b: { en: "Google reviews, Reddit, YouTube, Naver (KR), Pantip (TH), official websites." },
   hp_tc2_t: { en: "No paid placement" },
   hp_tc2_b: { en: "Trust scores reflect actual sentiment, not who paid. We never accept money to rank a business." },
   hp_tc3_t: { en: "8 languages" },

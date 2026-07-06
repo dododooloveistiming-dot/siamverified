@@ -67,7 +67,7 @@ export default function KlookOffer({
             <div className="mt-1.5 flex items-center justify-between text-xs">
               {top.rating != null ? (
                 <span className="font-bold">
-                  ★ {top.rating.toFixed(1)}
+                  ★ {top.rating.toFixed(1)} <span className="font-normal muted">(Klook)</span>
                   {top.review_count ? (
                     <span className="ml-1 font-normal muted">
                       ({top.review_count.toLocaleString()} reviews)
@@ -115,7 +115,7 @@ export default function KlookOffer({
                   <div className="mt-1 flex items-center justify-between text-[10px]">
                     {p.rating != null && (
                       <span className="font-semibold">
-                        ★ {p.rating.toFixed(1)}
+                        ★ {p.rating.toFixed(1)} <span className="font-normal muted">(Klook)</span>
                         {p.review_count ? <span className="muted"> ({p.review_count.toLocaleString()})</span> : null}
                       </span>
                     )}

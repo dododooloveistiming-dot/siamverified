@@ -11,7 +11,7 @@
 import { useEffect, useState } from "react";
 
 export default function HeroMosaic({
-  photos,
+  photos: initialPhotos,
   alt,
   placeholder,
 }: {
@@ -19,8 +19,18 @@ export default function HeroMosaic({
   alt: string;
   placeholder?: React.ReactNode;
 }) {
+  // Google's `/gps-cs-s/` photo URLs are session tokens that expire after a
+  // few weeks, so a meaningful fraction 403 by the time a visitor loads the
+  // page. Drop any photo that fails to load instead of showing a broken-image
+  // icon — hero/thumb layout and total count recompute from what's left.
+  const [photos, setPhotos] = useState(initialPhotos);
   const [active, setActive] = useState<number | null>(null);
   const total = photos.length;
+
+  const dropPhoto = (src: string) => {
+    setPhotos((prev) => prev.filter((p) => p !== src));
+    setActive((i) => (i === null || i >= total - 1 ? null : i));
+  };
 
   useEffect(() => {
     if (active === null) return;
@@ -70,6 +80,7 @@ export default function HeroMosaic({
             loading="eager"
             fetchPriority="high"
             decoding="async"
+            onError={() => dropPhoto(hero)}
           />
         </button>
 
@@ -98,6 +109,7 @@ export default function HeroMosaic({
                     alt={`${alt} photo ${idx + 1}`}
                     className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
                     loading={i < 2 ? "eager" : "lazy"}
+                    onError={() => dropPhoto(src)}
                   />
                   {showOverlay && (
                     <span className="absolute inset-0 grid place-items-center bg-black/55 text-sm font-bold text-white">
@@ -171,6 +183,7 @@ export default function HeroMosaic({
             alt={`${alt} photo ${active + 1}`}
             className="max-h-[88vh] max-w-[88vw] rounded-lg object-contain"
             onClick={(e) => e.stopPropagation()}
+            onError={() => dropPhoto(photos[active])}
           />
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-xs text-white">
             {active + 1} / {total}

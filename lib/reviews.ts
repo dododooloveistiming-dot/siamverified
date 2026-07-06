@@ -1,4 +1,13 @@
-import type { Place } from "@/lib/types";
+import type { Lang, Place } from "@/lib/types";
+
+const THAI_SCRIPT = /[฀-๿]/;
+
+// True when review text is written in Thai script. Used so we don't feature
+// an unreadable review on a non-Thai locale page (e.g. an English visitor
+// seeing only a Thai-language quote).
+export function isThaiText(text: string): boolean {
+  return THAI_SCRIPT.test(text);
+}
 
 // Strip Google-scrape metadata lines and the owner-reply tail from a raw
 // review string, leaving the visitor's actual review body. Display-only —
@@ -47,6 +56,31 @@ export function mentionSignalCount(place: Place): number {
   const b = place.source_badges;
   if (!b) return 0;
   return (b.naver || 0) + (b.pantip || 0) + (b.reddit || 0);
+}
+
+// Pick the review quote to feature at the top of the reviews section. On a
+// non-Thai locale, prefer a cleaned review that isn't in Thai script over
+// `top_review_text` so visitors aren't shown a quote they can't read — but
+// never drop the content entirely (falls back to the Thai original with
+// `isThai: true` so the caller can label it).
+export function pickFeaturedReview(
+  place: Place,
+  lang: Lang,
+): { text: string; isThai: boolean } | null {
+  const topClean = cleanReviewText(place.top_review_text || "");
+  const topIsThai = topClean.length > 0 && isThaiText(topClean);
+
+  if (lang === "th" || !topIsThai) {
+    return topClean ? { text: topClean, isThai: topIsThai } : null;
+  }
+
+  for (const rv of place.reviews_sample || []) {
+    const clean = cleanReviewText(rv.text || "");
+    if (clean.length >= 30 && !isThaiText(clean)) {
+      return { text: clean, isThai: false };
+    }
+  }
+  return { text: topClean, isThai: true };
 }
 
 // A place is worth indexing when it carries at least two independent

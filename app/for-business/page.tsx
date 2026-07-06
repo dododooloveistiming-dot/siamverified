@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { loadPlaces } from "@/lib/data";
-import { SITE } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import { FREE_MONTHLY_INQUIRY_LIMIT } from "@/lib/quota";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `For Business — Direct bookings, 0% commission | ${SITE.name}`,
     description:
-      "Direct bookings · 6-language inquiries · view analytics · photo gallery. Free dashboard for Thai businesses.",
+      "Direct bookings · 8-language inquiries · view analytics · photo gallery. Free dashboard for Thai businesses.",
     url: `${SITE.origin}/for-business/`,
     type: "website",
   },
@@ -45,7 +45,7 @@ export default async function ForBusinessLanding() {
               Klook takes 15–25%. Viator takes 20–30%. We take <strong>0%</strong>. Travelers find your business on Verified Thai, request a date directly, and pay you at the venue — no booking platform markup, no commission cut.
             </p>
             <p className="mt-3 max-w-lg text-sm muted">
-              한국·일본·중국 여행객이 직접 예약 신청 → 영어로 자동 번역 → 당신이 24시간 내 확정. 클룩/비아터에 수수료 안 주고 풀가격으로 받습니다.
+              Korean, Japanese, and Chinese travelers submit a direct booking request → it's auto-translated to English → you confirm within 24 hours. Full price, no Klook/Viator commission.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
@@ -177,23 +177,23 @@ export default async function ForBusinessLanding() {
         </div>
       </section>
 
-      {/* MULTI-LANGUAGE REACH — 6-language audience visualization */}
+      {/* MULTI-LANGUAGE REACH — 8-language audience visualization */}
       <section className="mx-auto max-w-6xl px-4 py-14">
         <div className="text-center">
           <div className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-3 py-1 text-[11px] font-bold text-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
-            6-LANGUAGE AUDIENCE
+            {SUPPORTED_LANGS.length}-LANGUAGE AUDIENCE
           </div>
           <h2 className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">
-            Your listing reaches travelers in 6 languages — no translation work on your side
+            Your listing reaches travelers in {SUPPORTED_LANGS.length} languages — no translation work on your side
           </h2>
           <p className="mt-2 mx-auto max-w-2xl text-sm muted">
-            Every listing is published in Korean, Japanese, Chinese, English, Thai, and Arabic. Each
-            language version ranks separately in its home-country search engines. You write nothing —
-            we handle the translation layer.
+            Every listing is published in Korean, Japanese, Chinese, English, Thai, Arabic, Indonesian,
+            and Vietnamese. Each language version ranks separately in its home-country search engines.
+            You write nothing — we handle the translation layer.
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             { flag: "🇰🇷", lang: "Korean", market: "Naver · Daum · Kakao",          note: "Largest single segment for spa/cooking/muay-thai" },
             { flag: "🇯🇵", lang: "Japanese", market: "Google JP · Yahoo JP",         note: "Wellness + cooking-class core" },
@@ -201,6 +201,8 @@ export default async function ForBusinessLanding() {
             { flag: "🇺🇸", lang: "English", market: "Google + Bing global",          note: "AU · UK · US · SG · IN traffic" },
             { flag: "🇹🇭", lang: "Thai",    market: "Google TH · Pantip",            note: "Domestic Thai customers" },
             { flag: "🇸🇦", lang: "Arabic",  market: "Google AR · Yandex",            note: "Gulf wellness traveler segment" },
+            { flag: "🇮🇩", lang: "Indonesian", market: "Google ID",                  note: "Fast-growing SE Asian traveler segment" },
+            { flag: "🇻🇳", lang: "Vietnamese", market: "Google + Cốc Cốc",           note: "Emerging outbound-travel market" },
           ].map((l) => (
             <div
               key={l.lang}
@@ -223,8 +225,8 @@ export default async function ForBusinessLanding() {
             <strong>Why this matters for owners:</strong> a Korean tourist Googling in Korean,
             a Japanese family searching on Yahoo JP, and a Chinese couple browsing in Bing CN
             all need different landing pages to actually convert. Most Thai venues publish only
-            in Thai + English and miss the other 4 segments entirely. Your Verified Thai listing
-            ranks in all six from day one — your only job is to reply to the inquiries.
+            in Thai + English and miss the other 6 segments entirely. Your Verified Thai listing
+            ranks in all eight from day one — your only job is to reply to the inquiries.
           </p>
         </div>
       </section>
@@ -240,7 +242,7 @@ export default async function ForBusinessLanding() {
               Everything you need in one place
             </h2>
             <p className="mt-2 text-sm muted">
-              여기서 볼 수 있는 것 — 직접 예약 / 문의함 / 트래픽 / 사진 / 가격 설정 모두 한곳에서.
+              Direct bookings, inquiries, traffic, photos, and pricing — all in one place.
             </p>
           </div>
 
@@ -329,57 +331,57 @@ export default async function ForBusinessLanding() {
             <FeatureCard
               emoji="💎"
               title="Direct bookings"
-              korean="직접 예약 · 수수료 0%"
+              subtitle="Direct booking · 0% commission"
               body="Customers request a date, you confirm or decline. No commission, no booking platform between you and the traveler."
             />
             <FeatureCard
               emoji="📩"
               title="Real-time inquiries"
-              korean="실시간 문의함"
+              subtitle="Live inquiry inbox"
               body="Direct messages from travelers. Reply via WhatsApp, LINE, or email — you own the customer relationship."
             />
             <FeatureCard
               emoji="🌐"
-              title="6-language inbox"
-              korean="자동 6개 언어 번역"
-              body="Korean / Japanese / Chinese / Thai / Arabic — all auto-translated to English. Reply in your own language."
+              title="8-language inbox"
+              subtitle="Auto-translated from 8 languages"
+              body="Korean / Japanese / Chinese / Thai / Arabic / Indonesian / Vietnamese — all auto-translated to English. Reply in your own language."
             />
             <FeatureCard
               emoji="📊"
               title="14-day analytics"
-              korean="14일 트래픽 분석"
+              subtitle="14-day traffic analytics"
               body="See exactly how many people viewed your listing each day. Plan staff and promos around peak weeks."
             />
             <FeatureCard
               emoji="🖼️"
               title="Owner photo gallery"
-              korean="자체 사진 업로드"
+              subtitle="Upload your own photos"
               body="Replace auto-scraped Google photos with your own. Show your real space, staff, and food."
             />
             <FeatureCard
               emoji="📋"
               title="Profile editor"
-              korean="프로필 직접 편집"
+              subtitle="Edit your profile directly"
               body="Description, services, prices, hours, contact methods — all owner-controlled, not from outdated Google scrapes."
             />
             <FeatureCard
               emoji="🛡️"
               title="Verified Thai badge"
-              korean="Verified Thai 뱃지"
+              subtitle="Verified Thai badge"
               body="Pro listings get a visible verified badge + priority rank. Travelers trust the badge — not paid placement."
               pro
             />
             <FeatureCard
               emoji="🎯"
               title="Priority rank"
-              korean="검색 우선 노출"
+              subtitle="Priority search placement"
               body="Pro listings appear above free listings on category pages and city guides."
               pro
             />
             <FeatureCard
               emoji="🇰🇷"
               title="Korean blog backlinks"
-              korean="한국어 블로그 노출"
+              subtitle="Featured on Korean travel blogs"
               body="171 Korean travel guides on this site link directly to your listing. Naver / Daum / Google.co.kr SEO funnel."
             />
           </div>
@@ -558,13 +560,13 @@ function MockCard({
 function FeatureCard({
   emoji,
   title,
-  korean,
+  subtitle,
   body,
   pro = false,
 }: {
   emoji: string;
   title: string;
-  korean: string;
+  subtitle: string;
   body: string;
   pro?: boolean;
 }) {
@@ -579,7 +581,7 @@ function FeatureCard({
         )}
       </div>
       <h3 className="mt-3 text-sm font-black">{title}</h3>
-      <div className="mt-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">{korean}</div>
+      <div className="mt-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">{subtitle}</div>
       <p className="mt-2 text-xs leading-relaxed text-ink-600 dark:text-ink-400">{body}</p>
     </div>
   );

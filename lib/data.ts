@@ -87,6 +87,13 @@ export function loadPlaces(): PlacesBundle {
     // Re-derive city from address before doing anything else — boost,
     // signal flags, city-scoped pages all depend on the corrected value.
     place.city = deriveCity(place.address, place.city);
+    // Google's `/gps-cs-s/` photo CDN URLs are session tokens that expire
+    // within weeks; the older `/p/` format is a stable, non-expiring URL.
+    // Prefer a stable sample photo for the card thumbnail when one exists.
+    if (place.top_photo_url && place.top_photo_url.includes("/gps-cs-s/")) {
+      const stable = (place.photos_sample || []).find((u) => u.includes("/p/"));
+      if (stable) place.top_photo_url = stable;
+    }
     const signals = getPlaceSignals(place.id);
     const boost = computeTrustBoost(signals);
     if (boost > 0) place.trust_score = Math.min(100, place.trust_score + boost);

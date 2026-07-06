@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats, getReviewKo, getYoutubeSearch } from "@/lib/data";
 import { getPlaceSignals, emailProviderLabel, trustBreakdown, formatSubs } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, T, t, tf } from "@/lib/i18n";
-import { isIndexablePlace, cleanReviewText } from "@/lib/reviews";
+import { isIndexablePlace, cleanReviewText, pickFeaturedReview, isThaiText } from "@/lib/reviews";
 import { buildPlaceFaqs } from "@/lib/place-faqs";
 import { placeHighlights } from "@/lib/highlights";
 import PlaceHighlights from "@/components/PlaceHighlights";
@@ -20,6 +20,7 @@ import YouTubeFacade from "@/components/YouTubeFacade";
 import PlaceFAQ from "@/components/PlaceFAQ";
 import BookingForm from "@/components/BookingForm";
 import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 import ViewPing from "@/components/ViewPing";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { cityForPlace } from "@/lib/cities";
@@ -215,6 +216,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             {place.rating != null && (
               <span className="font-semibold text-ink-900 dark:text-ink-100">
                 ★ {place.rating.toFixed(1)}
+                <span className="ml-1 font-normal muted">(Google)</span>
                 {place.review_count ? <span className="ml-1 underline-offset-2 hover:underline">({place.review_count.toLocaleString()} reviews)</span> : null}
               </span>
             )}
@@ -479,7 +481,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                       {place.rating >= 4.7 ? t("rate_exceptional", lang) : place.rating >= 4.3 ? t("rate_excellent", lang) : place.rating >= 3.8 ? t("rate_verygood", lang) : t("rate_good", lang)}
                     </div>
                     <div className="text-xs muted">
-                      {(place.review_count ?? 0).toLocaleString()} reviews
+                      {(place.review_count ?? 0).toLocaleString()} Google reviews
                     </div>
                   </div>
                 </div>
@@ -523,20 +525,31 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               </div>
             )}
 
-            {place.top_review_text && cleanReviewText(place.top_review_text) && (
-              <blockquote className="rounded-2xl border-l-4 border-emerald-400 bg-emerald-50/50 p-4 text-sm leading-relaxed dark:bg-emerald-950/20">
-                "{cleanReviewText(place.top_review_text)}"
-              </blockquote>
-            )}
+            {(() => {
+              const featured = pickFeaturedReview(place, lang);
+              if (!featured) return null;
+              return (
+                <blockquote className="rounded-2xl border-l-4 border-emerald-400 bg-emerald-50/50 p-4 text-sm leading-relaxed dark:bg-emerald-950/20">
+                  {featured.isThai && (
+                    <div className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
+                      🇹🇭 {t("review_orig_thai", lang)}
+                    </div>
+                  )}
+                  "{featured.text}"
+                </blockquote>
+              );
+            })()}
             {place.reviews_sample.length > 1 && (
               <ul className="mt-4 space-y-3">
                 {place.reviews_sample.slice(1, 5).map((rv, i) => {
                   const body = cleanReviewText(rv.text || "");
                   if (!body) return null;
+                  const bodyIsThai = lang !== "th" && isThaiText(body);
                   return (
                     <li key={i} className="rounded-xl border border-ink-100 bg-white p-3 text-sm dark:border-ink-800 dark:bg-ink-900">
                       <div className="text-xs muted">
                         {rv.reviewer || t("review_anon", lang)} {rv.rating ? `· ★ ${rv.rating}` : ""} {rv.date ? `· ${rv.date}` : ""}
+                        {bodyIsThai && <> · 🇹🇭 {t("review_orig_thai", lang)}</>}
                       </div>
                       <p className="mt-1">{body}</p>
                     </li>
@@ -1027,12 +1040,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                   className="group block overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
                 >
                   <div className="relative aspect-square bg-ink-50 dark:bg-ink-800">
-                    {p.top_photo_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.top_photo_url} alt={p.name} className="h-full w-full object-cover transition group-hover:scale-[1.04]" loading="lazy" />
-                    ) : (
-                      <PlacePlaceholder niche={p.niche} size="md" />
-                    )}
+                    <SafeImg src={p.top_photo_url} alt={p.name} niche={p.niche} className="h-full w-full object-cover transition group-hover:scale-[1.04]" loading="lazy" />
                     <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white">
                       {p.trust_score}
                     </div>

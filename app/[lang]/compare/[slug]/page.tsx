@@ -5,7 +5,7 @@ import { loadPlaces } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 
 export const dynamic = "force-static";
 
@@ -354,12 +354,7 @@ function PlaceMiniRow({ place, lang }: { place: Place; lang: Lang }) {
         className="flex items-center gap-3 rounded-xl border border-ink-100 bg-white p-2 transition hover:border-emerald-400 dark:border-ink-800 dark:bg-ink-900"
       >
         <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
-          {place.top_photo_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={place.top_photo_url} alt={place.name} className="h-full w-full object-cover" loading="lazy" />
-          ) : (
-            <PlacePlaceholder niche={place.niche} size="sm" />
-          )}
+          <SafeImg src={place.top_photo_url} alt={place.name} niche={place.niche} size="sm" className="h-full w-full object-cover" loading="lazy" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-bold">{place.name}</div>

@@ -7,7 +7,7 @@ import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
 import CategoryDiscovery from "@/components/CategoryDiscovery";
-import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 
 const NICHES: Niche[] = [
   "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
@@ -112,12 +112,7 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
       {/* HERO — niche page hero with photo */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
-          {heroPlace?.top_photo_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={heroPlace.top_photo_url} alt={nicheName(niche, lang)} className="h-full w-full object-cover" />
-          ) : (
-            <PlacePlaceholder niche={niche} size="xl" />
-          )}
+          <SafeImg src={heroPlace?.top_photo_url} alt={nicheName(niche, lang)} niche={niche} size="xl" className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/15" />
         </div>
 

@@ -5,7 +5,7 @@ import { loadBlogPosts, getBlogPostBySlug, getPlaceBySlug } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import PlacePlaceholder from "@/components/PlacePlaceholder";
+import SafeImg from "@/components/SafeImg";
 import BlogMarkdown from "@/components/BlogMarkdown";
 
 export const dynamic = "force-static";
@@ -109,16 +109,13 @@ export default function BlogPostPage({
         {/* HERO */}
         <section className="relative isolate overflow-hidden">
           <div className="absolute inset-0">
-            {heroPhoto ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={heroPhoto}
-                alt={post.title}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <PlacePlaceholder niche={niche} size="xl" />
-            )}
+            <SafeImg
+              src={heroPhoto}
+              alt={post.title}
+              niche={niche}
+              size="xl"
+              className="h-full w-full object-cover"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
           </div>
 
