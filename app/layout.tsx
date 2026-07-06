@@ -38,6 +38,15 @@ export const metadata: Metadata = {
       "naver-site-verification": process.env.NEXT_PUBLIC_NAVER_SITE_VERIFY ?? "",
     },
   },
+  // Discover/AI-snippet eligibility: allow full-size image previews & full
+  // snippets/video previews in Search + Discover (default caps them smaller).
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
