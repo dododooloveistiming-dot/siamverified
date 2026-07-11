@@ -24,7 +24,6 @@ export function buildPlaceFaqs(place: Place, lang: Lang): PlaceFaq[] {
     q: tf("pf_book_q", lang, { name }),
     a:
       tf("pf_book_a", lang, { name }) +
-      (place.bookable?.klook ? t("pf_book_klook", lang) : "") +
       (place.phone ? tf("pf_book_phone", lang, { phone: place.phone }) : ""),
   });
 
@@ -39,14 +38,19 @@ export function buildPlaceFaqs(place: Place, lang: Lang): PlaceFaq[] {
     });
   }
 
-  // Pricing.
+  // Pricing. price_unit is "unknown" for most priced places in the dataset
+  // — fall back to a sentence without the "per {unit}" clause rather than
+  // literally rendering "per unknown".
   if (place.price_min_thb > 0) {
     const price =
       `฿${place.price_min_thb.toLocaleString()}` +
       (place.price_max_thb > place.price_min_thb ? `–฿${place.price_max_thb.toLocaleString()}` : "");
+    const hasUnit = !!place.price_unit && place.price_unit !== "unknown";
     faqs.push({
       q: t("pf_cost_q", lang),
-      a: tf("pf_cost_a", lang, { price, unit: place.price_unit }),
+      a: hasUnit
+        ? tf("pf_cost_a", lang, { price, unit: place.price_unit })
+        : tf("pf_cost_a_nounit", lang, { price }),
     });
   }
 

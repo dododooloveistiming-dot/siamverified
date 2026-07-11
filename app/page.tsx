@@ -13,15 +13,17 @@ export const metadata: Metadata = {
   title: SITE.name,
   description: SITE.tagline.en,
   alternates: { canonical: `${SITE.origin}/en/` },
-  // Tell crawlers the meta-refresh target is canonical
-  other: {
-    refresh: "0;url=/en/",
-  },
 };
 
 export default function RootPage() {
   return (
     <main style={{ fontFamily: "sans-serif", padding: "2rem", textAlign: "center" }}>
+      {/* Next's `metadata.other` renders <meta name="refresh" ...>, which
+          browsers ignore — only <meta http-equiv="refresh" ...> actually
+          redirects. That was dead weight; this is the real thing, so
+          non-JS clients (and JS clients before the script below runs) also
+          redirect, not just the "modern browser with JS" case. */}
+      <meta httpEquiv="refresh" content="0;url=/en/" />
       <p>
         Redirecting to <a href="/en/">{SITE.name}</a>…
       </p>

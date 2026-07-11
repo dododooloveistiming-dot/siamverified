@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getPlaceKlook, getReplyTimeStats, getReviewKo, getYoutubeSearch } from "@/lib/data";
+import { loadPlaces, getPlaceBySlug, getSimilarPlaces, getPlaceMentions, getOwnerProfile, getReplyTimeStats, getReviewKo, getYoutubeSearch, toMapMarker } from "@/lib/data";
 import { getPlaceSignals, emailProviderLabel, trustBreakdown, formatSubs } from "@/lib/signals";
-import { SITE, SUPPORTED_LANGS, T, t, tf } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, T, t, tf, withXDefault } from "@/lib/i18n";
 import { isIndexablePlace, cleanReviewText, pickFeaturedReview, isThaiText } from "@/lib/reviews";
 import { buildPlaceFaqs } from "@/lib/place-faqs";
 import { placeHighlights } from "@/lib/highlights";
@@ -12,10 +12,9 @@ import PrimaryCTA from "@/components/PrimaryCTA";
 import KoreanProof from "@/components/KoreanProof";
 import type { Lang, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import StickyBookBar from "@/components/StickyBookBar";
 import InquiryForm from "@/components/InquiryForm";
 import HeroMosaic from "@/components/HeroMosaic";
-import KlookOffer from "@/components/KlookOffer";
+import AdSlot from "@/components/AdSlot";
 import YouTubeFacade from "@/components/YouTubeFacade";
 import PlaceFAQ from "@/components/PlaceFAQ";
 import BookingForm from "@/components/BookingForm";
@@ -72,7 +71,7 @@ export async function generateMetadata({ params }: { params: { lang: Lang; slug:
       : { index: false, follow: true },
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/place/${place.slug}/`])),
+      languages: withXDefault(Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/place/${place.slug}/`]))),
     },
     openGraph: {
       title: place.name,
@@ -93,34 +92,6 @@ export async function generateMetadata({ params }: { params: { lang: Lang; slug:
   };
 }
 
-function AffiliateCTA({ place, lang }: { place: Place; lang: Lang }) {
-  // Hide the placeholder affiliate IDs from the actual displayed URL when env not set.
-  const out: Array<{ label: string; href: string; tone: string }> = [];
-  if (place.affiliate.klook) out.push({ label: t("cta_book_klook", lang), href: place.affiliate.klook, tone: "bg-rose-600 hover:bg-rose-700" });
-  if (place.affiliate.viator) out.push({ label: t("cta_book_viator", lang), href: place.affiliate.viator, tone: "bg-emerald-600 hover:bg-emerald-700" });
-  if (place.affiliate.getyourguide) out.push({ label: t("cta_book_gyg", lang), href: place.affiliate.getyourguide, tone: "bg-orange-600 hover:bg-orange-700" });
-  if (place.niche === "wellness" || place.niche === "spa" || place.niche === "coworking") {
-    if (place.affiliate.agoda) out.push({ label: t("cta_book_agoda", lang), href: place.affiliate.agoda, tone: "bg-sky-600 hover:bg-sky-700" });
-  }
-  if (place.affiliate.bookimed) out.push({ label: "Get Free Quote (Bookimed)", href: place.affiliate.bookimed, tone: "bg-blue-600 hover:bg-blue-700" });
-  if (out.length === 0) return null;
-  return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-      {out.map((b) => (
-        <a
-          key={b.label}
-          href={b.href}
-          target="_blank"
-          rel="nofollow sponsored noopener"
-          className={`rounded-xl px-4 py-3 text-center text-sm font-bold text-white shadow-sm transition ${b.tone}`}
-        >
-          {b.label} →
-        </a>
-      ))}
-    </div>
-  );
-}
-
 export default async function PlaceDetailPage({ params }: { params: { lang: Lang; slug: string } }) {
   const { lang, slug } = params;
   const place = getPlaceBySlug(slug);
@@ -130,9 +101,12 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
   const similar = getSimilarPlaces(place, 4);
   const hubCity = cityForPlace(place); // for place → guide → city cross-links
   const mentions = getPlaceMentions(place.id);
-  const klookData = getPlaceKlook(place.id);
-  const ownerProfile = await getOwnerProfile(place.id);
-  const replyStats = ownerProfile ? await getReplyTimeStats(place.id) : null;
+  // Owner-facing tables (listingProfiles, inquiries, placeViews) are all
+  // keyed by the URL slug, not the Google place id — dashboard routes
+  // (/dashboard/claim/[id], /dashboard/listings/[id]/edit) pass place.slug
+  // as `id`, so reads here must match that key or owner edits never surface.
+  const ownerProfile = await getOwnerProfile(place.slug);
+  const replyStats = ownerProfile ? await getReplyTimeStats(place.slug) : null;
   const signals = getPlaceSignals(place.id);
   const highlights = placeHighlights(place, lang, signals);
   const reviewKo = lang === "ko" ? getReviewKo(place.id) : null;
@@ -250,11 +224,6 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 </Link>
               );
             })()}
-            {place.bookable?.klook && (
-              <span className="rounded-full bg-rose-600 px-2.5 py-0.5 font-bold text-white">
-                ⚡ Instant book on Klook
-              </span>
-            )}
             {signals.govCert?.type === "sha" && (
               <span
                 className="rounded-full bg-blue-100 px-2.5 py-0.5 font-bold text-blue-900 dark:bg-blue-950/40 dark:text-blue-300"
@@ -299,7 +268,9 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               <span className="rounded-full bg-ink-100 px-2.5 py-0.5 font-semibold text-ink-900 dark:bg-ink-800 dark:text-ink-100">
                 ฿{place.price_min_thb.toLocaleString()}
                 {place.price_max_thb > place.price_min_thb ? `–${place.price_max_thb.toLocaleString()}` : ""}
-                <span className="ml-1 opacity-75">/ {place.price_unit}</span>
+                {place.price_unit && place.price_unit !== "unknown" && (
+                  <span className="ml-1 opacity-75">/ {place.price_unit}</span>
+                )}
               </span>
             )}
             {place.is_beginner_friendly && (
@@ -354,7 +325,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             yet another generic placeholder. */}
         <section className="mx-auto mt-5 max-w-5xl px-4">
           {mosaicPhotos.length === 0 && Number.isFinite(place.lat) && Number.isFinite(place.lng) ? (
-            <PlaceMap places={[place]} lang={lang} height={400} />
+            <PlaceMap places={[toMapMarker(place)]} lang={lang} height={400} />
           ) : (
             <HeroMosaic
               photos={mosaicPhotos}
@@ -418,7 +389,7 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
 
         <div className="mx-auto max-w-5xl px-4">
         <PlaceHighlights items={highlights} title={t("hl_title", lang)} />
-        <PrimaryCTA place={place} lang={lang} hasKlookProducts={!!(klookData && klookData.products.length > 0)} />
+        <PrimaryCTA lang={lang} />
         {reviewKo && (
           <div className="mt-6 rounded-2xl border border-blue-100 bg-blue-50/60 px-5 py-4 dark:border-blue-900/40 dark:bg-blue-950/20">
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-blue-500">🇰🇷 한국어 리뷰 요약</p>
@@ -588,26 +559,14 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
               </div>
             </div>
 
-            {klookData && klookData.products.length > 0 && (
-              <div className="mb-3 grid grid-cols-2 gap-2 rounded-lg border border-emerald-200/70 bg-white/70 p-2.5 text-[11px] dark:border-emerald-800/70 dark:bg-ink-900/40">
-                <div>
-                  <div className="font-black text-emerald-700 dark:text-emerald-400">💎 Direct (this form)</div>
-                  <ul className="mt-1 space-y-0.5 text-ink-700 dark:text-ink-300">
-                    <li>✓ 0% platform fee</li>
-                    <li>✓ Venue keeps every baht</li>
-                    <li>· Reply usually within 24h</li>
-                  </ul>
-                </div>
-                <div>
-                  <div className="font-black text-ink-700 dark:text-ink-300">⚡ Klook (also below)</div>
-                  <ul className="mt-1 space-y-0.5 muted">
-                    <li>✗ ~20-25% to platform</li>
-                    <li>· Free cancellation</li>
-                    <li>· Instant confirmation</li>
-                  </ul>
-                </div>
-              </div>
-            )}
+            <div className="mb-3 rounded-lg border border-emerald-200/70 bg-white/70 p-2.5 text-[11px] dark:border-emerald-800/70 dark:bg-ink-900/40">
+              <div className="font-black text-emerald-700 dark:text-emerald-400">💎 Direct (this form)</div>
+              <ul className="mt-1 space-y-0.5 text-ink-700 dark:text-ink-300">
+                <li>✓ 0% platform fee</li>
+                <li>✓ Venue keeps every baht</li>
+                <li>· Reply usually within 24h</li>
+              </ul>
+            </div>
             <BookingForm
               placeId={place.slug}
               placeName={place.name}
@@ -617,16 +576,8 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </div>
         </section>
 
-        {/* KLOOK OFFER — third-party booking option (alternative, with commission) */}
-        {klookData && klookData.products.length > 0 && (
-          <section className="mt-6">
-            <div className="mb-2 text-[10px] font-black uppercase tracking-wider muted">
-              {t("or_book_klook", lang)}
-            </div>
-            <KlookOffer data={klookData} placeName={place.name} />
-            <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
-          </section>
-        )}
+        {/* AD SLOT — reclaimed from the removed Klook affiliate offer */}
+        <AdSlot slot="0000000000" className="mt-6 min-h-[250px]" />
 
         {/* OWNER-WRITTEN DESCRIPTION */}
         {displayDescription && (
@@ -729,17 +680,6 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </p>
           <InquiryForm placeId={place.slug} placeName={place.name} lang={lang} />
         </section>
-
-        {/* AFFILIATE CTAs — secondary fallback for places without Klook data */}
-        {!(klookData && klookData.products.length > 0) && (
-          <section className="mt-6">
-            <h2 className="mb-2 text-xs font-bold uppercase tracking-wide muted">
-              {t("or_book_partner", lang)}
-            </h2>
-            <AffiliateCTA place={place} lang={lang} />
-            <p className="mt-2 text-[10px] muted">{t("affiliate_disclaimer", lang)}</p>
-          </section>
-        )}
 
         {/* OWN THIS LISTING? */}
         <section className="mt-8 rounded-xl border border-dashed border-emerald-300 bg-emerald-50/40 p-4 text-sm dark:border-emerald-700 dark:bg-emerald-950/20">
@@ -1018,6 +958,9 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           </dl>
         </section>
 
+        {/* AD SLOT — reclaimed from the removed affiliate-CTA fallback */}
+        <AdSlot slot="0000000001" className="mt-8 min-h-[250px]" />
+
         {/* FAQ — accordion + FAQPage JSON-LD for SEO/AEO */}
         {faqs.length > 0 && (
           <section className="mt-12">
@@ -1128,23 +1071,20 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 place.price_min_thb > 0
                   ? `฿${place.price_min_thb}${place.price_max_thb > place.price_min_thb ? `–฿${place.price_max_thb}` : ""}`
                   : undefined,
-              aggregateRating: place.rating
+              // Only aggregateRating, never a `review` array: these are
+              // scraped Google reviews, not reviews collected by this site,
+              // and Google's review-snippet guidelines require markup to be
+              // "directly produced by your site" — marking third-party
+              // reviews as our own risks a manual action against ALL rich
+              // results, sitewide. Also drop the fabricated `?? 1` count;
+              // an unknown review count shouldn't render a fake "1 review".
+              aggregateRating: place.rating && place.review_count
                 ? {
                     "@type": "AggregateRating",
                     ratingValue: place.rating,
-                    reviewCount: place.review_count ?? 1,
+                    reviewCount: place.review_count,
                   }
                 : undefined,
-              review: (place.reviews_sample || [])
-                .map((rv) => ({ rv, body: cleanReviewText(rv.text || "").slice(0, 200) }))
-                .filter((x) => x.body)
-                .slice(0, 3)
-                .map(({ rv, body }) => ({
-                  "@type": "Review",
-                  reviewBody: body,
-                  author: { "@type": "Person", name: rv.reviewer || "Verified visitor" },
-                  ...(rv.rating ? { reviewRating: { "@type": "Rating", ratingValue: rv.rating, bestRating: 5 } } : {}),
-                })),
             }),
           }}
         />
@@ -1184,8 +1124,10 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
         )}
         </div>
       </main>
-      <StickyBookBar place={place} lang={lang} />
-      <ViewPing placeId={place.id} />
+      {/* Mobile bottom bar previously showed an affiliate booking CTA here
+          (StickyBookBar, removed) — left clear for AdSense's Auto ads
+          anchor unit once the site has an approved account. */}
+      <ViewPing placeId={place.slug} />
     </>
   );
 }

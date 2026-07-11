@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
@@ -27,6 +28,15 @@ const LANG_LABEL: Record<Lang, string> = {
 
 export default function Header({ lang }: { lang: Lang }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Switching language used to always send the reader to the target
+  // locale's homepage, discarding whatever page they were reading — rewrite
+  // just the leading /xx/ segment instead so they land on the same page.
+  const switchLang = (target: string) => {
+    const rest = pathname.replace(/^\/[a-z]{2}(\/|$)/, "/");
+    window.location.href = `/${target}${rest}`;
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -111,8 +121,8 @@ export default function Header({ lang }: { lang: Lang }) {
               <div className="p-1.5">
                 {[
                   { href: `/${lang}/guide/bangkok-yoga-pilates/`, label: "Bangkok yoga", emoji: "🧘" },
-                  { href: `/${lang}/guide/phuket-diving/`, label: "Phuket diving", emoji: "🤿" },
-                  { href: `/${lang}/guide/phuket-muay-thai/`, label: "Phuket Muay Thai", emoji: "🥊" },
+                  { href: `/${lang}/guide/bangkok-muay-thai/`, label: "Bangkok Muay Thai", emoji: "🥊" },
+                  { href: `/${lang}/guide/phuket-spa/`, label: "Phuket spa", emoji: "💆" },
                   { href: `/${lang}/guide/chiang-mai-cooking/`, label: "Chiang Mai cooking", emoji: "🍜" },
                   { href: `/${lang}/guide/bangkok-spa/`, label: "Bangkok spa", emoji: "💆" },
                 ].map((g) => (
@@ -222,7 +232,7 @@ export default function Header({ lang }: { lang: Lang }) {
           <WishlistNavLink lang={lang} label={t("nav_saved", lang)} />
           <select
             value={lang}
-            onChange={(e) => { window.location.href = `/${e.target.value}/`; }}
+            onChange={(e) => switchLang(e.target.value)}
             className="hidden rounded-md border border-ink-200 bg-transparent px-2 py-1.5 text-xs font-semibold dark:border-ink-700 sm:block"
             aria-label="Language"
           >
@@ -347,9 +357,10 @@ export default function Header({ lang }: { lang: Lang }) {
               <div className="muted mb-2 text-xs">Language</div>
               <div className="flex flex-wrap gap-1.5">
                 {SUPPORTED_LANGS.map((l) => (
-                  <a
+                  <button
                     key={l}
-                    href={`/${l}/`}
+                    type="button"
+                    onClick={() => switchLang(l)}
                     className={`rounded-md border px-2.5 py-1.5 text-xs font-semibold transition ${
                       l === lang
                         ? "border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
@@ -357,7 +368,7 @@ export default function Header({ lang }: { lang: Lang }) {
                     }`}
                   >
                     {LANG_LABEL[l]}
-                  </a>
+                  </button>
                 ))}
               </div>
             </div>

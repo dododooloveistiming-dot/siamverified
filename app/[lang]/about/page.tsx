@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, withXDefault } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 
 export const dynamic = "force-static";
@@ -20,9 +20,9 @@ export async function generateMetadata({
     description: t("ab_meta_desc", params.lang),
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/about/`])
-      ),
+      )),
     },
   };
 }

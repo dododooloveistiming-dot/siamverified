@@ -15,8 +15,17 @@
 
 import Link from "next/link";
 import { Fragment } from "react";
+import type { Lang } from "@/lib/types";
 
-function inline(text: string): React.ReactNode[] {
+// Generated post bodies hardcode /ko/place/... links (the generator only
+// ever ran in Korean). Rewrite the locale segment to whatever page the
+// reader is actually on so an /en/ reader clicking through doesn't get
+// yanked into Korean UI chrome mid-session.
+function localizeHref(href: string, lang: Lang): string {
+  return href.replace(/^\/ko\//, `/${lang}/`);
+}
+
+function inline(text: string, lang: Lang): React.ReactNode[] {
   // Process inline tokens: **bold**, *italic*, [link](url)
   const nodes: React.ReactNode[] = [];
   let remaining = text;
@@ -41,7 +50,7 @@ function inline(text: string): React.ReactNode[] {
         nodes.push(
           <Link
             key={key++}
-            href={m[4]}
+            href={localizeHref(m[4], lang)}
             className="text-emerald-700 underline-offset-2 hover:underline dark:text-emerald-400"
           >
             {m[3]}
@@ -66,7 +75,7 @@ function inline(text: string): React.ReactNode[] {
   return nodes;
 }
 
-export default function BlogMarkdown({ source }: { source: string }) {
+export default function BlogMarkdown({ source, lang }: { source: string; lang: Lang }) {
   const lines = source.split("\n");
   const blocks: React.ReactNode[] = [];
   let para: string[] = [];
@@ -78,7 +87,7 @@ export default function BlogMarkdown({ source }: { source: string }) {
     if (para.length === 0) return;
     blocks.push(
       <p key={key++} className="mt-4 text-base leading-relaxed text-ink-800 dark:text-ink-200">
-        {inline(para.join(" "))}
+        {inline(para.join(" "), lang)}
       </p>,
     );
     para = [];
@@ -94,7 +103,7 @@ export default function BlogMarkdown({ source }: { source: string }) {
         }`}
       >
         {listItems.map((it, i) => (
-          <li key={i}>{inline(it)}</li>
+          <li key={i}>{inline(it, lang)}</li>
         ))}
       </Tag>,
     );
@@ -113,7 +122,7 @@ export default function BlogMarkdown({ source }: { source: string }) {
       flushList();
       blocks.push(
         <h2 key={key++} className="mt-10 text-2xl font-black tracking-tight">
-          {inline(line.slice(3))}
+          {inline(line.slice(3), lang)}
         </h2>,
       );
       continue;
@@ -123,7 +132,7 @@ export default function BlogMarkdown({ source }: { source: string }) {
       flushList();
       blocks.push(
         <h3 key={key++} className="mt-6 text-lg font-bold">
-          {inline(line.slice(4))}
+          {inline(line.slice(4), lang)}
         </h3>,
       );
       continue;
@@ -136,7 +145,7 @@ export default function BlogMarkdown({ source }: { source: string }) {
           key={key++}
           className="mt-3 border-l-4 border-emerald-400 bg-emerald-50/40 px-4 py-2 text-sm italic text-ink-700 dark:bg-emerald-950/20 dark:text-ink-300"
         >
-          {inline(line.slice(2))}
+          {inline(line.slice(2), lang)}
         </blockquote>,
       );
       continue;

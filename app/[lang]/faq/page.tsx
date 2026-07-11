@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listFaqs, localizeFaq, type ResolvedFaq } from "@/lib/faqs";
-import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 
@@ -22,7 +22,7 @@ export async function generateMetadata({
     description: tf("faq_index_desc", params.lang, { n: listFaqs().length }),
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/faq/`])),
+      languages: withXDefault(Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/faq/`]))),
     },
   };
 }

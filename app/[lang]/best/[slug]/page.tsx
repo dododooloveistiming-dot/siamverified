@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlacesByNiche } from "@/lib/data";
+import { loadPlaces, getPlacesByNiche, toMapMarker } from "@/lib/data";
 import { CITIES, getCityBySlug, placesInCity } from "@/lib/cities";
-import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
@@ -257,6 +257,8 @@ export async function generateMetadata({
   if (!parsed) return {};
   const city = getCityBySlug(parsed.citySlug);
   if (!city) return {};
+  const matchCount = placesInCity(getPlacesByNiche(parsed.niche), city).filter(predicate(parsed.kind)).length;
+  if (matchCount < MIN_PLACES) return {};
   const nName = nicheName(parsed.niche, params.lang);
   const content = CONTENT[parsed.kind][params.lang] ?? CONTENT[parsed.kind].en;
   const url = `${SITE.origin}/${params.lang}/best/${params.slug}/`;
@@ -266,9 +268,9 @@ export async function generateMetadata({
     description: content.desc(city.label, nName),
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/best/${params.slug}/`]),
-      ),
+      )),
     },
     openGraph: { title, description: content.desc(city.label, nName), url, type: "article" },
   };
@@ -291,6 +293,11 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
     .filter(predicate(kind))
     .sort((a, b) => b.trust_score - a.trust_score)
     .slice(0, 30);
+  // generateStaticParams only pre-builds combos with >= MIN_PLACES, but
+  // dynamicParams defaults to true — a combo below the threshold that
+  // wasn't pre-built would otherwise still render on demand with a thin/
+  // empty list instead of 404ing.
+  if (places.length < MIN_PLACES) notFound();
 
   const oldestYear = places
     .map((p) => p.founding_year)
@@ -385,7 +392,7 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
                 <h2 className="mb-3 text-sm font-bold uppercase tracking-wide muted">
                   {tf("bp_map", lang, { n: mapped.length })}
                 </h2>
-                <PlaceMap places={mapped} lang={lang} height={400} />
+                <PlaceMap places={mapped.map(toMapMarker)} lang={lang} height={400} />
               </section>
             );
           })()}

@@ -118,6 +118,29 @@ export interface Place {
   lng?: number;
 }
 
+// Slim projection of Place for card/grid rendering (category pages, wishlist
+// button). Full Place objects carry reviews_sample/photos_sample/etc, which
+// bloated the client-component payload on niche category pages — spa alone
+// serialized 4.5MB+ into the page HTML + RSC flight data for ~2,000 places
+// that only ever render this subset of fields. See lib/data.ts toPlaceCard().
+export type PlaceCard = Pick<
+  Place,
+  | "id" | "slug" | "name" | "niche" | "city" | "category"
+  | "rating" | "review_count" | "top_photo_url" | "top_review_text"
+  | "trust_score" | "is_beginner_friendly" | "is_established" | "is_open_24h"
+  | "is_partner" | "is_suspected_viral" | "is_very_active" | "is_veteran"
+  | "is_active_recently" | "founding_year" | "kr_mentions" | "languages"
+  | "price_band" | "price_min_thb" | "price_max_thb"
+>;
+
+// Slim projection of Place for map markers (PlaceMap popups only ever show
+// name/rating/trust/price/city). Full Place[] was being serialized into the
+// Leaflet marker layer on city/best pages for up to 200 places.
+export type MapMarker = Pick<
+  Place,
+  "id" | "slug" | "name" | "city" | "lat" | "lng" | "rating" | "trust_score" | "price_min_thb" | "price_max_thb"
+>;
+
 export interface CommunityThread {
   kind: "reddit" | "pantip" | "naver";
   title: string;

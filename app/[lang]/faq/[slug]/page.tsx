@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getFaq, getLocalizedFaq, localizeFaq, isFaqTranslated, faqTranslatedLangs, listFaqs } from "@/lib/faqs";
-import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, withXDefault } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 
@@ -38,9 +38,9 @@ export async function generateMetadata({
     alternates: {
       canonical: url,
       // hreflang points only to languages that actually have a translation.
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         translatedLangs.map((l) => [l, `${SITE.origin}/${l}/faq/${params.slug}/`]),
-      ),
+      )),
     },
     openGraph: {
       title: faq.question,

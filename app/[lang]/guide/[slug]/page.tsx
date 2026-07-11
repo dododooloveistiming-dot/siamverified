@@ -2,53 +2,32 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
-import type { Lang, Niche, Place } from "@/lib/types";
+import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
+import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import { cleanReviewText, isThaiText } from "@/lib/reviews";
+import {
+  CITY_SLUGS,
+  NICHE_SLUGS,
+  MIN_GUIDE_PLACES,
+  parseGuideSlug,
+  placesInGuideCity,
+  hasEnoughGuidePlaces,
+} from "@/lib/guides";
 
 export const dynamic = "force-static";
 
-// ─── Slug definitions ─────────────────────────────────────────────────────
 // /[lang]/guide/[city]-[niche]/ — auto-generated city × niche guide.
-// e.g. /en/guide/bangkok-yoga-pilates/
-
-const CITY_SLUGS: Array<{ slug: string; label: string; matches: string[] }> = [
-  { slug: "bangkok", label: "Bangkok", matches: ["bangkok"] },
-  { slug: "chiang-mai", label: "Chiang Mai", matches: ["chiang mai", "chiangmai"] },
-  { slug: "phuket", label: "Phuket", matches: ["phuket"] },
-  { slug: "pattaya", label: "Pattaya", matches: ["pattaya"] },
-  { slug: "hua-hin", label: "Hua Hin", matches: ["hua hin", "huahin"] },
-  { slug: "koh-samui", label: "Koh Samui", matches: ["koh samui", "samui"] },
-];
-
-const NICHE_SLUGS: Niche[] = [
-  "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
-];
-
-function parseSlug(slug: string): { city: typeof CITY_SLUGS[0]; niche: Niche } | null {
-  for (const c of CITY_SLUGS) {
-    for (const n of NICHE_SLUGS) {
-      if (slug === `${c.slug}-${n}`) {
-        return { city: c, niche: n };
-      }
-    }
-  }
-  return null;
-}
-
-function placesInCity(places: Place[], city: typeof CITY_SLUGS[0]): Place[] {
-  return places.filter((p) => {
-    const c = (p.city || "").toLowerCase();
-    return city.matches.some((m) => c === m || c.includes(m));
-  });
-}
+// e.g. /en/guide/bangkok-yoga-pilates/. Slug/city/niche definitions and the
+// MIN_GUIDE_PLACES threshold live in lib/guides.ts, shared with sitemap.ts.
 
 export function generateStaticParams() {
   const params: Array<{ lang: Lang; slug: string }> = [];
   for (const lang of SUPPORTED_LANGS) {
     for (const c of CITY_SLUGS) {
       for (const n of NICHE_SLUGS) {
+        if (!hasEnoughGuidePlaces(c, n)) continue;
         params.push({ lang, slug: `${c.slug}-${n}` });
       }
     }
@@ -61,12 +40,13 @@ export async function generateMetadata({
 }: {
   params: { lang: Lang; slug: string };
 }): Promise<Metadata> {
-  const parsed = parseSlug(params.slug);
+  const parsed = parseGuideSlug(params.slug);
   if (!parsed) return {};
   const { city, niche } = parsed;
+  if (!hasEnoughGuidePlaces(city, niche)) return {};
   const url = `${SITE.origin}/${params.lang}/guide/${params.slug}/`;
   const placesAll = getPlacesByNiche(niche);
-  const cityPlaces = placesInCity(placesAll, city);
+  const cityPlaces = placesInGuideCity(placesAll, city);
   const nLabel = nicheName(niche, params.lang);
   const title = `${tf("g_meta_title", params.lang, { n: Math.min(cityPlaces.length, 10), niche: nLabel, city: city.label })} · ${SITE.name}`;
   const description = tf("g_meta_desc", params.lang, { niche: nLabel, city: city.label });
@@ -75,9 +55,9 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/guide/${params.slug}/`]),
-      ),
+      )),
     },
     openGraph: { title, description, url, type: "article" },
   };
@@ -88,14 +68,15 @@ export default function GuidePage({
 }: {
   params: { lang: Lang; slug: string };
 }) {
-  const parsed = parseSlug(params.slug);
+  const parsed = parseGuideSlug(params.slug);
   if (!parsed) notFound();
   const { city, niche } = parsed;
+  if (!hasEnoughGuidePlaces(city, niche)) notFound();
   const lang = params.lang;
   const meta = NICHE_META[niche];
 
   const all = getPlacesByNiche(niche);
-  const places = placesInCity(all, city)
+  const places = placesInGuideCity(all, city)
     .sort((a, b) => b.trust_score - a.trust_score)
     .slice(0, 10);
 
@@ -117,7 +98,7 @@ export default function GuidePage({
   // live counts/names; surrounding prose is translated per locale).
   const N = nicheName(niche, lang);
   const C = city.label;
-  const inCity = placesInCity(all, city).length;
+  const inCity = placesInGuideCity(all, city).length;
   const faqs: Array<{ q: string; a: string }> = [
     {
       q: tf("gf_count_q", lang, { niche: N, city: C }),
@@ -277,11 +258,17 @@ export default function GuidePage({
                       {p.languages.ko && <span>🇰🇷</span>}
                       {p.is_beginner_friendly && <span>🐣 {t("filter_beginner", lang)}</span>}
                     </div>
-                    {p.top_review_text && (
-                      <p className="mt-2 line-clamp-2 text-xs leading-snug muted italic">
-                        &ldquo;{p.top_review_text}&rdquo;
-                      </p>
-                    )}
+                    {(() => {
+                      const body = cleanReviewText(p.top_review_text || "");
+                      if (!body) return null;
+                      const bodyIsThai = isThaiText(body);
+                      return (
+                        <p className="mt-2 line-clamp-2 text-xs leading-snug muted italic">
+                          {bodyIsThai && lang !== "th" && <span className="not-italic">🇹🇭 </span>}
+                          &ldquo;{body}&rdquo;
+                        </p>
+                      );
+                    })()}
                   </div>
                 </Link>
               </li>

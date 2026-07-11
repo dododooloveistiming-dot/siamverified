@@ -1,17 +1,23 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import type { Lang, Niche, Place } from "@/lib/types";
+import type { Lang, Niche, PlaceCard as PlaceCardData } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 import { t } from "@/lib/i18n";
 import SafeImg from "@/components/SafeImg";
 import WishlistButton from "@/components/WishlistButton";
+import { cleanReviewText, isThaiText } from "@/lib/reviews";
 
 // nicheName is imported from lib/types when needed
 
 type Sort = "trust" | "reviews" | "rating";
 type PriceBand = "" | "budget" | "mid" | "premium" | "luxury";
+
+// Category grids run to ~2,000 cards on the biggest niches — rendering all
+// of them (and their SafeImg hydration cost) up front was the biggest single
+// contributor to INP/hydration jank on mobile. Render a page at a time.
+const PAGE_SIZE = 30;
 
 const PB_LABEL: Record<Exclude<PriceBand, "">, { icon: string; key: "price_budget" | "price_mid" | "price_premium" | "price_luxury" }> = {
   budget: { icon: "💵", key: "price_budget" },
@@ -26,12 +32,27 @@ function trustTier(score: number): "high" | "mid" | "low" {
   return "low";
 }
 
+// Card review excerpts were rendering the raw scrape (owner-reply text,
+// "Local Guide · N reviews" metadata lines) — only the place detail page
+// cleaned it. Shared here so both card layouts below get the same fix.
+function ReviewExcerpt({ text, lang, className }: { text: string | undefined; lang: Lang; className: string }) {
+  const body = cleanReviewText(text || "");
+  if (!body) return null;
+  const bodyIsThai = isThaiText(body);
+  return (
+    <p className={className}>
+      {bodyIsThai && lang !== "th" && <span className="not-italic">🇹🇭 </span>}
+      &ldquo;{body}&rdquo;
+    </p>
+  );
+}
+
 export default function CategoryClient({
   places,
   lang,
   niche,
 }: {
-  places: Place[];
+  places: PlaceCardData[];
   lang: Lang;
   niche: Niche;
 }) {
@@ -45,6 +66,11 @@ export default function CategoryClient({
   const [activeOnly, setActiveOnly] = useState(false);
   const [hideViral, setHideViral] = useState(true);
   const [sort, setSort] = useState<Sort>("trust");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  // Keep the search input itself instant; defer the (expensive, ~2k-item)
+  // filter+sort recompute so typing never blocks on it.
+  const deferredQuery = useDeferredValue(query);
 
   const cities = useMemo(() => {
     const counts = new Map<string, number>();
@@ -88,7 +114,7 @@ export default function CategoryClient({
   }, [cities]);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = deferredQuery.trim().toLowerCase();
     const list = places.filter((p) => {
       if (hideViral && p.is_suspected_viral) return false;
       if (city && p.city !== city) return false;
@@ -111,8 +137,15 @@ export default function CategoryClient({
       return 0;
     });
     return list;
-  }, [places, query, city, priceBand, koOnly, beginnerOnly, open24Only, establishedOnly, activeOnly, hideViral, sort]);
+  }, [places, deferredQuery, city, priceBand, koOnly, beginnerOnly, open24Only, establishedOnly, activeOnly, hideViral, sort]);
 
+  // Reset paging whenever the result set changes underneath it — otherwise
+  // "500 of 12 matched" could persist after narrowing a filter.
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [filtered]);
+
+  const visible = filtered.slice(0, visibleCount);
   const meta = NICHE_META[niche];
 
   return (
@@ -184,22 +217,35 @@ export default function CategoryClient({
           <p className="mt-1 text-sm muted">{t("try_remove_filters", lang)}</p>
         </div>
       ) : (
-        <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p, i) => {
-            // Every 7th card spans 2 columns and uses the horizontal "Featured"
-            // layout (photo left + info right) — breaks up the uniform grid.
-            const featured = i > 0 && i % 7 === 0;
-            return (
-              <li key={p.id} className={featured ? "sm:col-span-2" : ""}>
-                {featured ? (
-                  <FeaturedListCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
-                ) : (
-                  <PlaceCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
-                )}
-              </li>
-            );
-          })}
-        </ul>
+        <>
+          <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {visible.map((p, i) => {
+              // Every 7th card spans 2 columns and uses the horizontal "Featured"
+              // layout (photo left + info right) — breaks up the uniform grid.
+              const featured = i > 0 && i % 7 === 0;
+              return (
+                <li key={p.id} className={featured ? "sm:col-span-2" : ""}>
+                  {featured ? (
+                    <FeaturedListCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
+                  ) : (
+                    <PlaceCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          {visibleCount < filtered.length && (
+            <div className="mt-6 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+                className="rounded-xl border border-ink-200 bg-white px-6 py-2.5 text-sm font-bold transition hover:border-emerald-400 hover:text-emerald-700 dark:border-ink-700 dark:bg-ink-900 dark:hover:text-emerald-400"
+              >
+                {t("load_more", lang)} ({(filtered.length - visibleCount).toLocaleString()})
+              </button>
+            </div>
+          )}
+        </>
       )}
     </>
   );
@@ -240,7 +286,7 @@ function Pill({ on, onClick, children, tone = "default" }: { on: boolean; onClic
   );
 }
 
-function FeaturedListCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackEmoji: string }) {
+function FeaturedListCard({ p, lang, fallbackEmoji }: { p: PlaceCardData; lang: Lang; fallbackEmoji: string }) {
   const tier = trustTier(p.trust_score);
   const tierClass =
     tier === "high"
@@ -274,20 +320,17 @@ function FeaturedListCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fa
             </span>
           )}
         </div>
-        {p.top_review_text && (
-          <p className="line-clamp-3 text-xs italic leading-relaxed text-ink-600 dark:text-ink-400">
-            &ldquo;{p.top_review_text}&rdquo;
-          </p>
-        )}
+        <ReviewExcerpt
+          text={p.top_review_text}
+          lang={lang}
+          className="line-clamp-3 text-xs italic leading-relaxed text-ink-600 dark:text-ink-400"
+        />
         <div className="mt-auto flex flex-wrap items-center gap-1.5 text-[10px]">
           {p.is_beginner_friendly && (
             <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">🐣 Beginner</span>
           )}
           {p.languages.ko && (
             <span className="rounded-full bg-rose-100 px-2 py-0.5 font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">🇰🇷 KO</span>
-          )}
-          {p.bookable?.klook && (
-            <span className="rounded-full bg-rose-500 px-2 py-0.5 font-bold text-white">⚡ Klook</span>
           )}
           <span className="ml-auto inline-flex items-center gap-1 font-bold text-emerald-700 dark:text-emerald-400">
             View details →
@@ -298,7 +341,7 @@ function FeaturedListCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fa
   );
 }
 
-function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackEmoji: string }) {
+function PlaceCard({ p, lang, fallbackEmoji }: { p: PlaceCardData; lang: Lang; fallbackEmoji: string }) {
   const tier = trustTier(p.trust_score);
   const tierClass =
     tier === "high"
@@ -307,9 +350,6 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
       ? "bg-amber-500 text-white"
       : "bg-rose-500 text-white";
   const pbLabel = p.price_band !== "unknown" ? PB_LABEL[p.price_band as Exclude<PriceBand, "">] : null;
-
-  const hasAffiliate =
-    !!(p.affiliate.klook || p.affiliate.viator || p.affiliate.getyourguide || p.affiliate.agoda || p.affiliate.bookimed);
 
   return (
     <Link
@@ -355,11 +395,11 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
           )}
         </div>
 
-        {p.top_review_text && (
-          <p className="line-clamp-2 text-[11px] leading-snug muted italic">
-            &ldquo;{p.top_review_text}&rdquo;
-          </p>
-        )}
+        <ReviewExcerpt
+          text={p.top_review_text}
+          lang={lang}
+          className="line-clamp-2 text-[11px] leading-snug muted italic"
+        />
 
         <div className="mt-auto flex flex-wrap items-center gap-1.5 text-[10px]">
           {p.is_very_active && (
@@ -403,16 +443,6 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: Place; lang: Lang; fallbackE
           {pbLabel && (
             <span className="rounded-full bg-ink-100 px-2 py-0.5 font-medium dark:bg-ink-800">
               {pbLabel.icon}
-            </span>
-          )}
-          {p.bookable?.klook && (
-            <span className="rounded-full bg-rose-100 px-2 py-0.5 font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">
-              ⚡ Klook
-            </span>
-          )}
-          {hasAffiliate && !p.bookable?.klook && (
-            <span className="rounded-full bg-emerald-100 px-2 py-0.5 font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-              ⚡ {t("bookable_label", lang)}
             </span>
           )}
           {p.is_suspected_viral && (

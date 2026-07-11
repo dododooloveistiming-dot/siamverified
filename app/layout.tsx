@@ -6,9 +6,18 @@ import { SITE } from "@/lib/i18n";
 // Google Analytics 4 measurement ID. Override via env in Vercel if needed.
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-BMPFKJMKJT";
 
+// AdSense publisher ID — unset until the site has an approved account.
+// Mirrors components/AdSlot.tsx's gate so the loader script and the ad
+// units it activates are added/removed together, with no dead script tag
+// when there's nothing to serve yet.
+const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.origin),
-  title: { default: SITE.name, template: `%s — ${SITE.name}` },
+  // Every page-level title already appends SITE.name itself (see place,
+  // guide, city, category, blog, faq, compare pages) — an identity template
+  // avoids stacking "— Verified Thai" onto titles that already end with it.
+  title: { default: SITE.name, template: "%s" },
   description: SITE.tagline.en,
   icons: {
     icon: [
@@ -74,6 +83,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', '${GA_ID}');
           `}
         </Script>
+        {ADSENSE_CLIENT && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+            crossOrigin="anonymous"
+            strategy="lazyOnload"
+          />
+        )}
         {children}
       </body>
     </html>

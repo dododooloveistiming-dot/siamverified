@@ -9,6 +9,7 @@
 // below the fold wastes the highest-converting asset.
 
 import { useEffect, useState } from "react";
+import { resizeGooglePhoto } from "@/lib/googlePhoto";
 
 export default function HeroMosaic({
   photos: initialPhotos,
@@ -74,7 +75,7 @@ export default function HeroMosaic({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={hero}
+            src={resizeGooglePhoto(hero, 1000)}
             alt={`${alt} photo 1`}
             className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
             loading="eager"
@@ -105,7 +106,7 @@ export default function HeroMosaic({
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={src}
+                    src={resizeGooglePhoto(src, 400)}
                     alt={`${alt} photo ${idx + 1}`}
                     className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
                     loading={i < 2 ? "eager" : "lazy"}
@@ -179,7 +180,7 @@ export default function HeroMosaic({
           </button>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={photos[active]}
+            src={resizeGooglePhoto(photos[active], 1600)}
             alt={`${alt} photo ${active + 1}`}
             className="max-h-[88vh] max-w-[88vw] rounded-lg object-contain"
             onClick={(e) => e.stopPropagation()}

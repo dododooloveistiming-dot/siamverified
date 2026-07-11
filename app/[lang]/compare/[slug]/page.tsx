@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
@@ -71,10 +71,12 @@ const CITIES: CityDef[] = [
   },
 ];
 
-// Pre-defined comparison pairs (avoid combinatorial explosion).
+// Pre-defined comparison pairs (avoid combinatorial explosion). Koh Tao has
+// ~0 places in the dataset (see lib/data.ts city derivation) — a
+// phuket-vs-koh-tao page would render with an empty second column, so it's
+// excluded until real Koh Tao coverage exists.
 const COMPARE_PAIRS: Array<[string, string]> = [
   ["bangkok", "chiang-mai"],
-  ["phuket", "koh-tao"],
   ["bangkok", "phuket"],
   ["chiang-mai", "pattaya"],
   ["bangkok", "koh-samui"],
@@ -133,9 +135,9 @@ export async function generateMetadata({
     description: md,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/compare/${params.slug}/`]),
-      ),
+      )),
     },
     openGraph: {
       title: tf("city_vs", params.lang, { a: a.label, b: b.label }),

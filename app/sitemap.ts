@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next";
 import { loadPlaces, loadBlogPosts, getPlacesByNiche } from "@/lib/data";
 import { CITIES as CITY_DEFS, placesInCity } from "@/lib/cities";
 import { listFaqs, isFaqTranslated, faqTranslatedLangs } from "@/lib/faqs";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, withXDefault } from "@/lib/i18n";
 import { isIndexablePlace } from "@/lib/reviews";
+import { hasEnoughGuidePlaces, CITY_SLUGS as GUIDE_CITY_SLUGS } from "@/lib/guides";
 import type { Niche } from "@/lib/types";
 
 // Mirrors definitions used by app/[lang]/guide/[slug] and /compare/[slug]
@@ -13,9 +14,10 @@ const NICHES: Niche[] = [
 const CITIES = [
   "bangkok", "chiang-mai", "phuket", "pattaya", "hua-hin", "koh-samui",
 ];
+// koh-tao has no city hub (lib/cities.ts) and ~0 places in the dataset — a
+// "phuket vs koh-tao" compare page would render with an empty second column.
 const COMPARE_PAIRS: Array<[string, string]> = [
   ["bangkok", "chiang-mai"],
-  ["phuket", "koh-tao"],
   ["bangkok", "phuket"],
   ["chiang-mai", "pattaya"],
   ["bangkok", "koh-samui"],
@@ -33,6 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // For-business landing (owner acquisition funnel)
   out.push({ url: `${origin}/for-business/`, lastModified: now, priority: 0.85, changeFrequency: "monthly" });
+  out.push({ url: `${origin}/privacy/`, lastModified: now, priority: 0.3, changeFrequency: "yearly" });
 
   for (const lang of SUPPORTED_LANGS) {
     // Lang landing
@@ -42,9 +45,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       changeFrequency: "weekly",
       alternates: {
-        languages: Object.fromEntries(
+        languages: withXDefault(Object.fromEntries(
           SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/`]),
-        ),
+        )),
       },
     });
 
@@ -77,11 +80,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
-    // City × niche guide pages
-    for (const c of CITIES) {
+    // City × niche guide pages — skip combos below the "real ranked list"
+    // threshold (see hasEnoughGuidePlaces); several have zero matches (e.g.
+    // Hua Hin diving) and were previously sitemapped as "Top 0 …" pages.
+    for (const c of GUIDE_CITY_SLUGS) {
       for (const n of NICHES) {
+        if (!hasEnoughGuidePlaces(c, n)) continue;
         out.push({
-          url: `${origin}/${lang}/guide/${c}-${n}/`,
+          url: `${origin}/${lang}/guide/${c.slug}-${n}/`,
           lastModified: now,
           priority: 0.8,
           changeFrequency: "weekly",
@@ -135,36 +141,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
         changeFrequency: "monthly",
         alternates: {
-          languages: Object.fromEntries(
+          languages: withXDefault(Object.fromEntries(
             faqTranslatedLangs(f, SUPPORTED_LANGS).map((l) => [l, `${origin}/${l}/faq/${f.slug}/`]),
-          ),
+          )),
         },
       });
     }
 
-    // Korean blog index + each post (Korean-targeted long-tail SEO)
+    // Korean blog index + each post (Korean-targeted long-tail SEO). The
+    // post body is Korean-only regardless of `lang` (no translation
+    // pipeline), so only the /ko/ URL is real — other locales canonicalize
+    // to it and are noindexed (see blog/[slug]/page.tsx generateMetadata).
     out.push({ url: `${origin}/${lang}/blog/`, lastModified: now, priority: 0.75, changeFrequency: "weekly" });
-    for (const post of loadBlogPosts()) {
-      out.push({
-        url: `${origin}/${lang}/blog/${post.slug}/`,
-        lastModified: new Date(post.generated_at),
-        priority: 0.75,
-        changeFrequency: "monthly",
-        alternates: {
-          languages: Object.fromEntries(
-            SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/blog/${post.slug}/`]),
-          ),
-        },
-      });
-    }
+  }
+  for (const post of loadBlogPosts()) {
+    out.push({
+      url: `${origin}/ko/blog/${post.slug}/`,
+      lastModified: new Date(post.generated_at),
+      priority: 0.75,
+      changeFrequency: "monthly",
+    });
   }
 
   // Place pages — large set, lower priority. Use single lang (en) per place
   // to avoid 12K+ entries × 6 langs swamping Google's crawl budget; engines
   // pick up other langs via hreflang on the en page.
   const bundle = loadPlaces();
-  const enrichedAt = (bundle as unknown as { enriched_at?: string }).enriched_at;
-  const lastMod = enrichedAt ? new Date(enrichedAt) : now;
+  // `enriched_at` doesn't exist on the bundle (the real field is
+  // `generated_at`) — every place lastmod was silently falling back to
+  // build time, telling Google "everything changed" on every deploy.
+  const lastMod = bundle.generated_at ? new Date(bundle.generated_at) : now;
   // Only emit substantive pages — thin places are noindexed (see lib/reviews).
   for (const p of bundle.places.filter(isIndexablePlace)) {
     out.push({

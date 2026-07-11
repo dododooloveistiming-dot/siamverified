@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { loadPlaces } from "@/lib/data";
 import { getPlaceSignals } from "@/lib/signals";
-import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Loc } from "@/lib/types";
 
 // /[lang]/trust/ — authoritative methodology page. This is bait for
@@ -50,9 +50,9 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
     description: tr.desc,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/trust/`]),
-      ),
+      )),
     },
     openGraph: { title: tr.title, description: tr.desc, url, type: "article" },
   };

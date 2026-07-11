@@ -1,9 +1,57 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
-import type { PlacesBundle, Place, Niche, CommunityBundle } from "./types";
+import type { PlacesBundle, Place, PlaceCard, MapMarker, Niche, CommunityBundle } from "./types";
 import { getPlaceSignals, computeTrustBoost } from "./signals";
 import { isThaiRelevantText } from "@/lib/mentions";
+import { isTinyGooglePhoto } from "@/lib/googlePhoto";
+
+// Project a full Place down to the fields card/grid UI actually renders —
+// see PlaceCard in lib/types.ts for why.
+export function toPlaceCard(p: Place): PlaceCard {
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    niche: p.niche,
+    city: p.city,
+    category: p.category,
+    rating: p.rating,
+    review_count: p.review_count,
+    top_photo_url: p.top_photo_url,
+    top_review_text: p.top_review_text,
+    trust_score: p.trust_score,
+    is_beginner_friendly: p.is_beginner_friendly,
+    is_established: p.is_established,
+    is_open_24h: p.is_open_24h,
+    is_partner: p.is_partner,
+    is_suspected_viral: p.is_suspected_viral,
+    is_very_active: p.is_very_active,
+    is_veteran: p.is_veteran,
+    is_active_recently: p.is_active_recently,
+    founding_year: p.founding_year,
+    kr_mentions: p.kr_mentions,
+    languages: p.languages,
+    price_band: p.price_band,
+    price_min_thb: p.price_min_thb,
+    price_max_thb: p.price_max_thb,
+  };
+}
+
+export function toMapMarker(p: Place): MapMarker {
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    city: p.city,
+    lat: p.lat,
+    lng: p.lng,
+    rating: p.rating,
+    trust_score: p.trust_score,
+    price_min_thb: p.price_min_thb,
+    price_max_thb: p.price_max_thb,
+  };
+}
 
 let cache: PlacesBundle | null = null;
 const byNicheCache = new Map<Niche, Place[]>();
@@ -87,12 +135,22 @@ export function loadPlaces(): PlacesBundle {
     // Re-derive city from address before doing anything else — boost,
     // signal flags, city-scoped pages all depend on the corrected value.
     place.city = deriveCity(place.address, place.city);
+    // 32×32 avatar/icon crops slip into photos_sample from the scrape —
+    // never usable as a hero or card image. Drop them before any other
+    // photo logic picks one.
+    if (place.photos_sample?.length) {
+      place.photos_sample = place.photos_sample.filter((u) => !isTinyGooglePhoto(u));
+    }
     // Google's `/gps-cs-s/` photo CDN URLs are session tokens that expire
     // within weeks; the older `/p/` format is a stable, non-expiring URL.
     // Prefer a stable sample photo for the card thumbnail when one exists.
     if (place.top_photo_url && place.top_photo_url.includes("/gps-cs-s/")) {
       const stable = (place.photos_sample || []).find((u) => u.includes("/p/"));
       if (stable) place.top_photo_url = stable;
+    }
+    if (place.top_photo_url && isTinyGooglePhoto(place.top_photo_url)) {
+      const better = (place.photos_sample || []).find((u) => !isTinyGooglePhoto(u));
+      place.top_photo_url = better || "";
     }
     const signals = getPlaceSignals(place.id);
     const boost = computeTrustBoost(signals);
@@ -120,8 +178,22 @@ export function getPlacesByNiche(niche: Niche): Place[] {
   return places;
 }
 
+// Next.js delivers route params percent-encoded when the segment contains
+// non-ASCII characters (many slugs embed the Thai business name), so a raw
+// `===` comparison against the stored (decoded) slug silently misses ~20%
+// of places. Decode defensively — already-decoded ASCII slugs round-trip
+// unchanged, and a malformed sequence just falls back to the raw string.
+export function decodeSlugParam(slug: string): string {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
 export function getPlaceBySlug(slug: string): Place | undefined {
-  return loadPlaces().places.find((p) => p.slug === slug);
+  const decoded = decodeSlugParam(slug);
+  return loadPlaces().places.find((p) => p.slug === decoded);
 }
 
 export type OwnerProfile = {
@@ -291,21 +363,6 @@ export type PerPlaceCafeHit = {
   post_snippet?: string;
   post_date?: string;
 };
-export type KlookProduct = {
-  title: string;
-  price_thb: number | null;
-  currency: string;
-  photo_url: string;
-  rating: number | null;
-  review_count: number | null;
-  product_url: string;
-  position: number;
-};
-export type KlookPlace = {
-  search_url: string;
-  products: KlookProduct[];
-  scraped_at: string;
-};
 
 export function getPlaceMentions(placeId: string): {
   naver: PerPlaceNaverHit[];
@@ -391,23 +448,6 @@ export function loadBlogPosts(): BlogPost[] {
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
   return loadBlogPosts().find((p) => p.slug === slug);
-}
-
-let klookCache: Record<string, KlookPlace> | null = null;
-export function getPlaceKlook(placeId: string): KlookPlace | null {
-  if (klookCache === null) {
-    const p = path.join(process.cwd(), "public", "data", "per_place_klook.json");
-    if (!fs.existsSync(p)) {
-      klookCache = {};
-    } else {
-      try {
-        klookCache = JSON.parse(fs.readFileSync(p, "utf-8"));
-      } catch {
-        klookCache = {};
-      }
-    }
-  }
-  return klookCache![placeId] ?? null;
 }
 
 const communityCache = new Map<Niche, CommunityBundle | null>();

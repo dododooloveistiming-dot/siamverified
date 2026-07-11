@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, t, tf } from "@/lib/i18n";
+import { loadPlaces, getPlacesByNiche, toMapMarker } from "@/lib/data";
+import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { CITIES, getCityBySlug, placesInCity, countNichesInCity } from "@/lib/cities";
@@ -42,9 +42,9 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/city/${city.slug}/`]),
-      ),
+      )),
     },
     openGraph: { title, description, url, type: "article" },
   };
@@ -247,7 +247,7 @@ export default function CityHubPage({
                 <h2 className="text-2xl font-bold tracking-tight">{tf("city_map_title", lang, { city: city.label })}</h2>
                 <span className="text-xs muted">{tf("city_map_count", lang, { n: mapped.length })}</span>
               </div>
-              <PlaceMap places={mapped.slice(0, 200)} lang={lang} height={500} />
+              <PlaceMap places={mapped.slice(0, 200).map(toMapMarker)} lang={lang} height={500} />
             </section>
           );
         })()}

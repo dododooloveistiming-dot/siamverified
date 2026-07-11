@@ -1,0 +1,8 @@
+# ads.txt — https://iabtechlab.com/ads-txt/
+#
+# Placeholder until this site has an approved AdSense account. Once
+# approved, replace PUB-ID-PLACEHOLDER with the real publisher ID from the
+# AdSense dashboard (Sites > verifiedthai.com > Get code), e.g.:
+#   google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0
+#
+# google.com, pub-PUB-ID-PLACEHOLDER, DIRECT, f08c47fec0942fa0

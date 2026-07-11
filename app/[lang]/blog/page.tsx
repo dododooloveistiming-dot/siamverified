@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadBlogPosts, getPlaceBySlug } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, withXDefault } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 import type { Niche } from "@/lib/types";
@@ -24,9 +24,9 @@ export async function generateMetadata({
       "태국 여행자를 위한 무에타이 / 요가 / 다이빙 / 스파 추천 가이드. 데이터 기반, 광고비 없음.",
     alternates: {
       canonical: `${SITE.origin}/${params.lang}/blog/`,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/blog/`]),
-      ),
+      )),
     },
   };
 }

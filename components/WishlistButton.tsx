@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import type { Place } from "@/lib/types";
+import type { PlaceCard } from "@/lib/types";
 
 const KEY = "verifiedthai.wishlist";
 
@@ -39,7 +39,7 @@ function saveWishlist(items: WishlistItem[]) {
   window.dispatchEvent(new CustomEvent("wishlist-changed"));
 }
 
-function placeToItem(p: Place): WishlistItem {
+function placeToItem(p: PlaceCard): WishlistItem {
   return {
     id: p.id,
     slug: p.slug,
@@ -55,7 +55,7 @@ function placeToItem(p: Place): WishlistItem {
   };
 }
 
-export default function WishlistButton({ place }: { place: Place }) {
+export default function WishlistButton({ place }: { place: PlaceCard }) {
   const [starred, setStarred] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 

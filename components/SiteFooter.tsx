@@ -63,17 +63,17 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
             <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Guides</div>
             <ul className="space-y-1">
               <li><a href={`/${lang}/guide/bangkok-yoga-pilates/`} className="hover:underline">Bangkok yoga</a></li>
-              <li><a href={`/${lang}/guide/phuket-diving/`} className="hover:underline">Phuket diving</a></li>
-              <li><a href={`/${lang}/guide/chiang-mai-coworking/`} className="hover:underline">Chiang Mai coworking</a></li>
+              <li><a href={`/${lang}/guide/phuket-spa/`} className="hover:underline">Phuket spa</a></li>
+              <li><a href={`/${lang}/guide/chiang-mai-muay-thai/`} className="hover:underline">Chiang Mai Muay Thai</a></li>
               <li><a href={`/${lang}/guide/bangkok-spa/`} className="hover:underline">Bangkok spa</a></li>
-              <li><a href={`/${lang}/guide/phuket-muay-thai/`} className="hover:underline">Phuket Muay Thai</a></li>
+              <li><a href={`/${lang}/guide/bangkok-coworking/`} className="hover:underline">Bangkok coworking</a></li>
             </ul>
           </div>
           <div>
             <div className="mb-2 font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Compare</div>
             <ul className="space-y-1">
               <li><a href={`/${lang}/compare/bangkok-vs-chiang-mai/`} className="hover:underline">Bangkok vs Chiang Mai</a></li>
-              <li><a href={`/${lang}/compare/phuket-vs-koh-tao/`} className="hover:underline">Phuket vs Koh Tao</a></li>
+              <li><a href={`/${lang}/compare/phuket-vs-koh-samui/`} className="hover:underline">Phuket vs Koh Samui</a></li>
               <li><a href={`/${lang}/compare/bangkok-vs-phuket/`} className="hover:underline">Bangkok vs Phuket</a></li>
             </ul>
           </div>
@@ -102,7 +102,10 @@ export default function SiteFooter({ lang }: { lang: Lang }) {
             {t("footer_blurb", lang)}
           </p>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
-            <div>© {new Date().getFullYear()} {SITE.name}</div>
+            <div className="flex items-center gap-3">
+              <span>© {new Date().getFullYear()} {SITE.name}</span>
+              <a href="/privacy/" className="hover:underline">Privacy Policy</a>
+            </div>
             <div>Sources: {TRUST_SOURCES.join(" · ")}</div>
           </div>
         </div>

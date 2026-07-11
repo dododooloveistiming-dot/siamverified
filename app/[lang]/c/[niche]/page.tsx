@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadPlaces, getPlacesByNiche, loadCommunity } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, T, t } from "@/lib/i18n";
+import { loadPlaces, getPlacesByNiche, loadCommunity, toPlaceCard } from "@/lib/data";
+import { SITE, SUPPORTED_LANGS, T, t, withXDefault } from "@/lib/i18n";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: { lang: Lang; niche
     description,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/c/${niche}/`])),
+      languages: withXDefault(Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/c/${niche}/`]))),
     },
     openGraph: {
       title,
@@ -50,7 +50,11 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
   const { lang, niche } = params;
   if (!NICHES.includes(niche)) notFound();
 
-  const places = getPlacesByNiche(niche);
+  // CategoryDiscovery/CategoryClient are large card grids ("use client" for
+  // the latter) — pass the slim PlaceCard projection, not full Place[]
+  // (reviews_sample/photos_sample/etc bloated the RSC payload; spa alone
+  // was 4.5MB+ for ~2,000 places).
+  const places = getPlacesByNiche(niche).map(toPlaceCard);
   const community = loadCommunity(niche);
   const meta = NICHE_META[niche];
 
@@ -112,7 +116,16 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
       {/* HERO — niche page hero with photo */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
-          <SafeImg src={heroPlace?.top_photo_url} alt={nicheName(niche, lang)} niche={niche} size="xl" className="h-full w-full object-cover" />
+          <SafeImg
+            src={heroPlace?.top_photo_url}
+            alt={nicheName(niche, lang)}
+            niche={niche}
+            size="xl"
+            className="h-full w-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/15" />
         </div>
 

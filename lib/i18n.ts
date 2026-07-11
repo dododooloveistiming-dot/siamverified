@@ -91,6 +91,7 @@ export const T = {
   browse_categories: { en: "Browse categories", ko: "카테고리 둘러보기", th: "เรียกดูหมวดหมู่", zh: "浏览分类", ja: "カテゴリーを見る", ar: "تصفح الفئات" },
   see_all: { en: "See all", ko: "전체 보기", th: "ดูทั้งหมด", zh: "查看全部", ja: "すべて見る", ar: "عرض الكل" },
   places_count: { en: "places", ko: "곳", th: "แห่ง", zh: "处", ja: "件", ar: "أماكن" },
+  load_more: { en: "Load more", ko: "더 보기", th: "โหลดเพิ่ม", zh: "加载更多", ja: "もっと見る", ar: "تحميل المزيد" },
 
   // directory
   trust_score: { en: "Trust Score", ko: "신뢰 점수", th: "คะแนนความน่าเชื่อถือ", zh: "信任分数", ja: "信頼スコア", ar: "درجة الثقة" },
@@ -134,15 +135,7 @@ export const T = {
   price_range: { en: "Price range", ko: "가격대", th: "ช่วงราคา", zh: "价格范围", ja: "価格帯", ar: "نطاق السعر" },
 
   // CTAs
-  cta_book_klook: { en: "Book on Klook", ko: "Klook 예약", th: "จองบน Klook", zh: "Klook 预订", ja: "Klookで予約", ar: "احجز عبر Klook" },
-  cta_book_viator: { en: "Book on Viator", ko: "Viator 예약", th: "จองบน Viator", zh: "Viator 预订", ja: "Viatorで予約", ar: "احجز عبر Viator" },
-  cta_book_gyg: { en: "Book on GetYourGuide", ko: "GetYourGuide 예약", th: "จองบน GetYourGuide", zh: "GetYourGuide 预订", ja: "GetYourGuideで予約", ar: "احجز عبر GetYourGuide" },
-  cta_book_agoda: { en: "Find on Agoda", ko: "Agoda 검색", th: "หาบน Agoda", zh: "Agoda 查找", ja: "Agodaで探す", ar: "ابحث على Agoda" },
   cta_view_map: { en: "View on Google Maps", ko: "구글 맵에서 보기", th: "ดูบน Google Maps", zh: "Google 地图查看", ja: "Google マップで見る", ar: "عرض على خرائط جوجل" },
-
-  cta_get_quote: { en: "Get Free Quote", ko: "무료 견적 받기", th: "ขอใบเสนอราคาฟรี", zh: "获取免费报价", ja: "無料見積もり", ar: "احصل على عرض سعر مجاني", id: "Dapatkan Penawaran Gratis", vi: "Nhận Báo Giá Miễn Phí" },
-  cta_see_details: { en: "↑ See details above", ko: "↑ 위에서 상세 보기", th: "↑ ดูรายละเอียดด้านบน", zh: "↑ 查看上方详情", ja: "↑ 上記の詳細を見る", ar: "↑ انظر التفاصيل أعلاه", id: "↑ Lihat detail di atas", vi: "↑ Xem chi tiết ở trên" },
-  cta_call: { en: "Call", ko: "전화", th: "โทร", zh: "拨打电话", ja: "電話", ar: "اتصل", id: "Telepon", vi: "Gọi" },
 
   // sources (badges)
   source_google: { en: "Google", ko: "구글", th: "Google", zh: "Google", ja: "Google", ar: "جوجل" },
@@ -196,14 +189,6 @@ export const T = {
 
   // place detail
   book_or_inquire: { en: "Book / Inquire", ko: "예약 / 문의", th: "จอง / สอบถาม", zh: "预订 / 咨询", ja: "予約 / お問い合わせ", ar: "احجز / استفسر" },
-  affiliate_disclaimer: {
-    en: "Affiliate links — we may earn a commission. Trust Score is computed before any commercial relationship.",
-    ko: "제휴 링크 — 수수료를 받을 수 있습니다. 신뢰 점수는 상업 관계와 무관하게 산정됩니다.",
-    th: "ลิงก์พาร์ทเนอร์ — เราอาจได้รับค่าคอมมิชชั่น คะแนนคำนวณก่อนความสัมพันธ์ทางการค้า",
-    zh: "联盟链接 — 我们可能赚取佣金。信任分数在任何商业关系之前计算。",
-    ja: "アフィリエイトリンク — 手数料を得る場合があります。信頼スコアは商業関係の前に計算されます。",
-    ar: "روابط تابعة — قد نحصل على عمولة. درجة الثقة تحسب قبل أي علاقة تجارية.",
-  },
   photos_label: { en: "Photos", ko: "사진", th: "ภาพถ่าย", zh: "照片", ja: "写真", ar: "صور" },
   community_discussions: {
     en: "Community discussions",
@@ -264,18 +249,17 @@ export const T = {
     ja: "独立した情報が限定的：少ないレビューでの高評価です。他の情報源ではまだ裏付けが取れていません — ご自身での確認をおすすめします。",
     ar: "إشارة مستقلة محدودة: تقييم عالٍ من عدد قليل من المراجعات. لم نتمكن بعد من تأكيده عبر مصادرنا الأخرى — ننصح بالتحقق بنفسك.",
   },
-  bookable_label: { en: "Bookable", ko: "예약 가능", th: "จองได้", zh: "可预订", ja: "予約可", ar: "متاح للحجز" },
   threads_scanned: { en: "threads scanned", ko: "스레드 스캔됨", th: "เธรดที่สแกน", zh: "条讨论已扫描", ja: "スレッドをスキャン", ar: "موضوع تم مسحه" },
   matches_of: { en: "matches of", ko: "/", th: "จาก", zh: "/", ja: "/", ar: "من" },
 
   // footer
   footer_blurb: {
-    en: "Verified Thai is an independent directory. Affiliate commissions from booking partners support the site but never influence Trust Scores.",
-    ko: "Verified Thai는 독립 디렉토리입니다. 예약 파트너로부터 수수료를 받지만 신뢰 점수에 영향을 주지 않습니다.",
-    th: "Verified Thai เป็นไดเรกทอรีอิสระ ค่าคอมมิชชั่นจากพาร์ทเนอร์ไม่ส่งผลต่อคะแนน",
-    zh: "Verified Thai 是独立目录。来自预订合作伙伴的佣金支持网站运营，但不影响信任分数。",
-    ja: "Verified Thaiは独立したディレクトリです。提携先からの手数料はサイト運営を支えますが、信頼スコアには影響しません。",
-    ar: "Verified Thai دليل مستقل. عمولات الشركاء تدعم الموقع لكنها لا تؤثر على درجات الثقة.",
+    en: "Verified Thai is an independent directory. No paid placements or affiliate deals influence Trust Scores or rankings.",
+    ko: "Verified Thai는 독립 디렉토리입니다. 유료 광고나 제휴 계약이 신뢰 점수나 순위에 영향을 주지 않습니다.",
+    th: "Verified Thai เป็นไดเรกทอรีอิสระ ไม่มีการจ่ายเงินหรือข้อตกลงพาร์ทเนอร์ใดส่งผลต่อคะแนนหรือการจัดอันดับ",
+    zh: "Verified Thai 是独立目录。任何付费投放或联盟合作都不会影响信任分数或排名。",
+    ja: "Verified Thaiは独立したディレクトリです。有料掲載や提携契約が信頼スコアや順位に影響することはありません。",
+    ar: "Verified Thai دليل مستقل. لا تؤثر أي إعلانات مدفوعة أو اتفاقيات شراكة على درجات الثقة أو الترتيب.",
   },
   // place-detail highlights ("이 곳 한눈에")
   hl_title: { en: "At a glance", ko: "이 곳 한눈에", th: "ภาพรวม", zh: "一览", ja: "ひと目で", ar: "لمحة سريعة" },
@@ -286,9 +270,7 @@ export const T = {
   hl_price_from: { en: "from ฿{n}", ko: "฿{n}~", th: "เริ่ม ฿{n}", zh: "฿{n}起", ja: "฿{n}〜", ar: "من ฿{n}" },
   hl_price_on_inquiry: { en: "Price on inquiry", ko: "가격: 문의 시 안내", th: "ราคาสอบถาม", zh: "价格请咨询", ja: "価格はお問い合わせ", ar: "السعر عند الطلب" },
   // place-detail smart CTA
-  cta_check_booking: { en: "Check availability & price", ko: "예약·가격 확인", th: "เช็คคิวและราคา", zh: "查看可订与价格", ja: "空き状況・料金を確認", ar: "تحقق من التوفر والسعر" },
   cta_inquiry_main: { en: "Send inquiry · reply within 24h", ko: "지금 문의 · 보통 24시간 내 답변", th: "ส่งคำถาม · ตอบใน 24 ชม.", zh: "立即咨询 · 24小时内回复", ja: "問い合わせ · 24時間以内に返信", ar: "أرسل استفسارًا · رد خلال 24 ساعة" },
-  cta_inquiry_short: { en: "Inquire", ko: "문의하기", th: "สอบถาม", zh: "咨询", ja: "問い合わせ", ar: "استفسر" },
   social_more: { en: "More reviews & mentions", ko: "더 많은 후기·언급 보기", th: "ดูรีวิว/การกล่าวถึงเพิ่มเติม", zh: "更多评价与提及", ja: "他のレビュー・言及を見る", ar: "المزيد من التقييمات والإشارات" },
   recently_viewed: { en: "Recently viewed", ko: "최근 본 곳", th: "ดูล่าสุด", zh: "最近浏览", ja: "最近見た場所", ar: "شوهدت مؤخرًا", id: "Baru dilihat", vi: "Đã xem gần đây" },
   pl_explore_more: { en: "Explore more", ko: "더 둘러보기", th: "สำรวจเพิ่มเติม", zh: "探索更多", ja: "もっと見る", ar: "استكشف المزيد", id: "Jelajahi lebih banyak", vi: "Khám phá thêm" },
@@ -307,12 +289,15 @@ export const T = {
   pf_loc_maps: { en: " Open in Google Maps: {url}", ko: " 구글 지도에서 열기: {url}", th: " เปิดใน Google Maps: {url}", zh: " 在 Google 地图中打开：{url}", ja: " Google マップで開く: {url}", ar: " افتح في خرائط جوجل: {url}" },
   pf_book_q: { en: "How do I book or contact {name}?", ko: "{name} 예약·문의는 어떻게 하나요?", th: "จองหรือติดต่อ {name} อย่างไร?", zh: "如何预订或联系 {name}？", ja: "{name}の予約・問い合わせ方法は？", ar: "كيف أحجز أو أتواصل مع {name}؟" },
   pf_book_a: { en: "Use the inquiry form on this page — it goes directly to {name} with 0% commission.", ko: "이 페이지의 문의 양식을 이용하세요 — {name}에 수수료 0%로 바로 전달됩니다.", th: "ใช้แบบฟอร์มสอบถามในหน้านี้ — ส่งตรงถึง {name} โดยไม่มีค่าคอมมิชชั่น", zh: "使用本页的咨询表单 — 0% 佣金直达 {name}。", ja: "このページの問い合わせフォームをご利用ください — 手数料0%で{name}に直接届きます。", ar: "استخدم نموذج الاستفسار في هذه الصفحة — يصل مباشرة إلى {name} بعمولة 0%." },
-  pf_book_klook: { en: " You can also book through Klook for instant confirmation.", ko: " Klook을 통해 즉시 확정 예약도 가능합니다.", th: " หรือจองผ่าน Klook เพื่อยืนยันทันที", zh: " 也可通过 Klook 即时确认预订。", ja: " Klookからの即時確定予約も可能です。", ar: " يمكنك أيضًا الحجز عبر Klook لتأكيد فوري." },
   pf_book_phone: { en: " Or call {phone}.", ko: " 또는 {phone}로 전화하세요.", th: " หรือโทร {phone}", zh: " 或致电 {phone}。", ja: " または{phone}にお電話ください。", ar: " أو اتصل على {phone}." },
   pf_lang_q: { en: "What languages do they speak?", ko: "어떤 언어로 소통이 되나요?", th: "พูดภาษาอะไรได้บ้าง?", zh: "他们会说哪些语言？", ja: "対応言語は？", ar: "ما اللغات التي يتحدثونها؟" },
   pf_lang_a: { en: "Based on our research, {name} serves customers in {langs}.", ko: "조사에 따르면 {name}은(는) {langs}(으)로 응대합니다.", th: "จากข้อมูลของเรา {name} ให้บริการลูกค้าเป็นภาษา {langs}", zh: "根据我们的调研，{name} 可用 {langs} 接待顾客。", ja: "当社の調査では、{name}は{langs}で対応しています。", ar: "بناءً على بحثنا، يخدم {name} العملاء بـ {langs}." },
   pf_cost_q: { en: "How much does it cost?", ko: "비용은 얼마인가요?", th: "ราคาเท่าไหร่?", zh: "费用是多少？", ja: "料金はいくらですか？", ar: "كم التكلفة؟" },
   pf_cost_a: { en: "Typical price is {price} per {unit}. Prices may vary by season and service — confirm with the venue.", ko: "일반적인 가격은 {unit}당 {price}입니다. 시즌·서비스에 따라 달라질 수 있으니 업체에 확인하세요.", th: "ราคาทั่วไปอยู่ที่ {price} ต่อ {unit} ราคาอาจเปลี่ยนตามฤดูกาลและบริการ — โปรดยืนยันกับสถานที่", zh: "通常价格为每 {unit} {price}。价格可能因季节和服务而异 — 请向商家确认。", ja: "一般的な料金は{unit}あたり{price}です。季節やサービスにより変動する場合があります — 店舗にご確認ください。", ar: "السعر المعتاد هو {price} لكل {unit}. قد تختلف الأسعار حسب الموسم والخدمة — تأكد من المكان." },
+  // Used when price_unit is "unknown" (94 of ~99 priced places in the
+  // dataset) — same sentence with the "per {unit}" clause dropped instead
+  // of literally rendering "per unknown".
+  pf_cost_a_nounit: { en: "Typical price is {price}. Prices may vary by season and service — confirm with the venue.", ko: "일반적인 가격은 {price}입니다. 시즌·서비스에 따라 달라질 수 있으니 업체에 확인하세요.", th: "ราคาทั่วไปอยู่ที่ {price} ราคาอาจเปลี่ยนตามฤดูกาลและบริการ — โปรดยืนยันกับสถานที่", zh: "通常价格为 {price}。价格可能因季节和服务而异 — 请向商家确认。", ja: "一般的な料金は{price}です。季節やサービスにより変動する場合があります — 店舗にご確認ください。", ar: "السعر المعتاد هو {price}. قد تختلف الأسعار حسب الموسم والخدمة — تأكد من المكان." },
   pf_pop_q: { en: "Is {name} popular / well-reviewed?", ko: "{name}은(는) 평이 좋은가요?", th: "{name} เป็นที่นิยม/รีวิวดีไหม?", zh: "{name} 受欢迎 / 评价好吗？", ja: "{name}は人気・高評価ですか？", ar: "هل {name} مشهور / حسن التقييم؟" },
   pf_pop_a: { en: "{name} has {count} Google reviews with an average rating of ★ {rating}/5.", ko: "{name}은(는) 구글 리뷰 {count}개, 평균 별점 ★ {rating}/5입니다.", th: "{name} มีรีวิว Google {count} รายการ คะแนนเฉลี่ย ★ {rating}/5", zh: "{name} 有 {count} 条 Google 评论，平均评分 ★ {rating}/5。", ja: "{name}はGoogleレビュー{count}件、平均評価★{rating}/5です。", ar: "لدى {name} {count} مراجعة على Google بمتوسط تقييم ★ {rating}/5." },
   pf_pop_partner: { en: " It's a verified partner on our platform.", ko: " 저희 플랫폼의 인증 파트너입니다.", th: " เป็นพาร์ทเนอร์ที่ยืนยันแล้วบนแพลตฟอร์มของเรา", zh: " 是我们平台的认证合作伙伴。", ja: " 当プラットフォームの認証パートナーです。", ar: " إنه شريك موثّق على منصتنا." },
@@ -346,14 +331,12 @@ export const T = {
   book_direct_sub: { en: "No commission · No booking platform markup · Pay at the venue", ko: "수수료 없음 · 예약 플랫폼 마크업 없음 · 현장 결제", th: "ไม่มีค่าคอมมิชชั่น · ไม่มีส่วนต่างแพลตฟอร์ม · จ่ายที่ร้าน", zh: "无佣金 · 无平台加价 · 到店付款", ja: "手数料なし · プラットフォーム上乗せなし · 現地払い", ar: "بدون عمولة · بدون رسوم المنصة · ادفع في المكان" },
   fee_0: { en: "0% fee", ko: "수수료 0%", th: "ค่าธรรมเนียม 0%", zh: "0% 费用", ja: "手数料0%", ar: "رسوم 0%" },
   reply_in: { en: "Replies in ~{t}", ko: "~{t} 내 답변", th: "ตอบใน ~{t}", zh: "约 {t} 内回复", ja: "~{t}で返信", ar: "يرد خلال ~{t}" },
-  or_book_klook: { en: "Or book via Klook", ko: "또는 Klook으로 예약", th: "หรือจองผ่าน Klook", zh: "或通过 Klook 预订", ja: "またはKlookで予約", ar: "أو احجز عبر Klook" },
   services_pricing: { en: "Services & pricing", ko: "서비스 & 가격", th: "บริการและราคา", zh: "服务与价格", ja: "サービスと料金", ar: "الخدمات والأسعار" },
   msg_directly: { en: "Message {name} directly", ko: "{name}에 직접 메시지", th: "ส่งข้อความถึง {name} โดยตรง", zh: "直接给 {name} 发消息", ja: "{name}に直接メッセージ", ar: "راسل {name} مباشرة" },
   line_scan_title: { en: "Scan to chat on LINE", ko: "스캔하여 LINE으로 대화", th: "สแกนเพื่อแชทบน LINE", zh: "扫码在 LINE 上聊天", ja: "スキャンしてLINEでチャット", ar: "امسح للدردشة على LINE" },
   line_scan_sub: { en: "Open LINE camera → scan this QR → book directly", ko: "LINE 카메라 열기 → QR 스캔 → 바로 예약", th: "เปิดกล้อง LINE → สแกน QR นี้ → จองโดยตรง", zh: "打开 LINE 相机 → 扫描此二维码 → 直接预订", ja: "LINEカメラを開く → このQRをスキャン → 直接予約", ar: "افتح كاميرا LINE ← امسح رمز QR ← احجز مباشرة" },
   send_inquiry_title: { en: "Send inquiry directly", ko: "직접 문의 보내기", th: "ส่งคำถามโดยตรง", zh: "直接发送咨询", ja: "直接問い合わせを送信", ar: "أرسل استفسارًا مباشرة" },
   inquiry_goes_to: { en: "Goes straight to {name}. No booking platform markup.", ko: "{name}에 바로 전달됩니다. 예약 플랫폼 마크업 없음.", th: "ส่งตรงถึง {name} ไม่มีส่วนต่างแพลตฟอร์ม", zh: "直达 {name}。无平台加价。", ja: "{name}に直接届きます。プラットフォーム上乗せなし。", ar: "يصل مباشرة إلى {name}. بدون رسوم المنصة." },
-  or_book_partner: { en: "Or book through a partner platform", ko: "또는 파트너 플랫폼으로 예약", th: "หรือจองผ่านแพลตฟอร์มพาร์ทเนอร์", zh: "或通过合作平台预订", ja: "またはパートナープラットフォームで予約", ar: "أو احجز عبر منصة شريكة" },
   own_q: { en: "Own {name}?", ko: "{name} 사장님이신가요?", th: "เป็นเจ้าของ {name}?", zh: "您是 {name} 的店主吗？", ja: "{name}のオーナーですか？", ar: "هل تملك {name}؟" },
   claim_blurb: { en: "Claim this listing to manage hours, descriptions, photos, and reach more customers.", ko: "이 리스팅을 인증하고 운영시간·설명·사진을 관리하며 더 많은 고객에게 도달하세요.", th: "ยืนยันรายการนี้เพื่อจัดการเวลาทำการ คำอธิบาย รูปภาพ และเข้าถึงลูกค้ามากขึ้น", zh: "认领此商家以管理营业时间、简介、照片并触达更多顾客。", ja: "このリスティングを申請して営業時間・説明・写真を管理し、より多くの顧客にリーチしましょう。", ar: "طالب بهذا الإدراج لإدارة المواعيد والوصف والصور والوصول إلى المزيد من العملاء." },
   claim_cta: { en: "Claim this listing →", ko: "이 리스팅 인증하기 →", th: "ยืนยันรายการนี้ →", zh: "认领此商家 →", ja: "このリスティングを申請 →", ar: "طالب بهذا الإدراج ←" },
@@ -635,4 +618,14 @@ export function tf<K extends keyof typeof T>(
   let s = t(key, lang);
   for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, String(v));
   return s;
+}
+
+// Every `alternates.languages` map across the site was missing "x-default"
+// — without it, a search engine showing results to a user whose browser
+// locale doesn't match any of our hreflang entries has no designated
+// fallback URL. Wrap the per-locale URL map to add it, pointing at the
+// English URL (our actual default locale).
+export function withXDefault(languages: Record<string, string>): Record<string, string> {
+  const en = languages.en;
+  return en ? { ...languages, "x-default": en } : languages;
 }

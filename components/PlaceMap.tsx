@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import type { Place } from "@/lib/types";
+import type { MapMarker } from "@/lib/types";
 import "leaflet/dist/leaflet.css";
 
 // react-leaflet uses window — must lazy-load with ssr:false.
@@ -12,7 +12,7 @@ const Marker       = dynamic(() => import("react-leaflet").then((m) => m.Marker)
 const Popup        = dynamic(() => import("react-leaflet").then((m) => m.Popup),        { ssr: false });
 
 type Props = {
-  places: Place[];        // pre-filtered list — caller decides scope
+  places: MapMarker[];    // pre-filtered list — caller decides scope
   lang: string;
   height?: number;        // px, default 480
 };
@@ -20,10 +20,32 @@ type Props = {
 export default function PlaceMap({ places, lang, height = 480 }: Props) {
   const [icon, setIcon] = useState<unknown>(null);
   const [loaded, setLoaded] = useState(false);
+  // Every city/best page loaded Leaflet's JS + tile requests immediately on
+  // mount even though the map sits below the fold — defer until it's
+  // actually about to scroll into view.
+  const [inView, setInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "400px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Default Leaflet markers point to a missing image asset under bundlers
   // — replace with a tiny SVG-data URI so we don't ship asset files.
   useEffect(() => {
+    if (!inView) return;
     let cancelled = false;
     (async () => {
       const L = (await import("leaflet")).default;
@@ -37,7 +59,7 @@ export default function PlaceMap({ places, lang, height = 480 }: Props) {
       if (!cancelled) { setIcon(ic); setLoaded(true); }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [inView]);
 
   const mapped = places.filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lng));
   if (mapped.length === 0) {
@@ -58,10 +80,11 @@ export default function PlaceMap({ places, lang, height = 480 }: Props) {
   if (!loaded || !icon) {
     return (
       <div
+        ref={containerRef}
         className="grid place-items-center rounded-2xl bg-ink-50 text-xs muted dark:bg-ink-900"
         style={{ height }}
       >
-        Loading map…
+        {inView ? "Loading map…" : null}
       </div>
     );
   }

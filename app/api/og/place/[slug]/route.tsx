@@ -2,13 +2,17 @@ import { ImageResponse } from "next/og";
 import { getPlaceBySlug } from "@/lib/data";
 import type { Niche } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
+import { resizeGooglePhoto } from "@/lib/googlePhoto";
 
 // Runtime-generated, CDN-cached forever. 25K possible variants is too much
 // to pre-bake at build (worker OOM), so we go on-demand: first share
 // triggers gen (~1-2s), subsequent shares hit Vercel edge cache (instant).
 export const runtime = "nodejs";          // loadPlaces uses fs, can't use edge
 export const dynamic = "force-static";    // generate on first request, then cached
-export const revalidate = 31536000;       // 1 year — venue data drifts slowly
+// 90 days, not 1 year — a card generated with a since-expired /gps-cs-s/
+// Google photo URL was getting cached broken for a full year (see the
+// heroPhoto filter below for the actual fix; this is a defensive backstop).
+export const revalidate = 60 * 60 * 24 * 90;
 
 const SIZE = { width: 1200, height: 630 } as const;
 
@@ -21,7 +25,13 @@ export async function GET(
     return new ImageResponse(<div style={{ display: "flex" }}>Not found</div>, SIZE);
   }
   const meta = NICHE_META[place.niche as Niche];
-  const heroPhoto = place.top_photo_url || (place.photos_sample && place.photos_sample[0]) || "";
+  // Google's `/gps-cs-s/` photo URLs are session tokens that expire within
+  // weeks (see lib/data.ts) — loadPlaces() already swaps top_photo_url for a
+  // stable `/p/` alternative when one exists, but ~366 places have none. For
+  // those, skip the photo entirely rather than risk baking a since-expired
+  // URL into a card that's then cached for 90 days.
+  const rawHeroPhoto = place.top_photo_url || (place.photos_sample && place.photos_sample[0]) || "";
+  const heroPhoto = rawHeroPhoto.includes("/gps-cs-s/") ? "" : resizeGooglePhoto(rawHeroPhoto, 1200);
 
   return new ImageResponse(
     (

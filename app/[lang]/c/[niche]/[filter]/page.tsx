@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, withXDefault } from "@/lib/i18n";
 import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
@@ -187,9 +187,9 @@ export async function generateMetadata({
     description: md(nName),
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(
+      languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/c/${niche}/${filter}/`]),
-      ),
+      )),
     },
     openGraph: {
       title: mt(nName),

@@ -28,6 +28,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = getBlogPostBySlug(params.slug);
   if (!post) return {};
+  // The post body is always Korean regardless of the `lang` route segment —
+  // there is no translation pipeline for this corpus. Serving all 8 locale
+  // URLs as full hreflang alternates was 1,368 near-duplicate pages with a
+  // mismatched inLanguage signal. Only /ko/ is the real page; every other
+  // locale canonicalizes to it and is noindexed so it can't rank/duplicate.
+  const koUrl = `${SITE.origin}/ko/blog/${post.slug}/`;
   const url = `${SITE.origin}/${params.lang}/blog/${post.slug}/`;
   const description = post.body_md
     .replace(/[#*>\-`\[\]()]/g, " ")
@@ -37,16 +43,12 @@ export async function generateMetadata({
   return {
     title: `${post.title} | ${SITE.name}`,
     description,
-    alternates: {
-      canonical: url,
-      languages: Object.fromEntries(
-        SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/blog/${post.slug}/`]),
-      ),
-    },
+    alternates: { canonical: koUrl },
+    ...(params.lang !== "ko" ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: post.title,
       description,
-      url,
+      url: params.lang === "ko" ? url : koUrl,
       type: "article",
       locale: "ko_KR",
     },
@@ -86,12 +88,14 @@ export default function BlogPostPage({
       "@type": "LocalBusiness",
       name: p.name,
       address: { "@type": "PostalAddress", addressLocality: p.city, addressCountry: "TH" },
-      ...(p.rating
+      // Never fabricate a review count — an unknown count shouldn't render
+      // a fake "1 review" (see place/[slug]/page.tsx for the same fix).
+      ...(p.rating && p.review_count
         ? {
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: p.rating,
-              reviewCount: p.review_count ?? 1,
+              reviewCount: p.review_count,
             },
           }
         : {}),
@@ -145,7 +149,7 @@ export default function BlogPostPage({
 
         {/* BODY + picks */}
         <article className="mx-auto max-w-3xl px-4">
-          <BlogMarkdown source={post.body_md} />
+          <BlogMarkdown source={post.body_md} lang={params.lang} />
 
           {/* CTA — go to listings */}
           <div className="mt-12 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-5 dark:border-emerald-700 dark:bg-emerald-950/20">

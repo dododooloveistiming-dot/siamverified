@@ -2,11 +2,24 @@
 import { useState } from "react";
 import type { Niche } from "@/lib/types";
 import PlacePlaceholder from "./PlacePlaceholder";
+import { resizeGooglePhoto } from "@/lib/googlePhoto";
 
 // Google's `/gps-cs-s/` photo CDN URLs are session tokens that expire after
 // a few weeks — roughly 40% of scraped listing photos 403 by the time a
 // visitor loads the page. Swap to the niche placeholder instead of leaving
 // a broken-image icon.
+
+// The scrape only ever requested ~203px-wide thumbnails, then the site
+// rendered them at hero/card width — visibly blurry. Map the existing
+// `size` prop to an actual pixel target and rewrite Google's CDN URL to
+// request that size instead of upscaling a tiny image client-side.
+const SIZE_TO_WIDTH: Record<"sm" | "md" | "lg" | "xl", number> = {
+  sm: 240,
+  md: 480,
+  lg: 800,
+  xl: 1200,
+};
+
 export default function SafeImg({
   src,
   alt,
@@ -33,8 +46,9 @@ export default function SafeImg({
   fetchPriority?: "high" | "low" | "auto";
 }) {
   const [broken, setBroken] = useState(false);
+  const resized = resizeGooglePhoto(src, SIZE_TO_WIDTH[size]);
 
-  if (!src || broken) {
+  if (!resized || broken) {
     if (niche) {
       return fallbackClassName ? (
         <div className={fallbackClassName}>
@@ -55,7 +69,7 @@ export default function SafeImg({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={src}
+      src={resized}
       alt={alt}
       className={className}
       loading={loading}

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import type { Lang, Niche, Place } from "@/lib/types";
+import type { Lang, Niche, PlaceCard } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import { cleanReviewText, isThaiText } from "@/lib/reviews";
 
 /**
  * Discovery sections that sit ABOVE the filterable grid on category pages.
@@ -14,7 +15,7 @@ export default function CategoryDiscovery({
   lang,
   niche,
 }: {
-  places: Place[];
+  places: PlaceCard[];
   lang: Lang;
   niche: Niche;
 }) {
@@ -27,7 +28,7 @@ export default function CategoryDiscovery({
     .slice(0, 3);
 
   // --- By city: group, take top cities
-  const cityMap = new Map<string, Place[]>();
+  const cityMap = new Map<string, PlaceCard[]>();
   for (const p of places) {
     if (!p.city) continue;
     if (!cityMap.has(p.city)) cityMap.set(p.city, []);
@@ -51,11 +52,6 @@ export default function CategoryDiscovery({
 
   const koreanFriendly = places
     .filter((p) => p.languages?.ko && !p.is_suspected_viral)
-    .sort((a, b) => b.trust_score - a.trust_score)
-    .slice(0, 10);
-
-  const bookable = places
-    .filter((p) => p.bookable?.klook || p.affiliate?.klook || p.affiliate?.viator)
     .sort((a, b) => b.trust_score - a.trust_score)
     .slice(0, 10);
 
@@ -146,18 +142,6 @@ export default function CategoryDiscovery({
         />
       )}
 
-      {/* BOOKABLE INSTANTLY */}
-      {bookable.length >= 3 && (
-        <ScrollRow
-          kicker="BOOKABLE NOW"
-          title={lang === "ko" ? "⚡ 즉시 예약 가능" : "⚡ Bookable instantly"}
-          subtitle={lang === "ko" ? "Klook / Viator로 바로 예약" : "Reserve via Klook or Viator without contacting the venue"}
-          places={bookable}
-          lang={lang}
-          accent="emerald"
-        />
-      )}
-
       {/* BEGINNER FRIENDLY */}
       {beginner.length >= 4 && (
         <ScrollRow
@@ -199,7 +183,7 @@ function FeaturedCard({
   rank,
   fallbackEmoji,
 }: {
-  p: Place;
+  p: PlaceCard;
   lang: Lang;
   rank: number;
   fallbackEmoji: string;
@@ -241,11 +225,17 @@ function FeaturedCard({
             </span>
           )}
         </div>
-        {p.top_review_text && (
-          <p className="mt-1 line-clamp-3 text-[12px] italic leading-relaxed text-ink-600 dark:text-ink-400">
-            &ldquo;{p.top_review_text}&rdquo;
-          </p>
-        )}
+        {(() => {
+          const body = cleanReviewText(p.top_review_text || "");
+          if (!body) return null;
+          const bodyIsThai = isThaiText(body);
+          return (
+            <p className="mt-1 line-clamp-3 text-[12px] italic leading-relaxed text-ink-600 dark:text-ink-400">
+              {bodyIsThai && lang !== "th" && <span className="not-italic">🇹🇭 </span>}
+              &ldquo;{body}&rdquo;
+            </p>
+          );
+        })()}
       </div>
     </Link>
   );
@@ -262,7 +252,7 @@ function ScrollRow({
   kicker: string;
   title: string;
   subtitle: string;
-  places: Place[];
+  places: PlaceCard[];
   lang: Lang;
   accent: "amber" | "rose" | "emerald" | "sky";
 }) {
@@ -295,12 +285,7 @@ function ScrollRow({
                     className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
-                  {p.bookable?.klook && (
-                    <span className="absolute right-2 top-2 rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-black text-white shadow">
-                      ⚡ Klook
-                    </span>
-                  )}
-                  {p.is_partner && !p.bookable?.klook && (
+                  {p.is_partner && (
                     <span className="absolute right-2 top-2 rounded-full bg-violet-600 px-2 py-0.5 text-[10px] font-black text-white shadow">
                       ★ Partner
                     </span>

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadPlaces, getTopPlacesPerNiche, getTopPlaces, getPlacesByNiche } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, TRUST_SOURCES, t, tf } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, TRUST_SOURCES, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { orderedNiches, isKoreanPopular } from "@/lib/niches";
 import SafeImg from "@/components/SafeImg";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { currentSeason } from "@/lib/seasons";
+import { getCityBySlug } from "@/lib/cities";
 
 export const dynamic = "force-static";
 
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
     description: SITE.tagline[lang],
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/`])),
+      languages: withXDefault(Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/`]))),
     },
     openGraph: {
       title: `${SITE.name}`,
@@ -94,6 +95,10 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
               alt="Thailand"
               fallbackClassName="h-full w-full"
               className="h-full w-full object-cover"
+              size="xl"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           ) : (
             <div className="h-full w-full bg-gradient-to-br from-emerald-200 to-amber-200" />
@@ -120,7 +125,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
           <div className="mt-8 flex flex-wrap gap-2">
             {[
               { label: "Bangkok spa", href: `/${lang}/guide/bangkok-spa/` },
-              { label: "Phuket diving", href: `/${lang}/guide/phuket-diving/` },
+              { label: "Phuket cooking", href: `/${lang}/guide/phuket-cooking/` },
               { label: "Chiang Mai yoga", href: `/${lang}/guide/chiang-mai-yoga-pilates/` },
               { label: "Muay thai camps", href: `/${lang}/c/muay-thai/` },
               { label: "Cooking class", href: `/${lang}/guide/bangkok-cooking/` },
@@ -204,7 +209,10 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                     <span>{nicheName(n, lang)}</span>
                   </Link>
                 ))}
-                {season.cities.map((c) => (
+                {/* Some season entries (lib/seasons.ts) reference "koh-tao",
+                    which has no city hub page — filter to real hubs so the
+                    seasonal widget never links a 404. */}
+                {season.cities.filter((c) => getCityBySlug(c)).map((c) => (
                   <Link
                     key={c}
                     href={`/${lang}/city/${c}/`}
