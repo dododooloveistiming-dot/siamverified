@@ -6,6 +6,7 @@ import { SITE, SUPPORTED_LANGS, withXDefault } from "@/lib/i18n";
 import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import { genericOgImage } from "@/lib/og";
 
 // Filter-specific niche sub-pages. Path-based (not query params) so each
 // gets its own static HTML — query-param filters can't be SEO assets on
@@ -195,6 +196,7 @@ export async function generateMetadata({
       title: mt(nName),
       description: md(nName),
       url,
+      images: genericOgImage(mt(nName), md(nName), NICHE_META[niche].emoji),
     },
   };
 }

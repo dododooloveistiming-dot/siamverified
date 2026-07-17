@@ -91,7 +91,7 @@ export const T = {
   browse_categories: { en: "Browse categories", ko: "카테고리 둘러보기", th: "เรียกดูหมวดหมู่", zh: "浏览分类", ja: "カテゴリーを見る", ar: "تصفح الفئات" },
   see_all: { en: "See all", ko: "전체 보기", th: "ดูทั้งหมด", zh: "查看全部", ja: "すべて見る", ar: "عرض الكل" },
   places_count: { en: "places", ko: "곳", th: "แห่ง", zh: "处", ja: "件", ar: "أماكن" },
-  load_more: { en: "Load more", ko: "더 보기", th: "โหลดเพิ่ม", zh: "加载更多", ja: "もっと見る", ar: "تحميل المزيد" },
+  load_more: { en: "Load more", ko: "더 보기", th: "โหลดเพิ่ม", zh: "加载更多", ja: "もっと見る", ar: "تحميل المزيد", id: "Muat lebih banyak", vi: "Xem thêm" },
 
   // directory
   trust_score: { en: "Trust Score", ko: "신뢰 점수", th: "คะแนนความน่าเชื่อถือ", zh: "信任分数", ja: "信頼スコア", ar: "درجة الثقة" },
@@ -297,7 +297,7 @@ export const T = {
   // Used when price_unit is "unknown" (94 of ~99 priced places in the
   // dataset) — same sentence with the "per {unit}" clause dropped instead
   // of literally rendering "per unknown".
-  pf_cost_a_nounit: { en: "Typical price is {price}. Prices may vary by season and service — confirm with the venue.", ko: "일반적인 가격은 {price}입니다. 시즌·서비스에 따라 달라질 수 있으니 업체에 확인하세요.", th: "ราคาทั่วไปอยู่ที่ {price} ราคาอาจเปลี่ยนตามฤดูกาลและบริการ — โปรดยืนยันกับสถานที่", zh: "通常价格为 {price}。价格可能因季节和服务而异 — 请向商家确认。", ja: "一般的な料金は{price}です。季節やサービスにより変動する場合があります — 店舗にご確認ください。", ar: "السعر المعتاد هو {price}. قد تختلف الأسعار حسب الموسم والخدمة — تأكد من المكان." },
+  pf_cost_a_nounit: { en: "Typical price is {price}. Prices may vary by season and service — confirm with the venue.", ko: "일반적인 가격은 {price}입니다. 시즌·서비스에 따라 달라질 수 있으니 업체에 확인하세요.", th: "ราคาทั่วไปอยู่ที่ {price} ราคาอาจเปลี่ยนตามฤดูกาลและบริการ — โปรดยืนยันกับสถานที่", zh: "通常价格为 {price}。价格可能因季节和服务而异 — 请向商家确认。", ja: "一般的な料金は{price}です。季節やサービスにより変動する場合があります — 店舗にご確認ください。", ar: "السعر المعتاد هو {price}. قد تختلف الأسعار حسب الموسم والخدمة — تأكد من المكان.", id: "Harga umum adalah {price}. Harga dapat bervariasi tergantung musim dan layanan — konfirmasi dengan tempat usaha.", vi: "Giá thông thường là {price}. Giá có thể thay đổi theo mùa và dịch vụ — hãy xác nhận với cơ sở." },
   pf_pop_q: { en: "Is {name} popular / well-reviewed?", ko: "{name}은(는) 평이 좋은가요?", th: "{name} เป็นที่นิยม/รีวิวดีไหม?", zh: "{name} 受欢迎 / 评价好吗？", ja: "{name}は人気・高評価ですか？", ar: "هل {name} مشهور / حسن التقييم؟" },
   pf_pop_a: { en: "{name} has {count} Google reviews with an average rating of ★ {rating}/5.", ko: "{name}은(는) 구글 리뷰 {count}개, 평균 별점 ★ {rating}/5입니다.", th: "{name} มีรีวิว Google {count} รายการ คะแนนเฉลี่ย ★ {rating}/5", zh: "{name} 有 {count} 条 Google 评论，平均评分 ★ {rating}/5。", ja: "{name}はGoogleレビュー{count}件、平均評価★{rating}/5です。", ar: "لدى {name} {count} مراجعة على Google بمتوسط تقييم ★ {rating}/5." },
   pf_pop_partner: { en: " It's a verified partner on our platform.", ko: " 저희 플랫폼의 인증 파트너입니다.", th: " เป็นพาร์ทเนอร์ที่ยืนยันแล้วบนแพลตฟอร์มของเรา", zh: " 是我们平台的认证合作伙伴。", ja: " 当プラットフォームの認証パートナーです。", ar: " إنه شريك موثّق على منصتنا." },
@@ -326,7 +326,7 @@ export const T = {
   rate_verygood: { en: "Very good", ko: "매우 좋음", th: "ดีมาก", zh: "很好", ja: "とても良い", ar: "جيد جدًا" },
   rate_good: { en: "Good", ko: "좋음", th: "ดี", zh: "好", ja: "良い", ar: "جيد" },
   review_anon: { en: "Anonymous", ko: "익명", th: "ไม่ระบุชื่อ", zh: "匿名", ja: "匿名", ar: "مجهول" },
-  review_orig_thai: { en: "Original in Thai", ko: "태국어 원문", th: "ต้นฉบับภาษาไทย", zh: "泰语原文", ja: "タイ語原文", ar: "النص الأصلي بالتايلاندية" },
+  review_orig_thai: { en: "Original in Thai", ko: "태국어 원문", th: "ต้นฉบับภาษาไทย", zh: "泰语原文", ja: "タイ語原文", ar: "النص الأصلي بالتايلاندية", id: "Asli dalam bahasa Thailand", vi: "Nguyên văn tiếng Thái" },
   book_direct_title: { en: "Book directly with {name}", ko: "{name}에 직접 예약", th: "จองโดยตรงกับ {name}", zh: "直接预订 {name}", ja: "{name}に直接予約", ar: "احجز مباشرة مع {name}" },
   book_direct_sub: { en: "No commission · No booking platform markup · Pay at the venue", ko: "수수료 없음 · 예약 플랫폼 마크업 없음 · 현장 결제", th: "ไม่มีค่าคอมมิชชั่น · ไม่มีส่วนต่างแพลตฟอร์ม · จ่ายที่ร้าน", zh: "无佣金 · 无平台加价 · 到店付款", ja: "手数料なし · プラットフォーム上乗せなし · 現地払い", ar: "بدون عمولة · بدون رسوم المنصة · ادفع في المكان" },
   fee_0: { en: "0% fee", ko: "수수료 0%", th: "ค่าธรรมเนียม 0%", zh: "0% 费用", ja: "手数料0%", ar: "رسوم 0%" },
@@ -372,6 +372,7 @@ export const T = {
   city_browse_sub: { en: "{n} categories with verified places · Tap a card to see the ranked top-10 guide." },
   city_toppicks_title: { en: "Top picks in {city}" },
   city_toppicks_sub: { en: "Highest cross-source trust scores across all categories." },
+  city_best_title: { en: "Best of {city}" },
   city_faq_title: { en: "FAQ — {city}" },
   cf_count_q: { en: "How many verified places are listed in {city}?" },
   cf_count_a: { en: "Verified Thai lists {n} cross-checked places in {city}, spanning {cats} categories. Each is scored independently across 6 sources (Google, Reddit, Naver, Pantip, YouTube, official sites)." },
@@ -440,8 +441,8 @@ export const T = {
   hp_view_hub: { en: "View hub →" },
   hp_why: { en: "Why book through Verified Thai?" },
   hp_why_sub: { en: "Direct contact with the business. No 15% Klook markup. Honest scoring." },
-  hp_why_foot1: { en: "We aggregate the same Klook/Viator URLs so you can compare — " },
-  hp_why_foot2: { en: "but the customer-business connection is yours, not the platform's." },
+  hp_why_foot1: { en: "We don't run bookings or take commissions — " },
+  hp_why_foot2: { en: "every ranking comes from verified trust signals, not who pays us." },
   hp_cmp_direct: { en: "Direct contact" },
   hp_cmp_direct_us: { en: "Inquiry → business directly" },
   hp_cmp_direct_o1: { en: "Through platform" },
@@ -542,7 +543,7 @@ export const T = {
   tr_q4: { en: "Why does email infrastructure (Google Workspace, M365) matter?" },
   tr_a4: { en: "Looking at MX DNS records reveals what email host the business actually uses. A small spa running contact@theirdomain.com through Google Workspace or Microsoft 365 has demonstrably invested in a real business setup — it's a tiny but non-zero \"this is a real operation\" signal. {email} of {total} venues run on professional infrastructure." },
   tr_q5: { en: "Does Verified Thai accept paid placement or sponsored rankings?" },
-  tr_a5: { en: "No. Listings are ranked purely by trust score. Klook is shown on some venue pages as an affiliate booking option (with commission disclosed), and an \"Editor's Pick\" featured slot exists on niche pages but is also selected by trust score, not payment. No venue can pay us to outrank another venue." },
+  tr_a5: { en: "No. Listings are ranked purely by trust score, computed from 6 independent sources (Google, Naver, YouTube, Wayback Archive, and more). We don't run bookings and take no commission from any business — our only revenue is display advertising, which never affects ranking. No venue can pay us to outrank another venue." },
   tr_q6: { en: "How does Verified Thai differ from Google Maps, Klook, or Tripadvisor?" },
   tr_a6: { en: "Google Maps shows ratings without de-duping fake reviews or checking whether a place still operates. Klook lists places that paid to be on Klook (with ~20-25% commission). Tripadvisor mixes user reviews with sponsored content. We don't take placement money, we cross-check across 6 sources before listing, and we surface \"established 5y+\" and \"active 90d\" filters so dead listings don't waste your time. The trade-off: smaller dataset, harder verification floor." },
   tr_q7: { en: "What signals can a venue NOT manipulate?" },
@@ -601,10 +602,17 @@ export const T = {
   langname_zh: { en: "Chinese", ko: "중국어", th: "จีน", zh: "中文", ja: "中国語", ar: "الصينية" },
   langname_ja: { en: "Japanese", ko: "일본어", th: "ญี่ปุ่น", zh: "日语", ja: "日本語", ar: "اليابانية" },
   langname_ar: { en: "Arabic", ko: "아랍어", th: "อาหรับ", zh: "阿拉伯语", ja: "アラビア語", ar: "العربية" },
+  langname_id: { en: "Indonesian", ko: "인도네시아어", th: "อินโดนีเซีย", zh: "印尼语", ja: "インドネシア語", ar: "الإندونيسية" },
+  langname_vi: { en: "Vietnamese", ko: "베트남어", th: "เวียดนาม", zh: "越南语", ja: "ベトナム語", ar: "الفيتنامية" },
 } as const;
 
 export function t<K extends keyof typeof T>(key: K, lang: Lang): string {
-  const node = T[key] as Record<string, string>;
+  const node = T[key] as Record<string, string> | undefined;
+  // Statically-known keys always exist, but callers building dynamic keys
+  // (e.g. `t(\`langname_${k}\` as "langname_en", lang)` in place-faqs.ts,
+  // where `k` comes from scraped data) can bypass that guarantee at
+  // runtime — fall back to the raw key instead of crashing on `undefined[lang]`.
+  if (!node) return String(key);
   return node[lang] ?? UI_I18N[key as string]?.[lang] ?? node[DEFAULT_LANG];
 }
 

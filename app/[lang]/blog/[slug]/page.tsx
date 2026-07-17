@@ -7,6 +7,7 @@ import type { Lang } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
 import BlogMarkdown from "@/components/BlogMarkdown";
+import { genericOgImage } from "@/lib/og";
 
 export const dynamic = "force-static";
 
@@ -51,6 +52,7 @@ export async function generateMetadata({
       url: params.lang === "ko" ? url : koUrl,
       type: "article",
       locale: "ko_KR",
+      images: genericOgImage(post.title, description, "📝"),
     },
   };
 }

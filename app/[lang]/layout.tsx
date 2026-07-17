@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import type { Lang } from "@/lib/types";
 import { SUPPORTED_LANGS } from "@/lib/i18n";
 import Header from "@/components/Header";
@@ -19,6 +20,7 @@ export default function LangLayout({
   params: { lang: Lang };
 }) {
   const { lang } = params;
+  if (!SUPPORTED_LANGS.includes(lang)) notFound();
   // The root layout (app/layout.tsx) owns the single <html> tag shared by
   // every locale and hardcodes lang="en" — it can't read the [lang] segment
   // without opting the entire static site into per-request dynamic

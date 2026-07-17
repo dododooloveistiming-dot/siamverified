@@ -6,6 +6,7 @@ import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import { genericOgImage } from "@/lib/og";
 
 export const dynamic = "force-static";
 
@@ -144,6 +145,7 @@ export async function generateMetadata({
       description: md,
       url,
       type: "article",
+      images: genericOgImage(tf("city_vs", params.lang, { a: a.label, b: b.label }), md, "⚖️"),
     },
   };
 }
@@ -184,8 +186,32 @@ export default function ComparePage({
   const aTop = [...aPlaces].sort((x, y) => y.trust_score - x.trust_score).slice(0, 3);
   const bTop = [...bPlaces].sort((x, y) => y.trust_score - x.trust_score).slice(0, 3);
 
+  const url = `${SITE.origin}/${lang}/compare/${params.slug}/`;
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: SITE.name, item: `${SITE.origin}/${lang}/` },
+      { "@type": "ListItem", position: 2, name: `${a.label} vs ${b.label}`, item: url },
+    ],
+  };
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: tf("city_vs", lang, { a: a.label, b: b.label }),
+    itemListElement: [...aTop, ...bTop].map((p, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${SITE.origin}/${lang}/place/${p.slug}/`,
+      name: p.name,
+    })),
+  };
+
   return (
-    <main className="pb-20">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+      <main className="pb-20">
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-emerald-700 via-emerald-800 to-amber-900 py-12 text-white sm:py-20">
         <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-amber-400/30 blur-3xl" />
         <div className="absolute -bottom-24 -left-12 h-80 w-80 rounded-full bg-emerald-300/20 blur-3xl" />
@@ -310,7 +336,8 @@ export default function ComparePage({
           <Link href={`/${lang}/`} className="hover:underline">{t("cmp_home", lang)}</Link>
         </div>
       </div>
-    </main>
+      </main>
+    </>
   );
 }
 

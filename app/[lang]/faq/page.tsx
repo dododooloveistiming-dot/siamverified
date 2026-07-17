@@ -4,6 +4,7 @@ import { listFaqs, localizeFaq, type ResolvedFaq } from "@/lib/faqs";
 import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
+import { genericOgImage } from "@/lib/og";
 
 export const dynamic = "force-static";
 
@@ -17,13 +18,16 @@ export async function generateMetadata({
   params: { lang: Lang };
 }): Promise<Metadata> {
   const url = `${SITE.origin}/${params.lang}/faq/`;
+  const title = `${t("faq_index_title", params.lang)} · ${SITE.name}`;
+  const description = tf("faq_index_desc", params.lang, { n: listFaqs().length });
   return {
-    title: `${t("faq_index_title", params.lang)} · ${SITE.name}`,
-    description: tf("faq_index_desc", params.lang, { n: listFaqs().length }),
+    title,
+    description,
     alternates: {
       canonical: url,
       languages: withXDefault(Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/faq/`]))),
     },
+    openGraph: { title, description, url, type: "website", images: genericOgImage(title, description, "❓") },
   };
 }
 

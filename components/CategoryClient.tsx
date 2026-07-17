@@ -1,7 +1,7 @@
 "use client";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lang, Niche, PlaceCard as PlaceCardData } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 import { t } from "@/lib/i18n";
@@ -67,6 +67,18 @@ export default function CategoryClient({
   const [hideViral, setHideViral] = useState(true);
   const [sort, setSort] = useState<Sort>("trust");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  // Gate the URL-sync effect below until the initial read-from-URL pass has
+  // finished — otherwise it fires once with default state and clobbers an
+  // incoming ?city=...&price=... URL before it's ever read.
+  const [hydrated, setHydrated] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  // The exact URL this component mounted with (before any sync rewrites it) —
+  // used as the sessionStorage key so "Load more" progress survives a
+  // back-navigation to this same filtered view.
+  const mountKey = useRef<string>(
+    typeof window !== "undefined" ? `${pathname}${window.location.search}` : pathname,
+  );
 
   // Keep the search input itself instant; defer the (expensive, ~2k-item)
   // filter+sort recompute so typing never blocks on it.
@@ -110,6 +122,16 @@ export default function CategoryClient({
     }
     const urlQ = searchParams.get("q");
     if (urlQ) setQuery(urlQ);
+    try {
+      const savedCount = sessionStorage.getItem(`vt_cat_visible:${mountKey.current}`);
+      if (savedCount) {
+        const n = parseInt(savedCount, 10);
+        if (Number.isFinite(n) && n > PAGE_SIZE) setVisibleCount(n);
+      }
+    } catch {
+      // sessionStorage unavailable (private mode etc.) — fall back to PAGE_SIZE
+    }
+    setHydrated(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cities]);
 
@@ -140,10 +162,51 @@ export default function CategoryClient({
   }, [places, deferredQuery, city, priceBand, koOnly, beginnerOnly, open24Only, establishedOnly, activeOnly, hideViral, sort]);
 
   // Reset paging whenever the result set changes underneath it — otherwise
-  // "500 of 12 matched" could persist after narrowing a filter.
+  // "500 of 12 matched" could persist after narrowing a filter. Skipped on
+  // the first post-hydration run so restoring filters/visibleCount from the
+  // URL + sessionStorage (on a back-navigation) doesn't immediately wipe
+  // the restored "Load more" progress back to page 1.
+  const hydratedOnce = useRef(false);
   useEffect(() => {
+    if (!hydrated) return;
+    if (!hydratedOnce.current) {
+      hydratedOnce.current = true;
+      return;
+    }
     setVisibleCount(PAGE_SIZE);
-  }, [filtered]);
+  }, [filtered, hydrated]);
+
+  // Persist "Load more" progress so a back-navigation to this exact filtered
+  // view (matched via mountKey below) restores where the user left off.
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      sessionStorage.setItem(`vt_cat_visible:${mountKey.current}`, String(visibleCount));
+    } catch {
+      // ignore — sessionStorage unavailable
+    }
+  }, [hydrated, visibleCount]);
+
+  // Sync filters/sort/query back to the URL so the address bar reflects the
+  // current view and a back-navigation restores it. Gated on `hydrated` —
+  // firing before the initial URL read completes would overwrite an
+  // incoming ?city=...&price=... with empty defaults.
+  useEffect(() => {
+    if (!hydrated) return;
+    const params = new URLSearchParams();
+    if (city) params.set("city", city);
+    if (priceBand) params.set("price", priceBand);
+    if (koOnly) params.set("ko", "1");
+    if (beginnerOnly) params.set("beginner", "1");
+    if (open24Only) params.set("open24", "1");
+    if (establishedOnly) params.set("est", "1");
+    if (activeOnly) params.set("active", "1");
+    if (sort !== "trust") params.set("sort", sort);
+    if (deferredQuery) params.set("q", deferredQuery);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated, city, priceBand, koOnly, beginnerOnly, open24Only, establishedOnly, activeOnly, sort, deferredQuery]);
 
   const visible = filtered.slice(0, visibleCount);
   const meta = NICHE_META[niche];
@@ -308,6 +371,9 @@ function FeaturedListCard({ p, lang, fallbackEmoji }: { p: PlaceCardData; lang: 
           {p.trust_score}
           <span className="text-[9px] opacity-90">/100</span>
         </span>
+        <div className="absolute right-3 bottom-3">
+          <WishlistButton place={p} />
+        </div>
       </div>
       <div className="flex flex-col gap-2 p-5">
         <h3 className="line-clamp-2 text-lg font-black leading-tight">{p.name}</h3>

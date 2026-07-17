@@ -3,9 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlacesByNiche } from "@/lib/data";
 import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
+import { genericOgImage } from "@/lib/og";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import WishlistButton from "@/components/WishlistButton";
 import { cleanReviewText, isThaiText } from "@/lib/reviews";
 import {
   CITY_SLUGS,
@@ -15,6 +17,7 @@ import {
   placesInGuideCity,
   hasEnoughGuidePlaces,
 } from "@/lib/guides";
+import { BEST_KINDS, bestSlug, hasEnoughBestPlaces } from "@/lib/best";
 
 export const dynamic = "force-static";
 
@@ -59,7 +62,7 @@ export async function generateMetadata({
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/guide/${params.slug}/`]),
       )),
     },
-    openGraph: { title, description, url, type: "article" },
+    openGraph: { title, description, url, type: "article", images: genericOgImage(title, description, NICHE_META[niche].emoji) },
   };
 }
 
@@ -225,7 +228,7 @@ export default function GuidePage({
                   href={`/${lang}/place/${p.slug}/`}
                   className="grid flex-1 grid-cols-[80px_1fr] gap-3 sm:grid-cols-[140px_1fr]"
                 >
-                  <div className="aspect-square overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
+                  <div className="relative aspect-square overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
                     <SafeImg
                       src={p.top_photo_url}
                       alt={p.name}
@@ -234,6 +237,9 @@ export default function GuidePage({
                       className="h-full w-full object-cover"
                       loading="lazy"
                     />
+                    <div className="absolute right-1 bottom-1">
+                      <WishlistButton place={p} />
+                    </div>
                   </div>
                   <div>
                     <div className="flex flex-wrap items-baseline gap-x-2">
@@ -301,7 +307,7 @@ export default function GuidePage({
         <section className="mt-12">
           <h2 className="text-xl font-bold tracking-tight">{t("g_related", lang)}</h2>
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {NICHE_SLUGS.filter((n) => n !== niche).slice(0, 4).map((n) => (
+            {NICHE_SLUGS.filter((n) => n !== niche && hasEnoughGuidePlaces(city, n)).slice(0, 4).map((n) => (
               <Link
                 key={n}
                 href={`/${lang}/guide/${city.slug}-${n}/`}
@@ -311,7 +317,7 @@ export default function GuidePage({
                 {city.label} {nicheName(n, lang)}
               </Link>
             ))}
-            {CITY_SLUGS.filter((c) => c.slug !== city.slug).slice(0, 3).map((c) => (
+            {CITY_SLUGS.filter((c) => c.slug !== city.slug && hasEnoughGuidePlaces(c, niche)).slice(0, 3).map((c) => (
               <Link
                 key={c.slug}
                 href={`/${lang}/guide/${c.slug}-${niche}/`}
@@ -323,6 +329,25 @@ export default function GuidePage({
             ))}
           </div>
         </section>
+
+        {/* BEST-OF LINKS — cross-link into the sharper long-tail /best/ pages
+            for this exact city×niche, when enough places qualify. These
+            pages previously had zero inbound links anywhere on the site. */}
+        {BEST_KINDS.some((k) => hasEnoughBestPlaces(city, niche, k)) && (
+          <section className="mt-8">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {BEST_KINDS.filter((k) => hasEnoughBestPlaces(city, niche, k)).map((k) => (
+                <Link
+                  key={k}
+                  href={`/${lang}/best/${bestSlug(city, niche, k)}/`}
+                  className="block rounded-xl border border-emerald-200 bg-emerald-50/50 p-3 text-sm font-semibold text-emerald-800 hover:border-emerald-400 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-300"
+                >
+                  {tf(k === "established" ? "bp_companion_est" : "bp_companion_act", lang, { niche: nicheName(niche, lang) })}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="mt-12 text-xs muted">
           <Link href={`/${lang}/c/${niche}/`} className="hover:underline">
@@ -357,6 +382,15 @@ export default function GuidePage({
                 name: f.q,
                 acceptedAnswer: { "@type": "Answer", text: f.a },
               })),
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: SITE.name, item: `${SITE.origin}/${lang}/` },
+                { "@type": "ListItem", position: 2, name: nicheName(niche, lang), item: `${SITE.origin}/${lang}/c/${niche}/` },
+                { "@type": "ListItem", position: 3, name: city.label, item: url },
+              ],
             },
           ]),
         }}

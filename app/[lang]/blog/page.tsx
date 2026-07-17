@@ -6,6 +6,7 @@ import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
 import type { Niche } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import { genericOgImage } from "@/lib/og";
 
 export const dynamic = "force-static";
 
@@ -18,16 +19,20 @@ export async function generateMetadata({
 }: {
   params: { lang: Lang };
 }): Promise<Metadata> {
+  const title = `Korean travel blog — ${SITE.name}`;
+  const description =
+    "태국 여행자를 위한 무에타이 / 요가 / 다이빙 / 스파 추천 가이드. 데이터 기반, 광고비 없음.";
+  const url = `${SITE.origin}/${params.lang}/blog/`;
   return {
-    title: `Korean travel blog — ${SITE.name}`,
-    description:
-      "태국 여행자를 위한 무에타이 / 요가 / 다이빙 / 스파 추천 가이드. 데이터 기반, 광고비 없음.",
+    title,
+    description,
     alternates: {
-      canonical: `${SITE.origin}/${params.lang}/blog/`,
+      canonical: url,
       languages: withXDefault(Object.fromEntries(
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/blog/`]),
       )),
     },
+    openGraph: { title, description, url, type: "website", images: genericOgImage(title, description, "📝") },
   };
 }
 

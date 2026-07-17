@@ -8,6 +8,7 @@ import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
 import CategoryDiscovery from "@/components/CategoryDiscovery";
 import SafeImg from "@/components/SafeImg";
+import { genericOgImage } from "@/lib/og";
 
 const NICHES: Niche[] = [
   "muay-thai", "yoga-pilates", "wellness", "cooking", "diving", "spa", "coworking",
@@ -42,6 +43,7 @@ export async function generateMetadata({ params }: { params: { lang: Lang; niche
       title,
       description,
       url,
+      images: genericOgImage(title, description, NICHE_META[niche].emoji),
     },
   };
 }
@@ -67,6 +69,7 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
     .filter((p) => p.founding_year)
     .sort((a, b) => (a.founding_year! - b.founding_year!))[0];
   const topThree = [...places].sort((a, b) => b.trust_score - a.trust_score).slice(0, 3);
+  const topRanked = [...places].sort((a, b) => b.trust_score - a.trust_score).slice(0, 20);
   const activeCount = places.filter((p) => p.is_active_recently).length;
   const veteranCount = places.filter((p) => p.is_veteran).length;
   const koCount = places.filter((p) => p.languages?.ko).length;
@@ -300,6 +303,39 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
                 "@type": "Question",
                 name: f.q,
                 acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            }),
+          }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: SITE.name, item: `${SITE.origin}/${lang}/` },
+              { "@type": "ListItem", position: 2, name: nName, item: `${SITE.origin}/${lang}/c/${niche}/` },
+            ],
+          }),
+        }}
+      />
+      {topRanked.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              name: `${nName} — ${SITE.name}`,
+              itemListOrder: "https://schema.org/ItemListOrderDescending",
+              numberOfItems: places.length,
+              itemListElement: topRanked.map((p, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                url: `${SITE.origin}/${lang}/place/${p.slug}/`,
+                name: p.name,
               })),
             }),
           }}

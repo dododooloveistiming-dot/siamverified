@@ -23,7 +23,9 @@ import SafeImg from "@/components/SafeImg";
 import ViewPing from "@/components/ViewPing";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { cityForPlace } from "@/lib/cities";
+import { hasEnoughGuidePlaces } from "@/lib/guides";
 import ShareButton from "@/components/ShareButton";
+import WishlistButton from "@/components/WishlistButton";
 import PlaceMap from "@/components/PlaceMap";
 
 // ISR — initially built static, refreshed from DB (owner profile) every
@@ -178,12 +180,15 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
             <h1 className="text-3xl font-black leading-tight tracking-tight sm:text-4xl md:text-5xl">
               {place.name}
             </h1>
-            <ShareButton
-              url={`${SITE.origin}/${lang}/place/${place.slug}/`}
-              title={place.name}
-              text={`${place.name} — ${nicheName(place.niche, lang)}${place.city ? ` (${place.city})` : ""} · Trust ${place.trust_score}/100 on ${SITE.name}`}
-              label={({ en: "Share", ko: "공유", ja: "シェア", zh: "分享", th: "แชร์", ar: "مشاركة", id: "Bagikan", vi: "Chia sẻ" } as const)[lang]}
-            />
+            <div className="flex items-center gap-2">
+              <WishlistButton place={place} variant="inline" />
+              <ShareButton
+                url={`${SITE.origin}/${lang}/place/${place.slug}/`}
+                title={place.name}
+                text={`${place.name} — ${nicheName(place.niche, lang)}${place.city ? ` (${place.city})` : ""} · Trust ${place.trust_score}/100 on ${SITE.name}`}
+                label={({ en: "Share", ko: "공유", ja: "シェア", zh: "分享", th: "แชร์", ar: "مشاركة", id: "Bagikan", vi: "Chia sẻ" } as const)[lang]}
+              />
+            </div>
           </div>
 
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm muted">
@@ -1003,13 +1008,15 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
           <section className="mt-12">
             <h2 className="mb-3 text-lg font-bold">{t("pl_explore_more", lang)}</h2>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              <Link
-                href={`/${lang}/guide/${hubCity.slug}-${place.niche}/`}
-                className="rounded-xl border border-ink-100 bg-white p-3 text-sm font-semibold transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
-              >
-                {NICHE_META[place.niche].emoji}{" "}
-                {tf("pl_see_all", lang, { niche: nicheName(place.niche, lang), city: hubCity.label })}
-              </Link>
+              {hasEnoughGuidePlaces(hubCity, place.niche) && (
+                <Link
+                  href={`/${lang}/guide/${hubCity.slug}-${place.niche}/`}
+                  className="rounded-xl border border-ink-100 bg-white p-3 text-sm font-semibold transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"
+                >
+                  {NICHE_META[place.niche].emoji}{" "}
+                  {tf("pl_see_all", lang, { niche: nicheName(place.niche, lang), city: hubCity.label })}
+                </Link>
+              )}
               <Link
                 href={`/${lang}/city/${hubCity.slug}/`}
                 className="rounded-xl border border-ink-100 bg-white p-3 text-sm font-semibold transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow dark:border-ink-800 dark:bg-ink-900"

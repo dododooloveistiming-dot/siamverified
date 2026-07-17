@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { eq, and } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db, listingClaims } from "@/lib/db";
+import { getPlaceBySlug } from "@/lib/data";
 
 export async function POST(
   req: Request,
@@ -11,6 +12,10 @@ export async function POST(
   const userId = (session?.user as { id?: string } | undefined)?.id;
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!getPlaceBySlug(params.id)) {
+    return NextResponse.json({ error: "Listing not found" }, { status: 404 });
   }
 
   const body = (await req.json().catch(() => ({}))) as { message?: string };

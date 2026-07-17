@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Lang, Niche, PlaceCard } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
 import SafeImg from "@/components/SafeImg";
+import WishlistButton from "@/components/WishlistButton";
 import { cleanReviewText, isThaiText } from "@/lib/reviews";
 
 /**
@@ -209,6 +210,9 @@ function FeaturedCard({
           {p.trust_score}
           <span className="text-[9px] opacity-80">/100</span>
         </div>
+        <div className="absolute right-3 bottom-3">
+          <WishlistButton place={p} />
+        </div>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <h3 className="line-clamp-2 text-lg font-black leading-tight">{p.name}</h3>
@@ -290,6 +294,9 @@ function ScrollRow({
                       ★ Partner
                     </span>
                   )}
+                  <div className="absolute right-2 bottom-2">
+                    <WishlistButton place={p} />
+                  </div>
                 </div>
                 <div className="p-3">
                   <div className="flex items-start justify-between gap-2">

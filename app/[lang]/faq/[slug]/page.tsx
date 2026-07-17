@@ -5,6 +5,7 @@ import { getFaq, getLocalizedFaq, localizeFaq, isFaqTranslated, faqTranslatedLan
 import { SITE, SUPPORTED_LANGS, t, withXDefault } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
+import { genericOgImage } from "@/lib/og";
 
 export const dynamic = "force-static";
 
@@ -47,6 +48,7 @@ export async function generateMetadata({
       description: faq.shortAnswer,
       url,
       type: "article",
+      images: genericOgImage(faq.question, faq.shortAnswer, "❓"),
     },
   };
 }

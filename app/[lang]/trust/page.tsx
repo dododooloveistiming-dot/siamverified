@@ -4,6 +4,7 @@ import { loadPlaces } from "@/lib/data";
 import { getPlaceSignals } from "@/lib/signals";
 import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Loc } from "@/lib/types";
+import { genericOgImage } from "@/lib/og";
 
 // /[lang]/trust/ — authoritative methodology page. This is bait for
 // "how does verifiedthai work / how is trust calculated" queries from
@@ -54,7 +55,7 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/trust/`]),
       )),
     },
-    openGraph: { title: tr.title, description: tr.desc, url, type: "article" },
+    openGraph: { title: tr.title, description: tr.desc, url, type: "article", images: genericOgImage(tr.title, tr.desc, "🔍") },
   };
 }
 

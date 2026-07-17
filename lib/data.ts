@@ -173,7 +173,9 @@ export function loadPlaces(): PlacesBundle {
 
 export function getPlacesByNiche(niche: Niche): Place[] {
   if (byNicheCache.has(niche)) return byNicheCache.get(niche)!;
-  const places = loadPlaces().places.filter((p) => p.niche === niche);
+  const places = loadPlaces().places
+    .filter((p) => p.niche === niche)
+    .sort((a, b) => b.trust_score - a.trust_score);
   byNicheCache.set(niche, places);
   return places;
 }
@@ -287,7 +289,9 @@ export async function getOwnerProfile(placeId: string): Promise<OwnerProfile | n
 }
 
 export function getTopPlaces(limit = 12): Place[] {
-  return loadPlaces().places.slice(0, limit);
+  return [...loadPlaces().places]
+    .sort((a, b) => b.trust_score - a.trust_score)
+    .slice(0, limit);
 }
 
 /**

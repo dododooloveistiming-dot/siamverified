@@ -27,9 +27,12 @@ export function buildPlaceFaqs(place: Place, lang: Lang): PlaceFaq[] {
       (place.phone ? tf("pf_book_phone", lang, { phone: place.phone }) : ""),
   });
 
-  // Languages spoken — localized language names.
+  // Languages spoken — localized language names. Only codes we actually have
+  // a name for; an unrecognized code from the scraper would otherwise show
+  // as a raw "langname_xx" fallback string in the FAQ text.
+  const KNOWN_LANG_CODES = new Set(["en", "ko", "th", "zh", "ja", "ar", "id", "vi"]);
   const langsSpoken = (Object.entries(place.languages) as Array<[string, boolean]>)
-    .filter(([, v]) => v)
+    .filter(([k, v]) => v && KNOWN_LANG_CODES.has(k))
     .map(([k]) => t(`langname_${k}` as "langname_en", lang));
   if (langsSpoken.length > 0) {
     faqs.push({

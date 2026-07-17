@@ -2072,13 +2072,13 @@
     "vi": "Verified Thai có chấp nhận vị trí trả phí hoặc xếp hạng tài trợ không?"
   },
   "tr_a5": {
-    "ko": "아니요. 목록은 순수하게 신뢰 점수에 따라 순위가 매겨집니다. Klook은 일부 장소 페이지에서 제휴 예약 옵션으로 표시되며(수수료 공개), \"편집자 추천\" 특집 자리는 후원 비용이 아닌 신뢰 점수에 따라 선택됩니다. 어떤 장소도 다른 장소를 초과할 수 있도록 비용을 지불할 수 없습니다.",
-    "th": "ไม่. รายชื่อจะถูกจัดอันดับโดยพื้นฐานจากคะแนนความน่าเชื่อถือ Klook จะแสดงอยู่ในบางหน้าเวทีในฐานะตัวเลือกการจองในเครือ (พร้อมค่าคอมมิชชั่นที่เปิดเผย) และมีช่อง \"Editor's Pick\" ที่มีอยู่ในหน้าที่เฉพาะแต่จะถูกเลือกโดยคะแนนความน่าเชื่อถือ ไม่สามารถจ่ายเงินให้เราเพื่อให้สถานที่ใดสูงกว่าสถานที่อื่น.",
-    "zh": "不接受。列表仅根据信任评分进行排名。Klook 在某些场所页面上作为合作伙伴预订选项展示（并披露佣金），而且在细分页面上存在“编辑推荐”特色位置，但也是根据信任评分选择，而非支付。没有任何场所可以支付我们以超越其他场所。",
-    "ja": "いいえ。掲載は信頼スコアに基づいて純粋にランク付けされます。Klookは、手数料を開示してアフィリエイト予約オプションとして一部の施設ページに表示されており、ニッチページには「編集者のおすすめ」スロットも存在しますが、これも支払いではなく信頼スコアによって選ばれます。他の施設を上回るために支払うことはできません。",
-    "ar": "لا. يتم ترتيب القوائم بناءً على درجة الثقة فقط. يظهر Klook في بعض صفحات الأماكن كخيار حجز تابع (مع الإفصاح عن العمولة)، وهناك مكان مميز \"اختيار المحرر\" على الصفحات المتخصصة ولكنه يتم اختياره أيضًا وفقًا لدرجة الثقة، وليس الدفع. لا يمكن لأي مكان أن يدفع لنا لتجاوز مكان آخر.",
-    "id": "Tidak. Daftar diurutkan murni berdasarkan skor kepercayaan. Klook ditampilkan di beberapa halaman tempat sebagai opsi pemesanan afiliasi (dengan komisi yang diungkapkan), dan slot \"Pilihan Editor\" yang ditampilkan ada di halaman niche tetapi juga dipilih berdasarkan skor kepercayaan, bukan pembayaran. Tidak ada tempat yang bisa membayar kami untuk mengalahkan tempat lain.",
-    "vi": "Không. Danh sách được xếp hạng hoàn toàn dựa trên điểm tin cậy. Klook được hiển thị trên một số trang cơ sở như một tùy chọn đặt phòng liên kết (với hoa hồng được công bố), và một vị trí \"Chọn của Biên tập viên\" xuất hiện trên các trang ngách nhưng cũng được chọn bởi điểm tin cậy, không phải thanh toán. Không có cơ sở nào có thể trả tiền cho chúng tôi để xếp hạng cao hơn một cơ sở khác."
+    "ko": "아니요. 목록은 순수하게 신뢰 점수에 따라 순위가 매겨지며, 이 점수는 Google, 네이버, YouTube, Wayback Archive 등 6개의 독립적인 소스로 계산됩니다. 저희는 예약을 진행하지 않고 어떤 업체로부터도 수수료를 받지 않습니다 — 유일한 수익원은 디스플레이 광고이며, 이는 순위에 전혀 영향을 주지 않습니다. 어떤 업체도 비용을 지불해 다른 업체보다 높은 순위를 차지할 수 없습니다.",
+    "th": "ไม่ใช่ รายชื่อจะถูกจัดอันดับโดยพิจารณาจากคะแนนความน่าเชื่อถือเพียงอย่างเดียว ซึ่งคำนวณจาก 6 แหล่งข้อมูลอิสระ (Google, Naver, YouTube, Wayback Archive และอื่น ๆ) เราไม่รับจองและไม่รับค่าคอมมิชชั่นจากธุรกิจใด ๆ — รายได้เดียวของเรามาจากโฆษณาแบบดิสเพลย์ ซึ่งไม่มีผลต่อการจัดอันดับเลย ไม่มีธุรกิจใดสามารถจ่ายเงินให้เราเพื่อให้อันดับสูงกว่าธุรกิจอื่นได้",
+    "zh": "不会。列表仅根据信任评分排名，该评分由6个独立来源计算得出（Google、Naver、YouTube、Wayback Archive 等）。我们不提供预订服务，也不向任何商家收取佣金——我们唯一的收入来自展示广告，且广告完全不影响排名。没有任何场所可以付费超越其他场所。",
+    "ja": "いいえ。掲載は信頼スコアのみに基づいてランク付けされ、このスコアはGoogle、Naver、YouTube、Wayback Archiveなど6つの独立したソースから算出されます。当サイトは予約を仲介せず、どの施設からも手数料を受け取りません — 唯一の収益源はディスプレイ広告であり、ランキングには一切影響しません。どの施設も、支払いによって他の施設より上位に表示されることはできません。",
+    "ar": "لا. يتم ترتيب القوائم بناءً على درجة الثقة فقط، والتي تُحسب من 6 مصادر مستقلة (Google وNaver وYouTube وWayback Archive وغيرها). نحن لا نتعامل مع الحجوزات ولا نأخذ أي عمولة من أي عمل تجاري — مصدر دخلنا الوحيد هو الإعلانات المعروضة، والتي لا تؤثر أبدًا على الترتيب. لا يمكن لأي مكان أن يدفع لنا لتجاوز مكان آخر.",
+    "id": "Tidak. Daftar diurutkan murni berdasarkan skor kepercayaan, yang dihitung dari 6 sumber independen (Google, Naver, YouTube, Wayback Archive, dan lainnya). Kami tidak menangani pemesanan dan tidak mengambil komisi dari bisnis mana pun — satu-satunya pendapatan kami berasal dari iklan display, yang sama sekali tidak memengaruhi peringkat. Tidak ada tempat yang bisa membayar kami untuk mengalahkan tempat lain.",
+    "vi": "Không. Danh sách được xếp hạng hoàn toàn dựa trên điểm tin cậy, được tính từ 6 nguồn độc lập (Google, Naver, YouTube, Wayback Archive và nhiều nguồn khác). Chúng tôi không xử lý đặt chỗ và không nhận hoa hồng từ bất kỳ doanh nghiệp nào — nguồn thu duy nhất của chúng tôi là quảng cáo hiển thị, hoàn toàn không ảnh hưởng đến xếp hạng. Không cơ sở nào có thể trả tiền để được xếp hạng cao hơn cơ sở khác."
   },
   "tr_q6": {
     "ko": "Verified Thai는 Google Maps, Klook 또는 Tripadvisor와 어떻게 다른가요?",
@@ -2270,22 +2270,22 @@
     "vi": "Liên lạc trực tiếp với doanh nghiệp. Không có phí tăng 15% của Klook. Điểm số trung thực."
   },
   "hp_why_foot1": {
-    "ko": "같은 Klook/Viator URL을 집계하여 비교할 수 있습니다 — ",
-    "th": "เรารวบรวม URL ของ Klook/Viator เหมือนกันเพื่อให้คุณเปรียบเทียบ — ",
-    "zh": "我们聚合相同的Klook/Viator链接，让您可以比较 — ",
-    "ja": "同じKlook/ViatorのURLを集約して比較できます — ",
-    "ar": "نقوم بتجميع روابط Klook/Viator نفسها حتى تتمكن من المقارنة — ",
-    "id": "Kami menggabungkan URL Klook/Viator yang sama sehingga Anda bisa membandingkan — ",
-    "vi": "Chúng tôi tổng hợp các URL Klook/Viator giống nhau để bạn có thể so sánh — "
+    "ko": "예약이나 수수료를 받지 않습니다 — ",
+    "th": "เราไม่รับจองหรือรับค่าคอมมิชชั่น — ",
+    "zh": "我们不接受预订或佣金 — ",
+    "ja": "予約や手数料は一切受け取りません — ",
+    "ar": "لا نقوم بالحجوزات ولا نأخذ عمولات — ",
+    "id": "Kami tidak menerima pemesanan atau komisi — ",
+    "vi": "Chúng tôi không nhận đặt chỗ hay hoa hồng — "
   },
   "hp_why_foot2": {
-    "ko": "하지만 고객과 사업체의 연결은 당신의 것입니다, 플랫폼의 것이 아닙니다.",
-    "th": "แต่การเชื่อมต่อลูกค้ากับธุรกิจนั้นเป็นของคุณ ไม่ใช่ของแพลตฟอร์ม",
-    "zh": "但客户与商家的连接属于您，而不是平台。",
-    "ja": "ただし、顧客とビジネスの接続はプラットフォームではなくあなたのものです。",
-    "ar": "لكن الاتصال بالعميل-العمل لديك، وليس للمنصة.",
-    "id": "tapi koneksi pelanggan-bisnis adalah milik Anda, bukan platform.",
-    "vi": "nhưng kết nối khách hàng-doanh nghiệp là của bạn, không phải của nền tảng."
+    "ko": "모든 순위는 검증된 신뢰 신호에 따라 매겨지며, 비용을 지불한다고 순위가 바뀌지 않습니다.",
+    "th": "การจัดอันดับทั้งหมดมาจากสัญญาณความน่าเชื่อถือที่ผ่านการตรวจสอบ ไม่ใช่จากการจ่ายเงิน",
+    "zh": "所有排名均来自经过验证的信任信号，而非付费。",
+    "ja": "すべてのランキングは検証済みの信頼シグナルに基づいており、支払いによって順位が変わることはありません。",
+    "ar": "كل ترتيب يأتي من إشارات ثقة موثقة، وليس ممن يدفع لنا.",
+    "id": "setiap peringkat berasal dari sinyal kepercayaan yang terverifikasi, bukan dari siapa yang membayar kami.",
+    "vi": "mọi xếp hạng đều đến từ tín hiệu tin cậy đã được xác minh, không phải từ việc ai trả tiền cho chúng tôi."
   },
   "hp_cmp_direct": {
     "ko": "직접 연락",

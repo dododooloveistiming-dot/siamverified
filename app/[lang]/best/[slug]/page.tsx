@@ -6,6 +6,7 @@ import { CITIES, getCityBySlug, placesInCity } from "@/lib/cities";
 import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Loc, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
+import { genericOgImage } from "@/lib/og";
 import SafeImg from "@/components/SafeImg";
 import PlaceFAQ, { type FAQItem } from "@/components/PlaceFAQ";
 import PlaceMap from "@/components/PlaceMap";
@@ -272,7 +273,7 @@ export async function generateMetadata({
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/best/${params.slug}/`]),
       )),
     },
-    openGraph: { title, description: content.desc(city.label, nName), url, type: "article" },
+    openGraph: { title, description: content.desc(city.label, nName), url, type: "article", images: genericOgImage(title, content.desc(city.label, nName), NICHE_META[parsed.niche].emoji) },
   };
 }
 
@@ -326,6 +327,8 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
   const companionLabel = companionKind === "established"
     ? tf("bp_companion_est", lang, { niche: nName })
     : tf("bp_companion_act", lang, { niche: nName });
+  const companionCount = placesInCity(getPlacesByNiche(niche), city).filter(predicate(companionKind)).length;
+  const companionAvailable = companionCount >= MIN_PLACES;
 
   return (
     <>
@@ -447,9 +450,11 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
             <Link href={`/${lang}/c/${niche}/`} className="font-bold text-emerald-700 hover:underline dark:text-emerald-400">
               {tf("g_back", lang, { niche: nName })}
             </Link>
-            <Link href={`/${lang}/best/${companionSlug}/`} className="text-emerald-700 hover:underline dark:text-emerald-400">
-              {companionLabel}
-            </Link>
+            {companionAvailable && (
+              <Link href={`/${lang}/best/${companionSlug}/`} className="text-emerald-700 hover:underline dark:text-emerald-400">
+                {companionLabel}
+              </Link>
+            )}
           </div>
         </div>
 
@@ -464,6 +469,21 @@ export default function BestPage({ params }: { params: { lang: Lang; slug: strin
                 name: f.q,
                 acceptedAnswer: { "@type": "Answer", text: f.a },
               })),
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: SITE.name, item: `${SITE.origin}/${lang}/` },
+                { "@type": "ListItem", position: 2, name: city.label, item: `${SITE.origin}/${lang}/city/${city.slug}/` },
+                { "@type": "ListItem", position: 3, name: nName, item: `${SITE.origin}/${lang}/c/${niche}/` },
+                { "@type": "ListItem", position: 4, name: content.h1(city.label, nName), item: `${SITE.origin}/${lang}/best/${params.slug}/` },
+              ],
             }),
           }}
         />

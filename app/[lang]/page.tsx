@@ -6,6 +6,7 @@ import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { orderedNiches, isKoreanPopular } from "@/lib/niches";
 import SafeImg from "@/components/SafeImg";
+import WishlistButton from "@/components/WishlistButton";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { currentSeason } from "@/lib/seasons";
 import { getCityBySlug } from "@/lib/cities";
@@ -26,7 +27,10 @@ export async function generateMetadata({ params }: { params: { lang: Lang } }): 
       title: `${SITE.name}`,
       description: SITE.tagline[lang],
       url,
-      images: [{ url: `${SITE.origin}/og-default.png`, width: 1200, height: 630 }],
+      images: [{
+        url: `${SITE.origin}/api/og/generic?title=${encodeURIComponent(SITE.name)}&subtitle=${encodeURIComponent(SITE.tagline[lang])}&emoji=${encodeURIComponent("✅")}`,
+        width: 1200, height: 630,
+      }],
     },
   };
 }
@@ -79,7 +83,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
     .slice(0, 8);
 
   // Trending in Bangkok: top places in Bangkok across all niches
-  const bangkokPicks = getTopPlaces(2147)
+  const bangkokPicks = loadPlaces().places
     .filter((p) => p.city?.toLowerCase() === "bangkok" && p.top_photo_url)
     .sort((a, b) => b.trust_score - a.trust_score)
     .slice(0, 6);
@@ -408,7 +412,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                 <p className="mt-1 text-sm muted">{t("hp_trending_sub", lang)}</p>
               </div>
               <Link
-                href={`/${lang}/`}
+                href={`/${lang}/#cities`}
                 className="text-xs font-semibold text-emerald-700 hover:underline dark:text-emerald-300"
               >
                 {t("hp_browse_all_cities", lang)}
@@ -424,7 +428,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       )}
 
       {/* CITY QUICK PICKS */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
+      <section id="cities" className="mx-auto max-w-6xl px-4 py-12 scroll-mt-20">
         <div className="mb-6">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("hp_browse_city", lang)}</h2>
           <p className="mt-1 text-sm muted">{t("hp_browse_city_sub", lang)}</p>
@@ -621,6 +625,9 @@ function PlaceCardMini({ place, lang }: { place: Place; lang: Lang }) {
         />
         <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
           {place.trust_score}
+        </div>
+        <div className="absolute left-1.5 bottom-1.5">
+          <WishlistButton place={place} />
         </div>
       </div>
       <div className="p-2.5">

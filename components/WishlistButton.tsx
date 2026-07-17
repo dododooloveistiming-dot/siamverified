@@ -55,7 +55,15 @@ function placeToItem(p: PlaceCard): WishlistItem {
   };
 }
 
-export default function WishlistButton({ place }: { place: PlaceCard }) {
+export default function WishlistButton({
+  place,
+  variant = "overlay",
+}: {
+  place: PlaceCard;
+  /** "overlay" — pill for sitting on top of a photo (blurred, shadowed).
+   *  "inline" — bordered pill for plain backgrounds (e.g. place-page header). */
+  variant?: "overlay" | "inline";
+}) {
   const [starred, setStarred] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
@@ -78,6 +86,10 @@ export default function WishlistButton({ place }: { place: PlaceCard }) {
     }
   }, [place]);
 
+  const base = variant === "inline"
+    ? "rounded-full border px-3 py-1.5 text-sm"
+    : "rounded-full px-2 py-1 text-base backdrop-blur-sm shadow";
+
   if (!hydrated) {
     // Render a stable placeholder during SSR + first paint to avoid hydration
     // mismatch. The button needs identical markup pre- and post-hydration.
@@ -85,7 +97,11 @@ export default function WishlistButton({ place }: { place: PlaceCard }) {
       <button
         type="button"
         aria-label="Save to wishlist"
-        className="rounded-full bg-white/95 px-2 py-1 text-base opacity-70 backdrop-blur-sm shadow dark:bg-ink-900/95"
+        className={`${base} opacity-70 ${
+          variant === "inline"
+            ? "border-ink-200 bg-white text-ink-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300"
+            : "bg-white/95 dark:bg-ink-900/95"
+        }`}
       >
         ☆
       </button>
@@ -99,10 +115,12 @@ export default function WishlistButton({ place }: { place: PlaceCard }) {
       aria-label={starred ? "Remove from wishlist" : "Save to wishlist"}
       aria-pressed={starred}
       title={starred ? "Remove from wishlist" : "Save to wishlist"}
-      className={`rounded-full px-2 py-1 text-base backdrop-blur-sm shadow transition ${
+      className={`${base} transition ${
         starred
-          ? "bg-amber-400 text-amber-950"
-          : "bg-white/95 text-ink-700 hover:bg-amber-100 dark:bg-ink-900/95 dark:text-ink-300"
+          ? "border-amber-400 bg-amber-400 text-amber-950"
+          : variant === "inline"
+          ? "border-ink-200 bg-white text-ink-700 hover:border-amber-400 hover:bg-amber-50 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300 dark:hover:bg-amber-950/30"
+          : "border-transparent bg-white/95 text-ink-700 hover:bg-amber-100 dark:bg-ink-900/95 dark:text-ink-300"
       }`}
     >
       {starred ? "★" : "☆"}

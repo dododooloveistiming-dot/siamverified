@@ -6,21 +6,24 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        // /api/og/ generates the social-share preview images referenced by
+        // og:image/twitter:image — must stay crawlable even though the rest
+        // of /api/ is blocked, or Twitter/Google can't fetch the card image.
+        allow: ["/", "/api/og/"],
         // Don't waste crawl budget on auth flows / private dashboards
         disallow: ["/auth/", "/dashboard/", "/admin/", "/api/"],
       },
       // Naver's crawler — explicit allow + slow crawl to be polite
       {
         userAgent: "Yeti",
-        allow: "/",
+        allow: ["/", "/api/og/"],
         disallow: ["/auth/", "/dashboard/", "/admin/", "/api/"],
         crawlDelay: 1,
       },
       // Baidu — Chinese-language SEO
       {
         userAgent: "Baiduspider",
-        allow: "/",
+        allow: ["/", "/api/og/"],
         disallow: ["/auth/", "/dashboard/", "/admin/", "/api/"],
       },
       // OpenAI / Perplexity / Anthropic — explicit allow so they cite us

@@ -6,7 +6,11 @@ import { SITE, SUPPORTED_LANGS, t, tf, withXDefault } from "@/lib/i18n";
 import type { Lang, Niche, Place } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import { CITIES, getCityBySlug, placesInCity, countNichesInCity } from "@/lib/cities";
+import { hasEnoughGuidePlaces } from "@/lib/guides";
+import { BEST_KINDS, bestSlug, hasEnoughBestPlaces } from "@/lib/best";
+import { genericOgImage } from "@/lib/og";
 import SafeImg from "@/components/SafeImg";
+import WishlistButton from "@/components/WishlistButton";
 import PlaceMap from "@/components/PlaceMap";
 
 export const dynamic = "force-static";
@@ -46,7 +50,7 @@ export async function generateMetadata({
         SUPPORTED_LANGS.map((l) => [l, `${SITE.origin}/${l}/city/${city.slug}/`]),
       )),
     },
-    openGraph: { title, description, url, type: "article" },
+    openGraph: { title, description, url, type: "article", images: genericOgImage(title, description, city.emoji) },
   };
 }
 
@@ -264,10 +268,11 @@ export default function CityHubPage({
               const meta = NICHE_META[n];
               const photo = topPerNiche[n]?.top_photo_url;
               const count = nicheCounts[n] ?? 0;
+              const guideReady = hasEnoughGuidePlaces(city, n);
               return (
                 <Link
                   key={n}
-                  href={`/${lang}/guide/${city.slug}-${n}/`}
+                  href={guideReady ? `/${lang}/guide/${city.slug}-${n}/` : `/${lang}/c/${n}/?city=${city.slug}`}
                   className="group relative block aspect-[5/3] overflow-hidden rounded-2xl transition hover:-translate-y-0.5 hover:shadow-xl"
                 >
                   <SafeImg
@@ -329,6 +334,9 @@ export default function CityHubPage({
                     <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
                       {p.trust_score}
                     </div>
+                    <div className="absolute left-1.5 bottom-1.5">
+                      <WishlistButton place={p} />
+                    </div>
                   </div>
                   <div className="p-2.5">
                     <div className="line-clamp-2 text-xs font-bold leading-tight">{p.name}</div>
@@ -346,6 +354,35 @@ export default function CityHubPage({
             </div>
           </section>
         )}
+
+        {/* BEST-OF LINKS — cross-link into the sharper long-tail /best/
+            pages for this city, when enough places qualify. These pages
+            previously had zero inbound links anywhere on the site. */}
+        {(() => {
+          const bestLinks = nichesAvailable.flatMap((n) =>
+            BEST_KINDS.filter((k) => hasEnoughBestPlaces(city, n, k)).map((k) => ({ n, k })),
+          );
+          if (bestLinks.length === 0) return null;
+          return (
+            <section className="mt-14">
+              <h2 className="text-2xl font-bold tracking-tight">
+                {tf("city_best_title", lang, { city: city.label })}
+              </h2>
+              <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {bestLinks.map(({ n, k }) => (
+                  <Link
+                    key={`${n}-${k}`}
+                    href={`/${lang}/best/${bestSlug(city, n, k)}/`}
+                    className="block rounded-xl border border-emerald-200 bg-emerald-50/50 p-3 text-sm font-semibold text-emerald-800 hover:border-emerald-400 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-300"
+                  >
+                    {NICHE_META[n].emoji}{" "}
+                    {tf(k === "established" ? "bp_companion_est" : "bp_companion_act", lang, { niche: nicheName(n, lang) })}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* FAQ */}
         <section className="mt-14">
@@ -438,6 +475,14 @@ export default function CityHubPage({
                 name: f.q,
                 acceptedAnswer: { "@type": "Answer", text: f.a },
               })),
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: SITE.name, item: `${SITE.origin}/${lang}/` },
+                { "@type": "ListItem", position: 2, name: city.label, item: url },
+              ],
             },
           ]),
         }}
