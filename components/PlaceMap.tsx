@@ -106,7 +106,7 @@ export default function PlaceMap({ places, lang, height = 480 }: Props) {
                 <div className="mt-1 text-[10px] text-gray-600">
                   {p.rating != null && <>★ {p.rating.toFixed(1)} · </>}
                   {p.city && <>{p.city} · </>}
-                  Trust {p.trust_score}
+                  Trust {p.trust_score}/100
                 </div>
                 {p.price_min_thb > 0 && (
                   <div className="mt-1 text-[11px] font-bold text-emerald-700">

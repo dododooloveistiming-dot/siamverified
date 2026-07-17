@@ -8,7 +8,7 @@
 // photo. Photos drive 60-70% of place-detail conversion — burying them
 // below the fold wastes the highest-converting asset.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { resizeGooglePhoto } from "@/lib/googlePhoto";
 
 export default function HeroMosaic({
@@ -32,6 +32,36 @@ export default function HeroMosaic({
     setPhotos((prev) => prev.filter((p) => p !== src));
     setActive((i) => (i === null || i >= total - 1 ? null : i));
   };
+
+  // Lightbox photo browsing is the top mobile dwell activity, but the
+  // lightbox only supported keyboard arrows / click buttons — no touch
+  // swipe. Track the horizontal drag distance and page prev/next past a
+  // threshold, same UX as native photo viewers.
+  const touchStartX = useRef<number | null>(null);
+  const onLightboxTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onLightboxTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    const SWIPE_THRESHOLD = 50;
+    if (delta > SWIPE_THRESHOLD) {
+      setActive((i) => (i === null ? null : (i - 1 + total) % total));
+    } else if (delta < -SWIPE_THRESHOLD) {
+      setActive((i) => (i === null ? null : (i + 1) % total));
+    }
+  };
+
+  // Warm the browser cache for the prev/next photo so a swipe or arrow-key
+  // press feels instant instead of popping in a blank frame while it loads.
+  useEffect(() => {
+    if (active === null || total < 2) return;
+    const prevSrc = resizeGooglePhoto(photos[(active - 1 + total) % total], 1600);
+    const nextSrc = resizeGooglePhoto(photos[(active + 1) % total], 1600);
+    if (prevSrc) new Image().src = prevSrc;
+    if (nextSrc) new Image().src = nextSrc;
+  }, [active, total, photos]);
 
   useEffect(() => {
     if (active === null) return;
@@ -142,6 +172,8 @@ export default function HeroMosaic({
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
           onClick={() => setActive(null)}
+          onTouchStart={onLightboxTouchStart}
+          onTouchEnd={onLightboxTouchEnd}
           role="dialog"
           aria-modal="true"
         >

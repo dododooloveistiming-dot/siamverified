@@ -205,8 +205,8 @@ export default function SeasonMonthPage({
                         className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.05]"
                         loading="lazy"
                       />
-                      <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
-                        {p.trust_score}
+                      <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow" title={`Trust ${p.trust_score}/100`}>
+                        {p.trust_score}<span className="font-semibold opacity-80">/100</span>
                       </div>
                     </div>
                     <div className="p-2.5">

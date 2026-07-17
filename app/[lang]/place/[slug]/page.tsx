@@ -991,8 +991,8 @@ export default async function PlaceDetailPage({ params }: { params: { lang: Lang
                 >
                   <div className="relative aspect-square bg-ink-50 dark:bg-ink-800">
                     <SafeImg src={p.top_photo_url} alt={p.name} niche={p.niche} className="h-full w-full object-cover transition group-hover:scale-[1.04]" loading="lazy" />
-                    <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white">
-                      {p.trust_score}
+                    <div className="absolute right-1.5 top-1.5 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white" title={`Trust ${p.trust_score}/100`}>
+                      {p.trust_score}<span className="font-semibold opacity-80">/100</span>
                     </div>
                   </div>
                   <div className="p-2.5">

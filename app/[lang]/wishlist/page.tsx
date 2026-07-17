@@ -16,6 +16,7 @@ export default function WishlistPage() {
   const lang = (params?.lang as string) || "en";
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [view, setView] = useState<"list" | "compare">("list");
 
   useEffect(() => {
     setItems(loadWishlist());
@@ -46,8 +47,8 @@ export default function WishlistPage() {
                 ★ Your saved venues
               </h1>
               <p className="mt-2 text-sm muted">
-                Saved locally in your browser. Compare side-by-side, share the list, or
-                send an inquiry to all of them at once.
+                Saved locally in your browser. Compare trust score, rating, and price
+                side-by-side to shortlist your pick.
               </p>
             </div>
             {hydrated && items.length > 0 && (
@@ -83,9 +84,33 @@ export default function WishlistPage() {
           </div>
         ) : (
           <>
-            <div className="mt-6 text-xs muted">
-              {items.length} venue{items.length === 1 ? "" : "s"} saved
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+              <div className="text-xs muted">
+                {items.length} venue{items.length === 1 ? "" : "s"} saved
+              </div>
+              {items.length > 1 && (
+                <div className="inline-flex rounded-lg border border-ink-200 p-0.5 text-xs font-semibold dark:border-ink-700">
+                  <button
+                    type="button"
+                    onClick={() => setView("list")}
+                    className={`rounded-md px-3 py-1 transition ${view === "list" ? "bg-emerald-600 text-white" : "text-ink-600 hover:bg-ink-50 dark:text-ink-300 dark:hover:bg-ink-800"}`}
+                  >
+                    List
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setView("compare")}
+                    className={`rounded-md px-3 py-1 transition ${view === "compare" ? "bg-emerald-600 text-white" : "text-ink-600 hover:bg-ink-50 dark:text-ink-300 dark:hover:bg-ink-800"}`}
+                  >
+                    Compare
+                  </button>
+                </div>
+              )}
             </div>
+
+            {view === "compare" && items.length > 1 ? (
+              <WishlistCompareTable items={items.slice().sort((a, b) => b.addedAt - a.addedAt)} lang={lang} />
+            ) : (
             <ul className="mt-3 space-y-3">
               {items
                 .slice()
@@ -98,8 +123,8 @@ export default function WishlistPage() {
                     >
                       <div className="relative aspect-square w-28 shrink-0 overflow-hidden rounded-xl bg-ink-50 dark:bg-ink-800">
                         <SafeImg src={it.top_photo_url} alt={it.name} niche={it.niche as Niche} className="h-full w-full object-cover transition group-hover:scale-105" />
-                        <div className="absolute right-1 top-1 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow">
-                          {it.trust_score}
+                        <div className="absolute right-1 top-1 rounded-md bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow" title={`Trust ${it.trust_score}/100`}>
+                          {it.trust_score}<span className="font-semibold opacity-80">/100</span>
                         </div>
                       </div>
                       <div className="min-w-0 flex-1">
@@ -129,9 +154,58 @@ export default function WishlistPage() {
                   </li>
                 ))}
             </ul>
+            )}
           </>
         )}
       </div>
     </main>
+  );
+}
+
+function WishlistCompareTable({ items, lang }: { items: WishlistItem[]; lang: string }) {
+  const maxTrust = Math.max(...items.map((it) => it.trust_score));
+  const maxRating = Math.max(...items.map((it) => it.rating ?? 0));
+  const minPrice = Math.min(...items.filter((it) => (it.price_min_thb ?? 0) > 0).map((it) => it.price_min_thb!));
+
+  return (
+    <div className="mt-4 overflow-x-auto rounded-2xl border border-ink-100 dark:border-ink-800">
+      <table className="w-full min-w-[560px] border-collapse text-sm">
+        <thead>
+          <tr className="border-b border-ink-100 bg-ink-50/50 dark:border-ink-800 dark:bg-ink-950/40">
+            <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wide text-ink-500 dark:text-ink-400">Venue</th>
+            <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wide text-ink-500 dark:text-ink-400">Trust</th>
+            <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wide text-ink-500 dark:text-ink-400">Rating</th>
+            <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wide text-ink-500 dark:text-ink-400">City</th>
+            <th className="px-4 py-3 text-left text-xs font-black uppercase tracking-wide text-ink-500 dark:text-ink-400">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((it) => (
+            <tr key={it.id} className="border-b border-ink-100 last:border-0 dark:border-ink-800">
+              <td className="px-4 py-3">
+                <Link href={`/${lang}/place/${it.slug}/`} className="flex items-center gap-3 hover:text-emerald-700 dark:hover:text-emerald-400">
+                  <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-ink-50 dark:bg-ink-800">
+                    <SafeImg src={it.top_photo_url} alt={it.name} niche={it.niche as Niche} className="h-full w-full object-cover" />
+                  </div>
+                  <span className="line-clamp-2 font-semibold leading-tight">{it.name}</span>
+                </Link>
+              </td>
+              <td className={`px-4 py-3 tabular-nums ${it.trust_score === maxTrust ? "font-black text-emerald-700 dark:text-emerald-400" : ""}`}>
+                {it.trust_score}/100{it.trust_score === maxTrust && " 🏆"}
+              </td>
+              <td className={`px-4 py-3 tabular-nums ${it.rating != null && it.rating === maxRating && maxRating > 0 ? "font-black text-amber-600 dark:text-amber-400" : ""}`}>
+                {it.rating != null ? `★ ${it.rating.toFixed(1)}` : "—"}
+              </td>
+              <td className="px-4 py-3 muted">{it.city || "—"}</td>
+              <td className={`px-4 py-3 tabular-nums ${it.price_min_thb === minPrice && minPrice > 0 ? "font-black text-emerald-700 dark:text-emerald-400" : ""}`}>
+                {it.price_min_thb && it.price_min_thb > 0
+                  ? `฿${it.price_min_thb.toLocaleString()}${it.price_max_thb && it.price_max_thb > it.price_min_thb ? `–${it.price_max_thb.toLocaleString()}` : ""}`
+                  : "—"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

@@ -244,8 +244,8 @@ export default function GuidePage({
                   <div>
                     <div className="flex flex-wrap items-baseline gap-x-2">
                       <h3 className="text-base font-bold sm:text-lg">{p.name}</h3>
-                      <span className="rounded bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white">
-                        {p.trust_score}
+                      <span className="rounded bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white" title={`Trust ${p.trust_score}/100`}>
+                        {p.trust_score}<span className="font-semibold opacity-80">/100</span>
                       </span>
                     </div>
                     <div className="mt-1 flex flex-wrap items-center gap-x-2 text-xs muted">

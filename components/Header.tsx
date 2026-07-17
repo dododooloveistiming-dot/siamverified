@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Lang, Niche } from "@/lib/types";
@@ -29,6 +29,65 @@ const HEADER_CITIES: Array<{ slug: string; label: string; emoji: string }> = [
 const LANG_LABEL: Record<Lang, string> = {
   en: "English", ko: "한국어", th: "ไทย", zh: "中文", ja: "日本語", ar: "العربية", id: "Bahasa Indonesia", vi: "Tiếng Việt",
 };
+
+// Desktop nav dropdowns used to open on `group-hover` only — unreliable on
+// touch laptops (no persistent hover state) and fully keyboard-inaccessible
+// (tabbing to a link inside never opened the menu). This adds click-to-toggle
+// + outside-click/Escape-to-close, while keeping hover and focus-within as
+// zero-JS fallbacks (group-hover:block / group-focus-within:block) so the
+// menu still works if JS is slow to hydrate.
+function NavDropdown({
+  label,
+  icon,
+  width = "w-[240px]",
+  children,
+}: {
+  label: string;
+  icon?: string;
+  width?: string;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onOutside);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onOutside);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} className="group relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="muted inline-flex items-center gap-1 whitespace-nowrap transition hover:text-emerald-600"
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
+        {icon && <>{icon} </>}{label} <span className="text-[8px]">▼</span>
+      </button>
+      <div
+        className={`absolute left-0 top-full ${width} overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl dark:border-ink-800 dark:bg-ink-900 ${
+          open ? "block" : "hidden group-hover:block group-focus-within:block"
+        }`}
+        onClick={() => setOpen(false)}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export default function Header({
   lang,
@@ -90,147 +149,120 @@ export default function Header({
           ))}
 
           {/* Cities dropdown — promoted to primary nav because /city hub pages are high-AEO landing pages */}
-          <div className="group relative">
-            <button
-              type="button"
-              className="muted inline-flex items-center gap-1 whitespace-nowrap transition hover:text-emerald-600"
-              aria-haspopup="true"
-            >
-              🏙️ Cities <span className="text-[8px]">▼</span>
-            </button>
-            <div className="absolute left-0 top-full hidden w-[240px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
-              <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
-                Cities
-              </div>
-              <div className="p-1.5">
-                {HEADER_CITIES.map((c) => (
-                  <Link
-                    key={c.slug}
-                    href={`/${lang}/city/${c.slug}/`}
-                    className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                  >
-                    <span className="text-base">{c.emoji}</span>
-                    <span>{c.label}</span>
-                  </Link>
-                ))}
-              </div>
+          <NavDropdown label="Cities" icon="🏙️">
+            <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+              Cities
             </div>
-          </div>
+            <div className="p-1.5">
+              {HEADER_CITIES.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/${lang}/city/${c.slug}/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">{c.emoji}</span>
+                  <span>{c.label}</span>
+                </Link>
+              ))}
+            </div>
+          </NavDropdown>
 
           {/* Guides dropdown — surface wiki content (currently 252 city×niche pages buried) */}
-          <div className="group relative">
-            <button
-              type="button"
-              className="muted inline-flex items-center gap-1 whitespace-nowrap transition hover:text-emerald-600"
-              aria-haspopup="true"
-            >
-              📖 Guides <span className="text-[8px]">▼</span>
-            </button>
-            <div className="absolute left-0 top-full hidden w-[260px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
-              <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
-                Popular guides
-              </div>
-              <div className="p-1.5">
-                {[
-                  { href: `/${lang}/guide/bangkok-yoga-pilates/`, label: "Bangkok yoga", emoji: "🧘" },
-                  { href: `/${lang}/guide/bangkok-muay-thai/`, label: "Bangkok Muay Thai", emoji: "🥊" },
-                  { href: `/${lang}/guide/phuket-spa/`, label: "Phuket spa", emoji: "💆" },
-                  { href: `/${lang}/guide/chiang-mai-cooking/`, label: "Chiang Mai cooking", emoji: "🍜" },
-                  { href: `/${lang}/guide/bangkok-spa/`, label: "Bangkok spa", emoji: "💆" },
-                ].map((g) => (
-                  <Link
-                    key={g.href}
-                    href={g.href}
-                    className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                  >
-                    <span className="text-base">{g.emoji}</span>
-                    <span>{g.label}</span>
-                  </Link>
-                ))}
-              </div>
-              <div className="border-t border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
-                Reference
-              </div>
-              <div className="p-1.5">
-                <Link
-                  href={`/${lang}/faq/`}
-                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                >
-                  <span className="text-base">❓</span>
-                  <span>All FAQs</span>
-                </Link>
-                <Link
-                  href={`/${lang}/compare/bangkok-vs-chiang-mai/`}
-                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                >
-                  <span className="text-base">⚖️</span>
-                  <span>City vs city</span>
-                </Link>
-              </div>
+          <NavDropdown label="Guides" icon="📖" width="w-[260px]">
+            <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+              Popular guides
             </div>
-          </div>
+            <div className="p-1.5">
+              {[
+                { href: `/${lang}/guide/bangkok-yoga-pilates/`, label: "Bangkok yoga", emoji: "🧘" },
+                { href: `/${lang}/guide/bangkok-muay-thai/`, label: "Bangkok Muay Thai", emoji: "🥊" },
+                { href: `/${lang}/guide/phuket-spa/`, label: "Phuket spa", emoji: "💆" },
+                { href: `/${lang}/guide/chiang-mai-cooking/`, label: "Chiang Mai cooking", emoji: "🍜" },
+                { href: `/${lang}/guide/bangkok-spa/`, label: "Bangkok spa", emoji: "💆" },
+              ].map((g) => (
+                <Link
+                  key={g.href}
+                  href={g.href}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">{g.emoji}</span>
+                  <span>{g.label}</span>
+                </Link>
+              ))}
+            </div>
+            <div className="border-t border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+              Reference
+            </div>
+            <div className="p-1.5">
+              <Link
+                href={`/${lang}/faq/`}
+                className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+              >
+                <span className="text-base">❓</span>
+                <span>All FAQs</span>
+              </Link>
+              <Link
+                href={`/${lang}/compare/bangkok-vs-chiang-mai/`}
+                className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+              >
+                <span className="text-base">⚖️</span>
+                <span>City vs city</span>
+              </Link>
+            </div>
+          </NavDropdown>
 
           {/* More — leftover niches + blog */}
-          <div className="group relative">
-            <button
-              type="button"
-              className="muted inline-flex items-center gap-1 whitespace-nowrap transition hover:text-emerald-600"
-              aria-haspopup="true"
-            >
-              More <span className="text-[8px]">▼</span>
-            </button>
-            <div className="absolute left-0 top-full hidden w-[260px] overflow-hidden rounded-xl border border-ink-100 bg-white shadow-xl group-hover:block dark:border-ink-800 dark:bg-ink-900">
-              <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
-                More categories
-              </div>
-              <div className="p-1.5">
-                {/* diving lives in primary already; show wellness/cooking/coworking + the 4th primary fallback */}
-                <Link
-                  href={`/${lang}/c/diving/`}
-                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                >
-                  <span className="text-base">{NICHE_META["diving"].emoji}</span>
-                  <span>{nicheName("diving", lang)}</span>
-                </Link>
-                {NAV_NICHES_SECONDARY.map((n) => (
-                  <Link
-                    key={n}
-                    href={`/${lang}/c/${n}/`}
-                    className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                  >
-                    <span className="text-base">{NICHE_META[n].emoji}</span>
-                    <span>{nicheName(n, lang)}</span>
-                  </Link>
-                ))}
-              </div>
-              <div className="border-t border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
-                Explore
-              </div>
-              <div className="p-1.5">
-                <Link
-                  href={`/${lang}/blog/`}
-                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-bold text-emerald-700 transition hover:bg-emerald-50 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
-                >
-                  <span className="text-base">✍️</span>
-                  <span>Korean Travel Blog</span>
-                </Link>
-                <Link
-                  href="/for-business"
-                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                >
-                  <span className="text-base">🏢</span>
-                  <span>For Business Owners</span>
-                </Link>
-                <Link
-                  href={`/${lang}/about/`}
-                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
-                >
-                  <span className="text-base">ℹ️</span>
-                  <span>About &amp; Contact</span>
-                </Link>
-              </div>
+          <NavDropdown label="More" width="w-[260px]">
+            <div className="border-b border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+              More categories
             </div>
-          </div>
+            <div className="p-1.5">
+              {/* diving lives in primary already; show wellness/cooking/coworking + the 4th primary fallback */}
+              <Link
+                href={`/${lang}/c/diving/`}
+                className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+              >
+                <span className="text-base">{NICHE_META["diving"].emoji}</span>
+                <span>{nicheName("diving", lang)}</span>
+              </Link>
+              {NAV_NICHES_SECONDARY.map((n) => (
+                <Link
+                  key={n}
+                  href={`/${lang}/c/${n}/`}
+                  className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+                >
+                  <span className="text-base">{NICHE_META[n].emoji}</span>
+                  <span>{nicheName(n, lang)}</span>
+                </Link>
+              ))}
+            </div>
+            <div className="border-t border-ink-100 bg-ink-50/50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-ink-500 dark:border-ink-800 dark:bg-ink-950/40 dark:text-ink-400">
+              Explore
+            </div>
+            <div className="p-1.5">
+              <Link
+                href={`/${lang}/blog/`}
+                className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-bold text-emerald-700 transition hover:bg-emerald-50 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
+              >
+                <span className="text-base">✍️</span>
+                <span>Korean Travel Blog</span>
+              </Link>
+              <Link
+                href="/for-business"
+                className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+              >
+                <span className="text-base">🏢</span>
+                <span>For Business Owners</span>
+              </Link>
+              <Link
+                href={`/${lang}/about/`}
+                className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/40"
+              >
+                <span className="text-base">ℹ️</span>
+                <span>About &amp; Contact</span>
+              </Link>
+            </div>
+          </NavDropdown>
         </nav>
 
         <div className="flex items-center gap-2">
