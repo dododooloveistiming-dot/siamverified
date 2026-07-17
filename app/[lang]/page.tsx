@@ -8,7 +8,7 @@ import { orderedNiches, isKoreanPopular } from "@/lib/niches";
 import SafeImg from "@/components/SafeImg";
 import WishlistButton from "@/components/WishlistButton";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import { currentSeason } from "@/lib/seasons";
+import { currentSeason, monthName, MONTH_SLUGS } from "@/lib/seasons";
 import { getCityBySlug } from "@/lib/cities";
 
 export const dynamic = "force-static";
@@ -175,16 +175,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       {/* SEASONAL WIDGET — month-aware Thailand context, sets expectations */}
       {(() => {
         const season = currentSeason();
-        const MONTH_NAME = ({
-          en: ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-          ko: ["", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-          ja: ["", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-          zh: ["", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-          th: ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
-          ar: ["", "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
-          id: ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
-          vi: ["", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
-        } as const)[lang][season.month];
+        const MONTH_NAME = monthName(season.month, lang);
         return (
           <section className="mx-auto max-w-6xl px-4 pt-12">
             <div className="rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50/80 to-rose-50/60 p-5 dark:border-amber-800/60 dark:from-amber-950/30 dark:to-rose-950/20">
@@ -226,6 +217,12 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
                     <span className="capitalize">{c.replace(/-/g, " ")}</span>
                   </Link>
                 ))}
+                <Link
+                  href={`/${lang}/thailand-in/${MONTH_SLUGS[season.month]}/`}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-700"
+                >
+                  {MONTH_NAME} {t("hp_full_guide", lang)} →
+                </Link>
               </div>
             </div>
           </section>

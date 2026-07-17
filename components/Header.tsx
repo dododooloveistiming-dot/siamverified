@@ -4,7 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName } from "@/lib/types";
-import { SITE, SUPPORTED_LANGS, t } from "@/lib/i18n";
+// Import from lib/site (not lib/i18n) — lib/i18n.ts pulls in the full
+// 201KB 8-locale ui_i18n.json sidecar at module scope, which would ship in
+// every page's client JS if a "use client" component like this imports
+// anything from that file (Header renders on every page, static or not).
+import { SITE, SUPPORTED_LANGS } from "@/lib/site";
 import DarkModeToggle from "./DarkModeToggle";
 import WishlistNavLink from "./WishlistNavLink";
 
@@ -26,7 +30,15 @@ const LANG_LABEL: Record<Lang, string> = {
   en: "English", ko: "한국어", th: "ไทย", zh: "中文", ja: "日本語", ar: "العربية", id: "Bahasa Indonesia", vi: "Tiếng Việt",
 };
 
-export default function Header({ lang }: { lang: Lang }) {
+export default function Header({
+  lang,
+  navForBusiness,
+  navSaved,
+}: {
+  lang: Lang;
+  navForBusiness: string;
+  navSaved: string;
+}) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -227,9 +239,9 @@ export default function Header({ lang }: { lang: Lang }) {
             className="hidden rounded-md border border-emerald-500 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 lg:inline-flex"
             title="For business owners"
           >
-            {t("nav_for_business", lang)}
+            {navForBusiness}
           </Link>
-          <WishlistNavLink lang={lang} label={t("nav_saved", lang)} />
+          <WishlistNavLink lang={lang} label={navSaved} />
           <select
             value={lang}
             onChange={(e) => switchLang(e.target.value)}

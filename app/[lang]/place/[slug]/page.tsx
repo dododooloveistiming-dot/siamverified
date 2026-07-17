@@ -28,10 +28,12 @@ import ShareButton from "@/components/ShareButton";
 import WishlistButton from "@/components/WishlistButton";
 import PlaceMap from "@/components/PlaceMap";
 
-// ISR — initially built static, refreshed from DB (owner profile) every
-// 10 minutes. Owner edits go live within ~10 min; trade-off for 90% fewer
-// function invocations vs 60s revalidation.
-export const revalidate = 600;
+// ISR — initially built static; owner-profile edits are pushed live
+// immediately via revalidatePath() from the profile API route (see
+// app/api/listings/[id]/profile/route.ts), so this interval is just a
+// long-tail safety net, not the primary update path. 24h keeps regeneration
+// (and its lambda cost) far off the request hot path.
+export const revalidate = 60 * 60 * 24;
 
 // Allow on-demand rendering of place pages not pre-built below (the App
 // Router default, made explicit here because it's load-bearing).

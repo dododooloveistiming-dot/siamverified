@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadPlaces, getPlacesByNiche, loadCommunity, toPlaceCard } from "@/lib/data";
-import { SITE, SUPPORTED_LANGS, T, t, withXDefault } from "@/lib/i18n";
+import { SITE, SUPPORTED_LANGS, T, t, withXDefault, resolveCategoryStrings } from "@/lib/i18n";
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
@@ -184,7 +184,7 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
                 ? "필터로 원하는 조건 좁히기"
                 : "Filter and sort to find your perfect match"}
             </p>
-            <CategoryClient places={places} lang={lang} niche={niche} />
+            <CategoryClient places={places} lang={lang} niche={niche} strings={resolveCategoryStrings(lang)} />
           </section>
         </>
       )}

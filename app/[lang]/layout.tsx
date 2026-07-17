@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Lang } from "@/lib/types";
-import { SUPPORTED_LANGS } from "@/lib/i18n";
+import { SUPPORTED_LANGS } from "@/lib/site";
+import { t } from "@/lib/i18n";
 import Header from "@/components/Header";
 import SetHtmlLang from "@/components/SetHtmlLang";
 import SiteFooter from "@/components/SiteFooter";
@@ -36,7 +37,7 @@ export default function LangLayout({
       <script dangerouslySetInnerHTML={{ __html: NO_FOUC }} />
       <script dangerouslySetInnerHTML={{ __html: SET_LANG_DIR }} />
       <SetHtmlLang lang={lang} />
-      <Header lang={lang} />
+      <Header lang={lang} navForBusiness={t("nav_for_business", lang)} navSaved={t("nav_saved", lang)} />
       {children}
       <SiteFooter lang={lang} />
     </>

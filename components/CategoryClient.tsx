@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lang, Niche, PlaceCard as PlaceCardData } from "@/lib/types";
 import { NICHE_META } from "@/lib/types";
-import { t } from "@/lib/i18n";
+// Type-only import — erased at compile time, so this doesn't pull lib/i18n.ts's
+// 201KB ui_i18n.json into the client bundle. Strings are resolved server-side
+// by the parent page via resolveCategoryStrings() and passed in as a prop.
+import type { CategoryStrings } from "@/lib/i18n";
 import SafeImg from "@/components/SafeImg";
 import WishlistButton from "@/components/WishlistButton";
 import { cleanReviewText, isThaiText } from "@/lib/reviews";
@@ -19,11 +22,17 @@ type PriceBand = "" | "budget" | "mid" | "premium" | "luxury";
 // contributor to INP/hydration jank on mobile. Render a page at a time.
 const PAGE_SIZE = 30;
 
-const PB_LABEL: Record<Exclude<PriceBand, "">, { icon: string; key: "price_budget" | "price_mid" | "price_premium" | "price_luxury" }> = {
-  budget: { icon: "💵", key: "price_budget" },
-  mid: { icon: "💵💵", key: "price_mid" },
-  premium: { icon: "💵💵💵", key: "price_premium" },
-  luxury: { icon: "💎", key: "price_luxury" },
+const PB_LABEL: Record<Exclude<PriceBand, "">, { icon: string }> = {
+  budget: { icon: "💵" },
+  mid: { icon: "💵💵" },
+  premium: { icon: "💵💵💵" },
+  luxury: { icon: "💎" },
+};
+const PRICE_STRINGS: Record<Exclude<PriceBand, "">, (s: CategoryStrings) => string> = {
+  budget: (s) => s.priceBudget,
+  mid: (s) => s.priceMid,
+  premium: (s) => s.pricePremium,
+  luxury: (s) => s.priceLuxury,
 };
 
 function trustTier(score: number): "high" | "mid" | "low" {
@@ -51,10 +60,12 @@ export default function CategoryClient({
   places,
   lang,
   niche,
+  strings,
 }: {
   places: PlaceCardData[];
   lang: Lang;
   niche: Niche;
+  strings: CategoryStrings;
 }) {
   const [query, setQuery] = useState("");
   const [city, setCity] = useState("");
@@ -220,26 +231,26 @@ export default function CategoryClient({
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("search_ph", lang)}
+            placeholder={strings.searchPh}
             className="w-full rounded-xl border border-ink-200 bg-white py-3 pl-10 pr-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-ink-700 dark:bg-ink-900"
-            aria-label={t("search_ph", lang)}
+            aria-label={strings.searchPh}
           />
         </label>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as Sort)}
           className="rounded-xl border border-ink-200 bg-white px-3 py-3 text-sm font-medium dark:border-ink-700 dark:bg-ink-900"
-          aria-label={t("sort_by", lang)}
+          aria-label={strings.sortBy}
         >
-          <option value="trust">⭐ {t("sort_trust", lang)}</option>
-          <option value="reviews">💬 {t("sort_reviews", lang)}</option>
-          <option value="rating">★ {t("sort_rating", lang)}</option>
+          <option value="trust">⭐ {strings.sortTrust}</option>
+          <option value="reviews">💬 {strings.sortReviews}</option>
+          <option value="rating">★ {strings.sortRating}</option>
         </select>
       </div>
 
       {cities.length > 0 && (
         <div className="mt-4 -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <Chip selected={!city} onClick={() => setCity("")}>{t("all_label", lang)}</Chip>
+          <Chip selected={!city} onClick={() => setCity("")}>{strings.allLabel}</Chip>
           {cities.map((c) => (
             <Chip key={c} selected={city === c} onClick={() => setCity(c)}>{c}</Chip>
           ))}
@@ -247,37 +258,37 @@ export default function CategoryClient({
       )}
 
       <div className="mt-3 flex flex-wrap gap-2 text-xs">
-        <Pill on={establishedOnly} onClick={() => setEstablishedOnly((v) => !v)}>🏛 {t("filter_established", lang)}</Pill>
-        <Pill on={activeOnly} onClick={() => setActiveOnly((v) => !v)}>🟢 {t("filter_active", lang)}</Pill>
-        <Pill on={koOnly} onClick={() => setKoOnly((v) => !v)}>🇰🇷 {t("filter_korean_friendly", lang)}</Pill>
-        <Pill on={beginnerOnly} onClick={() => setBeginnerOnly((v) => !v)}>🐣 {t("filter_beginner", lang)}</Pill>
-        <Pill on={open24Only} onClick={() => setOpen24Only((v) => !v)}>🌙 {t("filter_24h", lang)}</Pill>
+        <Pill on={establishedOnly} onClick={() => setEstablishedOnly((v) => !v)}>🏛 {strings.filterEstablished}</Pill>
+        <Pill on={activeOnly} onClick={() => setActiveOnly((v) => !v)}>🟢 {strings.filterActive}</Pill>
+        <Pill on={koOnly} onClick={() => setKoOnly((v) => !v)}>🇰🇷 {strings.filterKorean}</Pill>
+        <Pill on={beginnerOnly} onClick={() => setBeginnerOnly((v) => !v)}>🐣 {strings.filterBeginner}</Pill>
+        <Pill on={open24Only} onClick={() => setOpen24Only((v) => !v)}>🌙 {strings.filter24h}</Pill>
         <span className="mx-1 hidden border-r border-ink-200 dark:border-ink-700 sm:inline-block" aria-hidden="true" />
         {(["budget","mid","premium","luxury"] as const).map((pb) => (
           <Pill key={pb} on={priceBand === pb} onClick={() => setPriceBand(priceBand === pb ? "" : pb)}>
-            {PB_LABEL[pb].icon} {t(PB_LABEL[pb].key, lang)}
+            {PB_LABEL[pb].icon} {PRICE_STRINGS[pb](strings)}
           </Pill>
         ))}
-        <Pill on={hideViral} onClick={() => setHideViral((v) => !v)} tone="warn">🚫 {t("filter_out_viral", lang)}</Pill>
+        <Pill on={hideViral} onClick={() => setHideViral((v) => !v)} tone="warn">🚫 {strings.filterOutViral}</Pill>
       </div>
 
       <div className="mt-4 flex items-baseline justify-between text-xs muted">
-        <span>{filtered.length.toLocaleString()} / {places.length.toLocaleString()} {t("places_count", lang)}</span>
+        <span>{filtered.length.toLocaleString()} / {places.length.toLocaleString()} {strings.placesCount}</span>
         {(query || city || priceBand || koOnly || beginnerOnly || open24Only || establishedOnly || activeOnly) && (
           <button
             type="button"
             onClick={() => { setQuery(""); setCity(""); setPriceBand(""); setKoOnly(false); setBeginnerOnly(false); setOpen24Only(false); setEstablishedOnly(false); setActiveOnly(false); }}
             className="rounded-md px-2 py-1 font-medium text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
           >
-            ✕ {t("reset", lang)}
+            ✕ {strings.reset}
           </button>
         )}
       </div>
 
       {filtered.length === 0 ? (
         <div className="mt-8 rounded-2xl border border-dashed border-ink-200 bg-white p-8 text-center dark:border-ink-700 dark:bg-ink-900">
-          <p className="text-base font-bold">{t("no_matches", lang)}</p>
-          <p className="mt-1 text-sm muted">{t("try_remove_filters", lang)}</p>
+          <p className="text-base font-bold">{strings.noMatches}</p>
+          <p className="mt-1 text-sm muted">{strings.tryRemoveFilters}</p>
         </div>
       ) : (
         <>
@@ -291,7 +302,7 @@ export default function CategoryClient({
                   {featured ? (
                     <FeaturedListCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
                   ) : (
-                    <PlaceCard p={p} lang={lang} fallbackEmoji={meta.emoji} />
+                    <PlaceCard p={p} lang={lang} fallbackEmoji={meta.emoji} filterBeginner={strings.filterBeginner} />
                   )}
                 </li>
               );
@@ -304,7 +315,7 @@ export default function CategoryClient({
                 onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
                 className="rounded-xl border border-ink-200 bg-white px-6 py-2.5 text-sm font-bold transition hover:border-emerald-400 hover:text-emerald-700 dark:border-ink-700 dark:bg-ink-900 dark:hover:text-emerald-400"
               >
-                {t("load_more", lang)} ({(filtered.length - visibleCount).toLocaleString()})
+                {strings.loadMore} ({(filtered.length - visibleCount).toLocaleString()})
               </button>
             </div>
           )}
@@ -407,7 +418,7 @@ function FeaturedListCard({ p, lang, fallbackEmoji }: { p: PlaceCardData; lang: 
   );
 }
 
-function PlaceCard({ p, lang, fallbackEmoji }: { p: PlaceCardData; lang: Lang; fallbackEmoji: string }) {
+function PlaceCard({ p, lang, fallbackEmoji, filterBeginner }: { p: PlaceCardData; lang: Lang; fallbackEmoji: string; filterBeginner: string }) {
   const tier = trustTier(p.trust_score);
   const tierClass =
     tier === "high"
@@ -480,7 +491,7 @@ function PlaceCard({ p, lang, fallbackEmoji }: { p: PlaceCardData; lang: Lang; f
           )}
           {p.is_beginner_friendly && (
             <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
-              🐣 {t("filter_beginner", lang)}
+              🐣 {filterBeginner}
             </span>
           )}
           {p.languages.ko && (

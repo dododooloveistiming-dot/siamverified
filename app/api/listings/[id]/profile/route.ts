@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { eq, and } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db, listingClaims, listingProfiles } from "@/lib/db";
+import { getPlaceBySlug } from "@/lib/data";
+import { SUPPORTED_LANGS } from "@/lib/i18n";
 
 type ServiceItem = {
   name: string;
@@ -101,6 +104,14 @@ export async function POST(
       .update(listingProfiles)
       .set(cleanPatch)
       .where(eq(listingProfiles.placeId, params.id));
+  }
+
+  // Push the edit live immediately instead of waiting for the ISR sweep
+  // (place pages now revalidate on a 24h timer — see app/[lang]/place/[slug]/page.tsx).
+  if (getPlaceBySlug(params.id)) {
+    for (const lang of SUPPORTED_LANGS) {
+      revalidatePath(`/${lang}/place/${params.id}/`);
+    }
   }
 
   return NextResponse.json({ ok: true });

@@ -5,6 +5,7 @@ import { listFaqs, isFaqTranslated, faqTranslatedLangs } from "@/lib/faqs";
 import { SITE, SUPPORTED_LANGS, withXDefault } from "@/lib/i18n";
 import { isIndexablePlace } from "@/lib/reviews";
 import { hasEnoughGuidePlaces, CITY_SLUGS as GUIDE_CITY_SLUGS } from "@/lib/guides";
+import { MONTH_SLUGS } from "@/lib/seasons";
 import type { Niche } from "@/lib/types";
 
 // Mirrors definitions used by app/[lang]/guide/[slug] and /compare/[slug]
@@ -50,6 +51,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
         )),
       },
     });
+
+    // Seasonal /thailand-in/[month]/ pages — evergreen, recurring annual demand
+    for (const slug of MONTH_SLUGS.slice(1)) {
+      out.push({
+        url: `${origin}/${lang}/thailand-in/${slug}/`,
+        lastModified: now,
+        priority: 0.7,
+        changeFrequency: "monthly",
+        alternates: {
+          languages: withXDefault(Object.fromEntries(
+            SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/thailand-in/${slug}/`]),
+          )),
+        },
+      });
+    }
 
     // Niche category pages
     for (const n of NICHES) {

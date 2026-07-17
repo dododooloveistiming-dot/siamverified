@@ -228,3 +228,37 @@ export function currentSeason(): SeasonContext & { month: number } {
   const month = new Date().getMonth() + 1;
   return { ...SEASONS[month], month };
 }
+
+export function seasonForMonth(month: number): (SeasonContext & { month: number }) | null {
+  if (!SEASONS[month]) return null;
+  return { ...SEASONS[month], month };
+}
+
+// Localized display names, keyed by month number (1-12) — shared by the
+// homepage widget and /[lang]/thailand-in/[month]/ pages so they never drift.
+export const MONTH_NAMES: Loc<string[]> = {
+  en: ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  ko: ["", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+  ja: ["", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+  zh: ["", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+  th: ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
+  ar: ["", "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
+  id: ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+  vi: ["", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+};
+
+export function monthName(month: number, lang: keyof typeof MONTH_NAMES): string {
+  return (MONTH_NAMES[lang] ?? MONTH_NAMES.en)[month] ?? String(month);
+}
+
+// English-lowercase slugs used in the /[lang]/thailand-in/[slug]/ URL —
+// stable across locales so the URL structure doesn't change per language.
+export const MONTH_SLUGS: string[] = [
+  "", "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+];
+
+export function monthFromSlug(slug: string): number | null {
+  const i = MONTH_SLUGS.indexOf(slug);
+  return i > 0 ? i : null;
+}
