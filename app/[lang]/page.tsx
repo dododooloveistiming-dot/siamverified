@@ -237,10 +237,11 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
       {/* TRIP-PURPOSE FUNNEL — lowest-friction entry for category-uncertain visitors */}
       <section className="mx-auto max-w-6xl px-4 pt-12">
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {({ en: "I want to…", ko: "나는…", ja: "やりたいこと…", zh: "我想…", th: "ฉันอยาก…", ar: "أريد أن…", id: "Saya ingin…", vi: "Tôi muốn…" } as const)[lang]}
+          {(({ en: "I want to…", ko: "나는…", ja: "やりたいこと…", zh: "我想…", th: "ฉันอยาก…", ar: "أريد أن…", id: "Saya ingin…", vi: "Tôi muốn…" } as const)[lang]) ?? "I want to…"}
         </h2>
         <p className="mt-1 text-sm muted">
-          {({
+          {((
+            {
             en: "Not sure what category fits your trip? Pick a vibe.",
             ko: "어떤 카테고리에 가야 할지 모르겠다면, 분위기로 골라봐.",
             ja: "どのカテゴリーかわからない？気分で選ぼう。",
@@ -249,7 +250,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             ar: "غير متأكد من الفئة؟ اختر حسب الأجواء.",
             id: "Tidak yakin kategori mana? Pilih berdasarkan suasana.",
             vi: "Không chắc chọn danh mục nào? Chọn theo cảm hứng.",
-          } as const)[lang]}
+          } as const)[lang]) ?? "Not sure what category fits your trip? Pick a vibe."}
         </p>
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {([
@@ -294,7 +295,7 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
               vi: ["Phiêu lưu", "Cửa hàng lặn · PADI"],
             },
           ] as const).map((opt) => {
-            const [title, sub] = opt[lang];
+            const [title, sub] = opt[lang] ?? opt.en;
             return (
               <Link
                 key={opt.href}
