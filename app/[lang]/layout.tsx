@@ -37,7 +37,7 @@ export default function LangLayout({
       <script dangerouslySetInnerHTML={{ __html: NO_FOUC }} />
       <script dangerouslySetInnerHTML={{ __html: SET_LANG_DIR }} />
       <SetHtmlLang lang={lang} />
-      <Header lang={lang} navForBusiness={t("nav_for_business", lang)} navSaved={t("nav_saved", lang)} />
+      <Header lang={lang} navForBusiness={t("nav_for_business", lang)} navSaved={t("nav_saved", lang)} navVerify={t("verify_nav", lang)} />
       {children}
       <SiteFooter lang={lang} />
     </>

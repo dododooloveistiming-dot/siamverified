@@ -125,8 +125,18 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             {t("for_audience", lang)}
           </p>
 
+          {/* Primary CTA — the verify tool. Social referrals arrive with a
+              specific venue in mind, so give them the lookup before the
+              browse links. */}
+          <Link
+            href={`/${lang}/verify/`}
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-emerald-500/25 transition hover:bg-emerald-400"
+          >
+            🔎 {t("verify_h1", lang)}
+          </Link>
+
           {/* Quick paths */}
-          <div className="mt-8 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             {[
               { label: "Bangkok spa", href: `/${lang}/guide/bangkok-spa/` },
               { label: "Phuket cooking", href: `/${lang}/guide/phuket-cooking/` },

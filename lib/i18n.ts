@@ -1,6 +1,7 @@
 import type { Lang } from "./types";
 import uiI18n from "../public/data/ui_i18n.json";
 import { DEFAULT_LANG } from "./site";
+import type { VerifyStrings } from "./verify";
 
 // SITE/SUPPORTED_LANGS/etc. live in lib/site.ts (no ui_i18n.json import) so
 // client components that only need those can avoid pulling this whole
@@ -14,6 +15,128 @@ export { SUPPORTED_LANGS, DEFAULT_LANG, TRUST_SOURCES, SITE } from "./site";
 const UI_I18N = uiI18n as Record<string, Partial<Record<Lang, string>>>;
 
 export const T = {
+  // -- /[lang]/verify/ -- paste an Instagram/TikTok handle, get a verdict --
+  verify_nav: { en: "Verify", ko: "검증", th: "ตรวจสอบ", zh: "验证", ja: "検証", ar: "تحقق", id: "Verifikasi", vi: "Xác minh" },
+  verify_h1: {
+    en: "Saw it on Instagram? Check it here.",
+    ko: "인스타에서 봤어요? 여기서 확인하세요.",
+    th: "เห็นจากอินสตาแกรมใช่ไหม? ตรวจสอบที่นี่",
+    zh: "在 Instagram 上看到的？在这里核实。",
+    ja: "Instagramで見かけた？ここで確かめよう。",
+    id: "Lihat di Instagram? Cek di sini.",
+    vi: "Thấy trên Instagram? Kiểm tra tại đây.",
+  },
+  verify_sub: {
+    en: "Paste an Instagram or TikTok handle, a link, or just the name. We cross-check it against {n} independent sources — Google, Reddit, Pantip, Naver, YouTube, domain history, and more. No paid placements, ever.",
+    ko: "인스타그램·틱톡 아이디나 링크, 또는 상호명만 붙여넣으세요. {n}개 독립 소스(구글·레딧·판팁·네이버·유튜브·도메인 이력 등)로 교차 검증합니다. 광고비로 순위를 바꿀 수 없습니다.",
+    th: "วางชื่อผู้ใช้ Instagram หรือ TikTok ลิงก์ หรือแค่ชื่อร้าน เราตรวจสอบข้ามจาก {n} แหล่งอิสระ",
+    zh: "粘贴 Instagram 或 TikTok 账号、链接，或直接输入店名。我们会用 {n} 个独立来源交叉核实，绝不接受付费排名。",
+    ja: "InstagramやTikTokのID、リンク、店名を貼り付けてください。{n}件の独立した情報源で照合します。有料掲載は一切ありません。",
+    id: "Tempel handle Instagram atau TikTok, tautan, atau cukup namanya. Kami periksa silang dengan {n} sumber independen. Tidak ada penempatan berbayar.",
+    vi: "Dán handle Instagram hoặc TikTok, liên kết, hoặc chỉ cần tên. Chúng tôi đối chiếu với {n} nguồn độc lập. Không có vị trí trả phí.",
+  },
+  verify_placeholder: {
+    en: "@handle, instagram.com/…, tiktok.com/@…, or the venue name",
+    ko: "@아이디, instagram.com/…, tiktok.com/@… 또는 상호명",
+    th: "@ชื่อผู้ใช้ instagram.com/… tiktok.com/@… หรือชื่อร้าน",
+    zh: "@账号、instagram.com/…、tiktok.com/@… 或店名",
+    ja: "@ID、instagram.com/…、tiktok.com/@… または店名",
+    id: "@handle, instagram.com/…, tiktok.com/@…, atau nama tempat",
+    vi: "@handle, instagram.com/…, tiktok.com/@…, hoặc tên địa điểm",
+  },
+  verify_loading: { en: "Loading the index…", ko: "인덱스 불러오는 중…", th: "กำลังโหลดดัชนี…", zh: "正在加载索引…", ja: "インデックスを読み込み中…", id: "Memuat indeks…", vi: "Đang tải chỉ mục…" },
+  verify_checking: { en: "Checking…", ko: "확인 중…", th: "กำลังตรวจสอบ…", zh: "核实中…", ja: "確認中…", id: "Memeriksa…", vi: "Đang kiểm tra…" },
+  verify_verified_title: { en: "In our index", ko: "우리 인덱스에 있습니다", th: "อยู่ในดัชนีของเรา", zh: "已收录", ja: "インデックスにあります", id: "Ada di indeks kami", vi: "Có trong chỉ mục" },
+  verify_via_ig: { en: "matched by Instagram handle", ko: "인스타그램 아이디로 매칭", th: "จับคู่ด้วยชื่อ Instagram", zh: "通过 Instagram 账号匹配", ja: "InstagramのIDで一致", id: "cocok lewat handle Instagram", vi: "khớp qua handle Instagram" },
+  verify_via_tt: { en: "matched by TikTok handle", ko: "틱톡 아이디로 매칭", th: "จับคู่ด้วยชื่อ TikTok", zh: "通过 TikTok 账号匹配", ja: "TikTokのIDで一致", id: "cocok lewat handle TikTok", vi: "khớp qua handle TikTok" },
+  verify_via_fb: { en: "matched by Facebook page", ko: "페이스북 페이지로 매칭", th: "จับคู่ด้วยเพจ Facebook", zh: "通过 Facebook 主页匹配", ja: "Facebookページで一致", id: "cocok lewat halaman Facebook", vi: "khớp qua trang Facebook" },
+  verify_via_yt: { en: "matched by YouTube channel", ko: "유튜브 채널로 매칭", th: "จับคู่ด้วยช่อง YouTube", zh: "通过 YouTube 频道匹配", ja: "YouTubeチャンネルで一致", id: "cocok lewat kanal YouTube", vi: "khớp qua kênh YouTube" },
+  verify_via_ln: { en: "matched by LINE account", ko: "라인 계정으로 매칭", th: "จับคู่ด้วยบัญชี LINE", zh: "通过 LINE 账号匹配", ja: "LINEアカウントで一致", id: "cocok lewat akun LINE", vi: "khớp qua tài khoản LINE" },
+  verify_via_w: { en: "matched by website", ko: "웹사이트로 매칭", th: "จับคู่ด้วยเว็บไซต์", zh: "通过网站匹配", ja: "ウェブサイトで一致", id: "cocok lewat situs web", vi: "khớp qua website" },
+  verify_sources_line: {
+    en: "Found in {n} of {total} independent sources",
+    ko: "{total}개 독립 소스 중 {n}개에서 확인",
+    th: "พบใน {n} จาก {total} แหล่งอิสระ",
+    zh: "在 {total} 个独立来源中的 {n} 个找到",
+    ja: "{total}件中{n}件の情報源で確認",
+    id: "Ditemukan di {n} dari {total} sumber independen",
+    vi: "Tìm thấy ở {n}/{total} nguồn độc lập",
+  },
+  verify_google_line: {
+    en: "{rating}★ from {n} Google reviews",
+    ko: "구글 리뷰 {n}개 · 평점 {rating}★",
+    th: "{rating}★ จากรีวิว Google {n} รายการ",
+    zh: "{n} 条 Google 评论，{rating}★",
+    ja: "Googleレビュー{n}件・{rating}★",
+    id: "{rating}★ dari {n} ulasan Google",
+    vi: "{rating}★ từ {n} đánh giá Google",
+  },
+  verify_no_rating: { en: "No Google rating yet", ko: "구글 평점 없음", th: "ยังไม่มีคะแนน Google", zh: "暂无 Google 评分", ja: "Google評価なし", id: "Belum ada rating Google", vi: "Chưa có đánh giá Google" },
+  verify_full_report: { en: "See the full verification report", ko: "전체 검증 리포트 보기", th: "ดูรายงานการตรวจสอบฉบับเต็ม", zh: "查看完整核实报告", ja: "検証レポート全文を見る", id: "Lihat laporan verifikasi lengkap", vi: "Xem báo cáo xác minh đầy đủ" },
+  verify_maybe_title: { en: "Closest matches by name", ko: "이름이 비슷한 곳", th: "รายการที่ชื่อใกล้เคียง", zh: "名称最接近的结果", ja: "名前が近い候補", id: "Kecocokan nama terdekat", vi: "Kết quả tên gần nhất" },
+  verify_maybe_sub: {
+    en: "We don't have that exact handle on file, but these names match. Check the city to confirm it's the same place.",
+    ko: "정확히 그 아이디는 없지만, 이름이 일치하는 곳들입니다. 도시를 확인해 같은 곳인지 확인하세요.",
+    th: "เราไม่มีชื่อผู้ใช้นั้นตรง ๆ แต่ชื่อเหล่านี้ตรงกัน",
+    zh: "我们没有该账号的记录，但这些名称相符。请核对城市确认是否为同一家。",
+    ja: "そのIDの記録はありませんが、名前が一致する候補です。都市名で同一か確認してください。",
+    id: "Kami tidak punya handle persis itu, tapi nama-nama ini cocok. Cek kotanya untuk memastikan.",
+    vi: "Chúng tôi không có handle đó, nhưng các tên này khớp. Kiểm tra thành phố để xác nhận.",
+  },
+  verify_unknown_title: { en: "Not in our index yet", ko: "아직 우리 인덱스에 없습니다", th: "ยังไม่มีในดัชนีของเรา", zh: "尚未收录", ja: "まだインデックスにありません", id: "Belum ada di indeks kami", vi: "Chưa có trong chỉ mục" },
+  verify_unknown_sub: {
+    en: "That doesn't mean it's fake — it means we haven't verified it. We only list venues we could cross-check, and we cover {n} across Thailand so far.",
+    ko: "가짜라는 뜻이 아니라, 아직 검증하지 못했다는 뜻입니다. 교차 검증이 가능한 곳만 등록하며, 현재 태국 전역 {n}곳을 다루고 있습니다.",
+    th: "ไม่ได้แปลว่าปลอม แต่แปลว่าเรายังไม่ได้ตรวจสอบ ปัจจุบันครอบคลุม {n} แห่งทั่วไทย",
+    zh: "这不代表它是假的，只代表我们尚未核实。我们只收录能交叉验证的场所，目前覆盖全泰国 {n} 家。",
+    ja: "偽物という意味ではなく、まだ検証していないという意味です。照合できた施設のみ掲載し、現在タイ全土{n}件をカバーしています。",
+    id: "Bukan berarti palsu — artinya kami belum memverifikasinya. Kami hanya memuat tempat yang bisa diperiksa silang, saat ini {n} di seluruh Thailand.",
+    vi: "Không có nghĩa là giả — nghĩa là chúng tôi chưa xác minh. Chúng tôi chỉ liệt kê nơi có thể đối chiếu, hiện là {n} trên khắp Thái Lan.",
+  },
+  verify_unknown_checked: {
+    en: "Checked: Instagram, TikTok, Facebook, YouTube, LINE, website domains, and venue names.",
+    ko: "확인한 것: 인스타그램, 틱톡, 페이스북, 유튜브, 라인, 웹사이트 도메인, 상호명.",
+    th: "ตรวจแล้ว: Instagram, TikTok, Facebook, YouTube, LINE, โดเมนเว็บไซต์ และชื่อร้าน",
+    zh: "已检索：Instagram、TikTok、Facebook、YouTube、LINE、网站域名与店名。",
+    ja: "照合対象：Instagram、TikTok、Facebook、YouTube、LINE、ドメイン、店名。",
+    id: "Diperiksa: Instagram, TikTok, Facebook, YouTube, LINE, domain situs, dan nama tempat.",
+    vi: "Đã kiểm tra: Instagram, TikTok, Facebook, YouTube, LINE, tên miền và tên địa điểm.",
+  },
+  verify_browse_all: { en: "Browse verified venues instead", ko: "검증된 곳들 둘러보기", th: "ดูสถานที่ที่ตรวจสอบแล้ว", zh: "浏览已核实的场所", ja: "検証済みの施設を見る", id: "Jelajahi tempat terverifikasi", vi: "Xem các địa điểm đã xác minh" },
+  verify_flag_veteran: { en: "10+ years online", ko: "온라인 10년+", th: "ออนไลน์ 10 ปีขึ้นไป", zh: "上线 10 年以上", ja: "オンライン10年以上", id: "10+ tahun daring", vi: "10+ năm trực tuyến" },
+  verify_flag_established: { en: "5+ years online", ko: "온라인 5년+", th: "ออนไลน์ 5 ปีขึ้นไป", zh: "上线 5 年以上", ja: "オンライン5年以上", id: "5+ tahun daring", vi: "5+ năm trực tuyến" },
+  verify_flag_very_active: { en: "Reviewed in last 30 days", ko: "최근 30일 내 리뷰", th: "มีรีวิวใน 30 วันล่าสุด", zh: "近 30 天有评论", ja: "直近30日にレビューあり", id: "Diulas dalam 30 hari terakhir", vi: "Có đánh giá trong 30 ngày" },
+  verify_flag_active: { en: "Active in last 90 days", ko: "최근 90일 내 활동", th: "ใช้งานใน 90 วันล่าสุด", zh: "近 90 天活跃", ja: "直近90日に活動", id: "Aktif dalam 90 hari terakhir", vi: "Hoạt động trong 90 ngày" },
+  verify_flag_viral: { en: "Trending on social", ko: "소셜에서 화제", th: "กำลังเป็นกระแสในโซเชียล", zh: "社交媒体热议", ja: "SNSで話題", id: "Sedang tren di sosial", vi: "Đang thịnh hành" },
+  verify_flag_gov_cert: { en: "Thai government certified", ko: "태국 정부 인증", th: "ได้รับการรับรองจากภาครัฐไทย", zh: "泰国政府认证", ja: "タイ政府認証", id: "Bersertifikat pemerintah Thailand", vi: "Chứng nhận chính phủ Thái" },
+  verify_how_title: { en: "How this check works", ko: "이 검증은 이렇게 동작합니다", th: "การตรวจสอบนี้ทำงานอย่างไร", zh: "核实机制", ja: "この検証の仕組み", id: "Cara pemeriksaan ini bekerja", vi: "Cách kiểm tra này hoạt động" },
+  verify_how_body: {
+    en: "Every venue is matched to its social handles, website domain and name, then scored on how many independent sources confirm it exists and is still operating — Google reviews and their recency, photos, YouTube coverage, Reddit and Pantip threads, Naver blogs, domain age from the Internet Archive, and Thai government tourism certifications. Nobody can pay to raise a score.",
+    ko: "각 업체를 소셜 아이디·웹사이트 도메인·상호명으로 매칭한 뒤, 실제로 존재하고 아직 운영 중인지를 몇 개의 독립 소스가 확인해주는지로 점수를 매깁니다 — 구글 리뷰와 그 최신성, 사진, 유튜브 노출, 레딧·판팁 스레드, 네이버 블로그, 인터넷 아카이브 기준 도메인 연식, 태국 정부 관광 인증. 돈으로 점수를 올릴 수 없습니다.",
+    th: "แต่ละสถานที่จะถูกจับคู่กับชื่อโซเชียล โดเมนเว็บไซต์ และชื่อร้าน แล้วให้คะแนนตามจำนวนแหล่งอิสระที่ยืนยัน ไม่มีใครจ่ายเงินเพื่อเพิ่มคะแนนได้",
+    zh: "每家场所都会与其社交账号、网站域名和名称进行匹配，再根据有多少个独立来源能证实其真实存在且仍在营业来评分。无法花钱提高分数。",
+    ja: "各施設をSNSのID、ドメイン、店名で照合し、実在し現在も営業しているかを何件の独立した情報源が裏付けるかでスコア化します。課金でスコアを上げることはできません。",
+    id: "Setiap tempat dicocokkan dengan handle sosial, domain situs, dan namanya, lalu dinilai dari berapa banyak sumber independen yang mengonfirmasi keberadaan dan operasinya. Tidak ada yang bisa membayar untuk menaikkan skor.",
+    vi: "Mỗi địa điểm được đối chiếu với handle mạng xã hội, tên miền và tên gọi, rồi chấm điểm theo số nguồn độc lập xác nhận nó tồn tại và vẫn hoạt động. Không ai có thể trả tiền để nâng điểm.",
+  },
+  verify_meta_title: {
+    en: "Verify a Thai wellness spot you saw on Instagram or TikTok",
+    ko: "인스타·틱톡에서 본 태국 웰니스 업체 검증하기",
+    th: "ตรวจสอบสถานที่เวลเนสในไทยที่คุณเห็นบน Instagram หรือ TikTok",
+    zh: "核实你在 Instagram 或 TikTok 上看到的泰国康养场所",
+    ja: "InstagramやTikTokで見たタイのウェルネス施設を検証",
+    id: "Verifikasi tempat wellness Thailand yang Anda lihat di Instagram atau TikTok",
+    vi: "Xác minh địa điểm wellness Thái Lan bạn thấy trên Instagram hoặc TikTok",
+  },
+  verify_meta_desc: {
+    en: "Paste an Instagram or TikTok handle and see whether a Thai sauna, ice bath, pilates studio, spa or dive shop is real — cross-checked against Google, Reddit, Pantip, Naver, YouTube and domain history. Free, no paid placements.",
+    ko: "인스타그램·틱톡 아이디를 붙여넣으면 태국 사우나·아이스배스·필라테스·스파·다이빙샵이 실제인지 확인됩니다. 구글·레딧·판팁·네이버·유튜브·도메인 이력으로 교차 검증. 무료, 광고 순위 없음.",
+    th: "วางชื่อผู้ใช้ Instagram หรือ TikTok เพื่อดูว่าซาวน่า ไอซ์บาธ พิลาทิส สปา หรือร้านดำน้ำในไทยมีอยู่จริงหรือไม่ ฟรี",
+    zh: "粘贴 Instagram 或 TikTok 账号，核实泰国的桑拿、冰浴、普拉提、水疗或潜水店是否真实。多来源交叉验证，免费，无付费排名。",
+    ja: "InstagramやTikTokのIDを貼り付けて、タイのサウナ・アイスバス・ピラティス・スパ・ダイビングショップが実在するか確認。複数の情報源で照合、無料。",
+    id: "Tempel handle Instagram atau TikTok dan lihat apakah sauna, ice bath, studio pilates, spa, atau toko selam di Thailand itu nyata. Diperiksa silang, gratis.",
+    vi: "Dán handle Instagram hoặc TikTok để xem sauna, ice bath, pilates, spa hay tiệm lặn ở Thái Lan có thật không. Đối chiếu đa nguồn, miễn phí.",
+  },
   // navigation
   nav_explore: { en: "Explore", ko: "탐색", th: "สำรวจ", zh: "探索", ja: "探索", ar: "استكشف" },
   nav_about: { en: "About", ko: "소개", th: "เกี่ยวกับ", zh: "关于", ja: "概要", ar: "حول" },
@@ -659,6 +782,42 @@ export function resolveCategoryStrings(lang: Lang): CategoryStrings {
     noMatches: t("no_matches", lang),
     tryRemoveFilters: t("try_remove_filters", lang),
     loadMore: t("load_more", lang),
+  };
+}
+
+// Same pattern as resolveCategoryStrings, for the /[lang]/verify/ box.
+export function resolveVerifyStrings(lang: Lang, placeCount: number): VerifyStrings {
+  return {
+    placeholder: t("verify_placeholder", lang),
+    loading: t("verify_loading", lang),
+    checking: t("verify_checking", lang),
+    verifiedTitle: t("verify_verified_title", lang),
+    viaLabel: {
+      ig: t("verify_via_ig", lang),
+      tt: t("verify_via_tt", lang),
+      fb: t("verify_via_fb", lang),
+      yt: t("verify_via_yt", lang),
+      ln: t("verify_via_ln", lang),
+      w: t("verify_via_w", lang),
+    },
+    sourcesLine: t("verify_sources_line", lang),
+    googleLine: t("verify_google_line", lang),
+    noRating: t("verify_no_rating", lang),
+    fullReport: t("verify_full_report", lang),
+    maybeTitle: t("verify_maybe_title", lang),
+    maybeSub: t("verify_maybe_sub", lang),
+    unknownTitle: t("verify_unknown_title", lang),
+    unknownSub: tf("verify_unknown_sub", lang, { n: placeCount.toLocaleString("en-US") }),
+    unknownChecked: t("verify_unknown_checked", lang),
+    browseAll: t("verify_browse_all", lang),
+    flag: {
+      veteran: t("verify_flag_veteran", lang),
+      established: t("verify_flag_established", lang),
+      veryActive: t("verify_flag_very_active", lang),
+      active: t("verify_flag_active", lang),
+      viral: t("verify_flag_viral", lang),
+      govCert: t("verify_flag_gov_cert", lang),
+    },
   };
 }
 

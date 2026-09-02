@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/i18n";
+import { BLOCKED_CRAWLERS } from "@/lib/crawlers";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -31,6 +32,10 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "PerplexityBot", allow: "/" },
       { userAgent: "ClaudeBot", allow: "/" },
       { userAgent: "Google-Extended", allow: "/" },
+      // Commercial SEO/scraper crawlers — declared here, enforced with a 403
+      // in middleware.ts (robots.txt alone is advisory and several of these
+      // ignore it). Rationale in lib/crawlers.ts.
+      ...BLOCKED_CRAWLERS.map((userAgent) => ({ userAgent, disallow: "/" })),
     ],
     sitemap: `${SITE.origin}/sitemap.xml`,
     host: SITE.origin,

@@ -93,10 +93,12 @@ export default function Header({
   lang,
   navForBusiness,
   navSaved,
+  navVerify,
 }: {
   lang: Lang;
   navForBusiness: string;
   navSaved: string;
+  navVerify: string;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -138,6 +140,15 @@ export default function Header({
         </Link>
 
         <nav className="hidden flex-1 items-center gap-3 text-xs font-medium md:flex lg:gap-4">
+          {/* Leads the nav: this is the entry point for people arriving from
+              Instagram/TikTok wanting to check a place they just saw. */}
+          <Link
+            href={`/${lang}/verify/`}
+            className="whitespace-nowrap rounded-lg bg-emerald-50 px-2.5 py-1.5 font-bold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
+          >
+            🔎 {navVerify}
+          </Link>
+
           {NAV_NICHES_PRIMARY.slice(0, 3).map((n) => (
             <Link
               key={n}

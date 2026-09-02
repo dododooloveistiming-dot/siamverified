@@ -39,6 +39,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
   out.push({ url: `${origin}/privacy/`, lastModified: now, priority: 0.3, changeFrequency: "yearly" });
 
   for (const lang of SUPPORTED_LANGS) {
+    // Verify tool — the social-handle lookup landing
+    out.push({
+      url: `${origin}/${lang}/verify/`,
+      lastModified: now,
+      priority: 0.9,
+      changeFrequency: "weekly",
+      alternates: {
+        languages: withXDefault(Object.fromEntries(
+          SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/verify/`]),
+        )),
+      },
+    });
+
     // Lang landing
     out.push({
       url: `${origin}/${lang}/`,

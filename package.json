@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "data": "node scripts/build-data.mjs && node scripts/enrich-places.mjs && node scripts/slim-places.mjs && python scripts/filter_community.py && node scripts/apply-affiliate-ids.mjs",
+    "data": "node scripts/build-data.mjs && node scripts/enrich-places.mjs && node scripts/slim-places.mjs && python scripts/filter_community.py && node scripts/apply-affiliate-ids.mjs && node scripts/build-handles.mjs",
     "data:build": "node scripts/build-data.mjs",
     "data:enrich": "node scripts/enrich-places.mjs",
     "data:slim": "node scripts/slim-places.mjs",
@@ -14,7 +14,8 @@
     "data:affiliate": "node scripts/apply-affiliate-ids.mjs",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "data:handles": "node scripts/build-handles.mjs"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",
