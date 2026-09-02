@@ -6,6 +6,7 @@ import { SITE, SUPPORTED_LANGS, T, t, withXDefault, resolveCategoryStrings } fro
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
+import { cityFacets, initialCards } from "@/lib/cards";
 import CategoryDiscovery from "@/components/CategoryDiscovery";
 import SafeImg from "@/components/SafeImg";
 import { genericOgImage } from "@/lib/og";
@@ -56,6 +57,12 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
   // the latter) — pass the slim PlaceCard projection, not full Place[]
   // (reviews_sample/photos_sample/etc bloated the RSC payload; spa alone
   // was 4.5MB+ for ~2,000 places).
+  //
+  // Slimming to PlaceCard wasn't enough on its own: 2,000 of them still
+  // serialized to 1.5MB of flight payload to render 30 cards. CategoryClient
+  // now takes only the first page and fetches the rest from
+  // /api/cards/c/[niche]/ when the reader filters. `places` stays whole here
+  // - it's server-side work that never crosses the wire.
   const places = getPlacesByNiche(niche).map(toPlaceCard);
   const community = loadCommunity(niche);
   const meta = NICHE_META[niche];
@@ -184,7 +191,15 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
                 ? "필터로 원하는 조건 좁히기"
                 : "Filter and sort to find your perfect match"}
             </p>
-            <CategoryClient places={places} lang={lang} niche={niche} strings={resolveCategoryStrings(lang)} />
+            <CategoryClient
+              initial={initialCards(places)}
+              total={places.length}
+              cityFacets={cityFacets(places)}
+              cardsUrl={`/api/cards/c/${niche}/`}
+              lang={lang}
+              niche={niche}
+              strings={resolveCategoryStrings(lang)}
+            />
           </section>
         </>
       )}

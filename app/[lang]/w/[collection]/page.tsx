@@ -11,6 +11,7 @@ import {
   hasEnoughCollectionPlaces, liveCollections,
 } from "@/lib/collections";
 import CategoryClient from "@/components/CategoryClient";
+import { cityFacets, initialCards } from "@/lib/cards";
 import AdSlot from "@/components/AdSlot";
 import { genericOgImage } from "@/lib/og";
 
@@ -67,6 +68,8 @@ export default function CollectionPage({ params }: { params: { lang: Lang; colle
   const count = places.length;
   // Slim projection — CategoryClient is a client component and the full
   // Place[] (reviews_sample/photos_sample) would bloat the RSC payload.
+  // Only the first page is handed over; the rest comes from
+  // /api/cards/w/[collection]/ on demand. See lib/cards.ts.
   const cards = places.map(toPlaceCard);
   const others = liveCollections().filter((x) => x.slug !== c.slug);
 
@@ -118,7 +121,10 @@ export default function CollectionPage({ params }: { params: { lang: Lang; colle
 
       <div className="mt-8">
         <CategoryClient
-          places={cards}
+          initial={initialCards(cards)}
+          total={cards.length}
+          cityFacets={cityFacets(cards)}
+          cardsUrl={`/api/cards/w/${c.slug}/`}
           lang={lang}
           niche={c.niches[0]}
           strings={resolveCategoryStrings(lang)}

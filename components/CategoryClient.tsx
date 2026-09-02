@@ -1,5 +1,5 @@
 "use client";
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lang, Niche, PlaceCard as PlaceCardData } from "@/lib/types";
@@ -11,6 +11,7 @@ import type { CategoryStrings } from "@/lib/i18n";
 import SafeImg from "@/components/SafeImg";
 import WishlistButton from "@/components/WishlistButton";
 import { cleanReviewText, isThaiText } from "@/lib/reviews";
+import { CATEGORY_PAGE_SIZE } from "@/lib/cards";
 
 // nicheName is imported from lib/types when needed
 
@@ -20,7 +21,8 @@ type PriceBand = "" | "budget" | "mid" | "premium" | "luxury";
 // Category grids run to ~2,000 cards on the biggest niches — rendering all
 // of them (and their SafeImg hydration cost) up front was the biggest single
 // contributor to INP/hydration jank on mobile. Render a page at a time.
-const PAGE_SIZE = 30;
+// Lives in lib/cards.ts because the server slices the first page with it too.
+const PAGE_SIZE = CATEGORY_PAGE_SIZE;
 
 const PB_LABEL: Record<Exclude<PriceBand, "">, { icon: string }> = {
   budget: { icon: "💵" },
@@ -57,12 +59,22 @@ function ReviewExcerpt({ text, lang, className }: { text: string | undefined; la
 }
 
 export default function CategoryClient({
-  places,
+  initial,
+  total,
+  cityFacets,
+  cardsUrl,
   lang,
   niche,
   strings,
 }: {
-  places: PlaceCardData[];
+  /** The default view's first page, rendered server-side. */
+  initial: PlaceCardData[];
+  /** How many cards exist in total — `initial.length` is only the first page. */
+  total: number;
+  /** City chips, precomputed server-side (deriving them needs every card). */
+  cityFacets: string[];
+  /** Static JSON with the full PlaceCard[]; see app/api/cards/[kind]/[slug]. */
+  cardsUrl: string;
   lang: Lang;
   niche: Niche;
   strings: CategoryStrings;
@@ -91,20 +103,52 @@ export default function CategoryClient({
     typeof window !== "undefined" ? `${pathname}${window.location.search}` : pathname,
   );
 
+  // The full card list. Null until fetched — filtering falls back to
+  // `initial`, which is exactly the default view, so nothing looks wrong
+  // before it lands.
+  const [all, setAll] = useState<PlaceCardData[] | null>(null);
+  const fetchStarted = useRef(false);
+
+  const loadAll = useCallback(() => {
+    if (fetchStarted.current) return;
+    fetchStarted.current = true;
+    fetch(cardsUrl)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((cards: PlaceCardData[]) => setAll(cards))
+      .catch(() => {
+        // Let a later interaction retry rather than leaving the page stuck
+        // on its first 30 cards.
+        fetchStarted.current = false;
+      });
+  }, [cardsUrl]);
+
+  // Warm it once the page is idle, so the common case — reader filters a few
+  // seconds in — has the data already. Deliberately not on mount: that would
+  // put the fetch back in front of LCP, which is what this change removed.
+  useEffect(() => {
+    if (total <= initial.length) return;
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(loadAll, { timeout: 4000 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(loadAll, 1500);   // Safari
+    return () => window.clearTimeout(id);
+  }, [loadAll, total, initial.length]);
+
+  const places = all ?? initial;
+
   // Keep the search input itself instant; defer the (expensive, ~2k-item)
   // filter+sort recompute so typing never blocks on it.
   const deferredQuery = useDeferredValue(query);
 
-  const cities = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const p of places) {
-      if (p.city) counts.set(p.city, (counts.get(p.city) ?? 0) + 1);
-    }
-    return [...counts.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 12)
-      .map(([c]) => c);
-  }, [places]);
+  // Precomputed by the page (lib/cards.ts cityFacets) — deriving it here
+  // would mean shipping every card again. Memoized only to keep the identity
+  // stable for the URL-restore effect below.
+  const cities = useMemo(() => cityFacets, [cityFacets]);
 
   // Initialize from URL params (?city=bangkok&price=mid&ko=1...)
   // Static export friendly — we use useSearchParams (works on the client after hydration).
@@ -219,6 +263,21 @@ export default function CategoryClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated, city, priceBand, koOnly, beginnerOnly, open24Only, establishedOnly, activeOnly, sort, deferredQuery]);
 
+  const filtersActive =
+    Boolean(query || city || priceBand || koOnly || beginnerOnly || open24Only || establishedOnly || activeOnly) ||
+    sort !== "trust" ||
+    !hideViral;
+
+  useEffect(() => {
+    if (filtersActive) loadAll();
+  }, [filtersActive, loadAll]);
+
+  // True while a filtered view is being computed against only the first page.
+  // The grid is dimmed rather than swapped for a spinner: the cards shown are
+  // real results, just possibly not all of them yet.
+  const awaitingAll = all === null && total > initial.length;
+  const pending = awaitingAll && filtersActive;
+
   const visible = filtered.slice(0, visibleCount);
   const meta = NICHE_META[niche];
 
@@ -273,7 +332,9 @@ export default function CategoryClient({
       </div>
 
       <div className="mt-4 flex items-baseline justify-between text-xs muted">
-        <span>{filtered.length.toLocaleString()} / {places.length.toLocaleString()} {strings.placesCount}</span>
+        <span aria-live="polite">
+          {pending ? "…" : filtered.length.toLocaleString()} / {total.toLocaleString()} {strings.placesCount}
+        </span>
         {(query || city || priceBand || koOnly || beginnerOnly || open24Only || establishedOnly || activeOnly) && (
           <button
             type="button"
@@ -285,14 +346,17 @@ export default function CategoryClient({
         )}
       </div>
 
-      {filtered.length === 0 ? (
+      {filtered.length === 0 && !awaitingAll ? (
         <div className="mt-8 rounded-2xl border border-dashed border-ink-200 bg-white p-8 text-center dark:border-ink-700 dark:bg-ink-900">
           <p className="text-base font-bold">{strings.noMatches}</p>
           <p className="mt-1 text-sm muted">{strings.tryRemoveFilters}</p>
         </div>
       ) : (
         <>
-          <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul
+            aria-busy={pending}
+            className={`mt-5 grid grid-cols-1 gap-4 transition-opacity sm:grid-cols-2 lg:grid-cols-3 ${pending ? "opacity-50" : ""}`}
+          >
             {visible.map((p, i) => {
               // Every 7th card spans 2 columns and uses the horizontal "Featured"
               // layout (photo left + info right) — breaks up the uniform grid.
@@ -308,14 +372,14 @@ export default function CategoryClient({
               );
             })}
           </ul>
-          {visibleCount < filtered.length && (
+          {(visibleCount < filtered.length || awaitingAll) && (
             <div className="mt-6 flex justify-center">
               <button
                 type="button"
-                onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+                onClick={() => { loadAll(); setVisibleCount((v) => v + PAGE_SIZE); }}
                 className="rounded-xl border border-ink-200 bg-white px-6 py-2.5 text-sm font-bold transition hover:border-emerald-400 hover:text-emerald-700 dark:border-ink-700 dark:bg-ink-900 dark:hover:text-emerald-400"
               >
-                {strings.loadMore} ({(filtered.length - visibleCount).toLocaleString()})
+                {strings.loadMore} ({Math.max((awaitingAll ? total : filtered.length) - visibleCount, 0).toLocaleString()})
               </button>
             </div>
           )}
