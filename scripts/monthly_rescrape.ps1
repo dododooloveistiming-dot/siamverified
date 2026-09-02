@@ -161,15 +161,18 @@ foreach ($line in $pushResult) { Log "  $line" }
 
 if ($LASTEXITCODE -eq 0) {
   Log "OK Pushed to origin."
-  # The new Vercel project has no GitHub connection (account move,
-  # 2026-09-02), so a push no longer builds anything. deploy.ps1 also purges
-  # the Cloudflare edge cache, without which this refresh stays invisible for
-  # up to 7 days.
-  Log "Step 8: deploy + purge edge cache"
-  & powershell -NoProfile -ExecutionPolicy Bypass -File "$ROOT\scripts\deploy.ps1" 2>&1 | ForEach-Object { Log "  $_" }
 } else {
-  Log "X Push failed (exit $LASTEXITCODE). Check credentials. NOT deploying."
+  Log "X PUSH FAILED (exit $LASTEXITCODE) - the GitHub backup is now behind."
+  Log "  Check the credential: the repo is dododooloveistiming-dot/siamverified."
+  Log "  Deploying anyway - the push is a backup, not the delivery path."
 }
+
+# Always deploy. The new Vercel project has no GitHub connection (account
+# move, 2026-09-02), so nothing else ships this build. deploy.ps1 also purges
+# the Cloudflare edge cache, without which the refresh stays invisible for up
+# to 7 days.
+Log "Step 8: deploy + purge edge cache"
+& powershell -NoProfile -ExecutionPolicy Bypass -File "$ROOT\scripts\deploy.ps1" 2>&1 | ForEach-Object { Log "  $_" }
 
 Log "MONTHLY RESCRAPE DONE for $NICHE"
 Log ""
