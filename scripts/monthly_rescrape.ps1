@@ -40,6 +40,12 @@ $NICHE = $NICHES[$monthIdx]
 
 $LOG = "$DBD\monthly_rescrape.log"
 
+. "$ROOT\scripts\notify.ps1"
+$conf = Read-EnvLocal -Root $ROOT
+# Collected across the run, then sent as one message. See notify.ps1 for why.
+$problems = @()
+$notes = @()
+
 function Log($msg) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [$NICHE] $msg"
   Write-Host $line
@@ -149,6 +155,7 @@ $status = & $GIT status --porcelain public/data/
 if (-not $status) {
   Log "  No data changes — skipping commit"
   Log "DONE (no-op)"
+  $null = Send-RunSummary -Title "Monthly rescrape" -Notes @("no data changes - nothing to deploy") -LogPath $LOG -Conf $conf -Root $ROOT
   exit 0
 }
 
@@ -165,14 +172,21 @@ if ($LASTEXITCODE -eq 0) {
   Log "X PUSH FAILED (exit $LASTEXITCODE) - the GitHub backup is now behind."
   Log "  Check the credential: the repo is dododooloveistiming-dot/siamverified."
   Log "  Deploying anyway - the push is a backup, not the delivery path."
+  $problems += "git push failed - the GitHub backup is behind. Repo is dododooloveistiming-dot/siamverified; the credential must be the presidentoko account."
 }
 
 # Always deploy. The new Vercel project has no GitHub connection (account
 # move, 2026-09-02), so nothing else ships this build. deploy.ps1 also purges
 # the Cloudflare edge cache, without which the refresh stays invisible for up
-# to 7 days.
+# to 7 days. -Quiet because this script sends the single run summary.
 Log "Step 8: deploy + purge edge cache"
-& powershell -NoProfile -ExecutionPolicy Bypass -File "$ROOT\scripts\deploy.ps1" 2>&1 | ForEach-Object { Log "  $_" }
+& powershell -NoProfile -ExecutionPolicy Bypass -File "$ROOT\scripts\deploy.ps1" -Quiet 2>&1 | ForEach-Object { Log "  $_" }
+if ($LASTEXITCODE -ne 0) {
+  Log "X DEPLOY step reported exit $LASTEXITCODE"
+  $problems += "deploy.ps1 exited $LASTEXITCODE - see deploy.log. The site may still be serving the previous build."
+}
 
 Log "MONTHLY RESCRAPE DONE for $NICHE"
+$notified = Send-RunSummary -Title "Monthly rescrape ($NICHE)" -Problems $problems -Notes $notes -LogPath $LOG -Conf $conf -Root $ROOT
+Log $(if ($notified) { "OK Telegram summary sent." } else { "X Telegram summary NOT sent - check TELEGRAM_* in .env.local." })
 Log ""

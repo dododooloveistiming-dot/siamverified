@@ -116,6 +116,23 @@ powershell -File scripts/deploy.ps1     # build + deploy + purge edge cache
 It reads `VERCEL_TOKEN`, `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ZONE_ID` from
 `.env.local` (gitignored).
 
+### Alerting
+
+Each scheduled script sends **exactly one Telegram message per run** via
+`scripts/notify.ps1` — a red alert listing what broke, or a silent one-line
+heartbeat on success. Uses the `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID`
+already in `.env.local` for inquiry notifications.
+
+The heartbeat matters as much as the alert. From 2026-07-05 to 2026-09-03
+every run failed to push, logged one line, and carried on: `origin/main` fell
+21 commits behind and — deploys being push-triggered then — no data refresh
+reached the site for two months. Nothing was watching the log. A run that
+never starts sends nothing at all, so an *expected but missing* message is the
+only thing that can surface it.
+
+Deploying no longer depends on pushing. The push is a backup; `deploy.ps1` is
+the delivery path and runs either way.
+
 ### Why the edge cache matters
 
 The previous Vercel account was disabled mid-2026-09 with
