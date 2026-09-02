@@ -87,9 +87,17 @@ export default function VerifyPage({ params }: { params: { lang: Lang } }) {
             </li>
           ))}
         </ul>
-        <Link href={`/${lang}/trust/`} className="mt-4 inline-block text-sm font-semibold text-clinic">
-          {t("nav_about", lang)} →
-        </Link>
+        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+          <Link href={`/${lang}/trust/`} className="text-sm font-semibold text-clinic">
+            {t("nav_about", lang)} →
+          </Link>
+          <Link href={`/${lang}/social/`} className="text-sm font-semibold text-clinic">
+            {t("soc_nav", lang)} →
+          </Link>
+          <Link href={`/${lang}/w/`} className="text-sm font-semibold text-clinic">
+            {t("coll_all_collections", lang)} →
+          </Link>
+        </div>
       </section>
 
       <div className="mt-10">

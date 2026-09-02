@@ -43,7 +43,7 @@ export type VerifyStrings = {
     established: string;
     veryActive: string;
     active: string;
-    viral: string;
+    suspect: string;
     govCert: string;
   };
 };
@@ -53,7 +53,9 @@ export const FLAG = {
   ESTABLISHED: 2,
   VERY_ACTIVE: 4,
   ACTIVE: 8,
-  VIRAL: 16,
+  // Warning, not a badge: rating >= 4.9 on fewer than 8 reviews with at
+  // most one corroborating source (isSuspectedViral in build-data.mjs).
+  SUSPECT: 16,
   WEBSITE: 32,
   GOV_CERT: 64,
 } as const;

@@ -56,7 +56,10 @@ export const normName = (s) =>
     .trim();
 
 // ── derived flags (mirrors lib/signals.ts tiers) ──────────────────────────
-const F = { VETERAN: 1, ESTABLISHED: 2, VERY_ACTIVE: 4, ACTIVE: 8, VIRAL: 16, WEBSITE: 32, GOV_CERT: 64 };
+// SUSPECT mirrors isSuspectedViral() in build-data.mjs: rating >= 4.9 with
+// fewer than 8 reviews and at most one corroborating source. It is a
+// warning, not a badge -- the /verify card renders it as one.
+const F = { VETERAN: 1, ESTABLISHED: 2, VERY_ACTIVE: 4, ACTIVE: 8, SUSPECT: 16, WEBSITE: 32, GOV_CERT: 64 };
 
 function flagsFor(p) {
   let f = 0;
@@ -72,7 +75,7 @@ function flagsFor(p) {
     if (rc.reviews_last_30d > 0) f |= F.VERY_ACTIVE | F.ACTIVE;
     else if (rc.active_90d) f |= F.ACTIVE;
   }
-  if (p.is_suspected_viral) f |= F.VIRAL;
+  if (p.is_suspected_viral) f |= F.SUSPECT;
   if (p.website) f |= F.WEBSITE;
   const v = verifications[p.id];
   if (v && (v.sha || v.tat_attraction || v.tat_restaurant)) f |= F.GOV_CERT;
@@ -132,5 +135,5 @@ const flagged = (bit) => P.filter((r) => r[8] & bit).length;
 console.log(
   `  flags — veteran ${flagged(F.VETERAN)} · established ${flagged(F.ESTABLISHED)} · ` +
   `very_active ${flagged(F.VERY_ACTIVE)} · active ${flagged(F.ACTIVE)} · ` +
-  `viral ${flagged(F.VIRAL)} · gov_cert ${flagged(F.GOV_CERT)}`,
+  `suspect ${flagged(F.SUSPECT)} · gov_cert ${flagged(F.GOV_CERT)}`,
 );

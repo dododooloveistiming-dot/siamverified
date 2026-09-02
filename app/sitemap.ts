@@ -6,6 +6,7 @@ import { SITE, SUPPORTED_LANGS, withXDefault } from "@/lib/i18n";
 import { isIndexablePlace } from "@/lib/reviews";
 import { hasEnoughGuidePlaces, CITY_SLUGS as GUIDE_CITY_SLUGS } from "@/lib/guides";
 import { MONTH_SLUGS } from "@/lib/seasons";
+import { liveCollections } from "@/lib/collections";
 import type { Niche } from "@/lib/types";
 
 // Mirrors definitions used by app/[lang]/guide/[slug] and /compare/[slug]
@@ -39,6 +40,47 @@ export default function sitemap(): MetadataRoute.Sitemap {
   out.push({ url: `${origin}/privacy/`, lastModified: now, priority: 0.3, changeFrequency: "yearly" });
 
   for (const lang of SUPPORTED_LANGS) {
+    // "Seen on social" -- evidence-ranked venues with an Instagram/TikTok
+    // presence (lib/social.ts).
+    out.push({
+      url: `${origin}/${lang}/social/`,
+      lastModified: now,
+      priority: 0.8,
+      changeFrequency: "weekly",
+      alternates: {
+        languages: withXDefault(Object.fromEntries(
+          SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/social/`]),
+        )),
+      },
+    });
+
+    // Wellness collections — the hub plus every collection with enough
+    // venues to clear MIN_COLLECTION_PLACES (lib/collections.ts).
+    out.push({
+      url: `${origin}/${lang}/w/`,
+      lastModified: now,
+      priority: 0.8,
+      changeFrequency: "weekly",
+      alternates: {
+        languages: withXDefault(Object.fromEntries(
+          SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/w/`]),
+        )),
+      },
+    });
+    for (const c of liveCollections()) {
+      out.push({
+        url: `${origin}/${lang}/w/${c.slug}/`,
+        lastModified: now,
+        priority: 0.85,
+        changeFrequency: "weekly",
+        alternates: {
+          languages: withXDefault(Object.fromEntries(
+            SUPPORTED_LANGS.map((l) => [l, `${origin}/${l}/w/${c.slug}/`]),
+          )),
+        },
+      });
+    }
+
     // Verify tool — the social-handle lookup landing
     out.push({
       url: `${origin}/${lang}/verify/`,

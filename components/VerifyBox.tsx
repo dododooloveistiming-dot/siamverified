@@ -28,7 +28,6 @@ function badges(hit: VerifyHit, s: VerifyStrings): string[] {
   if (hit.flags & FLAG.VERY_ACTIVE) out.push(`🔥 ${s.flag.veryActive}`);
   else if (hit.flags & FLAG.ACTIVE) out.push(`✅ ${s.flag.active}`);
   if (hit.flags & FLAG.GOV_CERT) out.push(`🇹🇭 ${s.flag.govCert}`);
-  if (hit.flags & FLAG.VIRAL) out.push(`📈 ${s.flag.viral}`);
   return out;
 }
 
@@ -77,6 +76,14 @@ function HitCard({
                 </li>
               ))}
             </ul>
+          )}
+          {/* A caution, deliberately not styled like the badges above: a
+              near-perfect rating on almost no reviews is the pattern this
+              site exists to catch, not something to celebrate. */}
+          {(hit.flags & FLAG.SUSPECT) !== 0 && (
+            <p className="mt-2 rounded-lg bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+              ⚠️ {s.flag.suspect}
+            </p>
           )}
           <div className="mt-3 text-sm font-semibold text-clinic">{s.fullReport} →</div>
         </div>

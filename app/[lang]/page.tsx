@@ -10,6 +10,7 @@ import WishlistButton from "@/components/WishlistButton";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { currentSeason, monthName, MONTH_SLUGS } from "@/lib/seasons";
 import { getCityBySlug } from "@/lib/cities";
+import { collectionName, liveCollections } from "@/lib/collections";
 
 export const dynamic = "force-static";
 
@@ -135,15 +136,17 @@ export default function LandingPage({ params }: { params: { lang: Lang } }) {
             🔎 {t("verify_h1", lang)}
           </Link>
 
-          {/* Quick paths */}
+          {/* Quick paths — the collections people arrive searching for
+              (sauna, pilates) rather than our internal niche buckets, plus a
+              couple of high-intent city guides. */}
           <div className="mt-6 flex flex-wrap gap-2">
             {[
-              { label: "Bangkok spa", href: `/${lang}/guide/bangkok-spa/` },
-              { label: "Phuket cooking", href: `/${lang}/guide/phuket-cooking/` },
-              { label: "Chiang Mai yoga", href: `/${lang}/guide/chiang-mai-yoga-pilates/` },
-              { label: "Muay thai camps", href: `/${lang}/c/muay-thai/` },
-              { label: "Cooking class", href: `/${lang}/guide/bangkok-cooking/` },
-              { label: "Wellness retreats", href: `/${lang}/c/wellness/` },
+              ...liveCollections().map((c) => ({
+                label: `${c.emoji} ${collectionName(c, lang)}`,
+                href: `/${lang}/w/${c.slug}/`,
+              })),
+              { label: "🥊 Muay thai camps", href: `/${lang}/c/muay-thai/` },
+              { label: "🍜 Cooking class", href: `/${lang}/guide/bangkok-cooking/` },
             ].map((p) => (
               <Link
                 key={p.label}
