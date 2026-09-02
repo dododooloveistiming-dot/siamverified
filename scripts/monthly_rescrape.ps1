@@ -18,7 +18,7 @@
 #   5. Polls pipeline.log for "PIPELINE DONE" marker (max 14h)
 #   6. Re-runs enrichment on the updated master
 #   7. Rebuilds places.json + by-niche slices
-#   8. Git commit + push → Vercel auto-deploys
+#   8. Git commit + push, then scripts/deploy.ps1 deploys + purges cache
 #
 # RUNTIME: ~6-12 hours per niche (depends on discovery results)
 # SCHEDULE: 1st of each month, 3am via Task Scheduler
@@ -136,6 +136,9 @@ if (-not (Test-Path $master)) {
 Log "Step 6: rebuilding places.json"
 Set-Location $ROOT
 & $NODE scripts/build-data.mjs 2>&1 | ForEach-Object { Log "  $_" }
+# Handle index behind /[lang]/verify/ — derived from places.json, so it
+# has to be rebuilt whenever that is.
+& $NODE scripts/build-handles.mjs 2>&1 | ForEach-Object { Log "  $_" }
 
 # Step 7: git commit + push
 Log "Step 7: git commit + push"
@@ -157,9 +160,15 @@ $pushResult = & $GIT push origin main 2>&1
 foreach ($line in $pushResult) { Log "  $line" }
 
 if ($LASTEXITCODE -eq 0) {
-  Log "✓ Pushed. Vercel will auto-deploy."
+  Log "OK Pushed to origin."
+  # The new Vercel project has no GitHub connection (account move,
+  # 2026-09-02), so a push no longer builds anything. deploy.ps1 also purges
+  # the Cloudflare edge cache, without which this refresh stays invisible for
+  # up to 7 days.
+  Log "Step 8: deploy + purge edge cache"
+  & powershell -NoProfile -ExecutionPolicy Bypass -File "$ROOT\scripts\deploy.ps1" 2>&1 | ForEach-Object { Log "  $_" }
 } else {
-  Log "✗ Push failed (exit $LASTEXITCODE)"
+  Log "X Push failed (exit $LASTEXITCODE). Check credentials. NOT deploying."
 }
 
 Log "MONTHLY RESCRAPE DONE for $NICHE"

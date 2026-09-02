@@ -1,7 +1,7 @@
 # weekly_update.ps1 — re-enrich + rebuild data + git push.
 #
 # Runs every Sunday 3am via Windows Task Scheduler.
-# Vercel auto-deploys on push.
+# Deploys via scripts/deploy.ps1 (the Vercel project has no Git connection).
 #
 # WHAT IT DOES:
 #   1. Re-runs all 4 enrichment scripts on every master CSV that exists
@@ -9,7 +9,7 @@
 #      need reviews CSV sidecar; safe to skip if not present)
 #   2. Regenerates public/data/places.json + by-niche/*.json
 #   3. git add public/data/, commits with timestamped message, pushes
-#   4. Vercel picks up the push and rebuilds
+#   4. scripts/deploy.ps1 builds, deploys, and purges the Cloudflare cache
 #
 # WHAT IT DOES NOT DO:
 #   - Does NOT re-scrape (that's a 24-30h job; do manually monthly or via
@@ -49,6 +49,9 @@ Log "Step 2: rebuilding places.json"
 Set-Location $ROOT
 try {
   & $NODE scripts/build-data.mjs 2>&1 | ForEach-Object { Log "  $_" }
+# Handle index behind /[lang]/verify/ — derived from places.json, so it
+# has to be rebuilt whenever that is.
+& $NODE scripts/build-handles.mjs 2>&1 | ForEach-Object { Log "  $_" }
 } catch {
   Log "  BUILD-DATA ERROR: $_"
   exit 1
@@ -74,9 +77,15 @@ $pushResult = & $GIT push origin main 2>&1
 foreach ($line in $pushResult) { Log "  $line" }
 
 if ($LASTEXITCODE -eq 0) {
-  Log "✓ Pushed to origin. Vercel will auto-deploy."
+  Log "OK Pushed to origin."
+  # The new Vercel project has no GitHub connection (account move,
+  # 2026-09-02), so a push no longer builds anything. deploy.ps1 also purges
+  # the Cloudflare edge cache, without which this refresh stays invisible for
+  # up to 7 days.
+  Log "Step 4: deploy + purge edge cache"
+  & powershell -NoProfile -ExecutionPolicy Bypass -File "$ROOT\scripts\deploy.ps1" 2>&1 | ForEach-Object { Log "  $_" }
 } else {
-  Log "✗ Push failed (exit $LASTEXITCODE). Check credentials."
+  Log "X Push failed (exit $LASTEXITCODE). Check credentials. NOT deploying."
 }
 
 Log "DONE"
