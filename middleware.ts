@@ -10,9 +10,12 @@ export function middleware(req: NextRequest) {
   // can trigger an on-demand render + ISR write. See lib/crawlers.ts for the
   // policy and why it exists. Search engines and AI assistants pass through.
   if (isBlockedCrawler(req.headers.get("user-agent"))) {
+    // Explicitly uncacheable: Cloudflare's cache key does not include
+    // User-Agent, so a cacheable 403 could be stored under a URL and then
+    // served to real visitors. The block has to stay per-request.
     return new NextResponse("Forbidden", {
       status: 403,
-      headers: { "cache-control": "public, max-age=86400" },
+      headers: { "cache-control": "private, no-store" },
     });
   }
 
