@@ -42,3 +42,7 @@ outreach/sent/
 # Discovery CSVs (scripts/discover_gaps.py output) contain raw scraped
 # venue data — don't bloat the repo. README and the script itself ship.
 outreach/discovered/*.csv
+
+# Generated Apify actor inputs (scripts/build-apify-*.mjs). Regenerable, and
+# hours_input.json is a 0.33MB list of place ids -- no reason to version it.
+apify/
