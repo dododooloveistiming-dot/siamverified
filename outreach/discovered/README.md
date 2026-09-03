@@ -100,3 +100,19 @@ The original `C:\Users\yunmin\Desktop\wongnai_scraper\` doesn't exist on
 this machine (was on a different user/host). Rebuilding it would take
 days. Going direct to Places API is faster and venue-accurate, at the
 cost of losing Wongnai-specific signals (some Thai-only metadata).
+
+## Apify discovery (2026-09-03)
+
+`scripts/import-apify-discovery.mjs` writes `wellness__apify.csv` here from an
+Apify Google Maps export. That run added 134 venues and opened the `ice-bath`
+and `meditation` collections.
+
+**These CSVs are gitignored, and that is an accepted risk, not an oversight.**
+`places.json` *is* committed, so the venues are safe in the built data. But
+this CSV is the only copy of the raw rows: running `build-data.mjs` on a
+machine that doesn't have it silently rebuilds `places.json` ~134 venues
+lighter. The weekly refresh runs on the one machine that has it.
+
+If the build ever moves, or the file is lost, either restore the CSV from the
+Apify run or un-ignore it (it's our own output — no scraped PII, unlike the
+`discover_gaps.py` CSVs this rule was written for).
