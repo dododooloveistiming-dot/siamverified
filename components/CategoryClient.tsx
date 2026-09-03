@@ -12,6 +12,7 @@ import SafeImg from "@/components/SafeImg";
 import WishlistButton from "@/components/WishlistButton";
 import { cleanReviewText, isThaiText } from "@/lib/reviews";
 import { CATEGORY_PAGE_SIZE } from "@/lib/cards";
+import type { FilterFacets } from "@/lib/cards";
 
 // nicheName is imported from lib/types when needed
 
@@ -62,6 +63,7 @@ export default function CategoryClient({
   initial,
   total,
   cityFacets,
+  facets,
   cardsUrl,
   lang,
   niche,
@@ -73,6 +75,8 @@ export default function CategoryClient({
   total: number;
   /** City chips, precomputed server-side (deriving them needs every card). */
   cityFacets: string[];
+  /** Which filter pills can match anything — see filterFacets in lib/cards. */
+  facets: FilterFacets;
   /** Static JSON with the full PlaceCard[]; see app/api/cards/[kind]/[slug]. */
   cardsUrl: string;
   lang: Lang;
@@ -263,6 +267,14 @@ export default function CategoryClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated, city, priceBand, koOnly, beginnerOnly, open24Only, establishedOnly, activeOnly, sort, deferredQuery]);
 
+  // Which filter pills can match anything. Computed server-side from the full
+  // list (lib/cards.ts filterFacets) rather than here: deriving it from
+  // `places` would mean the pills are wrong until the fetch lands, then pop in.
+  const available = useMemo(() => ({
+    ...facets,
+    price: new Set(facets.priceBands),
+  }), [facets]);
+
   const filtersActive =
     Boolean(query || city || priceBand || koOnly || beginnerOnly || open24Only || establishedOnly || activeOnly) ||
     sort !== "trust" ||
@@ -317,18 +329,30 @@ export default function CategoryClient({
       )}
 
       <div className="mt-3 flex flex-wrap gap-2 text-xs">
-        <Pill on={establishedOnly} onClick={() => setEstablishedOnly((v) => !v)}>🏛 {strings.filterEstablished}</Pill>
-        <Pill on={activeOnly} onClick={() => setActiveOnly((v) => !v)}>🟢 {strings.filterActive}</Pill>
-        <Pill on={koOnly} onClick={() => setKoOnly((v) => !v)}>🇰🇷 {strings.filterKorean}</Pill>
-        <Pill on={beginnerOnly} onClick={() => setBeginnerOnly((v) => !v)}>🐣 {strings.filterBeginner}</Pill>
-        <Pill on={open24Only} onClick={() => setOpen24Only((v) => !v)}>🌙 {strings.filter24h}</Pill>
+        {available.established && (
+          <Pill on={establishedOnly} onClick={() => setEstablishedOnly((v) => !v)}>🏛 {strings.filterEstablished}</Pill>
+        )}
+        {available.active && (
+          <Pill on={activeOnly} onClick={() => setActiveOnly((v) => !v)}>🟢 {strings.filterActive}</Pill>
+        )}
+        {available.korean && (
+          <Pill on={koOnly} onClick={() => setKoOnly((v) => !v)}>🇰🇷 {strings.filterKorean}</Pill>
+        )}
+        {available.beginner && (
+          <Pill on={beginnerOnly} onClick={() => setBeginnerOnly((v) => !v)}>🐣 {strings.filterBeginner}</Pill>
+        )}
+        {available.open24 && (
+          <Pill on={open24Only} onClick={() => setOpen24Only((v) => !v)}>🌙 {strings.filter24h}</Pill>
+        )}
         <span className="mx-1 hidden border-r border-ink-200 dark:border-ink-700 sm:inline-block" aria-hidden="true" />
-        {(["budget","mid","premium","luxury"] as const).map((pb) => (
+        {(["budget","mid","premium","luxury"] as const).filter((pb) => available.price.has(pb)).map((pb) => (
           <Pill key={pb} on={priceBand === pb} onClick={() => setPriceBand(priceBand === pb ? "" : pb)}>
             {PB_LABEL[pb].icon} {PRICE_STRINGS[pb](strings)}
           </Pill>
         ))}
-        <Pill on={hideViral} onClick={() => setHideViral((v) => !v)} tone="warn">🚫 {strings.filterOutViral}</Pill>
+        {available.viral && (
+          <Pill on={hideViral} onClick={() => setHideViral((v) => !v)} tone="warn">🚫 {strings.filterOutViral}</Pill>
+        )}
       </div>
 
       <div className="mt-4 flex items-baseline justify-between text-xs muted">

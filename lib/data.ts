@@ -5,6 +5,8 @@ import type { PlacesBundle, Place, PlaceCard, MapMarker, Niche, CommunityBundle 
 import { getPlaceSignals, computeTrustBoost } from "./signals";
 import { isThaiRelevantText } from "@/lib/mentions";
 import { isTinyGooglePhoto } from "@/lib/googlePhoto";
+import { toHoursMap } from "@/lib/hours";
+import type { HoursRecord } from "@/lib/hours";
 
 // Project a full Place down to the fields card/grid UI actually renders —
 // see PlaceCard in lib/types.ts for why.
@@ -126,6 +128,13 @@ export function loadPlaces(): PlacesBundle {
   const cafeHits = loadJsonOrEmpty<Record<string, unknown[]>>(
     path.join(process.cwd(), "public", "data", "per_place_naver_cafe.json"),
   );
+  // Opening hours. build-data.mjs sets is_open_24h from a master-CSV column
+  // that has never existed, so it writes `false` for every venue and the
+  // "24h" filter has never matched anything. Hours come from their own
+  // sidecar instead (scripts/import-apify-hours.mjs); see lib/hours.ts.
+  const hours = loadJsonOrEmpty<Record<string, HoursRecord>>(
+    path.join(process.cwd(), "public", "data", "per_place_hours.json"),
+  );
   // Apply enrichment-signal boost so wayback/recency/email infra feed into
   // ranking everywhere — not just the badges on the detail page. Also project
   // the boolean flags onto each place so client-side filters (CategoryClient)
@@ -162,6 +171,12 @@ export function loadPlaces(): PlacesBundle {
     if (signals.foundingYear) place.founding_year = signals.foundingYear;
     const krCount = (naverHits[place.id] || []).length + (cafeHits[place.id] || []).length;
     if (krCount > 0) place.kr_mentions = krCount;
+    const hoursRec = hours[place.id];
+    if (hoursRec) {
+      place.is_open_24h = hoursRec.open_24h;
+      const map = toHoursMap(hoursRec.days);
+      if (Object.keys(map).length) place.opening_hours_json = JSON.stringify(map);
+    }
     trustSum += place.trust_score;
   }
   bundle.avg_trust = bundle.places.length

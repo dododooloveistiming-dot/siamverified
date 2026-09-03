@@ -6,7 +6,7 @@ import { SITE, SUPPORTED_LANGS, T, t, withXDefault, resolveCategoryStrings } fro
 import type { Lang, Niche } from "@/lib/types";
 import { NICHE_META, nicheName, nicheTagline } from "@/lib/types";
 import CategoryClient from "@/components/CategoryClient";
-import { cityFacets, initialCards } from "@/lib/cards";
+import { cityFacets, filterFacets, initialCards } from "@/lib/cards";
 import CategoryDiscovery from "@/components/CategoryDiscovery";
 import SafeImg from "@/components/SafeImg";
 import { genericOgImage } from "@/lib/og";
@@ -195,6 +195,7 @@ export default function CategoryPage({ params }: { params: { lang: Lang; niche: 
               initial={initialCards(places)}
               total={places.length}
               cityFacets={cityFacets(places)}
+              facets={filterFacets(places)}
               cardsUrl={`/api/cards/c/${niche}/`}
               lang={lang}
               niche={niche}

@@ -11,7 +11,7 @@ import {
   hasEnoughCollectionPlaces, liveCollections,
 } from "@/lib/collections";
 import CategoryClient from "@/components/CategoryClient";
-import { cityFacets, initialCards } from "@/lib/cards";
+import { cityFacets, filterFacets, initialCards } from "@/lib/cards";
 import AdSlot from "@/components/AdSlot";
 import { genericOgImage } from "@/lib/og";
 
@@ -124,6 +124,7 @@ export default function CollectionPage({ params }: { params: { lang: Lang; colle
           initial={initialCards(cards)}
           total={cards.length}
           cityFacets={cityFacets(cards)}
+              facets={filterFacets(cards)}
           cardsUrl={`/api/cards/w/${c.slug}/`}
           lang={lang}
           niche={c.niches[0]}

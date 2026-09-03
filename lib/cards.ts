@@ -35,3 +35,32 @@ export function cityFacets(cards: PlaceCard[]): string[] {
     .slice(0, CITY_FACET_LIMIT)
     .map(([c]) => c);
 }
+
+// Which filter pills can match anything at all in this set.
+//
+// A pill that can only ever return "no matches" is worse than no pill. The
+// "24h" one shipped on every category page since launch while is_open_24h was
+// false for all 3,347 venues (lib/hours.ts explains why). Computed server-side
+// from the whole list rather than in the browser, so the pills are right on
+// first paint instead of appearing once the full card list arrives.
+export type FilterFacets = {
+  established: boolean;
+  active: boolean;
+  korean: boolean;
+  beginner: boolean;
+  open24: boolean;
+  viral: boolean;
+  priceBands: string[];
+};
+
+export function filterFacets(cards: PlaceCard[]): FilterFacets {
+  return {
+    established: cards.some((p) => p.is_established),
+    active: cards.some((p) => p.is_active_recently),
+    korean: cards.some((p) => p.languages?.ko),
+    beginner: cards.some((p) => p.is_beginner_friendly),
+    open24: cards.some((p) => p.is_open_24h),
+    viral: cards.some((p) => p.is_suspected_viral),
+    priceBands: [...new Set(cards.map((p) => p.price_band).filter((b) => b && b !== "unknown"))],
+  };
+}
