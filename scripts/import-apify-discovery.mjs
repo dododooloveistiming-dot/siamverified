@@ -10,15 +10,24 @@
 //
 // Then run `npm run data:build` to fold the CSV into places.json.
 //
-// The tag sidecar exists because a cold-plunge studio is usually called
-// something like "The Recovery Lab" with a Google category of "Wellness
-// center". lib/collections.ts matches on name + category and would miss it.
-// Recording which search term surfaced a venue keeps the claim honest and
-// checkable: we searched for ice baths in Bangkok, Google returned this.
+// A search term is a candidate, not a membership. Google Maps search is
+// lexical: "ice bath Bangkok" returns dry-ice suppliers, a cold-storage
+// warehouse, an ice-sculpture museum, drug rehab clinics (from "recovery"),
+// and the island of Ko Samui. Tagging on the search alone put 92 venues in
+// ice-bath, of which 19 were ice baths.
+//
+// So a result is only tagged when the venue's OWN listing corroborates it —
+// the collection's patterns from lib/collection-defs.ts, applied to title,
+// categoryName, the full categories array and description. The tag then means
+// something checkable ("this listing says it is an ice bath"), and it earns
+// its place in the sidecar because build-data.mjs truncates category to 80
+// chars and never carries description at all, so that evidence would
+// otherwise be lost by the time lib/collections.ts sees the venue.
 
 import fs from "node:fs";
 import path from "node:path";
 import { allDaysTwentyFour } from "../lib/hours.ts";
+import { getCollection } from "../lib/collection-defs.ts";
 
 const ROOT = process.cwd();
 const TERMS_PATH = path.join(ROOT, "apify", "discovery_terms.json");
@@ -83,13 +92,31 @@ function normalizeDays(value) {
 // Which collection a result belongs to, from the search that produced it.
 // Apify echoes the query back as searchString; fall back to substring-matching
 // the map's keys for actors that name the field differently.
-function collectionFor(item) {
+function candidateFor(item) {
   const q = String(pick(item, ["searchString", "searchQuery", "search_string", "query"]) || "");
   if (TERM_MAP[q]) return TERM_MAP[q];
   for (const [term, coll] of Object.entries(TERM_MAP)) {
     if (q && q.toLowerCase().includes(term.toLowerCase())) return coll;
   }
   return null;
+}
+
+// Everything the listing says about itself.
+function listingText(item) {
+  const cats = item?.categories;
+  return [
+    item?.title,
+    item?.categoryName,
+    Array.isArray(cats) ? cats.join(" ") : cats,
+    item?.description,
+  ].filter(Boolean).join(" ");
+}
+
+function corroborates(collectionSlug, item) {
+  const def = getCollection(collectionSlug);
+  if (!def) return false;
+  const text = listingText(item);
+  return def.patterns.some((re) => re.test(text));
 }
 
 // place_ids we already carry — build-data dedupes too (master wins), but
@@ -104,7 +131,8 @@ const rows = new Map();       // place_id -> csv row
 const tags = fs.existsSync(TAGS_PATH) ? JSON.parse(fs.readFileSync(TAGS_PATH, "utf-8")) : {};
 const hours = fs.existsSync(HOURS_PATH) ? JSON.parse(fs.readFileSync(HOURS_PATH, "utf-8")) : {};
 
-let seen = 0, noId = 0, noCollection = 0, already = 0, withHours = 0;
+let seen = 0, noId = 0, noCollection = 0, unconfirmed = 0, already = 0, withHours = 0;
+const rejected = {};
 const perCollection = {};
 
 for (const file of files) {
@@ -115,8 +143,14 @@ for (const file of files) {
     const id = pick(item, ["placeId", "place_id", "placeID", "id"]);
     if (!id) { noId++; continue; }
 
-    const collection = collectionFor(item);
-    if (!collection) { noCollection++; continue; }
+    const candidate = candidateFor(item);
+    if (!candidate) { noCollection++; continue; }
+    const collection = corroborates(candidate, item) ? candidate : null;
+    if (!collection) {
+      unconfirmed++;
+      (rejected[candidate] ||= []).push(`${item.categoryName || "?"} | ${item.title || "?"}`);
+      continue;
+    }
 
     // Tag regardless of whether the venue is new — an existing venue that a
     // cold-plunge search returns should join that collection too.
@@ -168,11 +202,16 @@ console.log("");
 console.log(`items read             ${seen}`);
 console.log(`  no place id          ${noId}`);
 console.log(`  no matching search   ${noCollection}`);
+console.log(`  search hit, listing did not corroborate  ${unconfirmed}`);
 console.log(`  already in places    ${already}`);
 console.log(`  new venues written   ${rows.size}`);
 console.log(`  hours captured       ${withHours}`);
 console.log("");
 console.log("tagged per collection:", JSON.stringify(perCollection));
+for (const [coll, list] of Object.entries(rejected)) {
+  console.log(`  dropped from ${coll} (${list.length}), first 5:`);
+  for (const l of list.slice(0, 5)) console.log(`    ${l}`);
+}
 console.log(`-> ${path.relative(ROOT, csvPath)}`);
 console.log(`-> ${path.relative(ROOT, TAGS_PATH)} (${Object.keys(tags).length} places)`);
 console.log("");
